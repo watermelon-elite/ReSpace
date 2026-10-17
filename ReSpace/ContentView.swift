@@ -1,24 +1,36 @@
-//
-//  ContentView.swift
-//  ReSpace
-//
-//  Created by Kenshu Dieguez on 10/17/26.
-//
-
+import RoomPlan
 import SwiftUI
+import UIKit
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
-    }
-}
+    @State private var store: WorkspaceStore?
+    @State private var startupError: String?
+    @State private var recoveryMonitor: NetworkRecoveryMonitor?
 
-#Preview {
-    ContentView()
+    var body: some View {
+        Group {
+            if !supportedHardware {
+                CompatibilityView()
+            } else if let store {
+                MyRoomsView(store: store)
+            } else if let startupError {
+                ContentUnavailableView("Couldn’t open ReSpace", systemImage: "externaldrive.badge.exclamationmark",
+                                       description: Text(startupError))
+            } else { ProgressView("Opening your rooms…") }
+        }
+        .tint(ReSpaceTheme.olive)
+        .foregroundStyle(ReSpaceTheme.ink)
+        .task {
+            guard supportedHardware, store == nil else { return }
+            do {
+                let workspace = WorkspaceStore(configuration: try AppConfiguration.load(), deviceId: try DeviceIdentity.load())
+                store = workspace
+                recoveryMonitor = NetworkRecoveryMonitor { [weak workspace] in await workspace?.bootstrap() }
+            }
+            catch { startupError = error.localizedDescription }
+        }
+    }
+    private var supportedHardware: Bool {
+        UIDevice.current.model == "iPhone" && UIDevice.current.userInterfaceIdiom == .phone && RoomCaptureSession.isSupported
+    }
 }

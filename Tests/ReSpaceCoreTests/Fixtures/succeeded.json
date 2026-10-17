@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "op_1",
+  "room_id": "room_1",
+  "kind": "edit",
+  "state": "succeeded",
+  "outcome": {
+    "design_id": "design_2",
+    "active_revision": 5,
+    "summary": "Moved the chair.",
+    "message_ids": [
+      "msg_2"
+    ]
+  }
+}

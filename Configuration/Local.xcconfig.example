@@ -1,0 +1,4 @@
+// Copy to Local.xcconfig and pass -xcconfig Configuration/Local.xcconfig to xcodebuild.
+// The slash substitution prevents xcconfig from interpreting // as a comment.
+RESPACE_SERVICE_URL = https:/$()/your-service.example.com
+RESPACE_APP_KEY = replace-with-the-shared-app-key
