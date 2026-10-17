@@ -15,7 +15,7 @@
 - **Products:** a **curated catalog** (about 60 real products with pre-made 3D models) comes first. **SerpApi Google Shopping** covers everything else, shown as category stand-in models. **Playwright** fills in real dimensions in the background.
 - **Rendering:** the app draws the room as a clean 3D model in **RealityKit** (not photo-real). Existing furniture is replaced by generic models scaled to the same size, so moving or removing it is reliable.
 - **Backend:** FastAPI on Cloud Run, Tiger Data (managed Postgres) for data, Google Cloud Storage for images and 3D models.
-- **Cash cost for the hackathon:** about $0–$45. Everything else is covered by existing credits (see §10).
+- **Cash cost for the hackathon:** about $0–$25, assuming existing hardware can run SPAR3D. Any GPU rental is additional and must be measured (see §10).
 
 
 **Decisions that keep the build fast:**
@@ -31,7 +31,7 @@
 
 - Per session: about $0.10–0.25 (one scan, one design, three edits).
 - Credits: the $50 Perceptron credit covers roughly 1,500 scans if my token estimate holds; check it on day 1. Gemini and Tiger Data costs are covered by your credits.
-- Cash: about $0–45. That's SerpApi Starter ($25) only if many people will test, plus about $20 for generating 3D models of the catalog products.
+- Cash: about $0–25 for SerpApi Starter ($25) only if many people will test, assuming SPAR3D catalog generation runs on existing hardware. Budget GPU rental separately if needed.
 - The real limit is SerpApi: the free plan's 250 searches a month is about 50 designs, so the spec has a recorded-results mode for development.
 **Unconfirmed, check on day 1:**
 
@@ -121,6 +121,7 @@
 | Perception | Perceptron platform API (SDK or HTTP) | Mk1.5 if available on your key. Same price as Mk1 per listings. |
 | Products | SerpApi `google_shopping` | Cached in Postgres |
 | Dimensions | Playwright (Python) script | Runs on a laptop. Cloud servers get blocked by stores. |
+| Catalog 3D generation | SPAR3D official implementation | Offline image → point cloud → mesh; convert GLB to USDZ before uploading to GCS (§5.10). |
 | Hosting | Cloud Run + GCS | Paid from the Google credits. Set **CPU always allocated** and `min-instances=1` so the first request isn't slow. |
 | DB | Tiger Data (Tiger Cloud) | Used as plain managed Postgres with JSONB. No hypertables needed. |
 
@@ -350,7 +351,10 @@ For each item to add, in parallel:
 - **Curated catalog** (about 60 products, `scripts/build_catalog.py` + a hand-edited `catalog.yaml`):
   1. Pick real products across the categories plus café items (stools, 2-top tables, pendants, menu boards, planters), mixing styles and prices.
   2. For each one: title, store URL, price, photo, verified dimensions, style tags.
-  3. Generate a 3D model with **Tripo or Meshy** from the photo. Export or convert it to USDZ, scale it to the real dimensions, and keep it under 3 MB (reduce the polygon count if needed).
+  3. Generate a 3D model from the product photo with **[SPAR3D: Stable Point-Aware Reconstruction of 3D Objects from Single Images](https://spar3d.github.io/)**, using the [official implementation](https://github.com/Stability-AI/stable-point-aware-3d). Its two stages generate a sparse point cloud, then reconstruct a mesh conditioned on both the image and point cloud. Run this offline during catalog preparation, outside the FastAPI request path.
+     - Set up a separate SPAR3D environment on a CUDA machine; request access to the gated Hugging Face weights and review the model license before use. The README reports about 10.5 GB VRAM normally and about 7 GB in low-VRAM mode; validate on the chosen hardware. Mac MPS support is experimental.
+     - Run `python run.py product.png --output-dir output/` to produce GLB. Convert GLB to USDZ with a tested asset conversion pipeline; check textures in RealityKit, orient the model facing +z with its origin at the bottom-center, scale it to verified product dimensions, and keep it under 3 MB by reducing mesh and texture size as needed.
+     - Inspect each asset against the product photo, especially hidden surfaces and thin parts. Single-image reconstruction does not establish true geometry or metric scale; verified dimensions remain authoritative. Reject poor reconstructions and use a category stand-in. Keep live SerpApi results on stand-ins for the MVP.
   4. Upload to GCS and upsert into `products`.
 
 ---
@@ -511,7 +515,7 @@ Prices are approximate. Third-party listings were used where official pages were
 | SerpApi | Free plan: 250 searches/month. Starter: $25 / 1,000 | Third-party pricing pages |
 | Tiger Data | Smallest Performance service, roughly $30–60/month | Covered by the **$1,000** credits. Check when the credits expire. |
 | Cloud Run + GCS | Pennies at hackathon scale | Covered by the Google credits |
-| Tripo / Meshy (catalog 3D models) | About $20 for one month of a paid plan ≈ enough for 60+ models | Free tiers give only a handful |
+| SPAR3D (offline catalog 3D models) | No paid generation service assumed; existing hardware or separately budgeted GPU rental | Validate runtime and compute cost on a small batch before generating the catalog; confirm model license/access (§5.10). |
 | Kenney Furniture Kit | Free (CC0) | |
 | Apple Developer Program | $0 (free personal team) / $99 a year | $99 only if you need TestFlight for judges or teammates |
 
@@ -532,7 +536,7 @@ Prices are approximate. Third-party listings were used where official pages were
 - **Tiger Data $1,000** lasts more than a year on the smallest service, if the credits don't expire sooner.
 - **SerpApi** is the real limit: the free plan's 250 searches/month is about 50 designs. Use the fixture mode during development, and buy **Starter ($25)** for demo week if many people will be testing.
 
-### Cash spend for the hackathon: **≈ $0–$45** (SerpApi Starter $25 if needed + about $20 for 3D model generation; plus $99 Apple Developer only if you need TestFlight)
+### Cash spend for the hackathon: **≈ $0–$25** (SerpApi Starter $25 if needed; SPAR3D assumes existing hardware, with any GPU rental additional; plus $99 Apple Developer only if you need TestFlight)
 
 ---
 
@@ -571,7 +575,7 @@ The iOS lane has the most work. Three small jobs that could have been done on th
 ### Pre-hackathon (or hours 0–2 if prep isn't allowed)
 - **H3:**
   - Accounts and keys: Perceptron, Gemini, SerpApi, Tiger Data, GCP project (Cloud Run + 2 buckets), Amazon Associates tag.
-  - Start the catalog: write `catalog.yaml` and **start 3D model generation first**, since it's the slowest job.
+  - Start the catalog: write `catalog.yaml`, obtain SPAR3D weight access, and validate photo → GLB → USDZ → RealityKit on 3 representative products. Measure runtime and compute cost, then **start offline catalog generation first** so asset preparation does not block integration.
   - Convert the Kenney stand-ins to USDZ and normalize them.
 - **H1:** Xcode project, signing on all test phones, minimal RoomPlan scan on a LiDAR phone.
 - **H2:** one Perceptron API call working from a script (on any room photo).
@@ -661,6 +665,7 @@ The iOS lane has the most work. Three small jobs that could have been done on th
 | 8 | RealityView virtual camera + gestures harder than expected | Render a USDZ in an orbit camera on iOS 18 | Top-down view only; drag on a 2D overlay |
 | 9 | Big or glassy café spaces scan badly | Scan a café corner | Demo in a normal room / a defined café corner |
 | 10 | Venue Wi-Fi | — | Phone hotspot; sample room mode works with only the server reachable |
+| 11 | SPAR3D setup, compute, reconstruction quality or USDZ conversion blocks catalog assets | Obtain weight access and render 3 representative converted assets in RealityKit; measure runtime, memory and file size | Ship the validated catalog subset and category stand-ins for the rest |
 
 ---
 
