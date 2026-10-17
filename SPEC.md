@@ -5,6 +5,7 @@
 
 ---
 
+
 ## 0. Summary
 
 - **Scan:** RoomPlan measures walls, doors, windows and large furniture. While the user scans, the app samples about 1 keyframe per second (photo, LiDAR depth and camera position).
@@ -15,6 +16,29 @@
 - **Rendering:** the app draws the room as a clean 3D model in **RealityKit** (not photo-real). Existing furniture is replaced by generic models scaled to the same size, so moving or removing it is reliable.
 - **Backend:** FastAPI on Cloud Run, Tiger Data (managed Postgres) for data, Google Cloud Storage for images and 3D models.
 - **Cash cost for the hackathon:** about $0–$45. Everything else is covered by existing credits (see §10).
+
+
+**Decisions that keep the build fast:**
+
+- **Gemini never returns coordinates.** It says what goes where ("under sofa o3", "corner c2"), and a small Python placement step works out exact positions and checks for collisions, door clearance and aisle width. This is what makes redesigns look reliable.
+- **Perceptron finds objects, ARKit measures them.** Each scan photo goes through one Mk1 call while the user is still scanning, and the server turns its 2D results into 3D using the LiDAR depth or the room's walls and floor.
+- **No background jobs.** The keyframe upload request waits for its own Mk1 call (about 8 s), and the phone doesn't wait on the upload.
+- **Tiger Data is used as plain Postgres.** It has 5 tables, mostly JSON columns, set up from one schema.sql, with no ORM, migrations or time-series features.
+- **Playwright runs on a teammate's laptop, not the server.** Stores block cloud servers much more often than home connections. Run it ahead of time on the curated catalog so the live demo never depends on scraping.
+- **Designs are saved as versions**. Each chat edit makes a new version, so Undo just goes back one.
+
+**Costs:**
+
+- Per session: about $0.10–0.25 (one scan, one design, three edits).
+- Credits: the $50 Perceptron credit covers roughly 1,500 scans if my token estimate holds; check it on day 1. Gemini and Tiger Data costs are covered by your credits.
+- Cash: about $0–45. That's SerpApi Starter ($25) only if many people will test, plus about $20 for generating 3D models of the catalog products.
+- The real limit is SerpApi: the free plan's 250 searches a month is about 50 designs, so the spec has a recorded-results mode for development.
+**Unconfirmed, check on day 1:**
+
+- Perceptron: whether your key gets Mk1.5 or Mk1, the exact parameter for structured output, and how many tokens each image costs. I couldn't find Perceptron's own docs, so the pricing comes from third-party listings.
+- Depth during scanning: whether LiDAR depth is available while RoomPlan is running. If not, the spec falls back to using the room's walls and floor.
+- SerpApi store links: whether results include direct store links or only Google product pages.
+
 
 ---
 
