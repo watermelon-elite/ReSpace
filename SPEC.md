@@ -73,7 +73,7 @@
 
 ## 2. Assumptions
 
-- Team of 4, a hackathon of roughly 36 hours. Adjust §11 if this differs.
+- Team of 3, a hackathon of roughly 36 hours. Adjust §11 if this differs.
 - Test devices: iPhone 12 Pro or newer Pro model. Minimum iOS version: **iOS 18**, which is needed for `RealityView` with a virtual camera on iPhone.
 - Credits: Perceptron **$50** (direct platform API, not OpenRouter). Google/Gemini **$300 + $10/month**. Tiger Data **$1,000**.
 - Whether pre-hackathon prep is allowed (accounts, API keys, catalog curation, 3D model generation) depends on the hackathon's rules. Check them. Everything in §11 "Pre-hackathon" can also be done in the first 4 hours.
@@ -169,7 +169,7 @@ Each step lists what the **user** sees, what the **system** does, and when it's 
 - **Done when:** `POST /v1/rooms/{id}/designs` is sent.
 
 ### Step 4: Generating (target p50 ≤ 20 s)
-- **User:** progress messages that tell a story, built **on the device from the RoomModel**, so no server streaming is needed. For example: "Measuring your 3.4 m window wall…", "Keeping 1.2 m clear in front of your door…", "Finding a rug that fits under your sofa…", and for business mode "Fitting 24 seats with 91 cm aisles…".
+- **User:** progress messages that tell a story. The server writes them from the room (the `RoomModel.story` field) and the app cycles through them, so no server streaming is needed. For example: "Measuring your 3.4 m window wall…", "Keeping 1.2 m clear in front of your door…", "Finding a rug that fits under your sofa…", and for business mode "Fitting 24 seats with 91 cm aisles…".
 - **System (server):**
   1. Gemini plan (§5.4)
   2. Resolve products (§5.5)
@@ -199,7 +199,7 @@ Each step lists what the **user** sees, what the **system** does, and when it's 
 - **User:**
   - Designs auto-save (one list per room on a simple "My spaces" screen).
   - **Share** opens the system share sheet with a screenshot of the scene and a text shopping list grouped by store (title, price, link).
-- **System:** a RealityKit snapshot plus a text list. No hosted web share page in the MVP.
+- **System:** a RealityKit snapshot, plus the text from `GET /designs/{id}/shopping-list`. No hosted web share page in the MVP.
 
 ---
 
@@ -312,7 +312,7 @@ For each item to add, in parallel:
   - Tap → raycast to an item → select it.
   - Drag a selected item → raycast onto the floor plane (or the wall plane for wall items) → move it.
   - Two-finger rotate → rotate it.
-  - On release, run a client-side overlap check (red highlight if it overlaps) and send `PATCH` to save.
+  - On release, send `PATCH` to save. The response says whether the item now overlaps something (red highlight).
 - **Lighting:**
   - Image-based lighting from one neutral indoor environment, plus a **directional "sun"** pointing in from the largest window.
   - `GroundingShadowComponent` on every item.
@@ -375,6 +375,7 @@ For each item to add, in parallel:
   "wall_features": [{ "id": "f1", "type": "outlet", "wall": "w1", "offset": 2.9, "height": 0.3 }],
   "zones":   [{ "id": "z1", "type": "keep_clear", "reason": "door", "polygon": [[...]] }],
   "style_hints": { "floor": "light oak", "walls": "white" },
+  "story": ["Measuring your 3.4 m window wall…", "Keeping 1.2 m clear in front of your door…"],
   "status": { "pending_keyframes": 0 }
 }
 ```
@@ -425,7 +426,8 @@ Auth: an `X-Device-Id` header plus a shared `X-App-Key` (a static secret, only t
 | `POST /rooms/{id}/designs` | `DesignRequest` → `Scene` | Waits for the result, 10–30 s. Set the client timeout to 60 s. |
 | `GET /designs/{id}` | `Scene` (with current dimensions) | |
 | `POST /designs/{id}/chat` | `{message}` → child `Scene` | |
-| `PATCH /designs/{id}/items/{item_id}` | `{position?, yaw?, removed?, product_id?}` | Manual move, remove or swap |
+| `PATCH /designs/{id}/items/{item_id}` | `{position?, yaw?, removed?, product_id?}` → `{overlaps, warnings}` | Manual move, remove or swap |
+| `GET /designs/{id}/shopping-list` | Text list grouped by store (title, price, link) | Used by the share sheet |
 | `GET /catalog/manifest` | Catalog IDs → model URLs and versions | So the app can prefetch models |
 | `GET /health` | | |
 
@@ -534,30 +536,112 @@ Prices are approximate. Third-party listings were used where official pages were
 
 ---
 
-## 11. Build plan (4 people, about 36 h)
+## 11. Build plan (3 people, about 36 h)
+
+### The three areas
+
+| Person | Expertise | Owns (folders) | Spec sections | Requirements |
+|---|---|---|---|---|
+| **H1: iOS & 3D** | Swift, SwiftUI, ARKit/RoomPlan, RealityKit | `ios/` | §4 (all screens), §5.1, §5.7 | FR-01–03, 06, 07, 11, 12, 14–17, 20, 22 |
+| **H2: Perception & Spatial** | Python, geometry, computer vision math | `server/perception/`, `server/geometry/`, `server/solver/`, `server/tests/` | §5.2, §5.3, §5.6 | FR-04, 05, 10, 18, 25 |
+| **H3: AI, Products & Backend** | Python, LLM prompting, APIs, databases, deployment | `server/` (everything else), `scripts/`, `assets/`, `catalog.yaml` | §5.4, §5.5, §5.8–5.10, §7, §8 | FR-08, 09, 13, 19, 21, 23, 24 |
+
+The iOS lane has the most work. Three small jobs that could have been done on the phone are done **on the server** instead:
+- **Progress messages** (Step 4) come from the server as `RoomModel.story` (H2).
+- **The overlap check after a drag** is in the `PATCH` response (H2's solver check).
+- **The shopping-list text** for sharing comes from `GET /designs/{id}/shopping-list` (H3).
+
+### Rules that keep all three working in parallel
+1. **Contracts first, together, in hour 0–1.** Write the §6 JSON examples into `fixtures/contracts/`. H3 turns them into Pydantic models (`server/contracts.py`), and H1 turns them into Swift `Codable` structs. After that, any contract change is announced in the team chat: H3 updates the Pydantic models, H1 updates the Swift structs.
+2. **Nobody waits on real data.** Every dependency has a stand-in from hour 1 (see "Handoffs" below):
+   - hand-written synthetic rooms
+   - a stub server that returns fixture data
+   - `SERPAPI_MODE=fixture`
+   - colored boxes in place of 3D models
+   - a naive solver
+3. **Python handoffs are function signatures** (H2 → H3). H3 calls them through stubs until H2 delivers the real ones:
+   - `detect(image_bytes, mode) -> list[Detection]`
+   - `normalize_room(captured_room_json) -> RoomModel`
+   - `lift_and_merge(room, keyframes) -> RoomModel`
+   - `solve(room, plan, products, fixed_item_ids=[]) -> Scene`
+   - `check_overlaps(scene, item_id) -> list[str]`
+4. **Separate folders, so no merge conflicts.** `fixtures/` is add-only: add new files, don't edit other people's files.
+5. **Integrate at fixed checkpoints** (H4, H12, H20, H28), not continuously. Between checkpoints, each person works against the fixtures.
 
 ### Pre-hackathon (or hours 0–2 if prep isn't allowed)
-- Accounts and keys: Perceptron, Gemini (AI Studio or Vertex), SerpApi, Tiger Data service, GCP project (Cloud Run + 2 buckets), Amazon Associates tag (optional).
-- Repo: `ios/`, `server/`, `scripts/`, `fixtures/`, plus `SPEC.md`.
-- Curate `catalog.yaml` (60 items) and generate 3D models (§5.10). This is slow, so start it first.
-- Convert the Kenney stand-ins and normalize them to 1 m boxes.
+- **H3:**
+  - Accounts and keys: Perceptron, Gemini, SerpApi, Tiger Data, GCP project (Cloud Run + 2 buckets), Amazon Associates tag.
+  - Start the catalog: write `catalog.yaml` and **start 3D model generation first**, since it's the slowest job.
+  - Convert the Kenney stand-ins to USDZ and normalize them.
+- **H1:** Xcode project, signing on all test phones, minimal RoomPlan scan on a LiDAR phone.
+- **H2:** one Perceptron API call working from a script (on any room photo).
 
-### Roles
-- **A: iOS Capture.** Welcome, RoomPlan scan, keyframe sampler and uploads, LiDAR check, **records the fixture room** (raw CapturedRoom JSON + 40 keyframes with poses and depth) in hour 1–2.
-- **B: iOS Render/UX.** RealityView scene built from RoomModel and Scene, cameras, gestures, all screens, lighting.
-- **C: Backend AI.** FastAPI skeleton, Mk1 client and normalization, lifting and merging, Gemini plan and chat prompts, debug overlay.
-- **D: Backend Data/Placement.** schema.sql, solver + tests, SerpApi + cache, product resolution, catalog loader, Playwright script.
+### H1: iOS & 3D
 
-### Milestones
+| Hours | Tasks | Needs | Delivers |
+|---|---|---|---|
+| 0–1 | Contracts session; Swift `Codable` structs; decode every fixture in a unit test | — | — |
+| 1–4 | Navigation skeleton for all screens (placeholders). **Capture build:** RoomCaptureView + keyframe sampler saving to disk (§5.1) + export the raw CapturedRoom JSON. **Record 2 fixture rooms** (a home room, a café-like corner). Check whether `sceneDepth` is available (risk 1). | — | **Real fixtures → H2, H3 by H4** |
+| 4–12 | RealityKit scene built from RoomModel: walls, floor, openings, objects as **colored boxes**; orbit camera; labels; Keep toggles. API client pointed at the stub server. Keyframe upload replaces saving to disk. | Stub API (H2 from H3) | Room view on fixture data |
+| 12–20 | Design screen: render Scene items (stand-ins with tint, rug and art panels, catalog USDZ download + cache); item cards; total; Buy; Swap. Intent sheet. Generating screen (shows `story` lines). | Stand-ins (H3, H8); real endpoints (H3, H12) | **Real-device end-to-end by H20** |
+| 20–28 | Drag/rotate + PATCH (red highlight from the response); Remove; Before/After; chat bar + Undo; spot-intent tap; Day/Evening lighting; walk mode | Chat endpoint (H3, H24) | All P1 screens |
+| 28–32 | Sample-room path, share sheet, "My spaces", empty and error states, visual polish | — | — |
 
-| Hours | Goal (each ends with something that runs) |
+### H2: Perception & Spatial
+
+| Hours | Tasks | Needs | Delivers |
+|---|---|---|---|
+| 0–1 | Contracts session; hand-write **3 synthetic RoomModels** (rectangle living room, L-shaped room, 8×6 m café with counter + 2 doors) | — | **Synthetic rooms → H1, H3 by H1** |
+| 1–4 | **Mk1 spike** (risks 3, 4) on phone photos: auth, model ID, structured-output parameter, coordinate format, latency, tokens per image. Write `detect()` + output normalization. | — | `detect()` → H3 |
+| 4–10 | **Solver v1** on the synthetic rooms: floor and wall reference points, collisions, nudges, drop + warning, door clearance; pytest. `check_overlaps()`. | Synthetic rooms only | **`solve()` v1 → H3 by H10** |
+| 6–9 | `normalize_room()` on the real fixture: walls, corners, openings, objects linked to walls; plus the `story` lines | Real fixture (H1, H4) | **`normalize_room()` → H3 by H9** |
+| 10–18 | `lift_and_merge()`: depth first, then ray casting; rugs as polygons; clustering; wall-feature snapping; attribute attachment. **Debug overlay** verified on the real fixture (risk 2, NFR-04). | Real fixture; `detect()` output on the fixture keyframes | **`lift_and_merge()` → H3 by H18** |
+| 18–26 | Business mode: `keep_clear` zones, `seating_group` reference point, aisle check; `on_top_of`, `at_spot`, lamp-near-outlet bonus; re-solving with other items fixed (for chat edits) | — | Solver v2 |
+| 26–32 | Tuning on the café fixture and live scans; stretch: FR-25 (Mk1 check of the rendered design) | — | — |
+
+### H3: AI, Products & Backend
+
+| Hours | Tasks | Needs | Delivers |
+|---|---|---|---|
+| 0–1 | Contracts session; `contracts.py` (Pydantic) | — | — |
+| 1–3 | FastAPI skeleton; **stub endpoints returning fixtures**, deployed to Cloud Run; `schema.sql` on Tiger Data; GCS buckets | — | **Stub API → H1 by H2** |
+| 3–6 | SerpApi spike (risk 6) + save responses as fixtures. Kenney stand-ins → USDZ, normalized. First 10 catalog items with models. | — | **Stand-ins → H1 by H6–8** |
+| 6–12 | Real endpoints: `rooms`, `keyframes` (GCS + `detect()`), `finalize` (`normalize_room()`; later also `lift_and_merge()`), `designs`. **Gemini plan:** prompt, schema, ID validation on the synthetic rooms (risk 5). Uses a naive solver until H10. | `detect()`, `normalize_room()`, `solve()` (H2) | **Real API → H1 by H12** |
+| 12–20 | Product resolution: catalog loader, SerpApi + cache, Flash pick and size estimate, dominant-color tint, Amazon link. Saving designs. Finish catalog models (about 60). | `lift_and_merge()` (H2, H18) | End-to-end on the real fixture |
+| 20–28 | Chat edits (operations + versions), `PATCH`, `GET /designs`, shopping-list endpoint, "My spaces" list. `enrich_dims.py` (Playwright) run on the catalog. | Solver v2 for chat edits (H2) | **Chat → H1 by H24** |
+| 28–32 | Speed (parallel calls, model choice per step), cost logging, store the pre-scanned demo café in the DB; stretch: FR-24 (inspiration image) | — | — |
+
+### Handoffs (what to use until each one arrives)
+
+| Handoff | From → To | By hour | Until then, use |
+|---|---|---|---|
+| Contracts + Pydantic models / Swift structs | all | H1 | — |
+| Synthetic RoomModels | H2 → H1, H3 | H1 | `room_simple.json` from the contracts session |
+| Stub API on Cloud Run | H3 → H1 | H2 | Fixture JSON files loaded locally |
+| Real scan fixtures (CapturedRoom + 40 keyframes with poses and depth) | H1 → H2, H3 | H4 | Synthetic rooms; phone photos for the Mk1 spike |
+| `detect()` | H2 → H3 | H4 | Endpoint saves the keyframe and returns `[]` |
+| Stand-in USDZ library | H3 → H1 | H8 | Colored boxes |
+| `normalize_room()` | H2 → H3 | H9 | Returns the synthetic room |
+| `solve()` v1 | H2 → H3 | H10 | Naive placement at the reference point, no collision checks |
+| Real API endpoints | H3 → H1 | H12 | Stub API |
+| `lift_and_merge()` | H2 → H3 | H18 | RoomPlan objects only |
+| Chat endpoint | H3 → H1 | H24 | Chat bar hidden |
+| Full catalog (60 models) | H3 → H1 | H24 | First 10 + stand-ins |
+
+### Integration checkpoints (all three, about 20 min each)
+
+| Hour | Must be true |
 |---|---|
-| 0–4 | **Contracts frozen** (§6 examples in `fixtures/`). Fixture room recorded. Day-1 checks done (§12). DB live. Server deployed with `/health`. |
-| 4–12 | **Vertical slice on the fixture:** finalize → RoomModel → app renders it in the Simulator → design request → Gemini plan (catalog only) → solver → app renders the placed catalog models. |
-| 12–20 | **Perception and live products:** Mk1 calls + lifting + debug overlay verified on the real fixture. SerpApi + Flash pick + stand-ins + item cards + Buy + Swap. **Scan on a real device works end-to-end.** |
-| 20–28 | **Editing and the experience:** Move/Remove/PATCH, chat edits + undo, Before/After, walk mode, Day/Evening, business mode (seats, aisles, zones), spot intent. |
-| 28–32 | **Polish:** progress messages, Playwright enrichment run on the catalog and recent products, share sheet, empty and error states. |
-| 32–36 | **Freeze.** Bug fixes only. Rehearse the demo three times. Record a backup video. |
+| **H4** | Contracts frozen. Stub API live. Real fixtures committed. Mk1 and SerpApi spikes answered (risks 1, 3, 6). |
+| **H12** | **Vertical slice on the fixture:** the app shows a RoomModel from the server → sends an intent → real Gemini plan + solver v1 + catalog items → the app renders the placed items. |
+| **H20** | **Real-device end-to-end:** scan → Mk1 → lifted small items in the room view → design with SerpApi products → Buy. |
+| **H28** | All P1 features merged. **Feature freeze.** |
+| **H32** | **Code freeze.** Bug fixes only. Rehearse the demo three times and record a backup video. |
+
+### If someone finishes early
+- **H2 (usually the first with spare time after H26):** FR-25; make the café demo scan as good as possible; spot-check position accuracy with a tape measure.
+- **H3:** FR-24; run `enrich_dims.py` on recent SerpApi products; load-test the design endpoint.
+- **Help for H1 (the most likely bottleneck):** H2 or H3 takes **pure SwiftUI screens with no 3D**: the intent sheet, item cards, "My spaces", the share sheet. These sit in separate files under `ios/Screens/`, so they don't touch H1's 3D code.
 
 **Cut order if behind schedule:** FR-25/24/23/22 → walk mode → Day/Evening → spot intent → chat edits. **Never cut:** scan → room view → intent → placed real products → Buy.
 
@@ -588,7 +672,7 @@ Prices are approximate. Third-party listings were used where official pages were
 ---
 
 ## 14. Open questions
-- How long is the hackathon, how big is the team, and is pre-work allowed? This changes §11.
+- How long is the hackathon, and is pre-work allowed? This changes §11.
 - Is $99 for the Apple Developer Program needed (TestFlight for judges)?
 - Do we have an Amazon Associates tag?
 - Which Gemini models are available on the key or project (exact Pro and Flash model IDs)?
