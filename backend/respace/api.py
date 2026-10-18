@@ -1,6 +1,8 @@
 """Versioned public API. Run with uvicorn respace.api:create_app --factory."""
 import json
 import os
+import asyncio
+from contextlib import asynccontextmanager
 
 from fastapi import BackgroundTasks, FastAPI, Header, Request as HTTPRequest
 from fastapi.exceptions import RequestValidationError
@@ -33,7 +35,7 @@ class LazyPlanningModel:
         finally: await model.client.aio.aclose()
 
 
-def create_app(store=None, storage=None, products=None, model=None, spatial=None, *, edit_model=None):
+def create_app(store=None, storage=None, products=None, model=None, spatial=None, *, edit_model=None, local=False):
     if store is None:
         from .store import PostgresStore
         store=PostgresStore(os.environ['DATABASE_URL'])
@@ -55,22 +57,39 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
     controller=PlanningController(store,operations,products,model or LazyPlanningModel(),spatial)
     from .edits import EditController
     editor=EditController(store,operations,products,edit_model)
-    app=FastAPI(title='ReSpace',version='1')
+    async def step(kind,operation_id,*,bounded=True):
+        if kind in {'generation','find_more'}:await controller.run(operation_id,bounded=bounded)
+        elif kind in {'edit','swap'}:await editor.run(operation_id,bounded=bounded)
+        elif kind=='planning_command':
+            from .review import review_command
+            try:await review_command(store,operations,operation_id,allow_model=not local)
+            except DomainError as error:
+                operations.finish(operation_id,'failed' if error.retryable else 'rejected',failure={'code':error.code,'message':error.message,'retryable':error.retryable})
+        else:raise DomainError('unavailable_capability','This operation cannot be continued by a worker.',422)
+
+    @asynccontextmanager
+    async def local_lifespan(app):
+        tasks=[]
+        for operation in store.list('operations'):
+            room=store.get('rooms',operation['room_id'])
+            if (operation['state'] in {'queued','running'} and not operation.get('pending_question')
+                    and room and room.get('current_operation_id')==operation['operation_id']
+                    and store.get('deletions',operation['room_id']) is None):
+                tasks.append(asyncio.create_task(step(operation['kind'],operation['operation_id'],bounded=False)))
+        try:
+            yield
+        finally:
+            for task in tasks:task.cancel()
+            await asyncio.gather(*tasks,return_exceptions=True)
+
+    app=FastAPI(title='ReSpace',version='1',lifespan=local_lifespan if local else None)
     app.state.store,app.state.operations,app.state.controller=store,operations,controller
-    role=os.environ.get('RESPACE_SERVICE_ROLE','api')
+    app.state.storage=storage
+    role='api' if local else os.environ.get('RESPACE_SERVICE_ROLE','api')
     require(role in {'api','worker'},'invalid_configuration','Configure RESPACE_SERVICE_ROLE as api or worker.',500)
     workers=None
-    if os.environ.get('CLOUD_TASKS_QUEUE') or role=='worker':
+    if not local and (os.environ.get('CLOUD_TASKS_QUEUE') or role=='worker'):
         from .workers import GoogleCloudTasksDispatcher,WorkerService
-        async def step(kind,operation_id):
-            if kind in {'generation','find_more'}:await controller.run(operation_id,bounded=True)
-            elif kind in {'edit','swap'}:await editor.run(operation_id,bounded=True)
-            elif kind=='planning_command':
-                from .review import review_command
-                try:await review_command(store,operations,operation_id)
-                except DomainError as error:
-                    operations.finish(operation_id,'failed' if error.retryable else 'rejected',failure={'code':error.code,'message':error.message,'retryable':error.retryable})
-            else:raise DomainError('unavailable_capability','This operation cannot be continued by a worker.',422)
         workers=WorkerService(store,GoogleCloudTasksDispatcher.from_env(),step)
     app.state.workers=workers
 
@@ -78,7 +97,7 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         if workers is not None:workers.enqueue(operation['operation_id'])
         elif operation['kind']=='planning_command':
             from .review import review_command
-            background.add_task(review_command,store,operations,operation['operation_id'])
+            background.add_task(review_command,store,operations,operation['operation_id'],allow_model=not local)
         else:background.add_task(editor.run if operation['kind'] in {'edit','swap'} else controller.run,operation['operation_id'])
 
     @app.middleware('http')
@@ -207,7 +226,7 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
             if workers is not None:schedule(background,operation)
             else:
                 try:
-                    await review_command(store,operations,operation['operation_id'])
+                    await review_command(store,operations,operation['operation_id'],allow_model=not local)
                 except DomainError as error:
                     operations.finish(operation['operation_id'],'rejected',{'result_kind':error.code,'message':error.message,'message_ids':[]})
         return operation_response(operations.get(device(x_device_id),body.operation_id))

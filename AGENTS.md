@@ -21,4 +21,5 @@ Verified facts, each claim tagged confirmed or inferred with its source URL. Rea
 ### Code
 - [`ReSpace/`](ReSpace/), [`ReSpace.xcodeproj/`](ReSpace.xcodeproj/): the iOS capture, Room review, planning and immutable design client.
 - [`backend/`](backend/): versioned API, durable state, Product verification, perception and deterministic placement; contract and behavior tests are under `backend/tests/`.
+- [`backend/README.md`](backend/README.md): local runtime, opt-in model testing, startup instructions and test-data limits.
 - [`assets/`](assets/): versioned render assets and offline conversion; [`Kenney license`](assets/sources/kenney/LICENSE.txt) records the retained source license.

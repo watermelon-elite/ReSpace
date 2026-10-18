@@ -4,7 +4,7 @@ import re
 from .operations import DomainError, identity, now, require
 
 
-async def review_command(store, operations, operation_id):
+async def review_command(store, operations, operation_id, *, allow_model=True):
     operation,room=operations.guard(operation_id)
     request=operation['request']
     capture=store.get('captures',room['latest_capture_id'])
@@ -42,6 +42,7 @@ async def review_command(store, operations, operation_id):
             explicit_unlock: bool
             reason: str
         try:
+            require(allow_model,'unavailable_capability','Language interpretation is disabled in the local runtime.',503)
             from google import genai
             model=os.environ.get('GEMINI_EXTRACTION_MODEL')
             require(bool(model),'unavailable_capability','Configure GEMINI_EXTRACTION_MODEL.',503)
