@@ -28,7 +28,7 @@ struct CaptureScreen: View {
                     Spacer()
                     VStack(spacing: 10) {
                         Text(controller.guidance).font(.headline)
-                        Text(store.localCaptureEnabled ? (controller.canFinish ? "Revisit gaps, furniture sides, and spaces underneath before finishing." : "Scan for at least 3 minutes. Walk around furniture and capture surfaces from several angles.") : controller.detailText).font(.caption).foregroundStyle(.secondary)
+                        Text(store.localCaptureEnabled ? (controller.canFinish ? "Revisit gaps, furniture sides, and spaces underneath before finishing." : "Scan for at least 1 minute. Walk around furniture and capture surfaces from several angles.") : controller.detailText).font(.caption).foregroundStyle(.secondary)
                         PrimaryAction(title: controller.phase == .finishing ? "Finishing scan…" : "Done", symbol: "checkmark",
                                       disabled: controller.phase == .finishing || !controller.canFinish) { controller.done() }
                     }.padding(18).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24))

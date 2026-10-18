@@ -144,7 +144,7 @@ final class CaptureController: NSObject, RoomCaptureSessionDelegate {
             interrupt(reason: "Tracking changed abruptly. Start again to keep the room aligned."); return
         }
         lastCameraTransform = frame.camera.transform; lastCameraTimestamp = frame.timestamp
-        guidance = store.localCaptureEnabled ? (photoBudgetReached ? "Photo storage limit reached. Finish when the three-minute minimum is complete." : "Move around furniture and scan each surface from several sides.") : "Move slowly to capture every wall."
+        guidance = store.localCaptureEnabled ? (photoBudgetReached ? "Photo storage limit reached. Finish when the one-minute minimum is complete." : "Move around furniture and scan each surface from several sides.") : "Move slowly to capture every wall."
         guard policy.consider(observation(frame, normal: true), encoderAvailable: encoding == nil && !photoBudgetReached) else { return }
         acceptedFrames = policy.acceptedCount
         encoding = Task { [self] in
@@ -206,7 +206,7 @@ final class CaptureController: NSObject, RoomCaptureSessionDelegate {
 
     func done() {
         guard phase == .scanning else { return }
-        guard canFinish else { guidance = "Scan for at least three minutes before finishing."; return }
+        guard canFinish else { guidance = "Scan for at least one minute before finishing."; return }
         if store.localCaptureEnabled {
             guard let frame = arSession.currentFrame, case .normal = frame.camera.trackingState else {
                 guidance = "Wait for tracking to recover before finishing."; return

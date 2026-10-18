@@ -10,7 +10,7 @@ struct SamplingObservation: Sendable {
 /// Pure admission policy. Buffer ownership and encoding capacity belong to Capture.
 struct SamplingPolicy: Sendable {
     static let reconstructionMaximumFrames = 900
-    static let reconstructionMinimumSeconds = 180
+    static let reconstructionMinimumSeconds = 60
     static let reconstructionMaximumBytes = 2 * 1024 * 1024 * 1024
     var maximumFrames = 40
     var minimumInterval = 1.5

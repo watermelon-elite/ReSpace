@@ -103,7 +103,7 @@ final class ReconstructionTests: XCTestCase {
                 forward: SIMD3(0, 0, -1), trackingNormal: true), encoderAvailable: true)
         }
         XCTAssertEqual(policy.acceptedCount, SamplingPolicy.reconstructionMaximumFrames)
-        XCTAssertEqual(SamplingPolicy.reconstructionMinimumSeconds, 180)
+        XCTAssertEqual(SamplingPolicy.reconstructionMinimumSeconds, 60)
         var burst = SamplingPolicy.reconstruction
         XCTAssertTrue(burst.consider(SamplingObservation(time: 0, position: .zero, forward: SIMD3(0,0,-1), trackingNormal: true), encoderAvailable: true))
         XCTAssertFalse(burst.consider(SamplingObservation(time: 0.1, position: SIMD3(0.01,0,0), forward: SIMD3(0,0,-1), trackingNormal: true), encoderAvailable: true))
