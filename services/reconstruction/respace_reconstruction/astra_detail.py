@@ -1,4 +1,4 @@
-"""Coarse furniture inventory -> independent, resumable detailed-object calls."""
+"""Room-contents inventory -> independent, resumable detailed-object calls."""
 import base64
 import io
 import json
@@ -49,17 +49,17 @@ class DetailedObject(SceneData):
 
 INVENTORY = """
 This is the INVENTORY stage of a multi-call reconstruction. Identify all eligible
-furniture/decor and its measured placement. Return a COMPLETE coarse version of
+intentional room contents, appliances and installed features and their placement. Return a COMPLETE coarse version of
 each item using just 1-3 parts per item, <=80 parts total and no explicit meshes.
 Do not spend output tokens detailing these objects: separate calls will add
-shape, material divisions and detail to each item independently. The furniture/
-decor-only scope and clutter exclusions still apply. Return compact JSON.
+shape, material divisions and detail to each item independently. Include the full intentional-contents scope above; exclude random incidental junk. Return compact JSON.
 """
 
-DETAIL = """Generate one detailed, complete furniture/decor item from calibrated
+DETAIL = """Generate one detailed, complete room object or installed feature from calibrated
 photos and local LiDAR evidence. This is one object in a larger reconstruction.
 Preserve its exact id, category, kind, support_id, position and yaw from the
-inventory. Do not generate other items, architecture, appliances or clutter.
+inventory. Do not generate unrelated objects, duplicate the measured shell or add random junk.
+Appliances, electronics and installed features in the inventory are eligible.
 Ignore reflected objects and duplicated reflected details. Do not add objects
 seen only in reflections. Complete unseen backs, bases and undersides plausibly.
 
@@ -220,9 +220,9 @@ def generate_detailed(evidence, images, working, shell, manifest, inputs, progre
     import open3d as o3d
     ledger = Spending(working/"astra-budget-v3.json")
     body = request_body(evidence, images)
-    body.update(instructions=body["instructions"]+INVENTORY, max_output_tokens=16000, service_tier="default")
+    body.update(instructions=body["instructions"]+INVENTORY, max_output_tokens=32000, service_tier="default")
     progress("astra_inventory")
-    response, reused = ledger.request(body, working/"astra-v3"/"inventory", "Furniture inventory")
+    response, reused = ledger.request(body, working/"astra-v3"/"inventory", "Room contents inventory")
     inventory = parse_response(response)
     if sum(len(e.parts) for e in inventory.entities) > 80:
         raise ValueError("Inventory exceeded its coarse-object budget; retained paid response")

@@ -19,6 +19,10 @@ def texture_furnishings(bundle, manifest, inputs, output, object_reports=()):
     reports = []
     bindings = {m.id: m for m in bundle.materials}
     object_details = {r["entity_id"]: r for r in object_reports}
+    object_count = sum(e.kind not in ("wall", "floor", "ceiling") for e in bundle.entities)
+    # Leave room for all OBJ/MTL pairs and scene/report assets as the inventory
+    # grows. Source photos can be shared, but do not rely on sharing for admission.
+    photo_limit = min(6, max(1, (512-2*len(bundle.entities)-8)//max(1, object_count)))
     for entity in bundle.entities:
         if entity.kind in ("wall", "floor", "ceiling") or entity.category == "mirror":
             continue
@@ -58,7 +62,7 @@ def texture_furnishings(bundle, manifest, inputs, output, object_reports=()):
             if any(np.linalg.norm(p[:3, 3]-camera_to_cv_world(f.metadata)[:3, 3]) < .15 for f in chosen):
                 continue
             chosen.append(frame)
-            if len(chosen) == 6:
+            if len(chosen) == photo_limit:
                 break
         baker = PhotoBaker(manifest, inputs, exclusions=exclusions, limit=1)
         baker.frames = chosen

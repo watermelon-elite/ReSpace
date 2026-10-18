@@ -86,12 +86,12 @@ struct ReconstructionJob: Codable, Sendable {
         switch stage {
         case "astra_selecting_evidence": return "Selecting scan photos…"
         case "astra_generating_scene": return "Astra is generating your room…"
-        case "astra_inventory": return "Identifying furniture and decor…"
+        case "astra_inventory": return "Identifying room contents…"
         case "astra_baking_photos": return "Applying captured photo textures…"
         case "astra_validating_geometry": return "Building and checking the AI model…"
         default:
             if stage.hasPrefix("astra_detail:") {
-                return "Adding furniture detail · " + stage.replacingOccurrences(of:"astra_detail:",with:"")
+                return "Adding object detail · " + stage.replacingOccurrences(of:"astra_detail:",with:"")
             }
             return stage.replacingOccurrences(of: "_", with: " ")
         }

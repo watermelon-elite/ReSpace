@@ -234,3 +234,44 @@ def test_bad_measured_shell_fails_before_any_paid_generation(tmp_path, monkeypat
 def test_incomplete_response_reports_output_budget_reason():
     with pytest.raises(ValueError, match="max_output_tokens"):
         astra_room.parse_response({"status": "incomplete", "incomplete_details": {"reason": "max_output_tokens"}})
+
+
+@pytest.mark.parametrize("category,label,kind", [
+    ("appliance", "Microwave", "furniture"),
+    ("appliance", "Built-in microwave", "fixed"),
+    ("electronics", "Desktop computer", "furniture"),
+    ("countertop", "Installed countertop", "fixed"),
+    ("sink", "Kitchen sink", "fixed"),
+    ("faucet", "Installed faucet", "fixed"),
+    ("plumbing_fixture", "Radiator", "fixed"),
+    ("lighting_fixture", "Ceiling light", "fixed"),
+    ("architectural_detail", "Vent grille", "fixed"),
+    ("door", "Door panel", "fixed"),
+    ("window", "Window frame", "fixed"),
+    ("functional_equipment", "Exercise equipment", "furniture"),
+    ("organized_contents", "Organized books", "furniture"),
+    ("other_intentional_item", "Intentional room contents", "furniture"),
+])
+def test_intentional_contents_and_installed_features_are_eligible(tmp_path, category, label, kind):
+    manifest, _ = room_capture(tmp_path)
+    shell = astra_room.measured_structure({"roomplan": json.loads((tmp_path/"inputs"/manifest.room_export.filename).read_text())})
+    data = room_plan()
+    data["entities"][0].update(category=category, label=label, kind=kind)
+    contents = astra_room.parse_response(response(data))
+    composed = astra_room.assemble_room(shell, contents)
+    assert composed.entities[-1].category == category
+    assert composed.entities[-1].kind == kind
+
+
+def test_ceiling_fixtures_do_not_make_entire_floor_unwalkable(tmp_path, monkeypatch):
+    room_capture(tmp_path)
+    data = room_plan()
+    entity = data["entities"][0]
+    entity.update(id="ceiling-light", label="Ceiling light", kind="fixed", category="lighting_fixture")
+    entity["parts"] = [box([0., 2.3, 0.], [3.5, .1, 3.5])]
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setattr(astra, "call_astra", lambda *args: response(data))
+    assert astra_room.process_astra_room(tmp_path, 1)["status"] == "succeeded"
+    bundle = SceneBundle.model_validate_json((tmp_path/"results/1/scene.json").read_text())
+    fixture = next(e for e in bundle.entities if e.id == "ceiling-light")
+    assert fixture.kind == "fixed" and not fixture.move_ready and not fixture.collidable

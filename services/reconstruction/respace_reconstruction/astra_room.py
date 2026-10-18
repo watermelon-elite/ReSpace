@@ -1,4 +1,4 @@
-"""Astra authors furniture/decor; RoomPlan supplies the local room shell.
+"""Astra authors intentional contents; RoomPlan supplies the local room shell.
 
 Only api.openai.com is contacted. No hosted tools, external reconstruction
 services, executable model output, raw-scan overlays or catalog assets.
@@ -24,7 +24,7 @@ from .scene import SceneBundle, SceneEntity, SceneMaterial, Navigation
 from .store import atomic_json, digest
 from .walkthrough import merge_scene
 
-PROMPT_VERSION = 3
+PROMPT_VERSION = 4
 MAX_TRIANGLES = 200000
 
 
@@ -77,7 +77,10 @@ class Furnishing(Entity):
     kind: Literal["furniture", "wall_decor", "fixed"]
     category: Literal["seating", "table", "desk", "bed", "storage_furniture", "cabinet",
                       "shelving", "rug", "lamp", "plant", "planter", "wall_art", "mirror",
-                      "curtain", "sculpture", "decorative_vase", "decorative_bowl", "clock"]
+                      "curtain", "sculpture", "decorative_vase", "decorative_bowl", "clock",
+                      "appliance", "electronics", "countertop", "sink", "faucet", "plumbing_fixture",
+                      "lighting_fixture", "door", "window", "architectural_detail",
+                      "functional_equipment", "organized_contents", "other_intentional_item"]
     parts: list[FurnishingPart] = Field(min_length=1, max_length=12)
 
 
@@ -88,27 +91,39 @@ class FurnishingPlan(SceneData):
     assumptions: list[str] = Field(max_length=24)
     ignored_evidence: list[str] = Field(max_length=24)
     materials: list[Material] = Field(max_length=24)
-    entities: list[Furnishing] = Field(max_length=32)
+    entities: list[Furnishing] = Field(max_length=64)
 
 
-INSTRUCTIONS = """Generate ONLY the room's furniture and intentional decorative objects as
-complete metric 3D objects. The room shell is supplied by local measured RoomPlan
-geometry. Do not generate or describe walls, floors, ceilings, windows, doors,
-structural openings, architectural trim, ceiling grids, vents, outlets, plumbing,
-sinks, countertops, built-in lighting, appliances or their parts.
+INSTRUCTIONS = """Generate all meaningful, intentional room contents and installed features as
+complete metric 3D objects. The wall/floor/ceiling shell and structural openings
+are supplied locally from measured RoomPlan geometry: do not duplicate those
+surfaces, seal openings with invented walls, or invent additional rooms.
 
-INCLUDE furniture such as chairs, sofas, beds, tables, desks, cabinets, wardrobes,
-shelving; intentional decor such as rugs, lamps, artwork, mirrors, curtains,
-plants/planters, sculptures, decorative vases/bowls and clocks. Built-in cabinets
-are furniture but must use kind=fixed; they are not movable. Use wall_decor only
-for items mounted on a supplied wall; use furniture for other movable items.
-EXCLUDE incidental clutter and utility items even when clearly visible: brooms,
-mops, cleaning tools, dish soap, detergent, toiletries, bottles/packaging,
-notebooks, loose papers, open gum packets, wrappers, food, dishes, cookware,
-cutlery, cables, chargers, personal belongings and everyday countertop/desk items.
-Do not model these as decor. Small size alone does not make an intentional vase,
-artwork or plant clutter. If uncertain whether an item is intentional decor, omit
-it. Do not invent eligible objects absent from the actual room.
+INCLUDE furniture and decor; appliances such as microwaves, refrigerators, ovens,
+dishwashers, kettles, toasters and coffee machines; electronics such as TVs,
+monitors, computers and speakers; cabinetry, countertops, sinks, faucets and
+other plumbing fixtures; built-in lighting, vents, grilles, outlets, trim, door
+panels, window frames/glazing/shades; exercise/music/office equipment, functional
+room equipment and other intentional contents. Include meaningful organized
+arrangements (e.g. books on shelving or an equipped workspace), not loose clutter.
+Small size alone is not grounds to exclude a real fixture, decor item or appliance.
+
+EXCLUDE random incidental junk: brooms/mops and loose cleaning tools, dish soap
+and detergent bottles, disposable packaging, open gum packets, wrappers, food
+scraps, loose papers/notebooks, scattered dishes/cutlery, stray cables/chargers,
+and personal clutter left on surfaces. A permanently installed or deliberately
+arranged functional item is not junk merely because it is utilitarian. If
+ambiguous, use room context to distinguish intentional contents from transient
+mess. The explicit junk examples remain excluded even if neatly placed; an
+installed soap dispenser is a fixture, but a loose dish-soap bottle is clutter.
+Do not invent missing objects or objects visible only in reflections.
+
+Use kind=fixed for installed, built-in, plumbed or anchored objects; these must
+not move. Use wall_decor for removable items mounted on a supplied wall, and
+kind=furniture for freestanding movable contents (this is a mobility class;
+category identifies appliances, electronics, etc.). Model thin installed panels
+as thin closed solids. Group repeated small parts into their actual installed
+assembly, not separate screws/slats or assemblies spanning unrelated locations.
 
 Use selected photos, all-frame LiDAR voxels, mesh and RoomPlan for object identity,
 scale and placement. Ignore mirror/window reflections, reflected duplicates,
@@ -116,15 +131,15 @@ phantom geometry, people and depth spikes. Keep original ARKit meters/Y-up.
 Camera matrices are column-major camera-to-world; cameras look local -Z; sensor
 pixels are u right/v down. Match resized photos to original image dimensions.
 The supplied measured_structure contains immutable boundaries and valid wall IDs.
-Fit furniture within them; never generate replacement room geometry.
+Fit generated contents within them; preserve the measured room shell and openings.
 
 Return compact structured geometry, not code, URLs, raw mesh references or
 instructions for another model. Complete hidden backs/bases/legs plausibly using
 the visible object, without reconstructing each screw, vent slat, grout seam,
-handle, button, label or other tiny feature. ONE entity per real furniture/decor
-item, one dominant material per entity, shared materials when appropriate. Do not
+handle, button, label or other tiny feature. ONE entity per real object or coherent installed
+assembly, one dominant material per entity, shared materials when appropriate. Do not
 split an item into separate entities for handles, legs, cushions or finishes.
-Use 1-8 shaped parts normally, at most 12 per item. Target <=24 entities and <=160
+Use 1-8 shaped parts normally, at most 12 per item. At most 64 entities and <=160
 parts TOTAL; prioritize recognizable silhouette, placement and complete surfaces.
 Use at most 256 explicit mesh vertices and 384 explicit triangles across the
 entire response; use shaped primitives for the rest. Keep JSON compact.
@@ -137,7 +152,9 @@ ellipsoid and cylinder use full XYZ size, empty vertices/triangles; cylinders
 have Y axes. mesh uses explicit local vertices/zero-based triangles with unit
 size=(1,1,1); furniture mesh parts must be closed solids. Prefer primitives.
 For wall_decor, support_id must match a supplied measured wall ID. Otherwise use
-null. Ground standing furniture on the measured floor. evidence_frame_ids must
+null. Put floor-standing items on the floor; retain observed heights for items
+on countertops/shelves and for wall/ceiling fixtures. Do not lower a microwave
+or other supported appliance to the floor. evidence_frame_ids must
 reference supplied frames; inferred portions must not invent frame IDs. Record
 major completion assumptions and ignored reflections briefly, not every excluded
 clutter item. Materials are observed approximate RGB colors/roughness, not photo
@@ -164,7 +181,7 @@ def request_body(evidence, images):
 def parse_response(response):
     if response.get("status") != "completed":
         reason = (response.get("incomplete_details") or {}).get("reason", response.get("status", "unknown"))
-        raise ValueError(f"Astra furniture generation did not finish ({reason}); response retained, no partial model published")
+        raise ValueError(f"Astra room-contents inventory did not finish ({reason}); response retained, no partial model published")
     texts = []
     for item in response.get("output", []):
         if item.get("type") != "message":
@@ -329,7 +346,9 @@ def compile_room(plan, frame_ids, output, o3d):
             material_ids=list(names.values()), support_id=entity.support_id,
             move_ready=entity.kind in ("furniture", "wall_decor"),
             finish_ready=entity.kind in ("wall", "floor", "ceiling"),
-            collidable=entity.kind not in ("floor", "ceiling", "wall_decor"),
+            collidable=(entity.kind not in ("floor", "ceiling", "wall_decor")
+                        and world[:, 1].min() < plan.floor_height+1.8
+                        and world[:, 1].max() > plan.floor_height+.1),
             observed_fraction=entity.observed_fraction))
         meshes[entity.id] = (world, faces)
     if not any(e.kind == "wall" for e in entities):
@@ -482,8 +501,6 @@ def assemble_room(shell, furnishings, detailed=False):
     for entity in furnishings.entities:
         if entity.kind == "wall_decor" and entity.support_id not in wall_ids:
             raise ValueError("Wall decor must reference a measured wall")
-        if entity.kind == "fixed" and entity.category not in ("cabinet", "shelving", "storage_furniture"):
-            raise ValueError("Only built-in storage furniture may be fixed")
     return shell.model_copy(update={"summary": furnishings.summary, "assumptions": shell.assumptions+furnishings.assumptions,
         "ignored_evidence": furnishings.ignored_evidence, "materials": shell.materials+furnishings.materials,
         "entities": shell.entities+furnishings.entities})
@@ -549,7 +566,7 @@ def process_astra_room(folder: Path, revision: int, detailed=True):
                     "lidar_frame_count": len(manifest.frames), "valid_depth_pixel_count": evidence["valid_depth_pixel_count"],
                     "selected_frame_ids": [p["frame_id"] for p in evidence["selected_photos"]],
                     "assumptions": plan.assumptions, "ignored_evidence": plan.ignored_evidence,
-                    "geometry": "RoomPlan shell built locally; only furniture and intentional decor authored by Astra; incidental clutter excluded"})
+                    "geometry": "RoomPlan shell built locally; intentional room contents, appliances and fixtures authored by Astra; random incidental junk excluded"})
         report = {"ready": True, "capture_id": manifest.capture_id, "pipeline": "astra", "generation_model": astra.MODEL,
                   "triangle_count": count, "entity_count": len(entities), "response_reused": cached,
                   "elapsed_seconds": round(time.monotonic()-started, 3),
