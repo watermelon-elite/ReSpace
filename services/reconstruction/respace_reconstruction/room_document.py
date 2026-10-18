@@ -17,6 +17,8 @@ from .pipeline import surface_transform, vector3
 from .scene import SceneContract, SceneMaterial, Identifier, Vector3, Matrix4, rigid
 from .store import atomic_json
 from .instances import stable_id
+from .wall_attachment import attached_wall
+from .usd_names import node_names
 
 Point2 = Annotated[list[float], Field(min_length=2, max_length=2)]
 Ring = Annotated[list[Point2], Field(min_length=4, max_length=4097)]
@@ -321,6 +323,7 @@ def export_room(bundle, plan, roomplan, meshes, output):
     floor_ring = ring(np.asarray(polygon.exterior.coords)+shift[[0, 2]])
     floor_polygon = Polygon(floor_ring)
     by_id = {e.id: e for e in bundle.entities}
+    names = node_names(by_id)
     floor = next(e for e in bundle.entities if e.kind == "floor")
     ceiling = next(e for e in bundle.entities if e.kind == "ceiling")
     height = plan.ceiling_height-plan.floor_height
@@ -340,7 +343,7 @@ def export_room(bundle, plan, roomplan, meshes, output):
         normal = np.array([-(b-a)[1], (b-a)[0]])/np.linalg.norm(b-a)
         if not floor_polygon.buffer(.001).covers(Point((a+b)/2+normal*.05)):
             a, b, normal = b, a, -normal
-        walls.append(Wall(id=entity.id, node_name=entity.id, asset=entity.asset, **placement(entity), a=a.tolist(), b=b.tolist(),
+        walls.append(Wall(id=entity.id, node_name=names[entity.id], asset=entity.asset, **placement(entity), a=a.tolist(), b=b.tolist(),
             length=float(np.linalg.norm(b-a)), height=height, inward_normal=normal.tolist()))
     walls = order_walls(walls)
     world = {key: (v+shift, f) for key, (v, f) in meshes.items()}
@@ -352,11 +355,16 @@ def export_room(bundle, plan, roomplan, meshes, output):
     def world_parts(identity):
         if identity not in part_cache:
             import open3d as o3d
-            from .astra_room import part_mesh, transform
+            from .astra_room import part_mesh
             original = original_entities[identity]
-            pose = transform(original.position, original.yaw)
-            part_cache[identity] = [np.asarray(part_mesh(part, o3d).vertices) @ pose[:3, :3].T+pose[:3, 3]+shift
-                                    for part in original.parts]
+            parts = [np.asarray(part_mesh(part, o3d).vertices) for part in original.parts]
+            points = np.concatenate(parts)
+            lo, hi = points.min(axis=0), points.max(axis=0)
+            pivot = np.array([(lo[0]+hi[0])/2, lo[1], (lo[2]+hi[2])/2])
+            # The compiler may align thin fixtures to their measured support.
+            # Reuse that compiled pose for every part's exact protrusion envelope.
+            pose = np.array(by_id[identity].local_to_scan_transform).reshape(4, 4, order="F")
+            part_cache[identity] = [(v-pivot) @ pose[:3, :3].T+pose[:3, 3]+shift for v in parts]
         return part_cache[identity]
     exported = []
     for entity in bundle.entities:
@@ -366,22 +374,15 @@ def export_room(bundle, plan, roomplan, meshes, output):
         position = m[:3, 3]+shift
         extent = np.array(entity.bounds_max)-entity.bounds_min
         vertices, _ = world[entity.id]
-        nearby_walls = []
-        for wall in walls:
-            tangent = (np.array(wall.b)-wall.a)/wall.length
-            along = (vertices[:, [0, 2]]-wall.a) @ tangent
-            signed = (vertices[:, [0, 2]]-wall.a) @ wall.inward_normal
-            gap = max(0., float(signed.min()), -float(signed.max()))
-            if gap < .2 and along.max() > 0 and along.min() < wall.length:
-                nearby_walls.append((gap, wall.id))
-        wall_id = entity.support_id if entity.support_id in {w.id for w in walls} else min(nearby_walls)[1] if nearby_walls else None
+        wall = attached_wall(vertices, walls)
+        wall_id = wall.id if wall is not None else entity.support_id if entity.support_id in {w.id for w in walls} else None
         support_id = entity.support_id if entity.support_id in by_id and by_id[entity.support_id].kind not in ("wall", "floor", "ceiling") else None
         inset = original_entities[entity.id].category == "sink"
         mount = ("ceiling" if abs(vertices[:, 1].max()-height) <= .02 and position[1] > .3 else
                  "inset" if inset else "tabletop" if support_id else
                  "wall" if entity.kind == "wall_decor" or entity.kind == "fixed" and position[1] > .2 and wall_id else "floor")
         value = category(entity.category, entity.label)
-        exported.append(PlacementEntity(id=entity.id, label=entity.label, node_name=entity.id, asset=entity.asset,
+        exported.append(PlacementEntity(id=entity.id, label=entity.label, node_name=names[entity.id], asset=entity.asset,
             category=value, collision_class="none" if value == "rug" else "tabletop" if inset else mount,
             fixed_in_place=entity.kind == "fixed", center=position[[0, 2]].tolist(), base_y=float(position[1]), yaw=float(math.atan2(m[0, 2], m[2, 2])),
             size=extent[[0, 2, 1]].tolist(), mount=mount, wall_id=wall_id, support_id=support_id, source="refined", material_ids=entity.material_ids))
@@ -521,11 +522,16 @@ def export_room(bundle, plan, roomplan, meshes, output):
                 for index, p in enumerate(list(clear.geoms) if hasattr(clear, "geoms") else [clear]):
                     if p.geom_type == "Polygon" and p.area > .001:
                         zones.append(Zone(id=f"keep-clear-{identifier}-{index}", opening_id=identifier, polygon=ring(p.exterior.coords)))
+    structural_names = {floor.id: names[floor.id], ceiling.id: names[ceiling.id]}
+    for entity in exported+groups:
+        for surface in entity.surfaces:
+            surface.clearance_limited_by = structural_names.get(surface.clearance_limited_by, surface.clearance_limited_by)
+    materials = [m.model_copy(update={"owner_id": structural_names.get(m.owner_id, m.owner_id)}) for m in bundle.materials]
     document = RoomDocument(room_id=bundle.scene_id, capture_id=bundle.capture_id, node_pivot="bottom_center",
         room_from_world=room_from_world.flatten(order="F").tolist(), height=height,
-        floor=Floor(node_name=floor.id, asset=floor.asset, **placement(floor), polygon=floor_ring, area=floor_polygon.area),
-        ceiling=Ceiling(node_name=ceiling.id, asset=ceiling.asset, **placement(ceiling), height=height),
-        walls=walls, openings=openings, entities=exported+groups, zones=zones, materials=bundle.materials)
+        floor=Floor(node_name=names[floor.id], asset=floor.asset, **placement(floor), polygon=floor_ring, area=floor_polygon.area),
+        ceiling=Ceiling(node_name=names[ceiling.id], asset=ceiling.asset, **placement(ceiling), height=height),
+        walls=walls, openings=openings, entities=exported+groups, zones=zones, materials=materials)
     validate_assets(document, bundle, output)
     atomic_json(output/"room.json", document.model_dump(mode="json"))
     atomic_json(output/"room.schema.json", RoomDocument.model_json_schema())
@@ -534,7 +540,8 @@ def export_room(bundle, plan, roomplan, meshes, output):
 
 def validate_assets(document, bundle, directory):
     transform = np.array(document.room_from_world).reshape(4, 4, order="F")
-    native = {e.id: e for e in bundle.entities}
+    names = node_names(e.id for e in bundle.entities)
+    native = {names[e.id]: e for e in bundle.entities}
     world = {}
     for entity in [*document.entities, *document.walls, document.floor, document.ceiling]:
         if isinstance(entity, PlacementEntity) and entity.member_ids:

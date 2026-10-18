@@ -304,6 +304,19 @@ def compile_room(plan, frame_ids, output, o3d):
     ids = {e.id for e in plan.entities}
     if len(materials) != len(plan.materials) or len(ids) != len(plan.entities):
         raise ValueError("Generated identities must be unique")
+    from .wall_attachment import attached_wall, wall_frame
+    wall_frames = []
+    for wall in plan.entities:
+        if wall.kind != "wall":
+            continue
+        pose = transform(wall.position, wall.yaw)
+        points = np.concatenate([np.asarray(part_mesh(p, o3d).vertices) for p in wall.parts])
+        lo, hi = points.min(axis=0), points.max(axis=0)
+        center = pose[:3, :3] @ ((lo+hi)/2)+pose[:3, 3]
+        tangent = pose[[0, 2], 0]
+        wall_frames.append(wall_frame(wall.id, center[[0, 2]]-tangent*(hi[0]-lo[0])/2,
+                                      center[[0, 2]]+tangent*(hi[0]-lo[0])/2, floor))
+    wall_ids = {w.id for w in wall_frames}
     entities, bindings, meshes = [], [], {}
     total = 0
     coverage = {"floor": [], "ceiling": []}
@@ -337,6 +350,32 @@ def compile_room(plan, frame_ids, output, o3d):
         total += len(faces)
         m = transform(entity.position, entity.yaw)
         world = vertices @ m[:3, :3].T + m[:3, 3]
+        support_id = entity.support_id
+        if entity.kind in ("fixed", "wall_decor") and support_id not in ids-wall_ids:
+            wall = attached_wall(world, wall_frames)
+            if wall is not None:
+                support_id = wall.id
+                extent = vertices.max(axis=0)-vertices.min(axis=0)
+                mounted = (entity.kind == "wall_decor" or
+                           world[:, 1].min()-plan.floor_height > .2
+                           and abs(world[:, 1].max()-plan.ceiling_height) > .02)
+                thin = min(extent[0], extent[2]) < .2*max(extent[0], extent[2])
+                # Wall-mounted objects face inward. Floor-standing thin trim
+                # only needs its long axis parallel to the wall; correct small
+                # generated yaw errors about the mesh center before measuring.
+                if mounted or thin:
+                    yaw = float(np.arctan2(wall.inward_normal[0], wall.inward_normal[1]))
+                    if not mounted and extent[2] > extent[0]:
+                        yaw += np.pi/2
+                    delta = float(np.arctan2(np.sin(yaw-entity.yaw), np.cos(yaw-entity.yaw)))
+                    if not mounted and abs(delta) > np.pi/2:
+                        delta = float(np.arctan2(np.sin(delta+np.pi), np.cos(delta+np.pi)))
+                    if mounted or abs(delta) <= np.deg2rad(10):
+                        center = (vertices.min(axis=0)+vertices.max(axis=0))/2
+                        anchor = m[:3, :3] @ center+m[:3, 3]
+                        m = transform(entity.position, entity.yaw+delta)
+                        m[:3, 3] = anchor-m[:3, :3] @ center
+                        world = vertices @ m[:3, :3].T+m[:3, 3]
         # Local assets use the same bottom-center pivot as inserted Products.
         # Rebase the node and vertices together, preserving every world vertex.
         lo, hi = vertices.min(axis=0), vertices.max(axis=0)
@@ -385,7 +424,7 @@ def compile_room(plan, frame_ids, output, o3d):
         entities.append(SceneEntity(id=entity.id, label=entity.label, category=getattr(entity, "category", entity.kind), kind=entity.kind,
             asset=asset, local_to_scan_transform=m.flatten(order="F").tolist(),
             bounds_min=vertices.min(axis=0).tolist(), bounds_max=vertices.max(axis=0).tolist(),
-            material_ids=list(names.values()), support_id=entity.support_id,
+            material_ids=list(names.values()), support_id=support_id,
             move_ready=entity.kind in ("furniture", "wall_decor"),
             finish_ready=entity.kind in ("wall", "floor", "ceiling"),
             collidable=(entity.kind not in ("floor", "ceiling", "wall_decor")
@@ -599,7 +638,7 @@ def process_astra_room(folder: Path, revision: int, detailed=True, generation_id
                              reconstruction_revision=revision, entities=entities, materials=bindings,
                              navigation=nav, ready=True)
         from .room_document import export_room
-        export_room(bundle, plan, evidence["roomplan"], meshes, output)
+        document = export_room(bundle, plan, evidence["roomplan"], meshes, output)
         atomic_json(output/"astra-room.json", plan.model_dump(serialize_as_any=True))
         atomic_json(output/"astra-furnishings.json", furnishings.model_dump(serialize_as_any=True))
         atomic_json(output/"provenance.json", {"model": astra.MODEL, "prompt_version": PROMPT_VERSION,
@@ -626,7 +665,7 @@ def process_astra_room(folder: Path, revision: int, detailed=True, generation_id
         merge_scene(bundle, output)
         from .usdz import export_usdz
         progress("exporting_usdz")
-        usdz_filename = export_usdz(output/"model.obj")
+        usdz_filename = export_usdz(output/"model.obj", bundle, document)
         atomic_json(output/"scene.json", bundle.model_dump())
         names = {p.name for p in output.iterdir() if p.is_file()}
         bundle.validate_files(output, names)

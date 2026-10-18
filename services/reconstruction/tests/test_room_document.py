@@ -351,3 +351,95 @@ def test_overlapping_overheads_use_the_lowest_limiter(tmp_path):
     assert areas["light"] == pytest.approx(.6*.56)
     assert areas[document.ceiling.node_name] == pytest.approx(.6*.56)
     assert all(s.clearance_above == pytest.approx(.31) for s in surfaces if s.clearance_limited_by == "lower-light")
+
+
+@pytest.mark.parametrize("yaw", [0., math.pi])
+def test_wall_item_uses_nearest_wall_instead_of_stale_support_at_a_corner(tmp_path, yaw):
+    board = copy.deepcopy(room_plan()["entities"][0])
+    board.update(id="whiteboard-1", label="Whiteboard", category="functional_equipment", kind="wall_decor",
+        support_id=stable_id("wall", "wall-1"),
+        position={"x": 1.35, "y": 1.2, "z": -1.9}, yaw=yaw,
+        parts=[box([0., 0., 0.], [1.3, 1., .06])])
+    _, bundle, document = build_room(tmp_path, [board])
+    exported = next(e for e in document.entities if e.id == board["id"])
+    assert exported.wall_id == stable_id("wall", "wall-0")
+    native = next(e for e in bundle.entities if e.id == board["id"])
+    assert native.support_id == exported.wall_id
+    assert exported.yaw == pytest.approx(0.)
+    protrusions = [p for w in document.walls for p in w.protrusions if p.entity_id == board["id"]]
+    assert protrusions and max(p.depth for p in protrusions) == pytest.approx(.13)
+
+
+def test_thin_wall_trim_orientation_does_not_inflate_protrusion_depth(tmp_path):
+    trim = copy.deepcopy(room_plan()["entities"][0])
+    trim.update(id="baseboard-front", label="Front baseboard", category="architectural_detail", kind="fixed",
+        position={"x": 0., "y": .05, "z": -1.95}, yaw=-.07,
+        parts=[box([0., 0., 0.], [3.4, .1, .048])])
+    output, _, document = build_room(tmp_path, [trim])
+    exported = next(e for e in document.entities if e.id == trim["id"])
+    assert exported.yaw == pytest.approx(0.)
+    wall = next(w for w in document.walls if w.id == exported.wall_id)
+    assert max(p.depth for p in wall.protrusions if p.entity_id == trim["id"]) == pytest.approx(.074)
+    assert load_room(output).model_dump() == document.model_dump()
+
+
+@pytest.mark.parametrize("identifier,label,expected", [
+    ("bar_stool", "Bar stool", "stool"), ("lamp", "Lamp", "table_lamp"),
+    ("lighting_fixture", "Table lamp", "table_lamp"), ("pendant_light", "Pendant light", "ceiling_light"),
+    ("display_case", "Display case", "other"), ("espresso_machine", "Espresso machine", "other"),
+    ("menu_board", "Menu board", "other"), ("register", "Register", "other"), ("trash_bin", "Trash bin", "other"),
+])
+def test_steer_three_categories_match_backend_registry(identifier, label, expected):
+    assert category(identifier, label) == expected
+    assert not {"bar_stool", "lamp", "pendant_light", "display_case", "espresso_machine", "menu_board", "register", "trash_bin"} & CATEGORIES
+
+
+def test_packaged_room_nodes_match_json_and_bindings_are_arkit_valid(tmp_path):
+    from pxr import Usd, UsdGeom, UsdShade, UsdUtils
+    from respace_reconstruction.usdz import export_usdz
+    from respace_reconstruction.walkthrough import merge_scene
+    output, bundle, document = build_room(tmp_path)
+    merge_scene(bundle, output)
+    stage = Usd.Stage.Open(str(output/export_usdz(output/"model.obj", bundle, document)))
+    cache = UsdGeom.XformCache()
+    physical = [document.floor, document.ceiling, *document.walls, *document.entities]
+    assert len({e.node_name for e in physical}) == len(physical)
+    for entity in physical:
+        prims = [p for p in stage.Traverse() if p.GetName() == entity.node_name]
+        assert len(prims) == 1, entity.node_name
+        prim = prims[0]
+        matrix = np.array(cache.GetLocalToWorldTransform(prim)).T
+        np.testing.assert_allclose(matrix[:3, 3], [entity.center[0], entity.base_y, entity.center[1]], atol=.01)
+        assert math.atan2(matrix[0, 2], matrix[2, 2]) == pytest.approx(entity.yaw, abs=math.pi/180)
+        vertices = np.array(UsdGeom.Mesh(prim).GetPointsAttr().Get())
+        np.testing.assert_allclose([(vertices[:, 0].min()+vertices[:, 0].max())/2,
+                                    vertices[:, 1].min(), (vertices[:, 2].min()+vertices[:, 2].max())/2], 0, atol=.01)
+    for prim in stage.Traverse():
+        if prim.HasRelationship("material:binding"):
+            assert prim.HasAPI(UsdShade.MaterialBindingAPI)
+            material, _ = UsdShade.MaterialBindingAPI(prim).ComputeBoundMaterial()
+            assert material
+    with pytest.warns(DeprecationWarning):
+        checker = UsdUtils.ComplianceChecker(arkit=True)
+    checker.CheckCompliance(str(output/"model.usdz"))
+    assert not checker.GetErrors()
+    assert not checker.GetFailedChecks()
+
+
+def test_colliding_usd_identifiers_keep_distinct_nodes_and_semantic_ids(tmp_path):
+    from pxr import Usd, UsdGeom
+    from respace_reconstruction.usdz import export_usdz
+    extras = []
+    for identifier in ("chair-6", "chair_6", "Materials", "6chair"):
+        item = copy.deepcopy(room_plan()["entities"][0])
+        item.update(id=identifier, label="Chair", parts=[box([1., .2, 1.], [.3, .4, .3])])
+        extras.append(item)
+    output, bundle, document = build_room(tmp_path, extras)
+    stage = Usd.Stage.Open(str(output/export_usdz(output/"model.obj", bundle, document)))
+    records = [e for e in document.entities if e.id in {item["id"] for item in extras}]
+    assert len({e.node_name for e in records}) == len(extras)
+    for entity in records:
+        assert entity.id in {item["id"] for item in extras}
+        assert len(entity.node_name) <= 128
+        assert stage.GetPrimAtPath("/Room/"+entity.node_name).IsA(UsdGeom.Mesh)
+    assert load_room(output).model_dump() == document.model_dump()

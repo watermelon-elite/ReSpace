@@ -93,7 +93,7 @@ def test_full_generation_is_default_and_assets_are_atomic_reusable_and_navigable
     from respace_reconstruction.obj import read_obj
     assert result["usdz_filename"] == "model.usdz"
     packaged = Usd.Stage.Open(str(output/result["usdz_filename"]))
-    assert len(UsdGeom.Mesh(packaged.GetPrimAtPath("/Room/Scan")).GetFaceVertexCountsAttr().Get()) == len(read_obj(output/"model.obj").faces)
+    assert sum(len(UsdGeom.Mesh(p).GetFaceVertexCountsAttr().Get()) for p in packaged.Traverse() if p.IsA(UsdGeom.Mesh)) == len(read_obj(output/"model.obj").faces)
     bundle = SceneBundle.model_validate_json((output/"scene.json").read_text())
     bundle.validate_files(output, {a["filename"] for a in result["assets"]})
     assert bundle.ready and result["generation_model"] == "gpt-6-sol"

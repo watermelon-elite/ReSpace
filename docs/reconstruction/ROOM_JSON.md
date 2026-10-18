@@ -61,8 +61,14 @@ position, width or keep-clear region is added.
 Door/open doorway keep-clear regions extend 1.2 m inward, with 0.45 m to either
 side, clipped to the floor. Attached fixed entities have per-part wall protrusion
 extents and height intervals: a sill's depth applies at sill height, while a
-baseboard's depth applies at floor level. Wall association uses the actual mesh
-distance and segment overlap rather than an axis-aligned size estimate. The
+baseboard's depth applies at floor level. Wall association requires actual mesh
+proximity and segment overlap, then ranks by center-to-plane distance so an edge touching a corner cannot steal the
+attachment from the correct wall. A conflicting generated wall support is corrected
+in the native scene too. Wall-mounted entities face the measured inward normal.
+Thin floor-standing trim with yaw errors up to 10° is aligned to the wall direction. Both rotate about
+their mesh center before export.
+Protrusions use the resulting compiled part geometry; their depth is never
+artificially reduced while leaving the mesh angled into the room. The
 placement rule is 5 cm inward from the deepest overlapping protrusion's front at
 the candidate's height (and along-wall interval), or 5 cm from the bare wall when
 none overlap. The exported `depth`, `bottom`, `top`, `from_a` and `to_a` provide
@@ -102,14 +108,19 @@ floor-standing entity needs no additional run.
 ## Categories and permanence
 
 `respace_reconstruction/categories.py` is a conservative compatibility allowlist
-of IDs named in this repository's SPEC and the steering note. The external backend
+of IDs confirmed by the steering notes, including the backend registry corrections
+in `room-json-steer-3.md`. The external backend
 registry is not present here. Recognized mappings include refrigerator →
 `refrigerator`, outlet → `outlet`, switch → `light_switch`, countertop → `counter`,
 cabinets → `cabinet`, shades → `curtain`, ceiling light → `ceiling_light`, and
 television → `tv`. Unconfirmed identities such as kettles, faucets, grills,
 thermostats, sensors and microwaves use `category: other`, retain their descriptive
 `label`, and have a required `collision_class`: `floor`, `wall`, `tabletop`,
-`ceiling` or `none`. New appliance/electronics category IDs are not invented.
+`ceiling` or `none`. New appliance/electronics category IDs are not invented. `bar_stool` maps to
+`stool`, `lamp` and table lamps map to `table_lamp`, and `pendant_light` maps to
+`ceiling_light`. `display_case`, `espresso_machine`, `menu_board`, `register` and
+`trash_bin` fall back to `other` with their mount-specific collision class.
+These unsupported IDs are also absent from the exported schema enum.
 Mounts use `floor`, `wall`, `tabletop`, `inset` or `ceiling`. Collision classes
 normally match the mount; inset fixtures use `tabletop`, logical support groups
 and rugs use `none`. Tabletop and inset items must reference another entity
@@ -149,6 +160,37 @@ The proposal references sections and files from another checkout: this repositor
 current `SPEC.md` calls its room contract §6 and does not contain the referenced
 backend normalization implementation. This exporter therefore records its origin
 explicitly and does not assume that a separate backend chose the same origin.
-Apply `room_from_world` when exchanging coordinates. The user-authored proposal
-is preserved unchanged. Existing completed revisions remain intact; generate a
+Apply `room_from_world` when converting native scan coordinates to room coordinates.
+The USDZ already contains room coordinates; do not apply the transform again.
+The user-authored proposal is preserved unchanged. Existing completed revisions remain intact; generate a
 new room revision to obtain the standard export and the semantic geometry changes.
+
+## Portable USDZ and referenced source assets
+
+`model.usdz` has one bottom-centered mesh prim per physical entity under `/Room`,
+including structural surfaces. Logical support groups have no prim. The same
+collision-safe USD identifier mapping supplies every JSON `node_name`, including
+opening links. Semantic entity IDs, `wall_id` and `support_id` remain independent
+of prim naming. Floor/ceiling material owners and headroom references use their
+exported structural node names because those sections have no separate ID.
+
+USD transforms equal `room_from_world @ local_to_scan_transform`. The packaged
+stage is reopened and checked for named nodes, position within 1 cm, yaw within
+1°, resolved texture dependencies and explicit `MaterialBindingAPI` on every
+binding. Export also runs the ARKit rule set used by `usdchecker --arkit` through
+`UsdUtils.ComplianceChecker(arkit=True)` from the pinned OpenUSD runtime. A failure
+prevents publication. Aggregate-only legacy exports keep their scan coordinates.
+
+The per-entity OBJ files are the editable local mesh sources used by the native
+viewer, rebuilding/exporting the model, and placement asset validation. Their MTL
+files and `material-v1-*.png` maps supply the current procedural base color,
+roughness and normal textures. They support material/finish edits for walls and
+floors as well as furniture; they are not alternate product-placement geometry.
+
+For product placement and viewing the portable model, share `room.json` plus
+`model.usdz` (and `room.schema.json` for schema validation). Textures needed by USD
+materials are embedded inside the USDZ. The `asset` and material texture filename
+fields in JSON refer to the separate editable source set, not files inside the
+USDZ. Consumers that load those files, rebuild meshes, edit source materials, or
+call `load_room` need the full OBJ/MTL/PNG source set alongside the JSON. A JSON/USDZ
+pair is sufficient for consumers that resolve geometry and appearance from USD.
