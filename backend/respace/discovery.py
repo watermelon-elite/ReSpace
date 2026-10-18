@@ -533,14 +533,17 @@ class ProductService:
         design_id = design.get("design_id", design.get("id"))
         prior = [s for s in self.store.list("searches", room_id=design["room_id"])
                  if s.get("intended_context", {}).get("design_id") == design_id and s.get("intended_context", {}).get("item_id") == item_id]
-        seen = {item.get("variant_id")}
+        selected = scene.get("selections", {}).get(item.get("selection_id")) or item.get("product", {})
+        original_search = self.store.get("searches", selected.get("search_id")) if selected.get("search_id") else None
+        if original_search and original_search.get("room_id") == design["room_id"] and all(search["search_id"] != original_search["search_id"] for search in prior):
+            prior.insert(0, original_search)
+        seen = {item.get("variant_id"), selected.get("variant_id")}
         previous_choices = []
         for search in prior:
             for choice in search["displayed_choices"]:
                 if choice["variant_id"] not in seen:
                     previous_choices.append(choice)
                     seen.add(choice["variant_id"])
-        selected = item.get("product", scene.get("selections", {}).get(item.get("selection_id"), {}))
         if selected.get("variant_id"):
             seen.add(selected["variant_id"])
         request = {**deepcopy(refinements), "schema_version": 1, "room_id": design["room_id"], "category": item["category"],
@@ -556,7 +559,7 @@ class ProductService:
         self._put("searches", result["search_id"], result)
         return result
 
-    def verify_selection(self, choices: list[dict], approved_ceiling: str) -> list[dict]:
+    def verify_selection(self, choices: list[dict], approved_ceiling: str, *, enforce_budget: bool = True) -> list[dict]:
         verified = []
         for selected in choices:
             variant = self.store.get("variants", selected["variant_id"])
@@ -567,7 +570,9 @@ class ProductService:
                 raise ProductError("unverified_selection", "Selected Product candidate is not retained")
             search: dict = {"attempted_candidates": []}
             current = self._reuse(candidate)
-            constraints = {"approved_ceiling": approved_ceiling, "quantity": selected.get("quantity", 1)}
+            constraints = {"quantity": selected.get("quantity", 1)}
+            if enforce_budget:
+                constraints["approved_ceiling"] = approved_ceiling
             if not any(c["offer_id"] == selected["offer_id"] and choice_eligible(c, constraints) for c in current):
                 current = self._verify(candidate, search, persist_search=False)
             eligible = [c for c in current if c["variant_id"] == selected["variant_id"] and c["offer_id"] == selected["offer_id"]
@@ -582,7 +587,8 @@ class ProductService:
             for field in ("search_id", "must_have", "explicit_choice", "requirements_text"):
                 if field in selected:
                     chosen[field] = deepcopy(selected[field])
-            self._selection_ranking(selected, chosen, approved_ceiling)
+            ranking_ceiling = approved_ceiling if enforce_budget else amount(max(money(approved_ceiling), money(chosen["offer"]["price"]) * chosen["quantity"]))
+            self._selection_ranking(selected, chosen, ranking_ceiling)
             verified.append(chosen)
         return verified
 

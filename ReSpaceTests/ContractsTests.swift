@@ -103,4 +103,20 @@ final class ContractsTests: XCTestCase {
         XCTAssertEqual(ProductOptions.choices(selected: selected, search: .null), [selected])
     }
 
+    func testNumericQuestionSupportsTouchAnswersWithinServerBoundsAndStep() {
+        let bounded = NumericQuestion(.object(["numeric_min": .number(2), "numeric_max": .number(3), "numeric_step": .number(0.5)]))
+        XCTAssertEqual(bounded.initialValue, 2)
+        XCTAssertTrue(bounded.isValid(bounded.initialValue))
+        XCTAssertEqual(bounded.next(2, direction: 1), 2.5)
+        XCTAssertEqual(bounded.next(2.5, direction: 1), 3)
+        XCTAssertNil(bounded.next(3, direction: 1))
+        XCTAssertNil(bounded.next(2, direction: -1))
+        XCTAssertFalse(bounded.isValid(2.25))
+        XCTAssertFalse(bounded.isValid(.infinity))
+        let unbounded = NumericQuestion(.object([:]))
+        XCTAssertEqual(unbounded.initialValue, 0)
+        XCTAssertEqual(unbounded.next(1_000_000, direction: 1), 1_000_001)
+        XCTAssertEqual(unbounded.next(0, direction: -1), -1)
+    }
+
 }

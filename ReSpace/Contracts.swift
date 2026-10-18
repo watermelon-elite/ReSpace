@@ -172,3 +172,30 @@ public enum ProductOptions {
         }
     }
 }
+
+public struct NumericQuestion: Sendable {
+    private let minimum: Double?
+    private let maximum: Double?
+    private let step: Double
+    public init(_ question: JSONValue) {
+        minimum = question["numeric_min"].number
+        maximum = question["numeric_max"].number
+        step = question["numeric_step"].number ?? 1
+    }
+    public var initialValue: Double {
+        let start = minimum ?? 0
+        if let maximum, start > maximum, step.isFinite, step > 0 { return start + floor((maximum - start) / step) * step }
+        return start
+    }
+    public func isValid(_ value: Double) -> Bool {
+        guard value.isFinite, step.isFinite, step > 0, value >= (minimum ?? -.infinity), value <= (maximum ?? .infinity) else { return false }
+        let steps = (value - (minimum ?? 0)) / step
+        return steps.isFinite && abs(steps - steps.rounded()) < 1e-8
+    }
+    public func next(_ value: Double, direction: Int) -> Double? {
+        guard isValid(value) else { return nil }
+        let base = minimum ?? 0
+        let result = base + (((value - base) / step).rounded() + Double(direction)) * step
+        return isValid(result) ? result : nil
+    }
+}

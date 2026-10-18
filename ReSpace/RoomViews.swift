@@ -139,10 +139,12 @@ struct OperationPanel: View {
     let onUpdate: () async -> Void
     @State private var choices: Set<String> = []
     @State private var text = ""
-    @State private var number = ""
+    @State private var number: Double?
     @State private var error: String?
     @State private var busy = false
     var question: JSONValue { operation["pending_question"] }
+    var numeric: NumericQuestion { NumericQuestion(question) }
+    var displayedNumber: Double { number ?? numeric.initialValue }
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(operation["state"].text.replacingOccurrences(of: "_", with: " ").capitalized).font(.headline)
@@ -156,7 +158,12 @@ struct OperationPanel: View {
                         else if choices.contains(id) { choices.remove(id) } else if choices.count < question["max_selections"].int { choices.insert(id) }
                     } label: { HStack { if let url = URL(string: choice["image_url"].text) { AsyncImage(url: url) { $0.resizable().scaledToFit() } placeholder: { ProgressView() }.frame(width: 72, height: 72) }; Text(choice["label"].text); Spacer(); if choices.contains(choice["choice_id"].text) { Image(systemName: "checkmark.circle.fill") } } }
                 }
-                if question["kind"].text == "numeric" { TextField("Answer", text: $number).keyboardType(.decimalPad) }
+                if question["kind"].text == "numeric" {
+                    Stepper("Answer: \(displayedNumber.formatted())",
+                            onIncrement: numeric.next(displayedNumber, direction: 1).map { value in { number = value } },
+                            onDecrement: numeric.next(displayedNumber, direction: -1).map { value in { number = value } })
+                        .disabled(busy)
+                }
                 if question["kind"].text != "budget" { TextField("Optional details", text: $text) }
                 if question["kind"].text == "budget" { Text("Current ceiling: USD \(question["budget_proposal"]["old_ceiling"].text) → Proposed: USD \(question["budget_proposal"]["new_ceiling"].text)"); Text("Resulting total: USD \(question["budget_proposal"]["resulting_total"].text)"); Button("Approve this budget increase") { Task { await answer("answer", approve: true) } }.disabled(busy) }
                 else { Button("Answer") { Task { await answer("answer") } }.disabled(busy || !validAnswer) }
@@ -170,17 +177,17 @@ struct OperationPanel: View {
             if let error { Text(error).foregroundStyle(.red) }
             HStack { Button("Refresh") { Task { await refresh() } }; if !["succeeded", "failed", "cancelled", "rejected"].contains(operation["state"].text) { Button("Cancel", role: .destructive) { Task { await control("cancel", extra: ["cancellation_id": .string(UUID().uuidString)]) } }.disabled(busy) } }
         }
-        .onChange(of: question["question_id"].text) { _, _ in choices = []; text = ""; number = "" }
+        .onChange(of: question["question_id"].text) { _, _ in choices = []; text = ""; number = nil }
     }
     var validAnswer: Bool {
-        if question["kind"].text == "numeric" { guard let n = Double(number), n.isFinite else { return false }; return n >= (question["numeric_min"].number ?? -.infinity) && n <= (question["numeric_max"].number ?? .infinity) }
+        if question["kind"].text == "numeric" { return numeric.isValid(displayedNumber) }
         if question["kind"].text == "text" { return !text.isEmpty }
         return choices.count >= question["min_selections"].int && choices.count <= question["max_selections"].int
     }
     func refresh() async { guard let client = app.client else { return }; do { operation = try await client.request("operations/\(operation["operation_id"].text)")["operation"]; await onUpdate() } catch { self.error = error.localizedDescription } }
     func answer(_ action: String, approve: Bool = false) async {
         var body: [String: JSONValue] = ["question_id": question["question_id"], "reply_id": .string(UUID().uuidString), "expected_decision_revision": question["decision_revision"], "expected_question_revision": question["question_revision"], "choice_ids": .array(choices.sorted().map(JSONValue.string)), "text": .string(text), "action": .string(action)]
-        if let value = Double(number) { body["number"] = .number(value) }
+        if question["kind"].text == "numeric", action == "answer" { body["number"] = .number(displayedNumber) }
         if approve { body["budget_approval"] = .object(["old_ceiling": question["budget_proposal"]["old_ceiling"], "new_ceiling": question["budget_proposal"]["new_ceiling"], "resulting_total": question["budget_proposal"]["resulting_total"]]) }
         await control("answers", extra: body)
     }

@@ -296,3 +296,19 @@ def test_selection_price_refresh_reranks_both_sources_without_rewriting_original
     assert store.get("comparisons", refreshed["comparison_snapshot_id"])["sample_count"] == 4
     assert store.get("comparisons", selected["comparison_snapshot_id"]) == original_comparison
     assert products.get_search(source["search_id"]) == source
+
+
+def test_first_find_more_retains_original_planning_options_and_marks_them_seen(store):
+    products,shopping,_=service(store,[[hit(1),hit(2),hit(3)],[],[]])
+    initial=products.search({'category':'chair','room_id':'r','approved_ceiling':'1000.00'},'initial')
+    selected=deepcopy(initial['displayed_choices'][0]);selected['selection_id']='selected'
+    initial_alternatives=[choice['variant_id'] for choice in initial['displayed_choices'][1:]]
+    design={'design_id':'design','room_id':'r','scene':{'items':[{'id':'item','origin':'new','status':'new','category':'chair','selection_id':'selected','variant_id':selected['variant_id'],'product':selected}], 'selections':{'selected':selected},'purchase_summary':{'approved_ceiling':'1000.00'}}}
+    frozen=deepcopy(design)
+    shopping.batches=[[hit(4),hit(5),hit(6)],[],[]]
+    result=products.find_more(design,'item',{},'more',{'active_revision':1})
+    assert [choice['variant_id'] for choice in result['prior_displayed_choices']]==initial_alternatives
+    assert set(initial_alternatives+[selected['variant_id']])<=set(result['previously_seen_identities'])
+    assert not set(initial_alternatives+[selected['variant_id']])&{choice['variant_id'] for choice in result['displayed_choices']}
+    assert len(result['displayed_choices'])==3
+    assert design==frozen

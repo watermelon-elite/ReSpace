@@ -48,6 +48,9 @@ def test_deletion_blocks_late_publication_and_retries_cleanup(store):
     with store.transaction():
         store.put('artifacts','photo',{'room_id':'room','storage_key':'private/photo'})
         store.put('messages','message',{'room_id':'room','text':'private'})
+        for kind in ('captures','keyframes','snapshots','planning','designs','selections','searches','comparisons','budget_proposals','receipts'):
+            store.put(kind,'related-'+kind,{'room_id':'room','private':'capture-specific content'})
+        store.put('candidates','shared',{'candidate_id':'shared','title':'Reusable public Product'})
     class Cleanup:
         def __init__(self): self.fail=True
         def delete_prefix(self, prefix):
@@ -62,6 +65,9 @@ def test_deletion_blocks_late_publication_and_retries_cleanup(store):
     assert store.get('rooms','room') is None
     assert store.list('messages','room') == []
     assert store.list('operations','room') == []
+    for kind in ('captures','keyframes','snapshots','planning','designs','selections','searches','comparisons','budget_proposals','receipts'):
+        assert store.list(kind,'room')==[]
+    assert store.get('candidates','shared')['title']=='Reusable public Product'
     assert store.get('deletions','room') == {'room_id':'room','device_id':'device','deletion_id':'deletion','state':'deleted'}
 
 

@@ -59,7 +59,7 @@ class SpatialPipeline:
             normalized_id=mapping.get('id') if isinstance(mapping,dict) else mapping
             require(isinstance(normalized_id,str),'unresolved_identity','A planning identity mapping is ambiguous.')
             instructions[normalized_id]=entry['instruction']
-        constraints=deepcopy(data.get('candidate_constraints') or {'intent':operation['request']['intent'],'instructions':instructions,'approved_ceiling':selection['approved_ceiling'],'decision_revision':operation['decision_revision'],'base':operation['base_context'],'must_have_selection_ids':[key for key,record in selections.items() if record.get('must_have')],'explicit_selection_ids':[key for key,record in selections.items() if record.get('explicit_choice') or record.get('requirements_text')],'required_product_attributes':{key:record['requirements'] for key,record in selections.items() if record.get('requirements')}})
+        constraints=deepcopy(data.get('candidate_constraints') or {'intent':selection.get('approved_intent',operation['request']['intent']),'instructions':instructions,'approved_ceiling':selection['approved_ceiling'],'decision_revision':operation['decision_revision'],'base':operation['base_context'],'must_have_selection_ids':[key for key,record in selections.items() if record.get('must_have')],'explicit_selection_ids':[key for key,record in selections.items() if record.get('explicit_choice') or record.get('requirements_text')],'required_product_attributes':{key:record['requirements'] for key,record in selections.items() if record.get('requirements')}})
         if 'plan' not in data:
             self.operations.checkpoint(operation_id,'planning_layout')
             photos=[]

@@ -97,6 +97,13 @@ class PlanningController:
         require(not capture.get('known_unusable',False),'invalid_room','Capture geometry is known to be unusable. Rescan this Room.')
         money(request['budget'],positive=True)
         data=operation.get('controller',{})
+        import re
+        conflicting=request.get('intent','add')=='add' and bool(re.search(r'\b(?:replace|remove|redesign)\s+(?:everything|all(?:\s+the)?\s+furniture)\b',request.get('text','').lower()))
+        if conflicting and not data.get('intent_checked'):
+            with self.store.transaction():
+                self._save(operation_id,'intent_checked',True,'clarifying_intent')
+                self.operations.ask(operation_id,{'kind':'single_choice','topic':'intent_conflict','context':'interview','text':'Replacing the existing furnishings needs Full redesign. Which intent should this design use?','choices':[{'choice_id':'redesign','label':'Full redesign — allow changes to unprotected Objects'},{'choice_id':'keep_add','label':'Keep Add — preserve existing Objects'}],'allow_skip':False,'allow_delegate':False})
+            return
         if 'initial_products' not in data:
             self.operations.checkpoint(operation_id,'preparing_context')
             from .categories import CATEGORIES
@@ -118,7 +125,7 @@ class PlanningController:
             index=len(actions)
             pending=data.get('pending_action')
             if pending is None:
-                context={'measured_context':capture.get('measured_context',{}),'planning':self.store.get('planning',room['room_id']),'request':request,'answers':operation['answer_history'],'initial_products':data['initial_products'],'actions':actions,'approved_budget':self.approved_budget(operation),'categories':list(__import__('respace.categories',fromlist=['CATEGORIES']).CATEGORIES)}
+                context={'measured_context':capture.get('measured_context',{}),'planning':self.store.get('planning',room['room_id']),'request':{**request,'intent':self.effective_intent(operation)},'answers':operation['answer_history'],'initial_products':data['initial_products'],'actions':actions,'approved_budget':self.approved_budget(operation),'categories':list(__import__('respace.categories',fromlist=['CATEGORIES']).CATEGORIES)}
                 self.operations.checkpoint(operation_id,'interview')
                 pending=ModelAction.model_validate(await self.model.act(context)).model_dump()
                 self._save(operation_id,'pending_action',pending,'interview')
@@ -145,8 +152,8 @@ class PlanningController:
                     proposed.extend({'id':f"i_{record['selection_id']}_{unit}",'origin':'new','status':'new','variant_id':record['variant_id'],'offer_id':record['offer_id']} for unit in range(record['quantity']))
                 purchases=calculate_purchases(proposed,{r['offer_id']:r['offer'] for r in verified},self.approved_budget(operation))
                 require(purchases['within_budget'],'budget_conflict','The complete purchase set exceeds the approved ceiling.')
-                require(sum(record['quantity'] for record in verified)<= (5 if request.get('intent','add')=='add' else 20),'intent_conflict','The selected quantity exceeds this intent’s scope.')
-                selection={'schema_version':1,'selection_snapshot_id':identity(),'room_id':room['room_id'],'capture_id':room['latest_capture_id'],'decision_revision':operation['decision_revision'],'selected':verified,'purchases':purchases,'approved_ceiling':self.approved_budget(operation),'assumptions':payload.get('assumptions',[]),'reasons':payload.get('reasons',[]),'created_at':now()}
+                require(sum(record['quantity'] for record in verified)<= (5 if self.effective_intent(operation)=='add' else 20),'intent_conflict','The selected quantity exceeds this intent’s scope.')
+                selection={'schema_version':1,'selection_snapshot_id':identity(),'room_id':room['room_id'],'capture_id':room['latest_capture_id'],'decision_revision':operation['decision_revision'],'selected':verified,'purchases':purchases,'approved_ceiling':self.approved_budget(operation),'approved_intent':self.effective_intent(operation),'assumptions':payload.get('assumptions',[]),'reasons':payload.get('reasons',[]),'created_at':now()}
                 with self.store.transaction():
                     self.operations.guard(operation_id)
                     self.store.put('selections',selection['selection_snapshot_id'],selection)
@@ -161,6 +168,16 @@ class PlanningController:
     def _search_request(self, operation, payload):
         allowed={k:payload[k] for k in ('category','function','quantity','must_have','avoid') if k in payload}
         return {**allowed,'schema_version':1,'room_id':operation['room_id'],'styles':operation['request'].get('styles',[]),'approved_ceiling':self.approved_budget(operation),'intended_context':{**operation['base_context'],'operation_id':operation['operation_id']}}
+
+    @staticmethod
+    def effective_intent(operation):
+        intent=operation['request'].get('intent','add')
+        for answer in operation['answer_history']:
+            if answer['question'].get('topic')=='intent_conflict':
+                choices=answer['request'].get('choice_ids',[])
+                if choices==['redesign']: intent='redesign'
+                elif choices==['keep_add']: intent='add'
+        return intent
 
     @staticmethod
     def approved_budget(operation):
@@ -179,6 +196,8 @@ class PlanningController:
 
     def _verified_question(self, operation, payload):
         question=deepcopy(payload)
+        if question.get('topic')=='intent_conflict':
+            question.update(kind='single_choice',text='Should this design use Full redesign or preserve existing Objects with Add?',choices=[{'choice_id':'redesign','label':'Full redesign — allow changes to unprotected Objects'},{'choice_id':'keep_add','label':'Keep Add — preserve existing Objects'}],allow_skip=False,allow_delegate=False)
         known={c['variant_id']:c for c in self._known_choices(operation)}
         for choice in question.get('choices',[]):
             if choice.get('variant_id'):
@@ -189,9 +208,7 @@ class PlanningController:
         if question.get('kind')=='budget':
             def purchase_inputs(selected):
                 resolved=self._resolve_selected(operation,{'selected':selected})
-                from .products import amount
-                verification_ceiling=amount(max(money(self.approved_budget(operation)),sum((money(record['offer']['price'],positive=True)*record['quantity'] for record in resolved),start=money('0.00'))))
-                verified=self.products.verify_selection(resolved,verification_ceiling)
+                verified=self.products.verify_selection(resolved,self.approved_budget(operation),enforce_budget=False)
                 items=[{'id':f"i_{record['selection_id']}_{unit}",'origin':'new','status':'new','variant_id':record['variant_id'],'offer_id':record['offer_id']} for record in verified for unit in range(record['quantity'])]
                 return {'items':items,'offers':{record['offer_id']:record['offer'] for record in verified}}
             if question.get('proposal_id'):

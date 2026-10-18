@@ -70,6 +70,7 @@ def test_public_create_finalize_question_cancel_delete_reconciliation(api,store)
     assert api.delete('/v1/rooms/'+room_id,params={'operation_id':'delete'}).json()['deletion']['state']=='deleted'
     assert api.get('/v1/rooms/'+room_id).status_code==410
     assert api.get('/v1/rooms').json()['rooms']==[]
+    assert api.post('/v1/rooms',json={'schema_version':1,'operation_id':'create'}).status_code==410
 
 
 def test_multipart_receipts_validate_image_and_defer_detection(api,store):
@@ -188,3 +189,28 @@ def test_find_more_exposes_durable_native_search_reference_without_changing_desi
     assert len(choices)==3 and all(choice['variant_id']!=item['variant_id'] for choice in choices)
     assert api.get('/v1/designs/'+original['design_id']).json()['design']==original
     assert api.post('/v1/designs/'+original['design_id']+'/find-more',json=request).json()['operation']['outcome']['search_id']==reference['search_id']
+
+
+def test_incomplete_manifest_retries_same_completion_after_missing_frame_upload(api):
+    from test_geometry import native_room
+    created=api.post('/v1/rooms',json={'operation_id':'create'}).json()
+    room_id,capture_id=created['room']['room_id'],created['capture_id']
+    buffer=BytesIO();Image.new('RGB',(8,6)).save(buffer,'JPEG');jpeg=buffer.getvalue()
+    photo=descriptor('photo',capture_id,'jpeg',jpeg,'frame')
+    raw=json.dumps(native_room()).encode();export=descriptor('export',capture_id,'roomplan',raw)
+    body={'operation_id':'finalize','capture_id':capture_id,'raw_export_base64':base64.b64encode(raw).decode(),'export_descriptor':export,'manifest':{'room_id':room_id,'capture_id':capture_id,'final_export_artifact_id':'export','frames':[{'frame_id':'frame','idx':0}],'artifacts':[photo,export],'completion_id':'finalize','started_at':'2026-10-18T00:00:00Z','completed_at':'2026-10-18T00:01:00Z'}}
+    pending=api.post(f'/v1/rooms/{room_id}/finalize',json=body)
+    assert pending.status_code==200,pending.text
+    assert pending.json()['capture_status']['state']=='upload_pending'
+    assert pending.json()['capture_status']['missing_artifacts']==1
+    assert pending.json()['raw_export']==native_room()
+    assert api.post(f'/v1/rooms/{room_id}/finalize',json={**body,'raw_export_base64':base64.b64encode(b'{}').decode()}).status_code==409
+    meta={'schema_version':1,'operation_id':'upload','capture_id':capture_id,'frame_id':'frame','idx':0,'w':8,'h':6,'orientation':'sensor_landscape','intrinsics':{'fx':10,'fy':10,'cx':4,'cy':3},'transform':[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],'timestamp':1.5,'artifacts':[photo]}
+    bad_depth=b'123';depth=descriptor('depth',capture_id,'depth',bad_depth,'frame');depth['format']='float32_le_m'
+    invalid={**meta,'depth_w':1,'depth_h':1,'depth_format':'float32_le_m','artifacts':[photo,depth]}
+    rejected=api.post(f'/v1/rooms/{room_id}/keyframes',data={'meta':json.dumps(invalid)},files={'jpeg':('frame.jpg',jpeg,'image/jpeg'),'depth':('depth.bin',bad_depth,'application/octet-stream')})
+    assert rejected.status_code==422 and rejected.json()['error']['code']=='invalid_depth'
+    assert api.post(f'/v1/rooms/{room_id}/keyframes',data={'meta':json.dumps(meta)},files={'jpeg':('frame.jpg',jpeg,'image/jpeg')}).status_code==200
+    completed=api.post(f'/v1/rooms/{room_id}/finalize',json=body)
+    assert completed.json()['capture_status']['state']=='complete'
+    assert completed.json()['capture_status']['missing_artifacts']==0
