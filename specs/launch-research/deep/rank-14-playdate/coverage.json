@@ -1,0 +1,23 @@
+{
+  "rank": 14,
+  "source_url": "https://www.youtube.com/watch?v=HdF3CnFvxg4",
+  "duration_seconds": 123,
+  "duration_source": "Public YouTube watch-page lengthSeconds metadata retrieved 2026-10-17 America/Los_Angeles",
+  "requested_clip": "0:00-2:04",
+  "fps": 6,
+  "model": "gemini-flash-latest",
+  "successful_clip_ranges": [
+    {
+      "start_seconds": 0,
+      "end_seconds": 124,
+      "note": "Requested through one second beyond the123-second metadata duration."
+    }
+  ],
+  "completion": "full source coverage; automated audiovisual report reaches final card",
+  "any_gaps": null,
+  "attempts": 1,
+  "raw_report": "raw-full.md",
+  "title": "Panic \u2014 Say Hello to Playdate",
+  "video_tokens": 51787,
+  "method_limit": "Automated sampled-frame/audio review; no independent frame-perfect cut count or isolated audio stems."
+}

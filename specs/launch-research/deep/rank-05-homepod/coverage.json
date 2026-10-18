@@ -1,0 +1,81 @@
+{
+  "rank": 5,
+  "title": "Apple \u2014 HomePod: Welcome Home",
+  "source_url": "https://vimeo.com/821121634",
+  "source_note": "Selected Vimeo version, analyzed from its downloaded public media asset; not a claim about the identity or reach of the original campaign upload.",
+  "local_source": "/private/tmp/respace-deep-parent/homepod-original.mp4",
+  "duration_seconds": 233.621,
+  "duration_source": "ffprobe container duration",
+  "width": 960,
+  "height": 540,
+  "file_size_bytes": 42333023,
+  "has_audio_stream": true,
+  "model": "gemini-3.5-flash-lite",
+  "model_support_source": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite",
+  "requested_clip": "0:00-3:55",
+  "fps": 6,
+  "successful_clip_ranges": [
+    {
+      "start_seconds": 0,
+      "end_seconds": 235,
+      "note": "Extends beyond the233.621-second source; full AV response identifies final Apple/legal end card."
+    }
+  ],
+  "completion": "full source coverage; full AV analysis plus focused opening recheck and manual visual spot checks",
+  "any_gaps": null,
+  "raw_report": "raw-full-lite-1.md",
+  "video_tokens": 98373,
+  "targeted_rechecks": [
+    {
+      "requested_clip": "0:00-1:25",
+      "start_seconds": 0,
+      "end_seconds": 85,
+      "fps": 6,
+      "model": "gemini-3.5-flash-lite",
+      "video_tokens": 35786,
+      "report": "raw-opening-recheck.md",
+      "completion": "successful; internal audio contradictions explicitly retained as uncertainty",
+      "findings": [
+        "Early verbal address to voice assistant at00:36.000\u201300:36.167",
+        "First clear speaker close-up00:38.667; closing product-name card is a different event",
+        "Table elongates first at01:13.000\u201301:17.000; broader room shift follows",
+        "Exact music onset and device reply unresolved because the recheck contradicts itself"
+      ]
+    }
+  ],
+  "visual_spot_checks": [
+    {
+      "file": "frames-product.jpg",
+      "input_source_range_seconds": [
+        30,
+        44
+      ],
+      "sampling": "1fps,7x2grid",
+      "finding": "Clear early speaker product shot confirms closing card is not first product presence."
+    },
+    {
+      "file": "frames-first-transformation.jpg",
+      "input_source_range_seconds": [
+        60,
+        85
+      ],
+      "sampling": "1fps,5x5grid",
+      "finding": "Table/magazine stretch precedes full colored room extension."
+    },
+    {
+      "file": "frames-later-sequence.jpg",
+      "input_source_range_seconds": [
+        120,
+        234
+      ],
+      "sampling": "one frame per3seconds,7x6grid",
+      "finding": "Corridor, second-self encounter, dark open-space solo, return to ordinary room, product card and Apple ending."
+    }
+  ],
+  "uncertainties": [
+    "Exact music onset before/after speaker interaction and precise assistant reply are not settled by the contradictory recheck.",
+    "Full-pass timing within later choreography is a navigation aid, not a verified cut list.",
+    "Practical effects versus compositing/CGI are not established by viewing."
+  ],
+  "method_limit": "Actual audiovisual processing and visual source-frame checks; not a human full audio transcription, frame-perfect cut count, isolated sound-stem review or proof of product performance."
+}

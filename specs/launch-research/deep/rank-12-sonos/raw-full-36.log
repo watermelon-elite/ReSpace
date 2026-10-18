@@ -1,0 +1,4 @@
+[info] 12.6 MB - sending the file directly
+[info] analyzing with gemini-3.6-flash...
+[provider_error] {"error": {"code": 503, "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.", "status": "UNAVAILABLE"}}
+ERROR: HTTP 503: 

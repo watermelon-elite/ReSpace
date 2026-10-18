@@ -1,0 +1,47 @@
+{
+  "rank": 7,
+  "source_url": "https://www.youtube.com/watch?v=B6zVzWU95Sw",
+  "expected_duration_seconds": 140,
+  "method": "watch-video Gemini audiovisual analysis",
+  "model": "gemini-3.5-flash-lite",
+  "fps": 6,
+  "successful_clips": [
+    {
+      "range": "0:00-2:21",
+      "raw_report": "analysis-full.quote-redacted.md",
+      "report_status": "Minimal labeled quote redactions; all timestamps and observations otherwise unchanged"
+    },
+    {
+      "range": "0:00-0:40",
+      "fps": 6,
+      "model": "gemini-3.5-flash-lite",
+      "raw_report": "analysis-opening-recheck.quote-redacted.md",
+      "purpose": "Verify opening, earliest spoken/visible brand and dedicated title card separately",
+      "report_status": "Minimal labeled quote redactions; observations and timestamps otherwise unchanged"
+    }
+  ],
+  "full_film_requested": true,
+  "run_exit_code": 0,
+  "review_date": "2026-10-17",
+  "notes": "Request end extends one second beyond rounded metadata duration to include final frame. Automated audiovisual analysis; editorial review follows. Initial rate-limit failure preserved separately.",
+  "private_unmodified_raw": "/private/tmp/respace-deep-raw/rank-07-slack-so-yeah/raw-full.md",
+  "observed_end_time_in_raw": "02:20.000",
+  "editorial_corrections": [
+    "Opening recheck distinguishes first spoken Slack00:07.000, first visible name00:11.833, and dedicated brand card00:35.833; the full-pass earliest-brand claim is rejected.",
+    "02:03 opening-cut timestamp and02:26 closet timestamp are impossible in their described context and are not adopted.",
+    "Specific camera, lens, microphone and software-tool assertions are not established by the footage.",
+    "High retention, universal audience relatability and friction-free operation are unsupported interpretations, not performance evidence.",
+    "Ending-card color description is internally contradictory; only the brand-card ending is retained pending any further check.",
+    "Live AR and multi-user collaboration proposals are not adopted as demonstrated ReSpace functionality."
+  ],
+  "opening_recheck_exit_code": 0,
+  "editorially_reviewed": true,
+  "coverage_assessment": "Full film covered at6fps; focused0:00\u20130:40 recheck resolves opening/reveal conflicts. End-card color remains excluded due contradictory full-pass wording.",
+  "confirmed_transition_points": {
+    "spoken_brand": "00:07.000",
+    "first_product_promise": "00:08.000",
+    "visible_name": "00:11.833",
+    "adoption_statement": "00:35.000",
+    "dedicated_brand_card": "00:35.833"
+  }
+}

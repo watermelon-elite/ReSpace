@@ -1,0 +1,127 @@
+[
+  {
+    "video_id": "ZUG9qYTJMsI",
+    "response": {
+      "ok": true,
+      "request_id": "req_76a4834411eb45db",
+      "data": {
+        "video_id": "ZUG9qYTJMsI",
+        "title": "DollarShaveClub.com - Our Blades Are F***ing Great",
+        "channel": "Dollar Shave Club",
+        "channel_id": "UCLhWeWGlaxqJBKQdtbICiLQ",
+        "duration": "1:33",
+        "view_count": "29M views",
+        "keywords": [
+          "dollarshaveclub.com",
+          "dollar shave club",
+          "razor",
+          "blade",
+          "shaving",
+          "grooming",
+          "shave time",
+          "shave money"
+        ],
+        "thumbnails": [
+          {
+            "url": "https://i.ytimg.com/vi/ZUG9qYTJMsI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          {
+            "url": "https://i.ytimg.com/vi/ZUG9qYTJMsI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          {
+            "url": "https://i.ytimg.com/vi/ZUG9qYTJMsI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          {
+            "url": "https://i.ytimg.com/vi/ZUG9qYTJMsI/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          {
+            "url": "https://i.ytimg.com/vi/ZUG9qYTJMsI/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "is_live": false,
+        "available_langs": [
+          {
+            "code": "en",
+            "kind": "auto",
+            "name": "English (auto-generated)"
+          }
+        ]
+      }
+    },
+    "credits_remaining": "73"
+  },
+  {
+    "video_id": "B6zVzWU95Sw",
+    "response": {
+      "ok": true,
+      "request_id": "req_07c911c87b7e457f",
+      "data": {
+        "video_id": "B6zVzWU95Sw",
+        "title": "\"So Yeah, We Tried Slack \u2026\"",
+        "channel": "Slack",
+        "channel_id": "UCY3YECgeBcLCzIrFLP4gblw",
+        "duration": "2:20",
+        "view_count": "1.4M views",
+        "keywords": [
+          "Slack",
+          "communication",
+          "sandwich video",
+          "stewart butterfield",
+          "adam lisagor",
+          "messaging",
+          "saas",
+          "business software",
+          "workplace",
+          "software",
+          "Technology"
+        ],
+        "thumbnails": [
+          {
+            "url": "https://i.ytimg.com/vi/B6zVzWU95Sw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          {
+            "url": "https://i.ytimg.com/vi/B6zVzWU95Sw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          {
+            "url": "https://i.ytimg.com/vi/B6zVzWU95Sw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          {
+            "url": "https://i.ytimg.com/vi/B6zVzWU95Sw/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          {
+            "url": "https://i.ytimg.com/vi/B6zVzWU95Sw/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "is_live": false,
+        "available_langs": [
+          {
+            "code": "en",
+            "kind": "auto",
+            "name": "English (auto-generated)"
+          }
+        ]
+      }
+    },
+    "credits_remaining": "74"
+  }
+]

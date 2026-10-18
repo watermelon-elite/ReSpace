@@ -1,0 +1,20 @@
+{
+  "rank": 12,
+  "source_url": "https://vimeo.com/156330951",
+  "source_page": "https://mssngpeces.com/projects/commercials/sonos-music-makes-it-home/",
+  "expected_duration_seconds": 60.096,
+  "media_resolution": "960x540",
+  "audio_stream_verified": true,
+  "method": "watch-video actual video and audio, plus full-span contact-sheet check",
+  "model": "gemini-3.5-flash-lite",
+  "fps": 6,
+  "successful_clips": [{"range": "0:00-1:01", "raw_report": "raw-full-lite-1.md"}],
+  "video_tokens": 25260,
+  "full_film_requested": true,
+  "run_exit_code": 0,
+  "observed_end_time_in_raw": "00:59.083",
+  "editorially_reviewed": true,
+  "coverage_assessment": "Complete selected film, final dual-brand image and ending audio reported. Model subsecond timings not independently verified.",
+  "review_date": "2026-10-17",
+  "editorial_corrections": ["Several households appear; no single controlled emotional transformation is established.", "A personal quiet-home comment does not establish generalized anxiety.", "Music and social outcomes are advertising depiction, not causal performance evidence."]
+}

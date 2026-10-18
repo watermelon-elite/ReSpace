@@ -1,0 +1,20 @@
+{
+  "rank": 15,
+  "source_url": "https://vimeo.com/142497378",
+  "expected_duration_seconds": 60.117333,
+  "media_resolution": "640x360",
+  "audio_stream_verified": true,
+  "method": "watch-video actual video and audio, full-span contact sheet and primary director interview",
+  "model": "gemini-3.5-flash-lite",
+  "fps": 6,
+  "successful_clips": [{"range": "0:00-1:01", "raw_report": "raw-full-lite-1.md"}],
+  "video_tokens": 25329,
+  "full_film_requested": true,
+  "run_exit_code": 0,
+  "observed_end_time_in_raw": "01:00.000",
+  "editorially_reviewed": true,
+  "coverage_assessment": "Complete selected film and final slate/audio reported. Sampling and beat timeline are not an exhaustive frame-accurate shot list.",
+  "review_date": "2026-10-17",
+  "production_source": "https://motionographer.com/2015/11/02/interview-with-johnny-kelly-dropbox-creative-freedom/",
+  "editorial_corrections": ["141 shots is a director-reported production fact, not a model measurement.", "Mid-film workstations do not establish particular Dropbox functions.", "Large closing brand mark does not prove absence of earlier small cues.", "Cut averages, retention and exact instrumentation are not verified."]
+}

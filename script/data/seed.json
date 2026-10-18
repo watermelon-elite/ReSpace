@@ -1,0 +1,3499 @@
+{
+  "schema_version": 2,
+  "package_id": "respace-launch",
+  "version_id": "respace-original",
+  "run_id": 1,
+  "thesis_id": "respace-approved-story",
+  "format_style_profile_version_id": "respace-landscape",
+  "title_style_profile_version_id": "respace-approved-title",
+  "target": {
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "aspect_ratio": "16:9"
+  },
+  "script": {
+    "titles": [
+      "ReSpace — Make room for you"
+    ],
+    "narration": "This dorm room could belong to anyone.\nSame bed. Same desk. Blank walls.\nBut you'll be up at two finishing that assignment.\nSqueezing in friends for one more game.\nYour room has to hold a life you're still figuring out.\nHow do you make it yours?\n\nMeet ReSpace.\nScan your room, choose what stays, and set a budget you're comfortable with.\nTell it how you want to live here: somewhere to concentrate, with room for friends.\nReSpace creates questions around your room and your goals, helping you work out the details.\nYour answers build a taste profile: the colors and materials you like, and how you want the room to feel.\nThat guides a design with real products, planned around the furniture you're keeping.\nExplore a photorealistic version of your room before buying anything.\nTap a piece to see its size, price and where to buy it.\n\nNow picture a night here.\nOne more page.\nOne more game.\nApparently, 'one more' means different things to different people.\n\nNeed more room for your notebook? Ask for a smaller lamp, and explore the updated design.\nSee what other people are imagining for their rooms.\nShare yours, and give someone else a place to start.\n\nIt's still the room you walked into.\nBut now, you can see yourself here.\nReSpace.\nMake room for you.\nJoin the waitlist.\n\n",
+    "estimated_duration_seconds": 180,
+    "boundaries": {
+      "start": {
+        "id": "script-start",
+        "character_offset": 0
+      },
+      "end": {
+        "id": "script-end",
+        "character_offset": 1276
+      }
+    },
+    "words": [
+      {
+        "id": "respace-original-word-1",
+        "text": "This",
+        "start_char": 0,
+        "end_char": 4
+      },
+      {
+        "id": "respace-original-word-2",
+        "text": "dorm",
+        "start_char": 5,
+        "end_char": 9
+      },
+      {
+        "id": "respace-original-word-3",
+        "text": "room",
+        "start_char": 10,
+        "end_char": 14
+      },
+      {
+        "id": "respace-original-word-4",
+        "text": "could",
+        "start_char": 15,
+        "end_char": 20
+      },
+      {
+        "id": "respace-original-word-5",
+        "text": "belong",
+        "start_char": 21,
+        "end_char": 27
+      },
+      {
+        "id": "respace-original-word-6",
+        "text": "to",
+        "start_char": 28,
+        "end_char": 30
+      },
+      {
+        "id": "respace-original-word-7",
+        "text": "anyone",
+        "start_char": 31,
+        "end_char": 37
+      },
+      {
+        "id": "respace-original-word-8",
+        "text": "Same",
+        "start_char": 39,
+        "end_char": 43
+      },
+      {
+        "id": "respace-original-word-9",
+        "text": "bed",
+        "start_char": 44,
+        "end_char": 47
+      },
+      {
+        "id": "respace-original-word-10",
+        "text": "Same",
+        "start_char": 49,
+        "end_char": 53
+      },
+      {
+        "id": "respace-original-word-11",
+        "text": "desk",
+        "start_char": 54,
+        "end_char": 58
+      },
+      {
+        "id": "respace-original-word-12",
+        "text": "Blank",
+        "start_char": 60,
+        "end_char": 65
+      },
+      {
+        "id": "respace-original-word-13",
+        "text": "walls",
+        "start_char": 66,
+        "end_char": 71
+      },
+      {
+        "id": "respace-original-word-14",
+        "text": "But",
+        "start_char": 73,
+        "end_char": 76
+      },
+      {
+        "id": "respace-original-word-15",
+        "text": "you'll",
+        "start_char": 77,
+        "end_char": 83
+      },
+      {
+        "id": "respace-original-word-16",
+        "text": "be",
+        "start_char": 84,
+        "end_char": 86
+      },
+      {
+        "id": "respace-original-word-17",
+        "text": "up",
+        "start_char": 87,
+        "end_char": 89
+      },
+      {
+        "id": "respace-original-word-18",
+        "text": "at",
+        "start_char": 90,
+        "end_char": 92
+      },
+      {
+        "id": "respace-original-word-19",
+        "text": "two",
+        "start_char": 93,
+        "end_char": 96
+      },
+      {
+        "id": "respace-original-word-20",
+        "text": "finishing",
+        "start_char": 97,
+        "end_char": 106
+      },
+      {
+        "id": "respace-original-word-21",
+        "text": "that",
+        "start_char": 107,
+        "end_char": 111
+      },
+      {
+        "id": "respace-original-word-22",
+        "text": "assignment",
+        "start_char": 112,
+        "end_char": 122
+      },
+      {
+        "id": "respace-original-word-23",
+        "text": "Squeezing",
+        "start_char": 124,
+        "end_char": 133
+      },
+      {
+        "id": "respace-original-word-24",
+        "text": "in",
+        "start_char": 134,
+        "end_char": 136
+      },
+      {
+        "id": "respace-original-word-25",
+        "text": "friends",
+        "start_char": 137,
+        "end_char": 144
+      },
+      {
+        "id": "respace-original-word-26",
+        "text": "for",
+        "start_char": 145,
+        "end_char": 148
+      },
+      {
+        "id": "respace-original-word-27",
+        "text": "one",
+        "start_char": 149,
+        "end_char": 152
+      },
+      {
+        "id": "respace-original-word-28",
+        "text": "more",
+        "start_char": 153,
+        "end_char": 157
+      },
+      {
+        "id": "respace-original-word-29",
+        "text": "game",
+        "start_char": 158,
+        "end_char": 162
+      },
+      {
+        "id": "respace-original-word-30",
+        "text": "Your",
+        "start_char": 164,
+        "end_char": 168
+      },
+      {
+        "id": "respace-original-word-31",
+        "text": "room",
+        "start_char": 169,
+        "end_char": 173
+      },
+      {
+        "id": "respace-original-word-32",
+        "text": "has",
+        "start_char": 174,
+        "end_char": 177
+      },
+      {
+        "id": "respace-original-word-33",
+        "text": "to",
+        "start_char": 178,
+        "end_char": 180
+      },
+      {
+        "id": "respace-original-word-34",
+        "text": "hold",
+        "start_char": 181,
+        "end_char": 185
+      },
+      {
+        "id": "respace-original-word-35",
+        "text": "a",
+        "start_char": 186,
+        "end_char": 187
+      },
+      {
+        "id": "respace-original-word-36",
+        "text": "life",
+        "start_char": 188,
+        "end_char": 192
+      },
+      {
+        "id": "respace-original-word-37",
+        "text": "you're",
+        "start_char": 193,
+        "end_char": 199
+      },
+      {
+        "id": "respace-original-word-38",
+        "text": "still",
+        "start_char": 200,
+        "end_char": 205
+      },
+      {
+        "id": "respace-original-word-39",
+        "text": "figuring",
+        "start_char": 206,
+        "end_char": 214
+      },
+      {
+        "id": "respace-original-word-40",
+        "text": "out",
+        "start_char": 215,
+        "end_char": 218
+      },
+      {
+        "id": "respace-original-word-41",
+        "text": "How",
+        "start_char": 220,
+        "end_char": 223
+      },
+      {
+        "id": "respace-original-word-42",
+        "text": "do",
+        "start_char": 224,
+        "end_char": 226
+      },
+      {
+        "id": "respace-original-word-43",
+        "text": "you",
+        "start_char": 227,
+        "end_char": 230
+      },
+      {
+        "id": "respace-original-word-44",
+        "text": "make",
+        "start_char": 231,
+        "end_char": 235
+      },
+      {
+        "id": "respace-original-word-45",
+        "text": "it",
+        "start_char": 236,
+        "end_char": 238
+      },
+      {
+        "id": "respace-original-word-46",
+        "text": "yours",
+        "start_char": 239,
+        "end_char": 244
+      },
+      {
+        "id": "respace-original-word-47",
+        "text": "Meet",
+        "start_char": 247,
+        "end_char": 251
+      },
+      {
+        "id": "respace-original-word-48",
+        "text": "ReSpace",
+        "start_char": 252,
+        "end_char": 259
+      },
+      {
+        "id": "respace-original-word-49",
+        "text": "Scan",
+        "start_char": 261,
+        "end_char": 265
+      },
+      {
+        "id": "respace-original-word-50",
+        "text": "your",
+        "start_char": 266,
+        "end_char": 270
+      },
+      {
+        "id": "respace-original-word-51",
+        "text": "room",
+        "start_char": 271,
+        "end_char": 275
+      },
+      {
+        "id": "respace-original-word-52",
+        "text": "choose",
+        "start_char": 277,
+        "end_char": 283
+      },
+      {
+        "id": "respace-original-word-53",
+        "text": "what",
+        "start_char": 284,
+        "end_char": 288
+      },
+      {
+        "id": "respace-original-word-54",
+        "text": "stays",
+        "start_char": 289,
+        "end_char": 294
+      },
+      {
+        "id": "respace-original-word-55",
+        "text": "and",
+        "start_char": 296,
+        "end_char": 299
+      },
+      {
+        "id": "respace-original-word-56",
+        "text": "set",
+        "start_char": 300,
+        "end_char": 303
+      },
+      {
+        "id": "respace-original-word-57",
+        "text": "a",
+        "start_char": 304,
+        "end_char": 305
+      },
+      {
+        "id": "respace-original-word-58",
+        "text": "budget",
+        "start_char": 306,
+        "end_char": 312
+      },
+      {
+        "id": "respace-original-word-59",
+        "text": "you're",
+        "start_char": 313,
+        "end_char": 319
+      },
+      {
+        "id": "respace-original-word-60",
+        "text": "comfortable",
+        "start_char": 320,
+        "end_char": 331
+      },
+      {
+        "id": "respace-original-word-61",
+        "text": "with",
+        "start_char": 332,
+        "end_char": 336
+      },
+      {
+        "id": "respace-original-word-62",
+        "text": "Tell",
+        "start_char": 338,
+        "end_char": 342
+      },
+      {
+        "id": "respace-original-word-63",
+        "text": "it",
+        "start_char": 343,
+        "end_char": 345
+      },
+      {
+        "id": "respace-original-word-64",
+        "text": "how",
+        "start_char": 346,
+        "end_char": 349
+      },
+      {
+        "id": "respace-original-word-65",
+        "text": "you",
+        "start_char": 350,
+        "end_char": 353
+      },
+      {
+        "id": "respace-original-word-66",
+        "text": "want",
+        "start_char": 354,
+        "end_char": 358
+      },
+      {
+        "id": "respace-original-word-67",
+        "text": "to",
+        "start_char": 359,
+        "end_char": 361
+      },
+      {
+        "id": "respace-original-word-68",
+        "text": "live",
+        "start_char": 362,
+        "end_char": 366
+      },
+      {
+        "id": "respace-original-word-69",
+        "text": "here",
+        "start_char": 367,
+        "end_char": 371
+      },
+      {
+        "id": "respace-original-word-70",
+        "text": "somewhere",
+        "start_char": 373,
+        "end_char": 382
+      },
+      {
+        "id": "respace-original-word-71",
+        "text": "to",
+        "start_char": 383,
+        "end_char": 385
+      },
+      {
+        "id": "respace-original-word-72",
+        "text": "concentrate",
+        "start_char": 386,
+        "end_char": 397
+      },
+      {
+        "id": "respace-original-word-73",
+        "text": "with",
+        "start_char": 399,
+        "end_char": 403
+      },
+      {
+        "id": "respace-original-word-74",
+        "text": "room",
+        "start_char": 404,
+        "end_char": 408
+      },
+      {
+        "id": "respace-original-word-75",
+        "text": "for",
+        "start_char": 409,
+        "end_char": 412
+      },
+      {
+        "id": "respace-original-word-76",
+        "text": "friends",
+        "start_char": 413,
+        "end_char": 420
+      },
+      {
+        "id": "respace-original-word-77",
+        "text": "ReSpace",
+        "start_char": 422,
+        "end_char": 429
+      },
+      {
+        "id": "respace-original-word-78",
+        "text": "creates",
+        "start_char": 430,
+        "end_char": 437
+      },
+      {
+        "id": "respace-original-word-79",
+        "text": "questions",
+        "start_char": 438,
+        "end_char": 447
+      },
+      {
+        "id": "respace-original-word-80",
+        "text": "around",
+        "start_char": 448,
+        "end_char": 454
+      },
+      {
+        "id": "respace-original-word-81",
+        "text": "your",
+        "start_char": 455,
+        "end_char": 459
+      },
+      {
+        "id": "respace-original-word-82",
+        "text": "room",
+        "start_char": 460,
+        "end_char": 464
+      },
+      {
+        "id": "respace-original-word-83",
+        "text": "and",
+        "start_char": 465,
+        "end_char": 468
+      },
+      {
+        "id": "respace-original-word-84",
+        "text": "your",
+        "start_char": 469,
+        "end_char": 473
+      },
+      {
+        "id": "respace-original-word-85",
+        "text": "goals",
+        "start_char": 474,
+        "end_char": 479
+      },
+      {
+        "id": "respace-original-word-86",
+        "text": "helping",
+        "start_char": 481,
+        "end_char": 488
+      },
+      {
+        "id": "respace-original-word-87",
+        "text": "you",
+        "start_char": 489,
+        "end_char": 492
+      },
+      {
+        "id": "respace-original-word-88",
+        "text": "work",
+        "start_char": 493,
+        "end_char": 497
+      },
+      {
+        "id": "respace-original-word-89",
+        "text": "out",
+        "start_char": 498,
+        "end_char": 501
+      },
+      {
+        "id": "respace-original-word-90",
+        "text": "the",
+        "start_char": 502,
+        "end_char": 505
+      },
+      {
+        "id": "respace-original-word-91",
+        "text": "details",
+        "start_char": 506,
+        "end_char": 513
+      },
+      {
+        "id": "respace-original-word-92",
+        "text": "Your",
+        "start_char": 515,
+        "end_char": 519
+      },
+      {
+        "id": "respace-original-word-93",
+        "text": "answers",
+        "start_char": 520,
+        "end_char": 527
+      },
+      {
+        "id": "respace-original-word-94",
+        "text": "build",
+        "start_char": 528,
+        "end_char": 533
+      },
+      {
+        "id": "respace-original-word-95",
+        "text": "a",
+        "start_char": 534,
+        "end_char": 535
+      },
+      {
+        "id": "respace-original-word-96",
+        "text": "taste",
+        "start_char": 536,
+        "end_char": 541
+      },
+      {
+        "id": "respace-original-word-97",
+        "text": "profile",
+        "start_char": 542,
+        "end_char": 549
+      },
+      {
+        "id": "respace-original-word-98",
+        "text": "the",
+        "start_char": 551,
+        "end_char": 554
+      },
+      {
+        "id": "respace-original-word-99",
+        "text": "colors",
+        "start_char": 555,
+        "end_char": 561
+      },
+      {
+        "id": "respace-original-word-100",
+        "text": "and",
+        "start_char": 562,
+        "end_char": 565
+      },
+      {
+        "id": "respace-original-word-101",
+        "text": "materials",
+        "start_char": 566,
+        "end_char": 575
+      },
+      {
+        "id": "respace-original-word-102",
+        "text": "you",
+        "start_char": 576,
+        "end_char": 579
+      },
+      {
+        "id": "respace-original-word-103",
+        "text": "like",
+        "start_char": 580,
+        "end_char": 584
+      },
+      {
+        "id": "respace-original-word-104",
+        "text": "and",
+        "start_char": 586,
+        "end_char": 589
+      },
+      {
+        "id": "respace-original-word-105",
+        "text": "how",
+        "start_char": 590,
+        "end_char": 593
+      },
+      {
+        "id": "respace-original-word-106",
+        "text": "you",
+        "start_char": 594,
+        "end_char": 597
+      },
+      {
+        "id": "respace-original-word-107",
+        "text": "want",
+        "start_char": 598,
+        "end_char": 602
+      },
+      {
+        "id": "respace-original-word-108",
+        "text": "the",
+        "start_char": 603,
+        "end_char": 606
+      },
+      {
+        "id": "respace-original-word-109",
+        "text": "room",
+        "start_char": 607,
+        "end_char": 611
+      },
+      {
+        "id": "respace-original-word-110",
+        "text": "to",
+        "start_char": 612,
+        "end_char": 614
+      },
+      {
+        "id": "respace-original-word-111",
+        "text": "feel",
+        "start_char": 615,
+        "end_char": 619
+      },
+      {
+        "id": "respace-original-word-112",
+        "text": "That",
+        "start_char": 621,
+        "end_char": 625
+      },
+      {
+        "id": "respace-original-word-113",
+        "text": "guides",
+        "start_char": 626,
+        "end_char": 632
+      },
+      {
+        "id": "respace-original-word-114",
+        "text": "a",
+        "start_char": 633,
+        "end_char": 634
+      },
+      {
+        "id": "respace-original-word-115",
+        "text": "design",
+        "start_char": 635,
+        "end_char": 641
+      },
+      {
+        "id": "respace-original-word-116",
+        "text": "with",
+        "start_char": 642,
+        "end_char": 646
+      },
+      {
+        "id": "respace-original-word-117",
+        "text": "real",
+        "start_char": 647,
+        "end_char": 651
+      },
+      {
+        "id": "respace-original-word-118",
+        "text": "products",
+        "start_char": 652,
+        "end_char": 660
+      },
+      {
+        "id": "respace-original-word-119",
+        "text": "planned",
+        "start_char": 662,
+        "end_char": 669
+      },
+      {
+        "id": "respace-original-word-120",
+        "text": "around",
+        "start_char": 670,
+        "end_char": 676
+      },
+      {
+        "id": "respace-original-word-121",
+        "text": "the",
+        "start_char": 677,
+        "end_char": 680
+      },
+      {
+        "id": "respace-original-word-122",
+        "text": "furniture",
+        "start_char": 681,
+        "end_char": 690
+      },
+      {
+        "id": "respace-original-word-123",
+        "text": "you're",
+        "start_char": 691,
+        "end_char": 697
+      },
+      {
+        "id": "respace-original-word-124",
+        "text": "keeping",
+        "start_char": 698,
+        "end_char": 705
+      },
+      {
+        "id": "respace-original-word-125",
+        "text": "Explore",
+        "start_char": 707,
+        "end_char": 714
+      },
+      {
+        "id": "respace-original-word-126",
+        "text": "a",
+        "start_char": 715,
+        "end_char": 716
+      },
+      {
+        "id": "respace-original-word-127",
+        "text": "photorealistic",
+        "start_char": 717,
+        "end_char": 731
+      },
+      {
+        "id": "respace-original-word-128",
+        "text": "version",
+        "start_char": 732,
+        "end_char": 739
+      },
+      {
+        "id": "respace-original-word-129",
+        "text": "of",
+        "start_char": 740,
+        "end_char": 742
+      },
+      {
+        "id": "respace-original-word-130",
+        "text": "your",
+        "start_char": 743,
+        "end_char": 747
+      },
+      {
+        "id": "respace-original-word-131",
+        "text": "room",
+        "start_char": 748,
+        "end_char": 752
+      },
+      {
+        "id": "respace-original-word-132",
+        "text": "before",
+        "start_char": 753,
+        "end_char": 759
+      },
+      {
+        "id": "respace-original-word-133",
+        "text": "buying",
+        "start_char": 760,
+        "end_char": 766
+      },
+      {
+        "id": "respace-original-word-134",
+        "text": "anything",
+        "start_char": 767,
+        "end_char": 775
+      },
+      {
+        "id": "respace-original-word-135",
+        "text": "Tap",
+        "start_char": 777,
+        "end_char": 780
+      },
+      {
+        "id": "respace-original-word-136",
+        "text": "a",
+        "start_char": 781,
+        "end_char": 782
+      },
+      {
+        "id": "respace-original-word-137",
+        "text": "piece",
+        "start_char": 783,
+        "end_char": 788
+      },
+      {
+        "id": "respace-original-word-138",
+        "text": "to",
+        "start_char": 789,
+        "end_char": 791
+      },
+      {
+        "id": "respace-original-word-139",
+        "text": "see",
+        "start_char": 792,
+        "end_char": 795
+      },
+      {
+        "id": "respace-original-word-140",
+        "text": "its",
+        "start_char": 796,
+        "end_char": 799
+      },
+      {
+        "id": "respace-original-word-141",
+        "text": "size",
+        "start_char": 800,
+        "end_char": 804
+      },
+      {
+        "id": "respace-original-word-142",
+        "text": "price",
+        "start_char": 806,
+        "end_char": 811
+      },
+      {
+        "id": "respace-original-word-143",
+        "text": "and",
+        "start_char": 812,
+        "end_char": 815
+      },
+      {
+        "id": "respace-original-word-144",
+        "text": "where",
+        "start_char": 816,
+        "end_char": 821
+      },
+      {
+        "id": "respace-original-word-145",
+        "text": "to",
+        "start_char": 822,
+        "end_char": 824
+      },
+      {
+        "id": "respace-original-word-146",
+        "text": "buy",
+        "start_char": 825,
+        "end_char": 828
+      },
+      {
+        "id": "respace-original-word-147",
+        "text": "it",
+        "start_char": 829,
+        "end_char": 831
+      },
+      {
+        "id": "respace-original-word-148",
+        "text": "Now",
+        "start_char": 834,
+        "end_char": 837
+      },
+      {
+        "id": "respace-original-word-149",
+        "text": "picture",
+        "start_char": 838,
+        "end_char": 845
+      },
+      {
+        "id": "respace-original-word-150",
+        "text": "a",
+        "start_char": 846,
+        "end_char": 847
+      },
+      {
+        "id": "respace-original-word-151",
+        "text": "night",
+        "start_char": 848,
+        "end_char": 853
+      },
+      {
+        "id": "respace-original-word-152",
+        "text": "here",
+        "start_char": 854,
+        "end_char": 858
+      },
+      {
+        "id": "respace-original-word-153",
+        "text": "One",
+        "start_char": 860,
+        "end_char": 863
+      },
+      {
+        "id": "respace-original-word-154",
+        "text": "more",
+        "start_char": 864,
+        "end_char": 868
+      },
+      {
+        "id": "respace-original-word-155",
+        "text": "page",
+        "start_char": 869,
+        "end_char": 873
+      },
+      {
+        "id": "respace-original-word-156",
+        "text": "One",
+        "start_char": 875,
+        "end_char": 878
+      },
+      {
+        "id": "respace-original-word-157",
+        "text": "more",
+        "start_char": 879,
+        "end_char": 883
+      },
+      {
+        "id": "respace-original-word-158",
+        "text": "game",
+        "start_char": 884,
+        "end_char": 888
+      },
+      {
+        "id": "respace-original-word-159",
+        "text": "Apparently",
+        "start_char": 890,
+        "end_char": 900
+      },
+      {
+        "id": "respace-original-word-160",
+        "text": "one",
+        "start_char": 903,
+        "end_char": 906
+      },
+      {
+        "id": "respace-original-word-161",
+        "text": "more",
+        "start_char": 907,
+        "end_char": 911
+      },
+      {
+        "id": "respace-original-word-162",
+        "text": "means",
+        "start_char": 913,
+        "end_char": 918
+      },
+      {
+        "id": "respace-original-word-163",
+        "text": "different",
+        "start_char": 919,
+        "end_char": 928
+      },
+      {
+        "id": "respace-original-word-164",
+        "text": "things",
+        "start_char": 929,
+        "end_char": 935
+      },
+      {
+        "id": "respace-original-word-165",
+        "text": "to",
+        "start_char": 936,
+        "end_char": 938
+      },
+      {
+        "id": "respace-original-word-166",
+        "text": "different",
+        "start_char": 939,
+        "end_char": 948
+      },
+      {
+        "id": "respace-original-word-167",
+        "text": "people",
+        "start_char": 949,
+        "end_char": 955
+      },
+      {
+        "id": "respace-original-word-168",
+        "text": "Need",
+        "start_char": 958,
+        "end_char": 962
+      },
+      {
+        "id": "respace-original-word-169",
+        "text": "more",
+        "start_char": 963,
+        "end_char": 967
+      },
+      {
+        "id": "respace-original-word-170",
+        "text": "room",
+        "start_char": 968,
+        "end_char": 972
+      },
+      {
+        "id": "respace-original-word-171",
+        "text": "for",
+        "start_char": 973,
+        "end_char": 976
+      },
+      {
+        "id": "respace-original-word-172",
+        "text": "your",
+        "start_char": 977,
+        "end_char": 981
+      },
+      {
+        "id": "respace-original-word-173",
+        "text": "notebook",
+        "start_char": 982,
+        "end_char": 990
+      },
+      {
+        "id": "respace-original-word-174",
+        "text": "Ask",
+        "start_char": 992,
+        "end_char": 995
+      },
+      {
+        "id": "respace-original-word-175",
+        "text": "for",
+        "start_char": 996,
+        "end_char": 999
+      },
+      {
+        "id": "respace-original-word-176",
+        "text": "a",
+        "start_char": 1000,
+        "end_char": 1001
+      },
+      {
+        "id": "respace-original-word-177",
+        "text": "smaller",
+        "start_char": 1002,
+        "end_char": 1009
+      },
+      {
+        "id": "respace-original-word-178",
+        "text": "lamp",
+        "start_char": 1010,
+        "end_char": 1014
+      },
+      {
+        "id": "respace-original-word-179",
+        "text": "and",
+        "start_char": 1016,
+        "end_char": 1019
+      },
+      {
+        "id": "respace-original-word-180",
+        "text": "explore",
+        "start_char": 1020,
+        "end_char": 1027
+      },
+      {
+        "id": "respace-original-word-181",
+        "text": "the",
+        "start_char": 1028,
+        "end_char": 1031
+      },
+      {
+        "id": "respace-original-word-182",
+        "text": "updated",
+        "start_char": 1032,
+        "end_char": 1039
+      },
+      {
+        "id": "respace-original-word-183",
+        "text": "design",
+        "start_char": 1040,
+        "end_char": 1046
+      },
+      {
+        "id": "respace-original-word-184",
+        "text": "See",
+        "start_char": 1048,
+        "end_char": 1051
+      },
+      {
+        "id": "respace-original-word-185",
+        "text": "what",
+        "start_char": 1052,
+        "end_char": 1056
+      },
+      {
+        "id": "respace-original-word-186",
+        "text": "other",
+        "start_char": 1057,
+        "end_char": 1062
+      },
+      {
+        "id": "respace-original-word-187",
+        "text": "people",
+        "start_char": 1063,
+        "end_char": 1069
+      },
+      {
+        "id": "respace-original-word-188",
+        "text": "are",
+        "start_char": 1070,
+        "end_char": 1073
+      },
+      {
+        "id": "respace-original-word-189",
+        "text": "imagining",
+        "start_char": 1074,
+        "end_char": 1083
+      },
+      {
+        "id": "respace-original-word-190",
+        "text": "for",
+        "start_char": 1084,
+        "end_char": 1087
+      },
+      {
+        "id": "respace-original-word-191",
+        "text": "their",
+        "start_char": 1088,
+        "end_char": 1093
+      },
+      {
+        "id": "respace-original-word-192",
+        "text": "rooms",
+        "start_char": 1094,
+        "end_char": 1099
+      },
+      {
+        "id": "respace-original-word-193",
+        "text": "Share",
+        "start_char": 1101,
+        "end_char": 1106
+      },
+      {
+        "id": "respace-original-word-194",
+        "text": "yours",
+        "start_char": 1107,
+        "end_char": 1112
+      },
+      {
+        "id": "respace-original-word-195",
+        "text": "and",
+        "start_char": 1114,
+        "end_char": 1117
+      },
+      {
+        "id": "respace-original-word-196",
+        "text": "give",
+        "start_char": 1118,
+        "end_char": 1122
+      },
+      {
+        "id": "respace-original-word-197",
+        "text": "someone",
+        "start_char": 1123,
+        "end_char": 1130
+      },
+      {
+        "id": "respace-original-word-198",
+        "text": "else",
+        "start_char": 1131,
+        "end_char": 1135
+      },
+      {
+        "id": "respace-original-word-199",
+        "text": "a",
+        "start_char": 1136,
+        "end_char": 1137
+      },
+      {
+        "id": "respace-original-word-200",
+        "text": "place",
+        "start_char": 1138,
+        "end_char": 1143
+      },
+      {
+        "id": "respace-original-word-201",
+        "text": "to",
+        "start_char": 1144,
+        "end_char": 1146
+      },
+      {
+        "id": "respace-original-word-202",
+        "text": "start",
+        "start_char": 1147,
+        "end_char": 1152
+      },
+      {
+        "id": "respace-original-word-203",
+        "text": "It's",
+        "start_char": 1155,
+        "end_char": 1159
+      },
+      {
+        "id": "respace-original-word-204",
+        "text": "still",
+        "start_char": 1160,
+        "end_char": 1165
+      },
+      {
+        "id": "respace-original-word-205",
+        "text": "the",
+        "start_char": 1166,
+        "end_char": 1169
+      },
+      {
+        "id": "respace-original-word-206",
+        "text": "room",
+        "start_char": 1170,
+        "end_char": 1174
+      },
+      {
+        "id": "respace-original-word-207",
+        "text": "you",
+        "start_char": 1175,
+        "end_char": 1178
+      },
+      {
+        "id": "respace-original-word-208",
+        "text": "walked",
+        "start_char": 1179,
+        "end_char": 1185
+      },
+      {
+        "id": "respace-original-word-209",
+        "text": "into",
+        "start_char": 1186,
+        "end_char": 1190
+      },
+      {
+        "id": "respace-original-word-210",
+        "text": "But",
+        "start_char": 1192,
+        "end_char": 1195
+      },
+      {
+        "id": "respace-original-word-211",
+        "text": "now",
+        "start_char": 1196,
+        "end_char": 1199
+      },
+      {
+        "id": "respace-original-word-212",
+        "text": "you",
+        "start_char": 1201,
+        "end_char": 1204
+      },
+      {
+        "id": "respace-original-word-213",
+        "text": "can",
+        "start_char": 1205,
+        "end_char": 1208
+      },
+      {
+        "id": "respace-original-word-214",
+        "text": "see",
+        "start_char": 1209,
+        "end_char": 1212
+      },
+      {
+        "id": "respace-original-word-215",
+        "text": "yourself",
+        "start_char": 1213,
+        "end_char": 1221
+      },
+      {
+        "id": "respace-original-word-216",
+        "text": "here",
+        "start_char": 1222,
+        "end_char": 1226
+      },
+      {
+        "id": "respace-original-word-217",
+        "text": "ReSpace",
+        "start_char": 1228,
+        "end_char": 1235
+      },
+      {
+        "id": "respace-original-word-218",
+        "text": "Make",
+        "start_char": 1237,
+        "end_char": 1241
+      },
+      {
+        "id": "respace-original-word-219",
+        "text": "room",
+        "start_char": 1242,
+        "end_char": 1246
+      },
+      {
+        "id": "respace-original-word-220",
+        "text": "for",
+        "start_char": 1247,
+        "end_char": 1250
+      },
+      {
+        "id": "respace-original-word-221",
+        "text": "you",
+        "start_char": 1251,
+        "end_char": 1254
+      },
+      {
+        "id": "respace-original-word-222",
+        "text": "Join",
+        "start_char": 1256,
+        "end_char": 1260
+      },
+      {
+        "id": "respace-original-word-223",
+        "text": "the",
+        "start_char": 1261,
+        "end_char": 1264
+      },
+      {
+        "id": "respace-original-word-224",
+        "text": "waitlist",
+        "start_char": 1265,
+        "end_char": 1273
+      }
+    ],
+    "beats": [
+      {
+        "id": "beat-01",
+        "start_word_id": "respace-original-word-1",
+        "end_word_id": "respace-original-word-7",
+        "start_seconds": 0,
+        "end_seconds": 4,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Opening and spatial personality",
+        "evidence_ids": [],
+        "audio": "Door latch and corridor murmur. A faint rhythmic pulse arrives after the latch; let the first sentence land."
+      },
+      {
+        "id": "beat-02",
+        "start_word_id": "respace-original-word-8",
+        "end_word_id": "respace-original-word-9",
+        "start_seconds": 4,
+        "end_seconds": 5,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Opening and spatial personality",
+        "evidence_ids": [],
+        "audio": "One soft object-like accent."
+      },
+      {
+        "id": "beat-03",
+        "start_word_id": "respace-original-word-10",
+        "end_word_id": "respace-original-word-11",
+        "start_seconds": 5,
+        "end_seconds": 6,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Opening and spatial personality",
+        "evidence_ids": [],
+        "audio": "Second accent in the same rhythm."
+      },
+      {
+        "id": "beat-04",
+        "start_word_id": "respace-original-word-12",
+        "end_word_id": "respace-original-word-13",
+        "start_seconds": 6,
+        "end_seconds": 7,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Opening and spatial personality",
+        "evidence_ids": [],
+        "audio": "Third accent, then move on. Do not add a fourth sameness shot."
+      },
+      {
+        "id": "beat-05",
+        "start_word_id": "respace-original-word-14",
+        "end_word_id": "respace-original-word-19",
+        "start_seconds": 7,
+        "end_seconds": 10,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Opening and spatial personality",
+        "evidence_ids": [],
+        "audio": "Bag landing becomes the first downbeat; a warmer melodic figure enters."
+      },
+      {
+        "id": "beat-06",
+        "start_word_id": "respace-original-word-20",
+        "end_word_id": "respace-original-word-22",
+        "start_seconds": 10,
+        "end_seconds": 13,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Opening and spatial personality",
+        "evidence_ids": [],
+        "audio": "A distinct pencil scratch becomes the study motif. The narration anticipates a late night; this shot need not be filmed at 2 a.m."
+      },
+      {
+        "id": "beat-07",
+        "start_word_id": "respace-original-word-23",
+        "end_word_id": "respace-original-word-29",
+        "start_seconds": 13,
+        "end_seconds": 16,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Opening and spatial personality",
+        "evidence_ids": [],
+        "audio": "One card taps the desk. A brief distant laugh anticipates the future gathering."
+      },
+      {
+        "id": "beat-08",
+        "start_word_id": "respace-original-word-30",
+        "end_word_id": "respace-original-word-36",
+        "start_seconds": 16,
+        "end_seconds": 19,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Opening and spatial personality",
+        "evidence_ids": [],
+        "audio": "The pulse continues beneath a longer spoken thought, without punctuating every word."
+      },
+      {
+        "id": "beat-09",
+        "start_word_id": "respace-original-word-37",
+        "end_word_id": "respace-original-word-40",
+        "start_seconds": 19,
+        "end_seconds": 21,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Opening and spatial personality",
+        "evidence_ids": [],
+        "audio": "Paper movement, followed by a small breath in the score."
+      },
+      {
+        "id": "beat-10",
+        "start_word_id": "respace-original-word-41",
+        "end_word_id": "respace-original-word-46",
+        "start_seconds": 21,
+        "end_seconds": 24,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Opening and spatial personality",
+        "evidence_ids": [],
+        "audio": "The musical phrase leaves a brief opening for the question; the match cut lands cleanly."
+      },
+      {
+        "id": "beat-11",
+        "start_word_id": "respace-original-word-47",
+        "end_word_id": "respace-original-word-48",
+        "start_seconds": 24,
+        "end_seconds": 27,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Generated questions and the room proposal",
+        "evidence_ids": [],
+        "audio": "The rhythm becomes clearer. Keep the same melodic theme across the transition."
+      },
+      {
+        "id": "beat-12",
+        "start_word_id": "respace-original-word-49",
+        "end_word_id": "respace-original-word-54",
+        "start_seconds": 27,
+        "end_seconds": 32,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Generated questions and the room proposal",
+        "evidence_ids": [],
+        "audio": "Footstep and sleeve movement flow into restrained selection sounds. No separate feature fanfare."
+      },
+      {
+        "id": "beat-13",
+        "start_word_id": "respace-original-word-55",
+        "end_word_id": "respace-original-word-61",
+        "start_seconds": 32,
+        "end_seconds": 37,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Generated questions and the room proposal",
+        "evidence_ids": [],
+        "audio": "A single confirmation accent; narration connects this constraint to the preceding action."
+      },
+      {
+        "id": "beat-14",
+        "start_word_id": "respace-original-word-62",
+        "end_word_id": "respace-original-word-69",
+        "start_seconds": 37,
+        "end_seconds": 41,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Generated questions and the room proposal",
+        "evidence_ids": [],
+        "audio": "Light typing. Keep the sentence conversational rather than timing one word to each keystroke."
+      },
+      {
+        "id": "beat-15",
+        "start_word_id": "respace-original-word-70",
+        "end_word_id": "respace-original-word-76",
+        "start_seconds": 41,
+        "end_seconds": 45,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Generated questions and the room proposal",
+        "evidence_ids": [],
+        "audio": "The pencil and laugh motifs briefly recur beneath the narration."
+      },
+      {
+        "id": "beat-16",
+        "start_word_id": "respace-original-word-77",
+        "end_word_id": "respace-original-word-85",
+        "start_seconds": 45,
+        "end_seconds": 50,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Generated questions and the room proposal",
+        "evidence_ids": [],
+        "audio": "Reduce percussion while the unfamiliar operation is explained. A quiet answer-selection cue replaces rapid cuts."
+      },
+      {
+        "id": "beat-17",
+        "start_word_id": "respace-original-word-86",
+        "end_word_id": "respace-original-word-91",
+        "start_seconds": 50,
+        "end_seconds": 54,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Generated questions and the room proposal",
+        "evidence_ids": [],
+        "audio": "One tactile selection accent. Let the answer settle before moving into generation."
+      },
+      {
+        "id": "beat-18",
+        "start_word_id": "respace-original-word-92",
+        "end_word_id": "respace-original-word-97",
+        "start_seconds": 54,
+        "end_seconds": 58,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Generated questions and the room proposal",
+        "evidence_ids": [],
+        "audio": "A short musical lift prepares the first result. Preserve a moment of anticipation."
+      },
+      {
+        "id": "beat-19",
+        "start_word_id": "respace-original-word-98",
+        "end_word_id": "respace-original-word-111",
+        "start_seconds": 58,
+        "end_seconds": 64,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Generated questions and the room proposal",
+        "evidence_ids": [],
+        "audio": "A restrained accent on the lamp, followed by a fuller musical phrase. Let the reveal hold."
+      },
+      {
+        "id": "beat-20",
+        "start_word_id": "respace-original-word-112",
+        "end_word_id": "respace-original-word-124",
+        "start_seconds": 64,
+        "end_seconds": 69,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Generated questions and the room proposal",
+        "evidence_ids": [],
+        "audio": "One precise match-cut accent. The narration explains the relationship while the picture supplies the evidence."
+      },
+      {
+        "id": "beat-21",
+        "start_word_id": "respace-original-word-125",
+        "end_word_id": "respace-original-word-134",
+        "start_seconds": 69,
+        "end_seconds": 73,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Generated questions and the room proposal",
+        "evidence_ids": [],
+        "audio": "Open the score in width and warmth; avoid a fast orbit or extra text competing with the room."
+      },
+      {
+        "id": "beat-22",
+        "start_word_id": "respace-original-word-135",
+        "end_word_id": "respace-original-word-147",
+        "start_seconds": 73,
+        "end_seconds": 80,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Generated questions and the room proposal",
+        "evidence_ids": [],
+        "audio": "A quiet card-open cue. The pencil sound begins near the end, carrying us toward the imagined room."
+      },
+      {
+        "id": "beat-23",
+        "start_word_id": "respace-original-word-148",
+        "end_word_id": "respace-original-word-152",
+        "start_seconds": 80,
+        "end_seconds": 84,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Imagined life",
+        "evidence_ids": [],
+        "audio": "Let the pencil arrive just before its source. The score steps back as the room begins to sound inhabited."
+      },
+      {
+        "id": "beat-24",
+        "start_word_id": "respace-original-word-153",
+        "end_word_id": "respace-original-word-155",
+        "start_seconds": 84,
+        "end_seconds": 91,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Imagined life",
+        "evidence_ids": [],
+        "audio": "Pencil, page movement and a breath of concentration. The lamp supports the scene without implying measured productivity gains. No narration. Let the final pencil stroke and page turn be heard."
+      },
+      {
+        "id": "beat-26",
+        "start_word_id": "respace-original-word-156",
+        "end_word_id": "respace-original-word-158",
+        "start_seconds": 91,
+        "end_seconds": 98,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Imagined life",
+        "evidence_ids": [],
+        "audio": "Page flip becomes card slap; playful percussion enters. 'One more' connects the two uses of the room. Record an unforced reaction to a small win. Leave narration out of the way."
+      },
+      {
+        "id": "beat-28",
+        "start_word_id": "respace-original-word-159",
+        "end_word_id": "respace-original-word-162",
+        "start_seconds": 98,
+        "end_seconds": 102,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Imagined life",
+        "evidence_ids": [],
+        "audio": "Bag-strap rustle and two card slaps. Let the friend notice the hand before starting the line; finish the thought over the decision to sit in the next shot."
+      },
+      {
+        "id": "beat-29",
+        "start_word_id": "respace-original-word-163",
+        "end_word_id": "respace-original-word-167",
+        "start_seconds": 102,
+        "end_seconds": 110,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Imagined life",
+        "evidence_ids": [],
+        "audio": "Finish the line as the friend sits. Use their real laugh or amused reaction instead of a staged cheer. No narration. Let laughter trail into comfortable conversation and the musical theme."
+      },
+      {
+        "id": "beat-31",
+        "start_word_id": "respace-original-word-168",
+        "end_word_id": "respace-original-word-173",
+        "start_seconds": 110,
+        "end_seconds": 114,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Refinement and community",
+        "evidence_ids": [],
+        "audio": "The imagined conversation fades back to ordinary room tone, while the musical rhythm continues."
+      },
+      {
+        "id": "beat-32",
+        "start_word_id": "respace-original-word-174",
+        "end_word_id": "respace-original-word-178",
+        "start_seconds": 114,
+        "end_seconds": 119,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Refinement and community",
+        "evidence_ids": [],
+        "audio": "Typing and one action cue. Give the request a beat before revealing its consequence."
+      },
+      {
+        "id": "beat-33",
+        "start_word_id": "respace-original-word-179",
+        "end_word_id": "respace-original-word-183",
+        "start_seconds": 119,
+        "end_seconds": 123,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Refinement and community",
+        "evidence_ids": [],
+        "audio": "One restrained accent joins request and result. Leave time for the improvement to register."
+      },
+      {
+        "id": "beat-34",
+        "start_word_id": "respace-original-word-184",
+        "end_word_id": "respace-original-word-192",
+        "start_seconds": 123,
+        "end_seconds": 128,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Refinement and community",
+        "evidence_ids": [],
+        "audio": "A gentle rhythm across the cards, using the same visual and musical language as the dorm story."
+      },
+      {
+        "id": "beat-35",
+        "start_word_id": "respace-original-word-193",
+        "end_word_id": "respace-original-word-202",
+        "start_seconds": 128,
+        "end_seconds": 162,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Refinement and community",
+        "evidence_ids": [],
+        "audio": "A light selection cue. His familiar room joins the other designs. A compact rhythmic phrase begins. Keep a clean cut point so all three supporting slots can be removed. Music and three concise action accents. No supporting voiceover written yet. Keep the rhythm continuous. A modest connection sound; no cash-register gag or fictional sales dashboard. Let the music widen for possibility, then leave space for the final human moment."
+      },
+      {
+        "id": "beat-40",
+        "start_word_id": "respace-original-word-203",
+        "end_word_id": "respace-original-word-209",
+        "start_seconds": 162,
+        "end_seconds": 166,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Return and invitation",
+        "evidence_ids": [],
+        "audio": "Original room tone returns beneath a warmer version of the opening theme."
+      },
+      {
+        "id": "beat-41",
+        "start_word_id": "respace-original-word-210",
+        "end_word_id": "respace-original-word-216",
+        "start_seconds": 166,
+        "end_seconds": 170,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Return and invitation",
+        "evidence_ids": [],
+        "audio": "Notebook tap and a soft paper flick complete the opening object rhythm."
+      },
+      {
+        "id": "beat-42",
+        "start_word_id": "respace-original-word-217",
+        "end_word_id": "respace-original-word-217",
+        "start_seconds": 170,
+        "end_seconds": 174,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Return and invitation",
+        "evidence_ids": [],
+        "audio": "Short musical resolution. Leave a breath before the invitation."
+      },
+      {
+        "id": "beat-43",
+        "start_word_id": "respace-original-word-218",
+        "end_word_id": "respace-original-word-224",
+        "start_seconds": 174,
+        "end_seconds": 180,
+        "speaker": "Narrator",
+        "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
+        "story_purpose": "Return and invitation",
+        "evidence_ids": [],
+        "audio": "Warm final chord or short original sonic signature; gentle tail. Keep the action readable to the end."
+      }
+    ]
+  },
+  "visual_tracks": {
+    "base": [
+      {
+        "id": "base-01",
+        "start_word_id": "respace-original-word-1",
+        "end_word_id": "respace-original-word-7",
+        "start_seconds": 0,
+        "end_seconds": 4,
+        "shot_ids": [
+          "shot-01"
+        ],
+        "visual_description": "00:00–00:04 · Shot 01 · The anonymous dorm — locked doorway wide",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-01",
+          "timing_trigger": "00:00–00:04; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 01 · 00:00–00:04. PICTURE / ACTION: Locked doorway wide. A bare dorm: bed left, desk right, window ahead. The student is at the threshold with a bag. Hold the whole room so its geometry can be recognized later. No opening logo. SOUND / EDIT: Door latch and corridor murmur. A faint rhythmic pulse arrives after the latch; let the first sentence land.\n\nCAPTIONS: subtitle all spoken narration by default; the Subtitles lane only marks selective emphasis. Times are proposed edit timings, not scan-speed claims.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Door latch and corridor murmur. A faint rhythmic pulse arrives after the latch; let the first sentence land.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-02",
+        "start_word_id": "respace-original-word-8",
+        "end_word_id": "respace-original-word-9",
+        "start_seconds": 4,
+        "end_seconds": 5,
+        "shot_ids": [
+          "shot-02"
+        ],
+        "visual_description": "00:04–00:05 · Shot 02 · Standard bed — precise one-second detail",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-02",
+          "timing_trigger": "00:04–00:05; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 02 · 00:04–00:05. PICTURE / ACTION: One-second detail of the standard bed, with a precise horizontal composition. SOUND / EDIT: One soft object-like accent.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "One soft object-like accent.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-03",
+        "start_word_id": "respace-original-word-10",
+        "end_word_id": "respace-original-word-11",
+        "start_seconds": 5,
+        "end_seconds": 6,
+        "shot_ids": [
+          "shot-03"
+        ],
+        "visual_description": "00:05–00:06 · Shot 03 · Standard desk — repeat the framing line",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-03",
+          "timing_trigger": "00:05–00:06; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 03 · 00:05–00:06. PICTURE / ACTION: Match the bed's framing line to the standard desk. The visual repetition is immediately clear. SOUND / EDIT: Second accent in the same rhythm.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Second accent in the same rhythm.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-04",
+        "start_word_id": "respace-original-word-12",
+        "end_word_id": "respace-original-word-13",
+        "start_seconds": 6,
+        "end_seconds": 7,
+        "shot_ids": [
+          "shot-04"
+        ],
+        "visual_description": "00:06–00:07 · Shot 04 · Blank wall — complete the three-cut rhythm",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-04",
+          "timing_trigger": "00:06–00:07; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 04 · 00:06–00:07. PICTURE / ACTION: One-second view of the blank wall. Three seconds of object cuts are enough to establish the room's anonymity. SOUND / EDIT: Third accent, then move on. Do not add a fourth sameness shot.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Third accent, then move on. Do not add a fourth sameness shot.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-05",
+        "start_word_id": "respace-original-word-14",
+        "end_word_id": "respace-original-word-19",
+        "start_seconds": 7,
+        "end_seconds": 10,
+        "shot_ids": [
+          "shot-05"
+        ],
+        "visual_description": "00:07–00:10 · Shot 05 · A particular person enters — open notebook",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-05",
+          "timing_trigger": "00:07–00:10; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 05 · 00:07–00:10. PICTURE / ACTION: The student enters and puts his open notebook on the desk. An unfinished assignment and a marginal doodle make the room belong to a particular person. SOUND / EDIT: Bag landing becomes the first downbeat; a warmer melodic figure enters.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Bag landing becomes the first downbeat; a warmer melodic figure enters.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-06",
+        "start_word_id": "respace-original-word-20",
+        "end_word_id": "respace-original-word-22",
+        "start_seconds": 10,
+        "end_seconds": 13,
+        "shot_ids": [
+          "shot-06"
+        ],
+        "visual_description": "00:10–00:13 · Shot 06 · An unfinished assignment — pencil detail",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-06",
+          "timing_trigger": "00:10–00:13; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 06 · 00:10–00:13. PICTURE / ACTION: Close on his pencil beside an unfinished line. He makes a small correction. The same notebook and hand framing will return in the imagined study scene. SOUND / EDIT: A distinct pencil scratch becomes the study motif. The narration anticipates a late night; this shot need not be filmed at 2 a.m.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "A distinct pencil scratch becomes the study motif. The narration anticipates a late night; this shot need not be filmed at 2 a.m.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-07",
+        "start_word_id": "respace-original-word-23",
+        "end_word_id": "respace-original-word-29",
+        "start_seconds": 13,
+        "end_seconds": 16,
+        "shot_ids": [
+          "shot-07"
+        ],
+        "visual_description": "00:13–00:16 · Shot 07 · The friends and the game — photograph and cards",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-07",
+          "timing_trigger": "00:13–00:16; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 07 · 00:13–00:16. PICTURE / ACTION: A loose photograph of the student with the same two friends who appear later. A deck of cards comes out of his bag beside it. Establish the people and the activity together. SOUND / EDIT: One card taps the desk. A brief distant laugh anticipates the future gathering.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "One card taps the desk. A brief distant laugh anticipates the future gathering.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-08",
+        "start_word_id": "respace-original-word-30",
+        "end_word_id": "respace-original-word-36",
+        "start_seconds": 16,
+        "end_seconds": 19,
+        "shot_ids": [
+          "shot-08"
+        ],
+        "visual_description": "00:16–00:19 · Shot 08 · Try the photograph against the wall",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-08",
+          "timing_trigger": "00:16–00:19; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 08 · 00:16–00:19. PICTURE / ACTION: Medium at the desk. He tries the photograph against the wall, then lowers it. Keep the performance curious and undecided. SOUND / EDIT: The pulse continues beneath a longer spoken thought, without punctuating every word.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "The pulse continues beneath a longer spoken thought, without punctuating every word.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-09",
+        "start_word_id": "respace-original-word-37",
+        "end_word_id": "respace-original-word-40",
+        "start_seconds": 19,
+        "end_seconds": 21,
+        "shot_ids": [
+          "shot-09"
+        ],
+        "visual_description": "00:19–00:21 · Shot 09 · Tuck the photograph into the notebook",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-09",
+          "timing_trigger": "00:19–00:21; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 09 · 00:19–00:21. PICTURE / ACTION: He tucks the loose photograph into the notebook. The desk and wall remain largely empty. This unfinished gesture will be completed at the end. SOUND / EDIT: Paper movement, followed by a small breath in the score.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Paper movement, followed by a small breath in the score.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-10",
+        "start_word_id": "respace-original-word-41",
+        "end_word_id": "respace-original-word-46",
+        "start_seconds": 21,
+        "end_seconds": 24,
+        "shot_ids": [
+          "shot-10"
+        ],
+        "visual_description": "00:21–00:24 · Shot 10 · Room to phone — the question that introduces ReSpace",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-10",
+          "timing_trigger": "00:21–00:24; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 10 · 00:21–00:24. PICTURE / ACTION: His eye moves from the room to his phone. Match the vertical doorframe to the phone edge. The question is now how this specific room can support the life just introduced. SOUND / EDIT: The musical phrase leaves a brief opening for the question; the match cut lands cleanly.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "The musical phrase leaves a brief opening for the question; the match cut lands cleanly.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-11",
+        "start_word_id": "respace-original-word-47",
+        "end_word_id": "respace-original-word-48",
+        "start_seconds": 24,
+        "end_seconds": 27,
+        "shot_ids": [
+          "shot-11"
+        ],
+        "visual_description": "00:24–00:27 · Shot 11 · Meet ReSpace — actual app over his shoulder",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-11",
+          "timing_trigger": "00:24–00:27; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 11 · 00:24–00:27. PICTURE / ACTION: Over his shoulder, show ReSpace in the actual app, with a strip of the real dorm and his hand still visible. The introduction immediately leads into an action. SOUND / EDIT: The rhythm becomes clearer. Keep the same melodic theme across the transition.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "The rhythm becomes clearer. Keep the same melodic theme across the transition.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-12",
+        "start_word_id": "respace-original-word-49",
+        "end_word_id": "respace-original-word-54",
+        "start_seconds": 27,
+        "end_seconds": 32,
+        "shot_ids": [
+          "shot-12"
+        ],
+        "visual_description": "00:27–00:32 · Shot 12 · Scan the room and Keep the bed and desk",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-12",
+          "timing_trigger": "00:27–00:32; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 12 · 00:27–00:32. PICTURE / ACTION: One smooth live-action scan gesture, followed by a readable measured-room view. Select Keep for the existing bed and desk. Use an obvious edit between capture stages so the film does not present five seconds as scan duration. SOUND / EDIT: Footstep and sleeve movement flow into restrained selection sounds. No separate feature fanfare.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Footstep and sleeve movement flow into restrained selection sounds. No separate feature fanfare.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-13",
+        "start_word_id": "respace-original-word-55",
+        "end_word_id": "respace-original-word-61",
+        "start_seconds": 32,
+        "end_seconds": 37,
+        "shot_ids": [
+          "shot-13"
+        ],
+        "visual_description": "00:32–00:37 · Shot 13 · Set a comfortable budget — hold the actual amount",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-13",
+          "timing_trigger": "00:32–00:37; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 13 · 00:32–00:37. PICTURE / ACTION: Hold the real budget input after he sets it. Use the amount from the recorded design session, with the same amount and products throughout the film. SOUND / EDIT: A single confirmation accent; narration connects this constraint to the preceding action.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "A single confirmation accent; narration connects this constraint to the preceding action.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-14",
+        "start_word_id": "respace-original-word-62",
+        "end_word_id": "respace-original-word-69",
+        "start_seconds": 37,
+        "end_seconds": 41,
+        "shot_ids": [
+          "shot-14"
+        ],
+        "visual_description": "00:37–00:41 · Shot 14 · Tell ReSpace how he wants to live here",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-14",
+          "timing_trigger": "00:37–00:41; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 14 · 00:37–00:41. PICTURE / ACTION: Actual intent entry. He types the first part of a short goal about a warm dorm for studying and having two friends over. SOUND / EDIT: Light typing. Keep the sentence conversational rather than timing one word to each keystroke.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Light typing. Keep the sentence conversational rather than timing one word to each keystroke.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-15",
+        "start_word_id": "respace-original-word-70",
+        "end_word_id": "respace-original-word-76",
+        "start_seconds": 41,
+        "end_seconds": 45,
+        "shot_ids": [
+          "shot-15"
+        ],
+        "visual_description": "00:41–00:45 · Shot 15 · Hold the goal: study space and two friends",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-15",
+          "timing_trigger": "00:41–00:45; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 15 · 00:41–00:45. PICTURE / ACTION: Finish and hold the goal. Briefly include his notebook and photograph at the edge of the composition, connecting the request to the opening. The app should not re-ask facts already supplied. SOUND / EDIT: The pencil and laugh motifs briefly recur beneath the narration.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "The pencil and laugh motifs briefly recur beneath the narration.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-16",
+        "start_word_id": "respace-original-word-77",
+        "end_word_id": "respace-original-word-85",
+        "start_seconds": 45,
+        "end_seconds": 50,
+        "shot_ids": [
+          "shot-16"
+        ],
+        "visual_description": "00:45–00:50 · Shot 16 · A generated question clarifies a useful detail",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-16",
+          "timing_trigger": "00:45–00:50; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 16 · 00:45–00:50. PICTURE / ACTION: Hold one actual generated question that goes beyond his supplied goal. Choose a session that clarifies a useful detail, such as when he studies or which aspect of the study area matters most. Keep the relevant question and answer large enough to read. SOUND / EDIT: Reduce percussion while the unfamiliar operation is explained. A quiet answer-selection cue replaces rapid cuts.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Reduce percussion while the unfamiliar operation is explained. A quiet answer-selection cue replaces rapid cuts.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-17",
+        "start_word_id": "respace-original-word-86",
+        "end_word_id": "respace-original-word-91",
+        "start_seconds": 50,
+        "end_seconds": 54,
+        "shot_ids": [
+          "shot-17"
+        ],
+        "visual_description": "00:50–00:54 · Shot 17 · Choose a visual preference that appears in the result",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-17",
+          "timing_trigger": "00:50–00:54; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 17 · 00:50–00:54. PICTURE / ACTION: Show a second actual generated question about visual preferences. He selects a warm palette or natural material that will be identifiable in the result. Choose from questions the app really returns; no invented branching animation. SOUND / EDIT: One tactile selection accent. Let the answer settle before moving into generation.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "One tactile selection accent. Let the answer settle before moving into generation.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-18",
+        "start_word_id": "respace-original-word-92",
+        "end_word_id": "respace-original-word-97",
+        "start_seconds": 54,
+        "end_seconds": 58,
+        "shot_ids": [
+          "shot-18"
+        ],
+        "visual_description": "00:54–00:58 · Shot 18 · Answers become a taste profile — honest processing edit",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-18",
+          "timing_trigger": "00:54–00:58; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 18 · 00:54–00:58. PICTURE / ACTION: The selected answer remains briefly visible, then an actual planning/progress state. Use a clear editorial transition across processing. Carry its color into the proposal; an invented taste-profile dashboard is unnecessary. SOUND / EDIT: A short musical lift prepares the first result. Preserve a moment of anticipation.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "A short musical lift prepares the first result. Preserve a moment of anticipation.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-19",
+        "start_word_id": "respace-original-word-98",
+        "end_word_id": "respace-original-word-111",
+        "start_seconds": 58,
+        "end_seconds": 64,
+        "shot_ids": [
+          "shot-19"
+        ],
+        "visual_description": "00:58–01:04 · Shot 19 · First complete proposal — lamp and selected materials",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-19",
+          "timing_trigger": "00:58–01:04; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 19 · 00:58–01:04. PICTURE / ACTION: First complete proposal at 00:58, clearly inside the app. Keep the bed, desk and window in their established positions. Start on the study lamp, then reveal the selected warm materials across the room. The viewer can connect two earlier choices with two visible consequences. SOUND / EDIT: A restrained accent on the lamp, followed by a fuller musical phrase. Let the reveal hold.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "A restrained accent on the lamp, followed by a fuller musical phrase. Let the reveal hold.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-20",
+        "start_word_id": "respace-original-word-112",
+        "end_word_id": "respace-original-word-124",
+        "start_seconds": 64,
+        "end_seconds": 69,
+        "shot_ids": [
+          "shot-20"
+        ],
+        "visual_description": "01:04–01:09 · Shot 20 · A real product joins the furniture he is keeping",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-20",
+          "timing_trigger": "01:04–01:09; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 20 · 01:04–01:09. PICTURE / ACTION: Trace the lamp from its actual product image to its position in the proposed room, then include the kept desk and bed in the same composition. The real product and existing furniture are visibly part of one design. SOUND / EDIT: One precise match-cut accent. The narration explains the relationship while the picture supplies the evidence.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "One precise match-cut accent. The narration explains the relationship while the picture supplies the evidence.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-21",
+        "start_word_id": "respace-original-word-125",
+        "end_word_id": "respace-original-word-134",
+        "start_seconds": 69,
+        "end_seconds": 73,
+        "shot_ids": [
+          "shot-21"
+        ],
+        "visual_description": "01:09–01:13 · Shot 21 · Explore the photorealistic proposed room",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-21",
+          "timing_trigger": "01:09–01:13; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 21 · 01:09–01:13. PICTURE / ACTION: Controlled exploration inside the actual photorealistic room view. Preserve the window and desk as orientation points. Keep a small Proposed design identifier. SOUND / EDIT: Open the score in width and warmth; avoid a fast orbit or extra text competing with the room.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Open the score in width and warmth; avoid a fast orbit or extra text competing with the room.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-22",
+        "start_word_id": "respace-original-word-135",
+        "end_word_id": "respace-original-word-147",
+        "start_seconds": 73,
+        "end_seconds": 80,
+        "shot_ids": [
+          "shot-22"
+        ],
+        "visual_description": "01:13–01:20 · Shot 22 · Read the lamp card: size, price and merchant",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-22",
+          "timing_trigger": "01:13–01:20; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 22 · 01:13–01:20. PICTURE / ACTION: Hold the lamp's real Product card for seven seconds. Direct attention in spoken order to its size, actual price and merchant link with restrained crops or emphasis. Do not navigate away before the viewer can read it. SOUND / EDIT: A quiet card-open cue. The pencil sound begins near the end, carrying us toward the imagined room.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "A quiet card-open cue. The pencil sound begins near the end, carrying us toward the imagined room.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-23",
+        "start_word_id": "respace-original-word-148",
+        "end_word_id": "respace-original-word-152",
+        "start_seconds": 80,
+        "end_seconds": 84,
+        "shot_ids": [
+          "shot-23"
+        ],
+        "visual_description": "01:20–01:24 · Shot 23 · Enter the explicitly imagined future",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-23",
+          "timing_trigger": "01:20–01:24; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 23 · 01:20–01:24. PICTURE / ACTION: Match the lamp image to the same lamp in a locked future-room composite. Introduce an Imagined future identifier and retain it through the sequence. Actors and activities are editorial imagination, separate from the room-only app result. SOUND / EDIT: Let the pencil arrive just before its source. The score steps back as the room begins to sound inhabited.\n\nCOMPOSITING: Keep the physical bed, desk, chair and room architecture. Record locked clean plates with matched focus, exposure and white balance. Actors and all contact surfaces/shadows remain real. Added furnishings must come from the actual design; never buy or physically dress the room for this film. Keep digital rugs away from actors' feet, or omit them.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Let the pencil arrive just before its source. The score steps back as the room begins to sound inhabited.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-24",
+        "start_word_id": "respace-original-word-153",
+        "end_word_id": "respace-original-word-155",
+        "start_seconds": 84,
+        "end_seconds": 91,
+        "shot_ids": [
+          "shot-24",
+          "shot-25"
+        ],
+        "visual_description": "01:24–01:31 · Shot 24–25 · Study at the existing desk; finish the opening assignment",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-24",
+          "timing_trigger": "01:24–01:31; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 24 · 01:24–01:28. PICTURE / ACTION: He studies at the existing real desk and chair, with the proposed task lamp beside the notebook. Repeat the chosen warm materials. Actor, hands, desk and contact shadows remain real. SOUND / EDIT: Pencil, page movement and a breath of concentration. The lamp supports the scene without implying measured productivity gains.\n\nSHOT 25 · 01:28–01:31. PICTURE / ACTION: Repeat the opening notebook composition. He finishes the line left unfinished earlier, then turns the page. Keep the small satisfaction in his hands and expression. SOUND / EDIT: No narration. Let the final pencil stroke and page turn be heard. VO: silent; leave room for the performance and sound.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Pencil, page movement and a breath of concentration. The lamp supports the scene without implying measured productivity gains. No narration. Let the final pencil stroke and page turn be heard.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-26",
+        "start_word_id": "respace-original-word-156",
+        "end_word_id": "respace-original-word-158",
+        "start_seconds": 91,
+        "end_seconds": 98,
+        "shot_ids": [
+          "shot-26",
+          "shot-27"
+        ],
+        "visual_description": "01:31–01:38 · Shot 26–27 · Page becomes cards; reveal the two friends on the real bed",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-26",
+          "timing_trigger": "01:31–01:38; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 26 · 01:31–01:34. PICTURE / ACTION: Match the turning page to cards being dealt on the existing bed. The same two friends from the photograph are introduced through their hands. SOUND / EDIT: Page flip becomes card slap; playful percussion enters. 'One more' connects the two uses of the room.\n\nSHOT 27 · 01:34–01:38. PICTURE / ACTION: Crop from the locked wide. Two friends sit on the existing bed; the host turns the existing desk chair toward them. The selected warm palette remains visible and the route past them stays clear. SOUND / EDIT: Record an unforced reaction to a small win. Leave narration out of the way. VO: silent; leave room for the performance and sound.\n\nCAPTURE PLAN: Film shots 27–30 as one continuous locked-wide performance, crop for the first beat, and use a second fixed angle only if needed. Mark an unobstructed standing area for the departing friend. Preserve spontaneous reactions. The friends appear only in this editorial imagined future, never as generated people in the app.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Page flip becomes card slap; playful percussion enters. 'One more' connects the two uses of the room. Record an unforced reaction to a small win. Leave narration out of the way.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-28",
+        "start_word_id": "respace-original-word-159",
+        "end_word_id": "respace-original-word-162",
+        "start_seconds": 98,
+        "end_seconds": 102,
+        "shot_ids": [
+          "shot-28"
+        ],
+        "visual_description": "01:38–01:42 · Shot 28 · The friend picks up a backpack — another hand is dealt",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-28",
+          "timing_trigger": "01:38–01:42; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 28 · 01:38–01:42. PICTURE / ACTION: One friend stands and picks up a backpack. Without making a speech, the host deals that friend another hand onto the bed. The friend notices and pauses. SOUND / EDIT: Bag-strap rustle and two card slaps. Let the friend notice the hand before starting the line; finish the thought over the decision to sit in the next shot.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Bag-strap rustle and two card slaps. Let the friend notice the hand before starting the line; finish the thought over the decision to sit in the next shot.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-29",
+        "start_word_id": "respace-original-word-163",
+        "end_word_id": "respace-original-word-167",
+        "start_seconds": 102,
+        "end_seconds": 110,
+        "shot_ids": [
+          "shot-29",
+          "shot-30"
+        ],
+        "visual_description": "01:42–01:50 · Shot 29–30 · The friend sits again; let the room and laughter breathe",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-29",
+          "timing_trigger": "01:42–01:50; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 29 · 01:42–01:46. PICTURE / ACTION: The friend puts the backpack down and sits back on the bed. A look between the three people supplies the joke; the photograph is not needed here. SOUND / EDIT: Finish the line as the friend sits. Use their real laugh or amused reaction instead of a staged cheer.\n\nSHOT 30 · 01:46–01:50. PICTURE / ACTION: Hold the full room wide. People, study desk and personal choices are legible together. The space supports both activities introduced before ReSpace appeared. SOUND / EDIT: No narration. Let laughter trail into comfortable conversation and the musical theme. VO: silent; leave room for the performance and sound.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Finish the line as the friend sits. Use their real laugh or amused reaction instead of a staged cheer. No narration. Let laughter trail into comfortable conversation and the musical theme.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-31",
+        "start_word_id": "respace-original-word-168",
+        "end_word_id": "respace-original-word-173",
+        "start_seconds": 110,
+        "end_seconds": 114,
+        "shot_ids": [
+          "shot-31"
+        ],
+        "visual_description": "01:50–01:54 · Shot 31 · Back in the real dorm — the notebook needs more room",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-31",
+          "timing_trigger": "01:50–01:54; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 31 · 01:50–01:54. PICTURE / ACTION: Match the host's glance to the real barren dorm. His phone shows the proposal without people. He compares the proposed lamp footprint with the notebook space he wants at the real desk. SOUND / EDIT: The imagined conversation fades back to ordinary room tone, while the musical rhythm continues.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "The imagined conversation fades back to ordinary room tone, while the musical rhythm continues.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-32",
+        "start_word_id": "respace-original-word-174",
+        "end_word_id": "respace-original-word-178",
+        "start_seconds": 114,
+        "end_seconds": 119,
+        "shot_ids": [
+          "shot-32"
+        ],
+        "visual_description": "01:54–01:59 · Shot 32 · Ask for a smaller lamp in warm wood",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-32",
+          "timing_trigger": "01:54–01:59; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 32 · 01:54–01:59. PICTURE / ACTION: Type a specific request such as Try a smaller lamp in warm wood. Hold the request, then show a brief real processing state. The material retains his earlier preference while the footprint changes. SOUND / EDIT: Typing and one action cue. Give the request a beat before revealing its consequence.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Typing and one action cue. Give the request a beat before revealing its consequence.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-33",
+        "start_word_id": "respace-original-word-179",
+        "end_word_id": "respace-original-word-183",
+        "start_seconds": 119,
+        "end_seconds": 123,
+        "shot_ids": [
+          "shot-33"
+        ],
+        "visual_description": "01:59–02:03 · Shot 33 · Inspect the smaller lamp and clearer desktop",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-33",
+          "timing_trigger": "01:59–02:03; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 33 · 01:59–02:03. PICTURE / ACTION: Hold the updated design with the smaller lamp and more clear desktop beside it. Keep camera angle and surrounding elements consistent so the change is inspectable. SOUND / EDIT: One restrained accent joins request and result. Leave time for the improvement to register.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "One restrained accent joins request and result. Leave time for the improvement to register.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-34",
+        "start_word_id": "respace-original-word-184",
+        "end_word_id": "respace-original-word-192",
+        "start_seconds": 123,
+        "end_seconds": 128,
+        "shot_ids": [
+          "shot-34"
+        ],
+        "visual_description": "02:03–02:08 · Shot 34 · Explore other people's proposed rooms",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-34",
+          "timing_trigger": "02:03–02:08; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 34 · 02:03–02:08. PICTURE / ACTION: Actual community view with two or three distinct room proposals. Give each enough space to see how its owner used the room; avoid decorative engagement counters. SOUND / EDIT: A gentle rhythm across the cards, using the same visual and musical language as the dorm story.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "A gentle rhythm across the cards, using the same visual and musical language as the dorm story.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-35",
+        "start_word_id": "respace-original-word-193",
+        "end_word_id": "respace-original-word-202",
+        "start_seconds": 128,
+        "end_seconds": 162,
+        "shot_ids": [
+          "shot-35",
+          "shot-36",
+          "shot-37",
+          "shot-38",
+          "shot-39"
+        ],
+        "visual_description": "02:08–02:42 · Shot 35–39 · Share the proposal; then three reserved eight-second pitch ideas",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-35",
+          "timing_trigger": "02:08–02:42; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 35 · 02:08–02:14. PICTURE / ACTION: Prepare his community post with a caption such as First plan for my dorm. Show a preview clearly identified as a proposed design; there is no need to publish during filming. SOUND / EDIT: A light selection cue. His familiar room joins the other designs.\n\nSHOT 36 · 02:14–02:18. PICTURE / ACTION: Bring his room tile forward again. Match its window or desk edge to a simplified room diagram for the supporting passage. SOUND / EDIT: A compact rhythmic phrase begins. Keep a clean cut point so all three supporting slots can be removed. VO: silent; leave room for the performance and sound.\n\nSHOT 37 · 02:18–02:26. PICTURE / ACTION: TECHNICAL SLOT — general direction only. The same room passes through three visible layers: measured structure, a proposed arrangement, a fit check. Suggested large labels: Measure / Plan / Check. See the brainstorming notes below. SOUND / EDIT: Music and three concise action accents. No supporting voiceover written yet. VO: silent; leave room for the performance and sound. BRAINSTORM ONLY: Make the same room briefly explain itself: Measure / Plan / Check. Measured structure becomes a proposed arrangement and a visible fit check. Optional small technical labels: RoomPlan/LiDAR and Perceptron for measurement/perception, Gemini for relationships, placement solver for geometry checks. Keep the recognizable dorm underneath. An alternative follows the same lamp's available space, real dimensions and placement. Use a research-informed caption only when tied to an actual planning rule. No finished VO.\n\nSHOT 38 · 02:26–02:34. PICTURE / ACTION: BUSINESS SLOT — general direction only. Follow the same lamp from its Product card to a retailer link; a small graphic branch indicates affiliate revenue supporting a generous free experience. See notes below. SOUND / EDIT: Keep the rhythm continuous. A modest connection sound; no cash-register gag or fictional sales dashboard. VO: silent; leave room for the performance and sound. BRAINSTORM ONLY: Follow the familiar lamp's purchase link: Generous free tier → Relevant product links → Affiliate revenue. This is the intended business model, not earned revenue or signed partnerships. No fictional sales, commission rates or conversions. Purchasing furniture is not required to explore a design. No finished VO.\n\nSHOT 39 · 02:34–02:42. PICTURE / ACTION: FUTURE SLOT — general direction only. The dorm's floor outline expands into a multi-room home, then a small café plan. Clearly label this as Future direction. Return through a doorway shape to our original dorm. SOUND / EDIT: Let the music widen for possibility, then leave space for the final human moment. VO: silent; leave room for the performance and sound. BRAINSTORM ONLY: Expand the dorm outline into a multi-room home, then a small café. Label Future direction; give each place one beat and return through a doorway shape to the actual dorm. No delivery date. No finished VO.\n\nEDIT OPTION: Shots 37–39 reserve 24 seconds; there is no spoken placeholder. Remove them together for the 02:36 story cut. Traction is omitted. The three directions remain brainstorms, not completed technical/business narration.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "A light selection cue. His familiar room joins the other designs. A compact rhythmic phrase begins. Keep a clean cut point so all three supporting slots can be removed. Music and three concise action accents. No supporting voiceover written yet. Keep the rhythm continuous. A modest connection sound; no cash-register gag or fictional sales dashboard. Let the music widen for possibility, then leave space for the final human moment.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-40",
+        "start_word_id": "respace-original-word-203",
+        "end_word_id": "respace-original-word-209",
+        "start_seconds": 162,
+        "end_seconds": 166,
+        "shot_ids": [
+          "shot-40"
+        ],
+        "visual_description": "02:42–02:46 · Shot 40 · Return to the exact original room with a saved proposal",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-40",
+          "timing_trigger": "02:42–02:46; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 40 · 02:42–02:46. PICTURE / ACTION: Exact opening wide. The dorm is still barren; he has the saved proposal open on his phone. Keep both the unchanged physical room and the concrete plan visible. SOUND / EDIT: Original room tone returns beneath a warmer version of the opening theme.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Original room tone returns beneath a warmer version of the opening theme.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-41",
+        "start_word_id": "respace-original-word-210",
+        "end_word_id": "respace-original-word-216",
+        "start_seconds": 166,
+        "end_seconds": 170,
+        "shot_ids": [
+          "shot-41"
+        ],
+        "visual_description": "02:46–02:50 · Shot 41 · Finally display the photograph beside the proposed room",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-41",
+          "timing_trigger": "02:46–02:50; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 41 · 02:46–02:50. PICTURE / ACTION: He takes the photograph from the notebook and props it against the notebook on the desk. The phone beside it still shows the proposed room. This small action begins a larger plan. SOUND / EDIT: Notebook tap and a soft paper flick complete the opening object rhythm.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Notebook tap and a soft paper flick complete the opening object rhythm.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-42",
+        "start_word_id": "respace-original-word-217",
+        "end_word_id": "respace-original-word-217",
+        "start_seconds": 170,
+        "end_seconds": 174,
+        "shot_ids": [
+          "shot-42"
+        ],
+        "visual_description": "02:50–02:54 · Shot 42 · Photograph and proposal together — transition to wordmark",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-42",
+          "timing_trigger": "02:50–02:54; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 42 · 02:50–02:54. PICTURE / ACTION: Hold his expression, then the photograph and saved proposal together. A restrained line from the doorway begins the transition to the wordmark. SOUND / EDIT: Short musical resolution. Leave a breath before the invitation.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Short musical resolution. Leave a breath before the invitation.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      },
+      {
+        "id": "base-43",
+        "start_word_id": "respace-original-word-218",
+        "end_word_id": "respace-original-word-224",
+        "start_seconds": 174,
+        "end_seconds": 180,
+        "shot_ids": [
+          "shot-43"
+        ],
+        "visual_description": "02:54–03:00 · Shot 43 · ReSpace / Make room for you. / Join the waitlist.",
+        "visual_type": "recording",
+        "contributors": [],
+        "framing": "16:9 landscape; follow the specific shot directions.",
+        "recording_requirement": {
+          "id": "capture-43",
+          "timing_trigger": "02:54–03:00; the written shot times govern silent holds.",
+          "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
+          "device_orientation": "Landscape 16:9 master, 1920×1080.",
+          "framing": "Preserve the established doorway, window, bed and desk geography.",
+          "exact_action": "SHOT 43 · 02:54–03:00. PICTURE / ACTION: Clean brand end card: ReSpace / Make room for you. / Join the waitlist. Use the approved waitlist destination in the accompanying post; add a short URL on screen only when supplied. SOUND / EDIT: Warm final chord or short original sonic signature; gentle tail. Keep the action readable to the end.\n\nDELIVERY: Hold the CTA to the end. Waitlist destination and final brand assets are still to be supplied; do not invent a URL. Master is 1920×1080 landscape.",
+          "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
+          "natural_audio": "Warm final chord or short original sonic signature; gentle tail. Keep the action readable to the end.",
+          "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
+          "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
+          "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal."
+        }
+      }
+    ],
+    "overlay_1": [
+      {
+        "id": "overlay-1-01",
+        "start_word_id": "respace-original-word-49",
+        "end_word_id": "respace-original-word-54",
+        "start_seconds": 27,
+        "end_seconds": 32,
+        "visual_description": "00:27–00:32 · Subtle emphasis on the actual Keep controls for the bed and desk.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-1-02",
+        "start_word_id": "respace-original-word-77",
+        "end_word_id": "respace-original-word-91",
+        "start_seconds": 45,
+        "end_seconds": 54,
+        "visual_description": "00:45–00:54 · Emphasize the actual generated question and chosen answer; do not invent branching or a profile dashboard.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-1-03",
+        "start_word_id": "respace-original-word-98",
+        "end_word_id": "respace-original-word-134",
+        "start_seconds": 58,
+        "end_seconds": 73,
+        "visual_description": "00:58–01:13 · Small ‘Proposed design’ identifier; keep the lamp, materials and room readable.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-1-04",
+        "start_word_id": "respace-original-word-135",
+        "end_word_id": "respace-original-word-147",
+        "start_seconds": 73,
+        "end_seconds": 80,
+        "visual_description": "01:13–01:20 · Emphasize size → actual price → merchant link in spoken order; hold the same real Product card.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-1-05",
+        "start_word_id": "respace-original-word-148",
+        "end_word_id": "respace-original-word-167",
+        "start_seconds": 80,
+        "end_seconds": 110,
+        "visual_description": "01:20–01:50 · Retain ‘Imagined future’ throughout the acted sequence. These people are editorial imagination.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-1-06",
+        "start_word_id": "respace-original-word-179",
+        "end_word_id": "respace-original-word-183",
+        "start_seconds": 119,
+        "end_seconds": 123,
+        "visual_description": "01:59–02:03 · Restrained emphasis on the smaller lamp and newly clear desktop; no unrelated changes.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-1-07",
+        "start_word_id": "respace-original-word-193",
+        "end_word_id": "respace-original-word-202",
+        "start_seconds": 128,
+        "end_seconds": 134,
+        "visual_description": "02:08–02:14 · Post preview: ‘First plan for my dorm.’ Clearly identify it as a proposed design; do not publish.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-1-08",
+        "start_word_id": "respace-original-word-218",
+        "end_word_id": "respace-original-word-224",
+        "start_seconds": 174,
+        "end_seconds": 180,
+        "visual_description": "02:54–03:00 · End-card text: ReSpace / Make room for you. / Join the waitlist. Add a URL only when supplied.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      }
+    ],
+    "overlay_2": [
+      {
+        "id": "overlay-2-01",
+        "start_word_id": "respace-original-word-41",
+        "end_word_id": "respace-original-word-48",
+        "start_seconds": 21,
+        "end_seconds": 27,
+        "visual_description": "00:21–00:27 · Match doorframe to phone edge; retain the same musical theme into the actual app.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-2-02",
+        "start_word_id": "respace-original-word-92",
+        "end_word_id": "respace-original-word-111",
+        "start_seconds": 54,
+        "end_seconds": 64,
+        "visual_description": "00:54–01:04 · Visible editorial transition across processing; carry the selected color into the proposal.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-2-03",
+        "start_word_id": "respace-original-word-112",
+        "end_word_id": "respace-original-word-124",
+        "start_seconds": 64,
+        "end_seconds": 69,
+        "visual_description": "01:04–01:09 · Precise product-image → placed-lamp match; keep the real desk and bed in the same design.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-2-04",
+        "start_word_id": "respace-original-word-135",
+        "end_word_id": "respace-original-word-152",
+        "start_seconds": 73,
+        "end_seconds": 84,
+        "visual_description": "01:13–01:24 · Match the Product-card lamp to the future-room composite; pencil sound arrives before its source.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-2-05",
+        "start_word_id": "respace-original-word-156",
+        "end_word_id": "respace-original-word-158",
+        "start_seconds": 91,
+        "end_seconds": 94,
+        "visual_description": "01:31–01:34 · Page-turn → card-deal match cut. Use real page and card sounds to join study and friends.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-2-06",
+        "start_word_id": "respace-original-word-168",
+        "end_word_id": "respace-original-word-173",
+        "start_seconds": 110,
+        "end_seconds": 114,
+        "visual_description": "01:50–01:54 · Match the host's glance back to the barren room and the room-only proposal on the phone.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-2-07",
+        "start_word_id": "respace-original-word-193",
+        "end_word_id": "respace-original-word-202",
+        "start_seconds": 134,
+        "end_seconds": 162,
+        "visual_description": "02:14–02:42 · SILENT 02:14–02:42: tile → room diagram; Measure / Plan / Check → affiliate branch → Future direction: home, café.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      },
+      {
+        "id": "overlay-2-08",
+        "start_word_id": "respace-original-word-217",
+        "end_word_id": "respace-original-word-224",
+        "start_seconds": 170,
+        "end_seconds": 180,
+        "visual_description": "02:50–03:00 · A restrained doorway line resolves into the wordmark and final CTA; hold to the end.",
+        "visual_type": "general-asset",
+        "contributors": [],
+        "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
+        "recording_requirement": null
+      }
+    ]
+  },
+  "subtitle_directives": [
+    {
+      "id": "subtitle-01",
+      "start_word_id": "respace-original-word-7",
+      "end_word_id": "respace-original-word-7",
+      "mode": "emphasis",
+      "color": "warm off-white with a subtle warm accent",
+      "animation": "small emphasis only; no bouncing text",
+      "location": "lower safe area, clear of app controls and people"
+    },
+    {
+      "id": "subtitle-02",
+      "start_word_id": "respace-original-word-46",
+      "end_word_id": "respace-original-word-46",
+      "mode": "emphasis",
+      "color": "warm off-white with a subtle warm accent",
+      "animation": "small emphasis only; no bouncing text",
+      "location": "lower safe area, clear of app controls and people"
+    },
+    {
+      "id": "subtitle-03",
+      "start_word_id": "respace-original-word-96",
+      "end_word_id": "respace-original-word-97",
+      "mode": "emphasis",
+      "color": "warm off-white with a subtle warm accent",
+      "animation": "small emphasis only; no bouncing text",
+      "location": "lower safe area, clear of app controls and people"
+    },
+    {
+      "id": "subtitle-04",
+      "start_word_id": "respace-original-word-117",
+      "end_word_id": "respace-original-word-118",
+      "mode": "emphasis",
+      "color": "warm off-white with a subtle warm accent",
+      "animation": "small emphasis only; no bouncing text",
+      "location": "lower safe area, clear of app controls and people"
+    },
+    {
+      "id": "subtitle-05",
+      "start_word_id": "respace-original-word-153",
+      "end_word_id": "respace-original-word-155",
+      "mode": "emphasis",
+      "color": "warm off-white with a subtle warm accent",
+      "animation": "small emphasis only; no bouncing text",
+      "location": "lower safe area, clear of app controls and people"
+    },
+    {
+      "id": "subtitle-06",
+      "start_word_id": "respace-original-word-156",
+      "end_word_id": "respace-original-word-158",
+      "mode": "emphasis",
+      "color": "warm off-white with a subtle warm accent",
+      "animation": "small emphasis only; no bouncing text",
+      "location": "lower safe area, clear of app controls and people"
+    },
+    {
+      "id": "subtitle-07",
+      "start_word_id": "respace-original-word-177",
+      "end_word_id": "respace-original-word-178",
+      "mode": "emphasis",
+      "color": "warm off-white with a subtle warm accent",
+      "animation": "small emphasis only; no bouncing text",
+      "location": "lower safe area, clear of app controls and people"
+    },
+    {
+      "id": "subtitle-08",
+      "start_word_id": "respace-original-word-222",
+      "end_word_id": "respace-original-word-224",
+      "mode": "emphasis",
+      "color": "warm off-white with a subtle warm accent",
+      "animation": "small emphasis only; no bouncing text",
+      "location": "lower safe area, clear of app controls and people"
+    }
+  ],
+  "storyboard_shots": [
+    {
+      "id": "shot-01",
+      "number": 1,
+      "start_seconds": 0,
+      "end_seconds": 4,
+      "section": "Opening and spatial personality",
+      "picture": "Locked doorway wide. A bare dorm: bed left, desk right, window ahead. The student is at the threshold with a bag. Hold the whole room so its geometry can be recognized later. No opening logo.",
+      "voiceover": "This dorm room could belong to anyone.",
+      "sound": "Door latch and corridor murmur. A faint rhythmic pulse arrives after the latch; let the first sentence land."
+    },
+    {
+      "id": "shot-02",
+      "number": 2,
+      "start_seconds": 4,
+      "end_seconds": 5,
+      "section": "Opening and spatial personality",
+      "picture": "One-second detail of the standard bed, with a precise horizontal composition.",
+      "voiceover": "Same bed.",
+      "sound": "One soft object-like accent."
+    },
+    {
+      "id": "shot-03",
+      "number": 3,
+      "start_seconds": 5,
+      "end_seconds": 6,
+      "section": "Opening and spatial personality",
+      "picture": "Match the bed's framing line to the standard desk. The visual repetition is immediately clear.",
+      "voiceover": "Same desk.",
+      "sound": "Second accent in the same rhythm."
+    },
+    {
+      "id": "shot-04",
+      "number": 4,
+      "start_seconds": 6,
+      "end_seconds": 7,
+      "section": "Opening and spatial personality",
+      "picture": "One-second view of the blank wall. Three seconds of object cuts are enough to establish the room's anonymity.",
+      "voiceover": "Blank walls.",
+      "sound": "Third accent, then move on. Do not add a fourth sameness shot."
+    },
+    {
+      "id": "shot-05",
+      "number": 5,
+      "start_seconds": 7,
+      "end_seconds": 10,
+      "section": "Opening and spatial personality",
+      "picture": "The student enters and puts his open notebook on the desk. An unfinished assignment and a marginal doodle make the room belong to a particular person.",
+      "voiceover": "But you'll be up at two",
+      "sound": "Bag landing becomes the first downbeat; a warmer melodic figure enters."
+    },
+    {
+      "id": "shot-06",
+      "number": 6,
+      "start_seconds": 10,
+      "end_seconds": 13,
+      "section": "Opening and spatial personality",
+      "picture": "Close on his pencil beside an unfinished line. He makes a small correction. The same notebook and hand framing will return in the imagined study scene.",
+      "voiceover": "finishing that assignment.",
+      "sound": "A distinct pencil scratch becomes the study motif. The narration anticipates a late night; this shot need not be filmed at 2 a.m."
+    },
+    {
+      "id": "shot-07",
+      "number": 7,
+      "start_seconds": 13,
+      "end_seconds": 16,
+      "section": "Opening and spatial personality",
+      "picture": "A loose photograph of the student with the same two friends who appear later. A deck of cards comes out of his bag beside it. Establish the people and the activity together.",
+      "voiceover": "Squeezing in friends for one more game.",
+      "sound": "One card taps the desk. A brief distant laugh anticipates the future gathering."
+    },
+    {
+      "id": "shot-08",
+      "number": 8,
+      "start_seconds": 16,
+      "end_seconds": 19,
+      "section": "Opening and spatial personality",
+      "picture": "Medium at the desk. He tries the photograph against the wall, then lowers it. Keep the performance curious and undecided.",
+      "voiceover": "Your room has to hold a life",
+      "sound": "The pulse continues beneath a longer spoken thought, without punctuating every word."
+    },
+    {
+      "id": "shot-09",
+      "number": 9,
+      "start_seconds": 19,
+      "end_seconds": 21,
+      "section": "Opening and spatial personality",
+      "picture": "He tucks the loose photograph into the notebook. The desk and wall remain largely empty. This unfinished gesture will be completed at the end.",
+      "voiceover": "you're still figuring out.",
+      "sound": "Paper movement, followed by a small breath in the score."
+    },
+    {
+      "id": "shot-10",
+      "number": 10,
+      "start_seconds": 21,
+      "end_seconds": 24,
+      "section": "Opening and spatial personality",
+      "picture": "His eye moves from the room to his phone. Match the vertical doorframe to the phone edge. The question is now how this specific room can support the life just introduced.",
+      "voiceover": "How do you make it yours?",
+      "sound": "The musical phrase leaves a brief opening for the question; the match cut lands cleanly."
+    },
+    {
+      "id": "shot-11",
+      "number": 11,
+      "start_seconds": 24,
+      "end_seconds": 27,
+      "section": "Generated questions and the room proposal",
+      "picture": "Over his shoulder, show ReSpace in the actual app, with a strip of the real dorm and his hand still visible. The introduction immediately leads into an action.",
+      "voiceover": "Meet ReSpace.",
+      "sound": "The rhythm becomes clearer. Keep the same melodic theme across the transition."
+    },
+    {
+      "id": "shot-12",
+      "number": 12,
+      "start_seconds": 27,
+      "end_seconds": 32,
+      "section": "Generated questions and the room proposal",
+      "picture": "One smooth live-action scan gesture, followed by a readable measured-room view. Select Keep for the existing bed and desk. Use an obvious edit between capture stages so the film does not present five seconds as scan duration.",
+      "voiceover": "Scan your room, choose what stays,",
+      "sound": "Footstep and sleeve movement flow into restrained selection sounds. No separate feature fanfare."
+    },
+    {
+      "id": "shot-13",
+      "number": 13,
+      "start_seconds": 32,
+      "end_seconds": 37,
+      "section": "Generated questions and the room proposal",
+      "picture": "Hold the real budget input after he sets it. Use the amount from the recorded design session, with the same amount and products throughout the film.",
+      "voiceover": "and set a budget you're comfortable with.",
+      "sound": "A single confirmation accent; narration connects this constraint to the preceding action."
+    },
+    {
+      "id": "shot-14",
+      "number": 14,
+      "start_seconds": 37,
+      "end_seconds": 41,
+      "section": "Generated questions and the room proposal",
+      "picture": "Actual intent entry. He types the first part of a short goal about a warm dorm for studying and having two friends over.",
+      "voiceover": "Tell it how you want to live here:",
+      "sound": "Light typing. Keep the sentence conversational rather than timing one word to each keystroke."
+    },
+    {
+      "id": "shot-15",
+      "number": 15,
+      "start_seconds": 41,
+      "end_seconds": 45,
+      "section": "Generated questions and the room proposal",
+      "picture": "Finish and hold the goal. Briefly include his notebook and photograph at the edge of the composition, connecting the request to the opening. The app should not re-ask facts already supplied.",
+      "voiceover": "somewhere to concentrate, with room for friends.",
+      "sound": "The pencil and laugh motifs briefly recur beneath the narration."
+    },
+    {
+      "id": "shot-16",
+      "number": 16,
+      "start_seconds": 45,
+      "end_seconds": 50,
+      "section": "Generated questions and the room proposal",
+      "picture": "Hold one actual generated question that goes beyond his supplied goal. Choose a session that clarifies a useful detail, such as when he studies or which aspect of the study area matters most. Keep the relevant question and answer large enough to read.",
+      "voiceover": "ReSpace creates questions around your room and your goals,",
+      "sound": "Reduce percussion while the unfamiliar operation is explained. A quiet answer-selection cue replaces rapid cuts."
+    },
+    {
+      "id": "shot-17",
+      "number": 17,
+      "start_seconds": 50,
+      "end_seconds": 54,
+      "section": "Generated questions and the room proposal",
+      "picture": "Show a second actual generated question about visual preferences. He selects a warm palette or natural material that will be identifiable in the result. Choose from questions the app really returns; no invented branching animation.",
+      "voiceover": "helping you work out the details.",
+      "sound": "One tactile selection accent. Let the answer settle before moving into generation."
+    },
+    {
+      "id": "shot-18",
+      "number": 18,
+      "start_seconds": 54,
+      "end_seconds": 58,
+      "section": "Generated questions and the room proposal",
+      "picture": "The selected answer remains briefly visible, then an actual planning/progress state. Use a clear editorial transition across processing. Carry its color into the proposal; an invented taste-profile dashboard is unnecessary.",
+      "voiceover": "Your answers build a taste profile:",
+      "sound": "A short musical lift prepares the first result. Preserve a moment of anticipation."
+    },
+    {
+      "id": "shot-19",
+      "number": 19,
+      "start_seconds": 58,
+      "end_seconds": 64,
+      "section": "Generated questions and the room proposal",
+      "picture": "First complete proposal at 00:58, clearly inside the app. Keep the bed, desk and window in their established positions. Start on the study lamp, then reveal the selected warm materials across the room. The viewer can connect two earlier choices with two visible consequences.",
+      "voiceover": "the colors and materials you like, and how you want the room to feel.",
+      "sound": "A restrained accent on the lamp, followed by a fuller musical phrase. Let the reveal hold."
+    },
+    {
+      "id": "shot-20",
+      "number": 20,
+      "start_seconds": 64,
+      "end_seconds": 69,
+      "section": "Generated questions and the room proposal",
+      "picture": "Trace the lamp from its actual product image to its position in the proposed room, then include the kept desk and bed in the same composition. The real product and existing furniture are visibly part of one design.",
+      "voiceover": "That guides a design with real products, planned around the furniture you're keeping.",
+      "sound": "One precise match-cut accent. The narration explains the relationship while the picture supplies the evidence."
+    },
+    {
+      "id": "shot-21",
+      "number": 21,
+      "start_seconds": 69,
+      "end_seconds": 73,
+      "section": "Generated questions and the room proposal",
+      "picture": "Controlled exploration inside the actual photorealistic room view. Preserve the window and desk as orientation points. Keep a small Proposed design identifier.",
+      "voiceover": "Explore a photorealistic version of your room before buying anything.",
+      "sound": "Open the score in width and warmth; avoid a fast orbit or extra text competing with the room."
+    },
+    {
+      "id": "shot-22",
+      "number": 22,
+      "start_seconds": 73,
+      "end_seconds": 80,
+      "section": "Generated questions and the room proposal",
+      "picture": "Hold the lamp's real Product card for seven seconds. Direct attention in spoken order to its size, actual price and merchant link with restrained crops or emphasis. Do not navigate away before the viewer can read it.",
+      "voiceover": "Tap a piece to see its size, price and where to buy it.",
+      "sound": "A quiet card-open cue. The pencil sound begins near the end, carrying us toward the imagined room."
+    },
+    {
+      "id": "shot-23",
+      "number": 23,
+      "start_seconds": 80,
+      "end_seconds": 84,
+      "section": "Imagined life",
+      "picture": "Match the lamp image to the same lamp in a locked future-room composite. Introduce an Imagined future identifier and retain it through the sequence. Actors and activities are editorial imagination, separate from the room-only app result.",
+      "voiceover": "Now picture a night here.",
+      "sound": "Let the pencil arrive just before its source. The score steps back as the room begins to sound inhabited."
+    },
+    {
+      "id": "shot-24",
+      "number": 24,
+      "start_seconds": 84,
+      "end_seconds": 88,
+      "section": "Imagined life",
+      "picture": "He studies at the existing real desk and chair, with the proposed task lamp beside the notebook. Repeat the chosen warm materials. Actor, hands, desk and contact shadows remain real.",
+      "voiceover": "One more page.",
+      "sound": "Pencil, page movement and a breath of concentration. The lamp supports the scene without implying measured productivity gains."
+    },
+    {
+      "id": "shot-25",
+      "number": 25,
+      "start_seconds": 88,
+      "end_seconds": 91,
+      "section": "Imagined life",
+      "picture": "Repeat the opening notebook composition. He finishes the line left unfinished earlier, then turns the page. Keep the small satisfaction in his hands and expression.",
+      "voiceover": "",
+      "sound": "No narration. Let the final pencil stroke and page turn be heard."
+    },
+    {
+      "id": "shot-26",
+      "number": 26,
+      "start_seconds": 91,
+      "end_seconds": 94,
+      "section": "Imagined life",
+      "picture": "Match the turning page to cards being dealt on the existing bed. The same two friends from the photograph are introduced through their hands.",
+      "voiceover": "One more game.",
+      "sound": "Page flip becomes card slap; playful percussion enters. 'One more' connects the two uses of the room."
+    },
+    {
+      "id": "shot-27",
+      "number": 27,
+      "start_seconds": 94,
+      "end_seconds": 98,
+      "section": "Imagined life",
+      "picture": "Crop from the locked wide. Two friends sit on the existing bed; the host turns the existing desk chair toward them. The selected warm palette remains visible and the route past them stays clear.",
+      "voiceover": "",
+      "sound": "Record an unforced reaction to a small win. Leave narration out of the way."
+    },
+    {
+      "id": "shot-28",
+      "number": 28,
+      "start_seconds": 98,
+      "end_seconds": 102,
+      "section": "Imagined life",
+      "picture": "One friend stands and picks up a backpack. Without making a speech, the host deals that friend another hand onto the bed. The friend notices and pauses.",
+      "voiceover": "Apparently, 'one more' means",
+      "sound": "Bag-strap rustle and two card slaps. Let the friend notice the hand before starting the line; finish the thought over the decision to sit in the next shot."
+    },
+    {
+      "id": "shot-29",
+      "number": 29,
+      "start_seconds": 102,
+      "end_seconds": 106,
+      "section": "Imagined life",
+      "picture": "The friend puts the backpack down and sits back on the bed. A look between the three people supplies the joke; the photograph is not needed here.",
+      "voiceover": "different things to different people.",
+      "sound": "Finish the line as the friend sits. Use their real laugh or amused reaction instead of a staged cheer."
+    },
+    {
+      "id": "shot-30",
+      "number": 30,
+      "start_seconds": 106,
+      "end_seconds": 110,
+      "section": "Imagined life",
+      "picture": "Hold the full room wide. People, study desk and personal choices are legible together. The space supports both activities introduced before ReSpace appeared.",
+      "voiceover": "",
+      "sound": "No narration. Let laughter trail into comfortable conversation and the musical theme."
+    },
+    {
+      "id": "shot-31",
+      "number": 31,
+      "start_seconds": 110,
+      "end_seconds": 114,
+      "section": "Refinement and community",
+      "picture": "Match the host's glance to the real barren dorm. His phone shows the proposal without people. He compares the proposed lamp footprint with the notebook space he wants at the real desk.",
+      "voiceover": "Need more room for your notebook?",
+      "sound": "The imagined conversation fades back to ordinary room tone, while the musical rhythm continues."
+    },
+    {
+      "id": "shot-32",
+      "number": 32,
+      "start_seconds": 114,
+      "end_seconds": 119,
+      "section": "Refinement and community",
+      "picture": "Type a specific request such as Try a smaller lamp in warm wood. Hold the request, then show a brief real processing state. The material retains his earlier preference while the footprint changes.",
+      "voiceover": "Ask for a smaller lamp,",
+      "sound": "Typing and one action cue. Give the request a beat before revealing its consequence."
+    },
+    {
+      "id": "shot-33",
+      "number": 33,
+      "start_seconds": 119,
+      "end_seconds": 123,
+      "section": "Refinement and community",
+      "picture": "Hold the updated design with the smaller lamp and more clear desktop beside it. Keep camera angle and surrounding elements consistent so the change is inspectable.",
+      "voiceover": "and explore the updated design.",
+      "sound": "One restrained accent joins request and result. Leave time for the improvement to register."
+    },
+    {
+      "id": "shot-34",
+      "number": 34,
+      "start_seconds": 123,
+      "end_seconds": 128,
+      "section": "Refinement and community",
+      "picture": "Actual community view with two or three distinct room proposals. Give each enough space to see how its owner used the room; avoid decorative engagement counters.",
+      "voiceover": "See what other people are imagining for their rooms.",
+      "sound": "A gentle rhythm across the cards, using the same visual and musical language as the dorm story."
+    },
+    {
+      "id": "shot-35",
+      "number": 35,
+      "start_seconds": 128,
+      "end_seconds": 134,
+      "section": "Refinement and community",
+      "picture": "Prepare his community post with a caption such as First plan for my dorm. Show a preview clearly identified as a proposed design; there is no need to publish during filming.",
+      "voiceover": "Share yours, and give someone else a place to start.",
+      "sound": "A light selection cue. His familiar room joins the other designs."
+    },
+    {
+      "id": "shot-36",
+      "number": 36,
+      "start_seconds": 134,
+      "end_seconds": 138,
+      "section": "Refinement and community",
+      "picture": "Bring his room tile forward again. Match its window or desk edge to a simplified room diagram for the supporting passage.",
+      "voiceover": "",
+      "sound": "A compact rhythmic phrase begins. Keep a clean cut point so all three supporting slots can be removed."
+    },
+    {
+      "id": "shot-37",
+      "number": 37,
+      "start_seconds": 138,
+      "end_seconds": 146,
+      "section": "Reserved supporting sections",
+      "picture": "TECHNICAL SLOT — general direction only. The same room passes through three visible layers: measured structure, a proposed arrangement, a fit check. Suggested large labels: Measure / Plan / Check. See the brainstorming notes below.",
+      "voiceover": "",
+      "sound": "Music and three concise action accents. No supporting voiceover written yet."
+    },
+    {
+      "id": "shot-38",
+      "number": 38,
+      "start_seconds": 146,
+      "end_seconds": 154,
+      "section": "Reserved supporting sections",
+      "picture": "BUSINESS SLOT — general direction only. Follow the same lamp from its Product card to a retailer link; a small graphic branch indicates affiliate revenue supporting a generous free experience. See notes below.",
+      "voiceover": "",
+      "sound": "Keep the rhythm continuous. A modest connection sound; no cash-register gag or fictional sales dashboard."
+    },
+    {
+      "id": "shot-39",
+      "number": 39,
+      "start_seconds": 154,
+      "end_seconds": 162,
+      "section": "Reserved supporting sections",
+      "picture": "FUTURE SLOT — general direction only. The dorm's floor outline expands into a multi-room home, then a small café plan. Clearly label this as Future direction. Return through a doorway shape to our original dorm.",
+      "voiceover": "",
+      "sound": "Let the music widen for possibility, then leave space for the final human moment."
+    },
+    {
+      "id": "shot-40",
+      "number": 40,
+      "start_seconds": 162,
+      "end_seconds": 166,
+      "section": "Return and invitation",
+      "picture": "Exact opening wide. The dorm is still barren; he has the saved proposal open on his phone. Keep both the unchanged physical room and the concrete plan visible.",
+      "voiceover": "It's still the room you walked into.",
+      "sound": "Original room tone returns beneath a warmer version of the opening theme."
+    },
+    {
+      "id": "shot-41",
+      "number": 41,
+      "start_seconds": 166,
+      "end_seconds": 170,
+      "section": "Return and invitation",
+      "picture": "He takes the photograph from the notebook and props it against the notebook on the desk. The phone beside it still shows the proposed room. This small action begins a larger plan.",
+      "voiceover": "But now, you can see yourself here.",
+      "sound": "Notebook tap and a soft paper flick complete the opening object rhythm."
+    },
+    {
+      "id": "shot-42",
+      "number": 42,
+      "start_seconds": 170,
+      "end_seconds": 174,
+      "section": "Return and invitation",
+      "picture": "Hold his expression, then the photograph and saved proposal together. A restrained line from the doorway begins the transition to the wordmark.",
+      "voiceover": "ReSpace.",
+      "sound": "Short musical resolution. Leave a breath before the invitation."
+    },
+    {
+      "id": "shot-43",
+      "number": 43,
+      "start_seconds": 174,
+      "end_seconds": 180,
+      "section": "Return and invitation",
+      "picture": "Clean brand end card: ReSpace / Make room for you. / Join the waitlist. Use the approved waitlist destination in the accompanying post; add a short URL on screen only when supplied.",
+      "voiceover": "Make room for you. Join the waitlist.",
+      "sound": "Warm final chord or short original sonic signature; gentle tail. Keep the action readable to the end."
+    }
+  ],
+  "timeline_note": "The DS_HQ timeline is anchored to narration words, not elapsed time. Exact shot times and silent holds are in each Base block's Following action. Full spoken captions are on by default; the Subtitles lane contains selective emphasis only."
+}

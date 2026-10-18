@@ -1,0 +1,2948 @@
+{
+  "observed_date": "2026-10-17 (America/Los_Angeles); API job completed 2026-10-18 UTC",
+  "count": 120,
+  "shortlist_count": 20,
+  "method": "Source/metadata screening; eight automated audiovisual previews; twelve returned transcripts. Recommendations are editorial inferences.",
+  "x_index_attribution": {
+    "name": "The Startup Launch Video Leaderboard",
+    "source": "https://infinite.fast/startup-launch-videos",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "The Startup Launch Video Leaderboard by Infinite (https://infinite.fast/startup-launch-videos), CC BY 4.0",
+    "as_of": "2026-10-17"
+  },
+  "candidates": [
+    {
+      "source_id": "S001",
+      "title": "Say Hej to IKEA Place",
+      "brand": "IKEA",
+      "url": "https://www.youtube.com/watch?v=UudV1VdFtuQ",
+      "source_url": "https://www.youtube.com/watch?v=UudV1VdFtuQ",
+      "sources": [
+        "https://www.youtube.com/watch?v=UudV1VdFtuQ"
+      ],
+      "category": "Direct spatial product",
+      "evidence": "Indexed official YouTube metadata; direct page gave consent shell",
+      "relevance": "Closest launch reference for turning room scanning and true-to-scale furniture placement into a consumer promise.",
+      "metrics": {
+        "views": 1126316,
+        "kind": "YouTube search/API snapshot; paid/organic unknown",
+        "observed_date": "2026-10-17",
+        "source_url": "https://www.youtube.com/watch?v=UudV1VdFtuQ"
+      },
+      "id": "C001",
+      "rank": 19,
+      "selected": true,
+      "role": "Spatial workflow clarity",
+      "duration": "0:59",
+      "transcript_status": "ready",
+      "footage_review": "Automated audiovisual preview at 6 fps: 00:00–01:30 requested; 59-second film",
+      "decision": "SELECT 19: Spatial workflow clarity"
+    },
+    {
+      "source_id": "S002",
+      "title": "Designing, now easier than imagining | IKEA Kreativ",
+      "brand": "IKEA",
+      "url": "https://www.youtube.com/watch?v=rTugX0knWVA",
+      "source_url": "https://www.youtube.com/watch?v=rTugX0knWVA",
+      "sources": [
+        "https://www.youtube.com/watch?v=rTugX0knWVA"
+      ],
+      "category": "Direct spatial product",
+      "evidence": "Indexed official YouTube metadata; direct fetch failed",
+      "relevance": "Direct scan-edit-design product analogue with a concise transformation proposition.",
+      "metrics": {
+        "views": 3027383,
+        "likes": 31,
+        "published": "2024-09-03",
+        "kind": "Search-index snapshot, observed 2026-10-17; paid/organic unknown"
+      },
+      "id": "C002",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "ready",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve: strong direct analogue and reach; Home Office adds a documented production treatment."
+    },
+    {
+      "source_id": "S003",
+      "title": "IKEA Kreativ - Home Office",
+      "brand": "IKEA",
+      "url": "https://vimeo.com/926031195",
+      "source_url": "https://vimeo.com/926031195",
+      "sources": [
+        "https://vimeo.com/926031195",
+        "https://www.theheist.com/work/ikea-kreativ"
+      ],
+      "category": "Direct spatial product",
+      "evidence": "Creator video page opened; production case page corroborates",
+      "relevance": "Most direct professional production reference for scanning an existing room, removing furniture and redesigning it.",
+      "metrics": null,
+      "id": "C003",
+      "rank": 6,
+      "selected": true,
+      "role": "Closest product analogue",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "SELECT 6: Closest product analogue"
+    },
+    {
+      "source_id": "S004",
+      "title": "IKEA - Experience the power of a bookbook™",
+      "brand": "IKEA",
+      "url": "https://vimeo.com/287592749",
+      "source_url": "https://vimeo.com/287592749",
+      "sources": [
+        "https://vimeo.com/287592749",
+        "https://mauricewee.com/ikea-bookbook"
+      ],
+      "category": "Home personality / conceptual advertising",
+      "evidence": "Creator video page opened; credits and year confirmed",
+      "relevance": "Useful counterpoint for making an ordinary home product feel launch-worthy through a strong comic premise.",
+      "metrics": {
+        "year": 2014,
+        "kind": "Creator page"
+      },
+      "id": "C004",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve: clever launch parody, but paper-catalogue joke is less useful for the spatial-personality thesis."
+    },
+    {
+      "source_id": "S005",
+      "title": "IKEA - Ghosts",
+      "brand": "IKEA",
+      "url": "https://vimeo.com/265153539",
+      "source_url": "https://vimeo.com/265153539",
+      "sources": [
+        "https://vimeo.com/265153539",
+        "https://www.popisms.com/TelevisionCommercial/203147/Ikea-Commercial-Ghosts-TV-Advert-60-WonderfulEveryday-2018"
+      ],
+      "category": "Home personality / conceptual advertising",
+      "evidence": "Indexed video title; open returned page shell; secondary synopsis",
+      "relevance": "Exceptionally close theme: fear of decorating boldly and making a room reflect its owner's personality.",
+      "metrics": null,
+      "id": "C005",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve: unusually good personality premise; archived synopsis only, so confirm the actual film before promotion."
+    },
+    {
+      "source_id": "S006",
+      "title": "Ikea - Beds",
+      "brand": "IKEA",
+      "url": "https://vimeo.com/100492442",
+      "source_url": "https://vimeo.com/100492442",
+      "sources": [
+        "https://vimeo.com/100492442",
+        "https://vimeo.com/100702913"
+      ],
+      "category": "Home personality / conceptual advertising",
+      "evidence": "Creator video page opened; credits confirmed",
+      "relevance": "A candidate for an emotional, imaginative depiction of the feeling of home; investigate whether its slower tone suits the launch.",
+      "metrics": null,
+      "id": "C006",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve for mood; slower emotional advertising is less central to the requested launch pace."
+    },
+    {
+      "source_id": "S007",
+      "title": "IKEA Make Room for Life 2018",
+      "brand": "IKEA",
+      "url": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+      "source_url": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+      "sources": [
+        "https://www.youtube.com/watch?v=SSKtiEA8qMw"
+      ],
+      "category": "Home personality / conceptual advertising",
+      "evidence": "Indexed official YouTube metadata and synopsis",
+      "relevance": "Strong big-picture wording about a living room accommodating needs, dreams and the contradictions of everyday life.",
+      "metrics": {
+        "views": 147874,
+        "published": "2017-08-27",
+        "kind": "Search-index snapshot, observed 2026-10-17"
+      },
+      "id": "C007",
+      "rank": 8,
+      "selected": true,
+      "role": "Life before furniture",
+      "transcript_status": "ready",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "SELECT 8: Life before furniture"
+    },
+    {
+      "source_id": "S008",
+      "title": "IKEA - Home Is A Different World",
+      "brand": "IKEA",
+      "url": "https://vimeo.com/501343491",
+      "source_url": "https://vimeo.com/501343491",
+      "sources": [
+        "https://vimeo.com/501343491",
+        "https://www.manifestowriting.com/database/ikea-home-is-a-different-world/"
+      ],
+      "category": "Home personality / conceptual advertising",
+      "evidence": "Video page opened with production credits; secondary script source",
+      "relevance": "Useful manifesto reference for connecting external pressures to the personal emotional refuge of home.",
+      "metrics": null,
+      "id": "C008",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve manifesto; Make Room for Life has a retrieved transcript and more concrete room-language evidence."
+    },
+    {
+      "source_id": "S009",
+      "title": "IKEA - Lion Man",
+      "brand": "IKEA",
+      "url": "https://vimeo.com/225467150",
+      "source_url": "https://vimeo.com/225467150",
+      "sources": [
+        "https://vimeo.com/225467150"
+      ],
+      "category": "Home personality / conceptual advertising",
+      "evidence": "Indexed creator video page with full credits",
+      "relevance": "Candidate for translating familiar home behavior into an entertaining visual character instead of a furniture sales pitch.",
+      "metrics": null,
+      "id": "C009",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve visual-character device; less direct bridge to redesign workflow."
+    },
+    {
+      "source_id": "S010",
+      "title": "City of Books",
+      "brand": "IKEA",
+      "url": "https://www.maxpilwat.com/ikea-brand-work",
+      "source_url": "https://www.maxpilwat.com/ikea-brand-work",
+      "sources": [
+        "https://www.maxpilwat.com/ikea-brand-work"
+      ],
+      "category": "Fast spatial transformations",
+      "evidence": "Creator page opened; separately titled film; 15-second campaign format stated",
+      "relevance": "Storage and objects-as-personality reference for a compressed social transformation.",
+      "metrics": {
+        "duration_seconds": 15,
+        "year_range": "2022–2023",
+        "kind": "Creator campaign description; individual film not timed"
+      },
+      "id": "C010",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve storage vignette; narrower human claim than the selected whole-room references."
+    },
+    {
+      "source_id": "S011",
+      "title": "Textile Falls",
+      "brand": "IKEA",
+      "url": "https://www.maxpilwat.com/ikea-brand-work",
+      "source_url": "https://www.maxpilwat.com/ikea-brand-work",
+      "sources": [
+        "https://www.maxpilwat.com/ikea-brand-work"
+      ],
+      "category": "Fast spatial transformations",
+      "evidence": "Creator page opened; separately titled film; 15-second campaign format stated",
+      "relevance": "Companion candidate for showing personal belongings and a design solution quickly.",
+      "metrics": {
+        "duration_seconds": 15,
+        "year_range": "2022–2023",
+        "kind": "Creator campaign description; individual film not timed"
+      },
+      "id": "C011",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve tactile styling; narrow object intervention rather than launch structure."
+    },
+    {
+      "source_id": "S012",
+      "title": "Balcony",
+      "brand": "IKEA",
+      "url": "https://www.maxpilwat.com/ikea-brand-work",
+      "source_url": "https://www.maxpilwat.com/ikea-brand-work",
+      "sources": [
+        "https://www.maxpilwat.com/ikea-brand-work"
+      ],
+      "category": "Fast spatial transformations",
+      "evidence": "Creator page opened; film-specific description and GIFs listed",
+      "relevance": "Creator describes a neglected balcony becoming a green work-from-home oasis, useful for ReSpace's emotional before/after payoff.",
+      "metrics": {
+        "year": 2021,
+        "kind": "Creator campaign page"
+      },
+      "id": "C012",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve for small-space transformation; creator-page evidence needs a footage pass."
+    },
+    {
+      "source_id": "S013",
+      "title": "Second Life",
+      "brand": "IKEA",
+      "url": "https://www.maxpilwat.com/ikea-brand-work",
+      "source_url": "https://www.maxpilwat.com/ikea-brand-work",
+      "sources": [
+        "https://www.maxpilwat.com/ikea-brand-work"
+      ],
+      "category": "Fast spatial transformations",
+      "evidence": "Creator page opened; separately titled film and synopsis",
+      "relevance": "Home-growing and circular-living story broadens inspiration beyond buying new furniture.",
+      "metrics": {
+        "year": 2021,
+        "kind": "Creator campaign page"
+      },
+      "id": "C013",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve reuse angle; useful values reference but not the main launch architecture."
+    },
+    {
+      "source_id": "S014",
+      "title": "Forgotten Fridge",
+      "brand": "IKEA",
+      "url": "https://www.maxpilwat.com/ikea-brand-work",
+      "source_url": "https://www.maxpilwat.com/ikea-brand-work",
+      "sources": [
+        "https://www.maxpilwat.com/ikea-brand-work"
+      ],
+      "category": "Fast spatial transformations",
+      "evidence": "Creator page opened; separately titled film under One Change, Changes Everything",
+      "relevance": "Candidate for showing that a small spatial intervention can change a familiar daily routine.",
+      "metrics": {
+        "year_range": "2020–2022",
+        "kind": "Creator campaign page"
+      },
+      "id": "C014",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve routine-based premise; narrow appliance story."
+    },
+    {
+      "source_id": "S015",
+      "title": "Inner Seasons",
+      "brand": "IKEA",
+      "url": "https://www.maxpilwat.com/ikea-brand-work",
+      "source_url": "https://www.maxpilwat.com/ikea-brand-work",
+      "sources": [
+        "https://www.maxpilwat.com/ikea-brand-work"
+      ],
+      "category": "Fast spatial transformations",
+      "evidence": "Creator page opened; separately titled film under One Change, Changes Everything",
+      "relevance": "Candidate for a room-as-mood metaphor; scene mechanics still need footage review.",
+      "metrics": {
+        "year_range": "2020–2022",
+        "kind": "Creator campaign page"
+      },
+      "id": "C015",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve room/mood metaphor; scene mechanics remain unverified."
+    },
+    {
+      "source_id": "S016",
+      "title": "Disco Treehouse | It’s Possible | Pinterest",
+      "brand": "Pinterest",
+      "url": "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+      "source_url": "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+      "sources": [
+        "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+        "https://www.behance.net/gallery/184282679/Pinterest-Its-Possible-Disco-Treehouse",
+        "https://www.linkedin.com/posts/sean-doyle_disco-treehouse-its-possible-pinterest-activity-7112327221880463360-l2Ul"
+      ],
+      "category": "Identity to action",
+      "evidence": "Indexed official YouTube metadata; creator case study and first-party employee post",
+      "relevance": "Best thematic fit for reconciling personal taste with a shared room and taking visual inspiration into the real world.",
+      "metrics": {
+        "views": 80108,
+        "kind": "YouTube search/API snapshot; paid/organic unknown",
+        "observed_date": "2026-10-17",
+        "source_url": "https://www.youtube.com/watch?v=hehaJGC9NJQ"
+      },
+      "id": "C016",
+      "rank": 1,
+      "selected": true,
+      "role": "Personality made spatial",
+      "duration": "0:31",
+      "transcript_status": "ready",
+      "footage_review": "Automated audiovisual preview at 6 fps: 00:00–01:00 requested; 31-second film",
+      "alternate_edit": {
+        "url": "https://www.youtube.com/watch?v=EOmNL_5utbo",
+        "duration": "0:15",
+        "views": 10235266,
+        "note": "Same creative, not counted as a separate candidate; paid/organic unknown."
+      },
+      "decision": "SELECT 1: Personality made spatial"
+    },
+    {
+      "source_id": "S017",
+      "title": "Pinterest | Procrastination: Don’t Don’t Yourself",
+      "brand": "Pinterest",
+      "url": "https://vimeo.com/745758555",
+      "source_url": "https://vimeo.com/745758555",
+      "sources": [
+        "https://vimeo.com/745758555"
+      ],
+      "category": "Identity to action",
+      "evidence": "Creator video page opened",
+      "relevance": "Useful for turning the psychological barrier between saving inspiration and acting on it into a character-driven story.",
+      "metrics": null,
+      "id": "C017",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve for the inspiration-to-action barrier; selected Pinterest film is more directly spatial."
+    },
+    {
+      "source_id": "S018",
+      "title": "Pinterest | Inner Critic: Don’t Don’t Yourself",
+      "brand": "Pinterest",
+      "url": "https://vimeo.com/745757551",
+      "source_url": "https://vimeo.com/745757551",
+      "sources": [
+        "https://vimeo.com/745757551"
+      ],
+      "category": "Identity to action",
+      "evidence": "Indexed creator video page",
+      "relevance": "Self-doubt around taste is relevant to a redesign product that helps users express a personality.",
+      "metrics": null,
+      "id": "C018",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve for taste anxiety; keep for hook development after the principal watchlist."
+    },
+    {
+      "source_id": "S019",
+      "title": "kim gehrig | pinterest - fear of failure",
+      "brand": "Pinterest",
+      "url": "https://vimeo.com/814951524",
+      "source_url": "https://vimeo.com/814951524",
+      "sources": [
+        "https://vimeo.com/814951524"
+      ],
+      "category": "Identity to action",
+      "evidence": "Indexed creator video page",
+      "relevance": "Candidate for making the fear of choosing badly an entertaining human problem before revealing a product.",
+      "metrics": null,
+      "id": "C019",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve for fear-of-choice premise; overlaps the other Pinterest barriers."
+    },
+    {
+      "source_id": "S020",
+      "title": "The Floyd Ethos",
+      "brand": "Floyd",
+      "url": "https://vimeo.com/359619840",
+      "source_url": "https://vimeo.com/359619840",
+      "sources": [
+        "https://vimeo.com/359619840",
+        "https://thecreativesroom.com/ref/the-floyd-ethos"
+      ],
+      "category": "Furniture startup / design philosophy",
+      "evidence": "Creator video page opened with founders and full credits",
+      "relevance": "Strong startup-specific candidate for grounding a furniture brand in people, place and values.",
+      "metrics": null,
+      "id": "C020",
+      "rank": 18,
+      "selected": true,
+      "role": "Startup design philosophy",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "SELECT 18: Startup design philosophy"
+    },
+    {
+      "source_id": "S021",
+      "title": "Tylko [Type03 launch]",
+      "brand": "Tylko",
+      "url": "https://vimeo.com/569299207",
+      "source_url": "https://vimeo.com/569299207",
+      "sources": [
+        "https://vimeo.com/569299207"
+      ],
+      "category": "Furniture startup / design philosophy",
+      "evidence": "Creator video page opened; exact display title is Tylko",
+      "relevance": "Creator explains a customized wardrobe film in a CG room, directly useful for showing real furniture adapting to a space.",
+      "metrics": null,
+      "id": "C021",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve for fitting animation; Spaces covers the whole-room premise more directly."
+    },
+    {
+      "source_id": "S022",
+      "title": "Tylko - type 02 in matte black",
+      "brand": "Tylko",
+      "url": "https://vimeo.com/605589322",
+      "source_url": "https://vimeo.com/605589322",
+      "sources": [
+        "https://vimeo.com/605589322"
+      ],
+      "category": "Furniture startup / design philosophy",
+      "evidence": "Indexed creator video page with design explanation",
+      "relevance": "Useful reference for a restrained premium furniture sequence covering fitting, details and construction.",
+      "metrics": null,
+      "id": "C022",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve premium furniture detail; less broad narrative scope."
+    },
+    {
+      "source_id": "S023",
+      "title": "Tylko – Spaces – Bedroom",
+      "brand": "Tylko",
+      "url": "https://vimeo.com/705647639",
+      "source_url": "https://vimeo.com/705647639",
+      "sources": [
+        "https://vimeo.com/705647639",
+        "https://wearewouq.com/work/spaces"
+      ],
+      "category": "Furniture startup / design philosophy",
+      "evidence": "Indexed creator synopsis; direct page returned shell",
+      "relevance": "Creator explicitly says the focus was the whole personal space rather than a single object.",
+      "metrics": null,
+      "id": "C023",
+      "rank": 11,
+      "selected": true,
+      "role": "Whole-room art direction",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "SELECT 11: Whole-room art direction"
+    },
+    {
+      "source_id": "S024",
+      "title": "Vitra - Mariposa Family",
+      "brand": "Vitra",
+      "url": "https://vimeo.com/126497200",
+      "source_url": "https://vimeo.com/126497200",
+      "sources": [
+        "https://vimeo.com/126497200"
+      ],
+      "category": "Furniture startup / design philosophy",
+      "evidence": "Creator video page opened with specific production description",
+      "relevance": "Creator describes a 360-degree sofa-centered film blending CG furniture with drawn people, useful for showing several lives in one space.",
+      "metrics": null,
+      "id": "C024",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve multiple lives around one object; not a technology launch analogue."
+    },
+    {
+      "source_id": "S025",
+      "title": "108 years of Herman Miller in 108 seconds",
+      "brand": "Herman Miller",
+      "url": "https://vimeo.com/70437049",
+      "source_url": "https://vimeo.com/70437049",
+      "sources": [
+        "https://vimeo.com/70437049"
+      ],
+      "category": "Furniture startup / design philosophy",
+      "evidence": "Indexed creator video page",
+      "relevance": "A concise history-to-product animation candidate for turning an abstract design philosophy into visual momentum.",
+      "metrics": {
+        "duration_seconds": 108,
+        "kind": "Title and creator description; not timed"
+      },
+      "id": "C025",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve temporal montage; company-history framing is less relevant to a new startup."
+    },
+    {
+      "source_id": "S026",
+      "title": "HERMAN MILLER - Chromatography",
+      "brand": "Herman Miller",
+      "url": "https://vimeo.com/208670613",
+      "source_url": "https://vimeo.com/208670613",
+      "sources": [
+        "https://vimeo.com/208670613"
+      ],
+      "category": "Furniture startup / design philosophy",
+      "evidence": "Indexed creator video page with credits and year",
+      "relevance": "A useful source for language and imagery about color as a design decision rather than mere decoration.",
+      "metrics": {
+        "year": 2017,
+        "kind": "Creator video description"
+      },
+      "id": "C026",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve palette and color direction; not a full problem-to-product structure."
+    },
+    {
+      "source_id": "S027",
+      "title": "LIFESTYLE CHAIRS / HERMAN MILLER",
+      "brand": "Herman Miller",
+      "url": "https://vimeo.com/510152518",
+      "source_url": "https://vimeo.com/510152518",
+      "sources": [
+        "https://vimeo.com/510152518"
+      ],
+      "category": "Furniture startup / design philosophy",
+      "evidence": "Indexed creator video page with brief",
+      "relevance": "Reference for connecting design engineering to a lived benefit and matching sound to the lifestyle tone.",
+      "metrics": null,
+      "id": "C027",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve sensory furniture proof; overlaps selected furniture films."
+    },
+    {
+      "source_id": "S028",
+      "title": "MUJI無印良品: Compact Life（Acrylic/ABS storage）",
+      "brand": "MUJI",
+      "url": "https://www.youtube.com/watch?v=-97dwhyzhkE",
+      "source_url": "https://www.youtube.com/watch?v=-97dwhyzhkE",
+      "sources": [
+        "https://www.youtube.com/watch?v=-97dwhyzhkE"
+      ],
+      "category": "Home personality / conceptual advertising",
+      "evidence": "Indexed official YouTube metadata and brand description",
+      "relevance": "Brand premise explicitly ties necessary objects and organization to individual values and personality.",
+      "metrics": {
+        "views": 22468,
+        "likes": 290,
+        "published": "2016-05-05",
+        "kind": "Search-index snapshot, observed 2026-10-17"
+      },
+      "id": "C028",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve for values and possessions; pacing not yet established."
+    },
+    {
+      "source_id": "S029",
+      "title": "ECAL x MUJI : Compact Life",
+      "brand": "MUJI / ECAL",
+      "url": "https://vimeo.com/592195628",
+      "source_url": "https://vimeo.com/592195628",
+      "sources": [
+        "https://vimeo.com/592195628",
+        "https://ecal.ch/en/feed/projects/4829/ecal-x-muji-compact-life/"
+      ],
+      "category": "Furniture startup / design philosophy",
+      "evidence": "Indexed primary video page and project page",
+      "relevance": "Candidate for turning observation of everyday needs into inventive household products.",
+      "metrics": null,
+      "id": "C029",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve everyday-needs observation; student/product showcase rather than launch narrative."
+    },
+    {
+      "source_id": "S030",
+      "title": "MUJI | Compact Life HOUSE_G",
+      "brand": "MUJI",
+      "url": "https://vimeo.com/200161797",
+      "source_url": "https://vimeo.com/200161797",
+      "sources": [
+        "https://vimeo.com/200161797"
+      ],
+      "category": "Home personality / conceptual advertising",
+      "evidence": "Indexed video title and uploader; no scene synopsis",
+      "relevance": "A domestic campaign candidate to inspect for relating a person's environment to a coherent lifestyle.",
+      "metrics": null,
+      "id": "C030",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve domestic values; exact narrative still requires viewing."
+    },
+    {
+      "source_id": "S031",
+      "title": "Vitra Home Stories - Barbara Happe & Martin Fischer",
+      "brand": "Vitra",
+      "url": "https://vimeo.com/637448416",
+      "source_url": "https://vimeo.com/637448416",
+      "sources": [
+        "https://vimeo.com/637448416"
+      ],
+      "category": "Home personality / conceptual advertising",
+      "evidence": "Indexed official video title",
+      "relevance": "Person-centered home-story candidate for language about the relationship between people and their surroundings; likely slower than final launch.",
+      "metrics": null,
+      "id": "C031",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve interview language about home; likely a slower format than the main launch."
+    },
+    {
+      "source_id": "S032",
+      "title": "Introducing Icons",
+      "brand": "Airbnb",
+      "url": "https://www.youtube.com/watch?v=Rz2FWiJq4Mw",
+      "source_url": "https://www.youtube.com/watch?v=Rz2FWiJq4Mw",
+      "sources": [
+        "https://www.youtube.com/watch?v=Rz2FWiJq4Mw",
+        "https://news.airbnb.com/airbnb-2024-summer-release"
+      ],
+      "category": "Space as an experience",
+      "evidence": "Indexed official YouTube metadata; official release corroborates",
+      "relevance": "Launch-film candidate for selling entry into an imagined world and then naming a concrete product category.",
+      "metrics": {
+        "views": 85251,
+        "likes": 741,
+        "published": "2024-05-01",
+        "kind": "Search-index snapshot, observed 2026-10-17"
+      },
+      "id": "C032",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve for imagined worlds; spectacular experience launch is harder to reproduce honestly."
+    },
+    {
+      "source_id": "S033",
+      "title": "Get an Airbnb, and stay together for less",
+      "brand": "Airbnb",
+      "url": "https://www.youtube.com/watch?v=TAf1_23Ihmw",
+      "source_url": "https://www.youtube.com/watch?v=TAf1_23Ihmw",
+      "sources": [
+        "https://www.youtube.com/watch?v=TAf1_23Ihmw"
+      ],
+      "category": "Space as an experience",
+      "evidence": "Indexed official YouTube metadata and campaign description",
+      "relevance": "High-view indexed reference for making the benefit of room layout and togetherness immediately understandable.",
+      "metrics": {
+        "views": 18053074,
+        "likes": 4900,
+        "published": "2023-08-24",
+        "kind": "Search-index snapshot, observed 2026-10-17; paid/organic unknown"
+      },
+      "id": "C033",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach benchmark: strong togetherness benefit; selected films better cover the desired identity-to-product arc."
+    },
+    {
+      "source_id": "S034",
+      "title": "First Time | Airbnb Setup",
+      "brand": "Airbnb",
+      "url": "https://video.withairbnb.com/media/t/1_5ntgvao8",
+      "source_url": "https://video.withairbnb.com/media/t/1_5ntgvao8",
+      "sources": [
+        "https://video.withairbnb.com/media/t/1_5ntgvao8"
+      ],
+      "category": "Space as an experience",
+      "evidence": "Official video page and film synopsis indexed",
+      "relevance": "Product introduction connecting a familiar home to a new possibility; campaign uses a miniature world according to Airbnb.",
+      "metrics": null,
+      "id": "C034",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve miniature-world technique; more hosting-specific than room identity."
+    },
+    {
+      "source_id": "S035",
+      "title": "Partner | Airbnb Co-host",
+      "brand": "Airbnb",
+      "url": "https://www.youtube.com/watch?v=CNAmCf072UM",
+      "source_url": "https://www.youtube.com/watch?v=CNAmCf072UM",
+      "sources": [
+        "https://www.youtube.com/watch?v=CNAmCf072UM"
+      ],
+      "category": "Space as an experience",
+      "evidence": "Indexed official YouTube metadata and film synopsis",
+      "relevance": "A product-as-help story that reduces the perceived work involved in changing how a home is used.",
+      "metrics": {
+        "views": 214411,
+        "likes": 349,
+        "published": "2024-10-16",
+        "kind": "Search-index snapshot, observed 2026-10-17"
+      },
+      "id": "C035",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve service-as-help premise; less useful for expressive spatial design."
+    },
+    {
+      "source_id": "S036",
+      "title": "Airbnb \"Wall and Chain\"",
+      "brand": "Airbnb",
+      "url": "https://vimeo.com/284070799",
+      "source_url": "https://vimeo.com/284070799",
+      "sources": [
+        "https://vimeo.com/284070799"
+      ],
+      "category": "Space as an experience",
+      "evidence": "Indexed creator video page with explicit role",
+      "relevance": "An emotional narrative candidate where place and human connection give the platform meaning.",
+      "metrics": null,
+      "id": "C036",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve place and belonging; emotional long-form narrative is not the main pace reference."
+    },
+    {
+      "source_id": "S037",
+      "title": "A Different Paris AirBnB Zoetrope Commercial",
+      "brand": "Airbnb",
+      "url": "https://vimeo.com/206197706",
+      "source_url": "https://vimeo.com/206197706",
+      "sources": [
+        "https://vimeo.com/206197706"
+      ],
+      "category": "Space as an experience",
+      "evidence": "Indexed creator video page with detailed making-of description",
+      "relevance": "Creator describes 3D printed characters and a physical zoetrope, a tactile alternative to an ordinary interface demo.",
+      "metrics": null,
+      "id": "C037",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve tactile craft; complex zoetrope production is a stretch technique."
+    },
+    {
+      "source_id": "S038",
+      "title": "airbnb 'Belong Anywhere'",
+      "brand": "Airbnb",
+      "url": "https://vimeo.com/180370705",
+      "source_url": "https://vimeo.com/180370705",
+      "sources": [
+        "https://vimeo.com/180370705"
+      ],
+      "category": "Space as an experience",
+      "evidence": "Indexed creator video page with credits",
+      "relevance": "Belonging-based brand film candidate for the emotional territory of feeling at home.",
+      "metrics": null,
+      "id": "C038",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve belonging language; less specific evidence of the product transition."
+    },
+    {
+      "source_id": "S039",
+      "title": "Strangers Aren’t That Strange",
+      "brand": "Airbnb",
+      "url": "https://www.youtube.com/watch?v=pdcElQTd8gM",
+      "source_url": "https://www.youtube.com/watch?v=pdcElQTd8gM",
+      "sources": [
+        "https://www.youtube.com/watch?v=pdcElQTd8gM",
+        "https://tubularlabs.com/blog/airbnbs-user-generated-campaign-the-post-covid-traveler/",
+        "https://d18rn0p25nwr6d.cloudfront.net/CIK-0001559720/5bec81d7-5a71-41ba-8982-bcab28081a4f.pdf"
+      ],
+      "category": "Space as an experience",
+      "evidence": "Secondary exact video link; primary financial report confirms Strangers campaign",
+      "relevance": "High-reach historical candidate for making a universal anxiety feel approachable through an unusual family.",
+      "metrics": {
+        "views": "53.8M",
+        "kind": "Historical Tubular Labs article claim, not current views; paid/organic unknown"
+      },
+      "id": "C039",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Historical reach benchmark; not ranked by an old secondary view count."
+    },
+    {
+      "source_id": "S040",
+      "title": "Forever Young | Made Possible by Hosts",
+      "brand": "Airbnb",
+      "url": "https://www.youtube.com/watch?v=7krmGilR0BE",
+      "source_url": "https://www.youtube.com/watch?v=7krmGilR0BE",
+      "sources": [
+        "https://www.youtube.com/watch?v=7krmGilR0BE",
+        "https://tubularlabs.com/blog/airbnbs-user-generated-campaign-the-post-covid-traveler/",
+        "https://news.airbnb.com/made-possible-by-hosts-2"
+      ],
+      "category": "Space as an experience",
+      "evidence": "Secondary exact video link; first-party page confirms campaign method",
+      "relevance": "Low-complexity production reference for selling the life a space makes possible through real travel photographs.",
+      "metrics": {
+        "views": "7.5M",
+        "kind": "Historical Tubular Labs article claim, not current views; paid/organic unknown"
+      },
+      "id": "C040",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve economical photo storytelling; less representative of the requested dynamic product reveal."
+    },
+    {
+      "source_id": "S041",
+      "title": "HomePod — Welcome Home [portfolio title: apple_home pod | dir. spike jonze]",
+      "brand": "Apple",
+      "url": "https://vimeo.com/821121634",
+      "source_url": "https://vimeo.com/821121634",
+      "sources": [
+        "https://vimeo.com/821121634",
+        "https://www.macrumors.com/2018/03/06/apple-homepod-spike-jonze-fka-twigs/",
+        "https://time.com/5187947/fka-twigs-homepod/"
+      ],
+      "category": "Smart home / emotional transformation",
+      "evidence": "Video page opened; campaign identity corroborated by original coverage",
+      "relevance": "Major room-as-emotion reference: investigate how a confined apartment becomes an expressive world around its occupant.",
+      "metrics": {
+        "year": 2018,
+        "kind": "Campaign release coverage; portfolio upload date not treated as launch date"
+      },
+      "id": "C041",
+      "rank": 5,
+      "selected": true,
+      "role": "Environment as emotion",
+      "transcript_status": "not requested",
+      "footage_review": "Automated audiovisual preview at 6 fps: 00:00–01:30 only",
+      "decision": "SELECT 5: Environment as emotion"
+    },
+    {
+      "source_id": "S042",
+      "title": "Bang & Olufsen \"Beosound Shape\"",
+      "brand": "Bang & Olufsen",
+      "url": "https://vimeo.com/217810166",
+      "source_url": "https://vimeo.com/217810166",
+      "sources": [
+        "https://vimeo.com/217810166"
+      ],
+      "category": "Smart home / emotional transformation",
+      "evidence": "Video page opened with director and production credits",
+      "relevance": "Design-tech launch candidate for integrating a functional device into a room's visual identity.",
+      "metrics": null,
+      "id": "C042",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve design-tech integration; narrower device aesthetic than whole-room transformation."
+    },
+    {
+      "source_id": "S043",
+      "title": "SONOS: Music Makes It Home",
+      "brand": "Sonos / Apple Music",
+      "url": "https://vimeo.com/156330951",
+      "source_url": "https://vimeo.com/156330951",
+      "sources": [
+        "https://vimeo.com/156330951",
+        "https://mssngpeces.com/projects/commercials/sonos-music-makes-it-home/"
+      ],
+      "category": "Smart home / emotional transformation",
+      "evidence": "Primary production page opened and exact Vimeo embed followed",
+      "relevance": "Very close conceptual bridge from a general question about home relationships to a specific enabling product.",
+      "metrics": null,
+      "id": "C043",
+      "rank": 12,
+      "selected": true,
+      "role": "Human question → product",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "SELECT 12: Human question → product"
+    },
+    {
+      "source_id": "S044",
+      "title": "Samsung - The Frame",
+      "brand": "Samsung",
+      "url": "https://vimeo.com/711444864",
+      "source_url": "https://vimeo.com/711444864",
+      "sources": [
+        "https://vimeo.com/711444864"
+      ],
+      "category": "Smart home / emotional transformation",
+      "evidence": "Indexed creator video page with synopsis and credits",
+      "relevance": "Useful reference for explaining technology through its contribution to a considered room aesthetic.",
+      "metrics": null,
+      "id": "C044",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve room aesthetic; brand/product-scale example rather than startup story."
+    },
+    {
+      "source_id": "S045",
+      "title": "Samsung \"Make Your Own TV\"",
+      "brand": "Samsung",
+      "url": "https://vimeo.com/520257090",
+      "source_url": "https://vimeo.com/520257090",
+      "sources": [
+        "https://vimeo.com/520257090"
+      ],
+      "category": "Smart home / emotional transformation",
+      "evidence": "Indexed creator video page with product and credits",
+      "relevance": "Personalization-oriented product film for examining how a premium functional object becomes part of a home.",
+      "metrics": null,
+      "id": "C045",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve personalization; overlaps stronger room and personal-taste references."
+    },
+    {
+      "source_id": "S046",
+      "title": "Nanoleaf Light Panels: Modular Smart Lighting Triangles",
+      "brand": "Nanoleaf",
+      "url": "https://www.youtube.com/watch?v=Nin0NSjp8II",
+      "source_url": "https://www.youtube.com/watch?v=Nin0NSjp8II",
+      "sources": [
+        "https://www.youtube.com/watch?v=Nin0NSjp8II"
+      ],
+      "category": "Smart home / emotional transformation",
+      "evidence": "Indexed official YouTube metadata and description",
+      "relevance": "Its explicit home-as-story positioning closely matches spatial personality, with a visible physical transformation product.",
+      "metrics": {
+        "views": 111228,
+        "likes": 474,
+        "published": "2017-09-01",
+        "kind": "Search-index snapshot, observed 2026-10-17"
+      },
+      "id": "C046",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "ready",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve with explicit home-as-story premise; selected proof references cover spatial clarity."
+    },
+    {
+      "source_id": "S047",
+      "title": "Nanoleaf Introduction - The world's most energy efficient light bulb",
+      "brand": "Nanoleaf",
+      "url": "https://www.youtube.com/watch?v=ojdtdi-hbHQ",
+      "source_url": "https://www.youtube.com/watch?v=ojdtdi-hbHQ",
+      "sources": [
+        "https://www.youtube.com/watch?v=ojdtdi-hbHQ"
+      ],
+      "category": "Smart home / emotional transformation",
+      "evidence": "Indexed official YouTube metadata",
+      "relevance": "Early startup product introduction useful as a comparison for how much technical explanation to include.",
+      "metrics": {
+        "views": 27522,
+        "likes": 167,
+        "published": "2013-03-26",
+        "kind": "Search-index snapshot, observed 2026-10-17"
+      },
+      "id": "C047",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve early startup clarity; technical lighting explanation has weaker identity fit."
+    },
+    {
+      "source_id": "S048",
+      "title": "Introducing Houzz View in My Room 3D with ARKit",
+      "brand": "Houzz",
+      "url": "https://www.youtube.com/watch?v=uLoSnBK9l7c",
+      "source_url": "https://www.youtube.com/watch?v=uLoSnBK9l7c",
+      "sources": [
+        "https://www.youtube.com/watch?v=uLoSnBK9l7c",
+        "https://arinsider.co/2018/02/26/data-point-of-the-week-ar-boosts-purchase-intent-and-time-in-app/",
+        "https://pro.houzz.se/press"
+      ],
+      "category": "Direct spatial product",
+      "evidence": "Exact YouTube link from secondary source; official press confirms feature",
+      "relevance": "Direct competitor reference for communicating furniture visualization and purchase confidence; likely supporting proof, not the main creative model.",
+      "metrics": null,
+      "id": "C048",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Competitor benchmark only: useful spatial proof, but too close to a conventional feature demonstration."
+    },
+    {
+      "source_id": "S049",
+      "title": "IKEA Home Smart",
+      "brand": "IKEA",
+      "url": "https://tomasstastny.co/projects/ikea-home-smart",
+      "source_url": "https://tomasstastny.co/projects/ikea-home-smart",
+      "sources": [
+        "https://tomasstastny.co/projects/ikea-home-smart"
+      ],
+      "category": "Smart home / emotional transformation",
+      "evidence": "Indexed creator page with specific embedded commercial; direct fetch unavailable",
+      "relevance": "Home-technology market introduction candidate that may help frame a technical feature as ordinary domestic life.",
+      "metrics": {
+        "year": 2020,
+        "kind": "Creator page"
+      },
+      "id": "C049",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve domestic technology framing; film mechanics still unreviewed."
+    },
+    {
+      "source_id": "S050",
+      "title": "Wayfair - Get it out of your head and into your home",
+      "brand": "Wayfair",
+      "url": "https://vimeo.com/945722057",
+      "source_url": "https://vimeo.com/945722057",
+      "sources": [
+        "https://vimeo.com/945722057"
+      ],
+      "category": "Direct spatial product",
+      "evidence": "Indexed video title and uploader",
+      "relevance": "The premise directly addresses the gap between imagined design and a finished home.",
+      "metrics": null,
+      "id": "C050",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve imagination-to-home premise; verify full treatment before selecting over the stronger evidence."
+    },
+    {
+      "source_id": "S051",
+      "title": "Modsy Commercial -2018",
+      "brand": "Modsy",
+      "url": "https://vimeo.com/296714346",
+      "source_url": "https://vimeo.com/296714346",
+      "sources": [
+        "https://vimeo.com/296714346"
+      ],
+      "category": "Direct spatial product",
+      "evidence": "Indexed creator video page; direct fetch unavailable",
+      "relevance": "Direct online interior-design competitor and a candidate for studying a polished room visualization explanation.",
+      "metrics": {
+        "year": 2018,
+        "kind": "Creator title"
+      },
+      "id": "C051",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Competitor benchmark only; use to understand category conventions, not set the creative ambition."
+    },
+    {
+      "source_id": "S052",
+      "title": "IKEA - Silence the Critics (SHORT)",
+      "brand": "IKEA",
+      "url": "https://vimeopro.com/riffrafffilms/humans-the-orchard/video/732127954",
+      "source_url": "https://vimeopro.com/riffrafffilms/humans-the-orchard/video/732127954",
+      "sources": [
+        "https://vimeopro.com/riffrafffilms/humans-the-orchard/video/732127954",
+        "https://downloads.ctfassets.net/ptzdhtf6t0jg/4501MliedkJAEDDV8jNUKf/b474b66950863abf6a8c09fbe568cef5/Thinkbox_A_year_in_TV_2019-2020.pdf"
+      ],
+      "category": "Home personality / conceptual advertising",
+      "evidence": "Indexed production portfolio; explicitly a short cut, counted once",
+      "relevance": "High-fit premise about being embarrassed to host because of how a home looks; use as a campaign lead, obtain full master before deep analysis.",
+      "metrics": null,
+      "id": "C052",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve hosting embarrassment; linked asset is a short cut, full master still needed."
+    },
+    {
+      "source_id": "creative-descript-video",
+      "title": "Damn, Jenny!",
+      "brand": "Descript",
+      "url": "https://sandwich.co/work/descript-video/",
+      "player_url": "https://fast.wistia.net/embed/iframe/2rb6egpph3",
+      "source_url": "https://sandwich.co/work/descript-video/",
+      "sources": [
+        "https://sandwich.co/work/descript-video/"
+      ],
+      "category": "Product explainer",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Priority: translate an unfamiliar AI capability into a lively, understandable story. Sandwich explicitly calls it fast, colorful, fun, detailed, and its best-performing Descript spot; no numerical performance metric is supplied.",
+      "metrics": null,
+      "duration_seconds": 166.08,
+      "id": "C053",
+      "rank": 4,
+      "selected": true,
+      "role": "Entertaining feature proof",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "SELECT 4: Entertaining feature proof"
+    },
+    {
+      "source_id": "creative-its-how-you-make-a-podcast",
+      "title": "It's How You Make a Podcast",
+      "brand": "Descript",
+      "url": "https://sandwich.co/work/its-how-you-make-a-podcast/",
+      "player_url": "https://fast.wistia.net/embed/iframe/v7esh7kcr4",
+      "source_url": "https://sandwich.co/work/its-how-you-make-a-podcast/",
+      "sources": [
+        "https://sandwich.co/work/its-how-you-make-a-podcast/"
+      ],
+      "category": "Product launch / explainer",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "A second script architecture from the same editing-product family. Useful to compare how software benefits become jokes and demonstrations; the studio says it inspired Damn, Jenny.",
+      "metrics": null,
+      "duration_seconds": 163.21,
+      "id": "C054",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve: same studio/product family as Damn, Jenny; compare during Descript deep research."
+    },
+    {
+      "source_id": "creative-edit-video-by-editing-text",
+      "title": "Edit Video by Editing Text",
+      "brand": "Descript",
+      "url": "https://sandwich.co/work/edit-video-by-editing-text/",
+      "player_url": "https://fast.wistia.net/embed/iframe/v2kzmp7egx",
+      "source_url": "https://sandwich.co/work/edit-video-by-editing-text/",
+      "sources": [
+        "https://sandwich.co/work/edit-video-by-editing-text/"
+      ],
+      "category": "Product launch / explainer",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Shorter original Descript introduction. Compare how little explanation is needed to make a surprising interaction understandable.",
+      "metrics": null,
+      "duration_seconds": 79.27,
+      "id": "C055",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve for one surprising interaction; selected Descript film has stronger documented creative-performance evidence."
+    },
+    {
+      "source_id": "creative-not-like-the-others",
+      "title": "Not Like The Others",
+      "brand": "Daylight",
+      "url": "https://sandwich.co/work/not-like-the-others/",
+      "player_url": "https://fast.wistia.net/embed/iframe/u8xn64uj9r",
+      "source_url": "https://sandwich.co/work/not-like-the-others/",
+      "sources": [
+        "https://sandwich.co/work/not-like-the-others/"
+      ],
+      "category": "Consumer technology film",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Priority candidate for technology serving human attention. Primary credits establish a professional live-action production with voiceover, graphics and VFX; exact thesis and pacing still need viewing.",
+      "metrics": null,
+      "duration_seconds": 110.74,
+      "id": "C056",
+      "rank": 13,
+      "selected": true,
+      "role": "Humane technology tone",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "SELECT 13: Humane technology tone"
+    },
+    {
+      "source_id": "creative-meticulous",
+      "title": "Soul in the Machine",
+      "brand": "Meticulous",
+      "url": "https://sandwich.co/work/meticulous/",
+      "player_url": "https://fast.wistia.net/embed/iframe/770vwgjm90",
+      "source_url": "https://sandwich.co/work/meticulous/",
+      "sources": [
+        "https://sandwich.co/work/meticulous/"
+      ],
+      "category": "Crowdfunding product film",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Coffee is an everyday ritual with strong identity and environment associations. Candidate for connecting a human ritual to sophisticated automation; at 5:16 this is a structure reference, not a target running time.",
+      "metrics": null,
+      "duration_seconds": 316.16,
+      "id": "C057",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve ritual and craft; 5:16 is a poor primary pace model."
+    },
+    {
+      "source_id": "creative-playdate",
+      "title": "Say Hello to Playdate",
+      "brand": "Panic",
+      "url": "https://www.youtube.com/watch?v=HdF3CnFvxg4",
+      "player_url": "https://fast.wistia.net/embed/iframe/j5exbchucs",
+      "source_url": "https://sandwich.co/work/playdate/",
+      "sources": [
+        "https://sandwich.co/work/playdate/"
+      ],
+      "category": "Product launch",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Priority: physical personality and delight for an unfamiliar product. Official brand description promises a unique handheld; studio confirms animation, live-action and effects production.",
+      "metrics": {
+        "views": 466100,
+        "kind": "Official YouTube search-index snapshot observed 2026-10-17, not live verified; paid vs organic unknown.",
+        "source_url": "https://www.youtube.com/watch?v=HdF3CnFvxg4"
+      },
+      "duration_seconds": 123.12,
+      "id": "C058",
+      "rank": 14,
+      "selected": true,
+      "role": "Product with personality",
+      "transcript_status": "ready",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "SELECT 14: Product with personality"
+    },
+    {
+      "source_id": "creative-mighty",
+      "title": "Be Mighty",
+      "brand": "Mighty",
+      "url": "https://sandwich.co/work/mighty/",
+      "player_url": "https://fast.wistia.net/embed/iframe/ikg2gf5b43",
+      "source_url": "https://sandwich.co/work/mighty/",
+      "sources": [
+        "https://sandwich.co/work/mighty/"
+      ],
+      "category": "Product explainer / animation",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "A browser is abstract, as room-solving AI can be. Catalogue tags confirm CG and virtual production; candidate for giving invisible technical benefits a physical form.",
+      "metrics": null,
+      "duration_seconds": 108.19,
+      "id": "C059",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve for making invisible software physical; overlaps selected software proof references."
+    },
+    {
+      "source_id": "creative-shopify",
+      "title": "You Do Your Thing",
+      "brand": "Shopify",
+      "url": "https://sandwich.co/work/shopify/",
+      "player_url": "https://fast.wistia.net/embed/iframe/uvivbpwbx6",
+      "source_url": "https://sandwich.co/work/shopify/",
+      "sources": [
+        "https://sandwich.co/work/shopify/"
+      ],
+      "category": "Product explainer",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Candidate for placing users and their ambitions ahead of a platform. Broad consumer/business audience; study the balance of human activity and interface proof.",
+      "metrics": null,
+      "duration_seconds": 98.89,
+      "id": "C060",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve user ambition; broad platform film is less directly spatial."
+    },
+    {
+      "source_id": "creative-this-but-that",
+      "title": "This But That",
+      "brand": "Rothy's",
+      "url": "https://sandwich.co/work/this-but-that/",
+      "player_url": "https://fast.wistia.net/embed/iframe/jkwy7ue4e5",
+      "source_url": "https://sandwich.co/work/this-but-that/",
+      "sources": [
+        "https://sandwich.co/work/this-but-that/"
+      ],
+      "category": "Brand commercial",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "A 30-second style-focused consumer product comparison. Useful counterweight to long tech explainers when judging how much identity can be expressed quickly.",
+      "metrics": null,
+      "duration_seconds": 30.0,
+      "id": "C061",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve short contrast device; narrow consumer comparison rather than worldview arc."
+    },
+    {
+      "source_id": "creative-picture-your-life",
+      "title": "Picture Your Life",
+      "brand": "Fracture",
+      "url": "https://sandwich.co/work/picture-your-life/",
+      "player_url": "https://fast.wistia.net/embed/iframe/x6vlw4s5az",
+      "source_url": "https://sandwich.co/work/picture-your-life/",
+      "sources": [
+        "https://sandwich.co/work/picture-your-life/"
+      ],
+      "category": "Brand commercial",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Photography, memory and physical objects relate to making a space personal. The studio tags family, lifestyle and nostalgia; candidate for an emotional object-based premise.",
+      "metrics": null,
+      "duration_seconds": 60.03,
+      "id": "C062",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve for personal objects and memory; slower emotional proposition needs viewing."
+    },
+    {
+      "source_id": "creative-made-with-love",
+      "title": "Made With Love",
+      "brand": "Etsy",
+      "url": "https://sandwich.co/work/made-with-love/",
+      "player_url": "https://fast.wistia.net/embed/iframe/2kefg073gi",
+      "source_url": "https://sandwich.co/work/made-with-love/",
+      "sources": [
+        "https://sandwich.co/work/made-with-love/"
+      ],
+      "category": "Brand commercial / testimonial",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Craft, people and personal taste are adjacent to ReSpace. A short candidate for connecting real products to human meaning.",
+      "metrics": null,
+      "duration_seconds": 30.0,
+      "id": "C063",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve human meaning behind products; not a software transition reference."
+    },
+    {
+      "source_id": "creative-golem",
+      "title": "It's Just a Matter of Time",
+      "brand": "Golem",
+      "url": "https://sandwich.co/work/golem/",
+      "player_url": "https://fast.wistia.net/embed/iframe/vg3uyvmjth",
+      "source_url": "https://sandwich.co/work/golem/",
+      "sources": [
+        "https://sandwich.co/work/golem/"
+      ],
+      "category": "Brand / animation film",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Catalogue establishes an animated, narrated network-computing film. Candidate for a broad idea becoming an explanation of difficult technology.",
+      "metrics": null,
+      "duration_seconds": 87.07,
+      "id": "C064",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve abstract-system explanation; computing-network subject is less intuitive for consumer rooms."
+    },
+    {
+      "source_id": "creative-design-in-the-cloud",
+      "title": "Design in the Cloud",
+      "brand": "Figma",
+      "url": "https://sandwich.co/work/design-in-the-cloud/",
+      "player_url": "https://fast.wistia.net/embed/iframe/68sofvuog0",
+      "source_url": "https://sandwich.co/work/design-in-the-cloud/",
+      "sources": [
+        "https://sandwich.co/work/design-in-the-cloud/"
+      ],
+      "category": "Product introduction",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "A compact introduction to a new design workflow, supported by studio tags for design, cloud and spokesperson. Candidate for simple language around a technical change.",
+      "metrics": null,
+      "duration_seconds": 61.47,
+      "id": "C065",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve technical-to-simple language; weaker human environment premise."
+    },
+    {
+      "source_id": "creative-one-card",
+      "title": "One Card",
+      "brand": "Coin",
+      "url": "https://sandwich.co/work/one-card/",
+      "player_url": "https://fast.wistia.net/embed/iframe/81ps5ck73g",
+      "source_url": "https://sandwich.co/work/one-card/",
+      "sources": [
+        "https://sandwich.co/work/one-card/"
+      ],
+      "category": "Crowdfunding product introduction",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "An unfamiliar physical product with an everyday problem. Candidate for clean feature explanation and tangible proof. The historical product outcome is not evidence that its marketing promises were achievable.",
+      "metrics": null,
+      "duration_seconds": 104.97,
+      "id": "C066",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve tangible proof; product-history outcome cannot validate its advertising promises."
+    },
+    {
+      "source_id": "creative-robinhood",
+      "title": "Stock",
+      "brand": "Robinhood",
+      "url": "https://sandwich.co/work/robinhood/",
+      "player_url": "https://fast.wistia.net/embed/iframe/ar3yd358ji",
+      "source_url": "https://sandwich.co/work/robinhood/",
+      "sources": [
+        "https://sandwich.co/work/robinhood/"
+      ],
+      "category": "Product introduction",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Catalogue tags retro, spokesperson and millennial finance. Candidate for making an intimidating category feel everyday and approachable.",
+      "metrics": null,
+      "duration_seconds": 103.47,
+      "id": "C067",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve approachable category tone; finance context adds little spatial relevance."
+    },
+    {
+      "source_id": "creative-welcome-to-square",
+      "title": "Welcome to Square",
+      "brand": "Square",
+      "url": "https://sandwich.co/work/welcome-to-square/",
+      "player_url": "https://fast.wistia.net/embed/iframe/37rv2ebv8g",
+      "source_url": "https://sandwich.co/work/welcome-to-square/",
+      "sources": [
+        "https://sandwich.co/work/welcome-to-square/"
+      ],
+      "category": "Product launch",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Early startup launch explicitly tagged Launch by its producer. Candidate for a minimal physical demonstration with an immediately understandable use case.",
+      "metrics": null,
+      "duration_seconds": 137.81,
+      "id": "C068",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve early startup clarity; less aligned with the desired worldview opening."
+    },
+    {
+      "source_id": "creative-airtable",
+      "title": "Organize Anything",
+      "brand": "Airtable",
+      "url": "https://sandwich.co/work/airtable/",
+      "player_url": "https://fast.wistia.net/embed/iframe/9lmohyeqnz",
+      "source_url": "https://sandwich.co/work/airtable/",
+      "sources": [
+        "https://sandwich.co/work/airtable/"
+      ],
+      "category": "Product explainer",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Catalogue tags comedy, mockumentary and children alongside database software. Candidate for an accessible analogy for an otherwise abstract system.",
+      "metrics": null,
+      "duration_seconds": 114.83,
+      "id": "C069",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve for comedy and analogy; selected Slack film has actual preview evidence."
+    },
+    {
+      "source_id": "creative-perplexity",
+      "title": "The Know-It-Alls trailer",
+      "brand": "Perplexity",
+      "url": "https://sandwich.co/work/perplexity/",
+      "player_url": "https://fast.wistia.net/embed/iframe/oeivsyv7t8",
+      "source_url": "https://sandwich.co/work/perplexity/",
+      "sources": [
+        "https://sandwich.co/work/perplexity/"
+      ],
+      "category": "Brand trailer",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Primary catalogue calls it a comedy movie trailer. Useful deliberate format break: borrowing entertainment language for an AI product rather than defaulting to a demo.",
+      "metrics": null,
+      "duration_seconds": 110.0,
+      "id": "C070",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve entertainment-format borrowing; trailer structure may delay practical product understanding."
+    },
+    {
+      "source_id": "creative-slack-wfh",
+      "title": "WFH",
+      "brand": "Slack",
+      "url": "https://sandwich.co/work/slack-wfh/",
+      "player_url": "https://fast.wistia.net/embed/iframe/8uja38s8hg",
+      "source_url": "https://sandwich.co/work/slack-wfh/",
+      "sources": [
+        "https://sandwich.co/work/slack-wfh/"
+      ],
+      "category": "Product / campaign explainer",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Professional mockumentary about working from home. Different film from So Yeah, We Tried Slack; candidate for a recognizable human situation leading into software.",
+      "metrics": null,
+      "duration_seconds": 163.41,
+      "id": "C071",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve domestic work setting; original Slack film is the stronger evidenced transition study."
+    },
+    {
+      "source_id": "creative-flux",
+      "title": "A Better Way to Build",
+      "brand": "Flux",
+      "url": "https://sandwich.co/work/flux/",
+      "player_url": "https://fast.wistia.net/embed/iframe/xeadhr8o9j",
+      "source_url": "https://sandwich.co/work/flux/",
+      "sources": [
+        "https://sandwich.co/work/flux/"
+      ],
+      "category": "Product explainer",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Catalogue confirms 3D animation and engineering subject matter. Candidate for using spatial/technical imagery to keep the demonstration visually engaging.",
+      "metrics": null,
+      "duration_seconds": 90.34,
+      "id": "C072",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve technical 3D imagery; engineering audience differs from room owners."
+    },
+    {
+      "source_id": "creative-lumos",
+      "title": "Let There Be Lumos",
+      "brand": "Lumos",
+      "url": "https://sandwich.co/work/lumos/",
+      "player_url": "https://fast.wistia.net/embed/iframe/bbimjl9oce",
+      "source_url": "https://sandwich.co/work/lumos/",
+      "sources": [
+        "https://sandwich.co/work/lumos/"
+      ],
+      "category": "Product explainer",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Narrated app-management introduction. Secondary candidate for articulating a hidden everyday system clearly; less direct spatial and consumer fit.",
+      "metrics": null,
+      "duration_seconds": 141.27,
+      "id": "C073",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve hidden-system explanation; enterprise subject has weaker consumer relevance."
+    },
+    {
+      "source_id": "creative-instacart",
+      "title": "Another You",
+      "brand": "Instacart",
+      "url": "https://sandwich.co/work/instacart/",
+      "player_url": "https://fast.wistia.net/embed/iframe/tv2pkjglnk",
+      "source_url": "https://sandwich.co/work/instacart/",
+      "sources": [
+        "https://sandwich.co/work/instacart/"
+      ],
+      "category": "Brand commercial",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "A 30-second household-service concept. Candidate for dramatizing the value of time instead of explaining app screens.",
+      "metrics": null,
+      "duration_seconds": 30.07,
+      "id": "C074",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve human time benefit; narrow 30-second service premise."
+    },
+    {
+      "source_id": "creative-board",
+      "title": "It's a Game Changer",
+      "brand": "Board",
+      "url": "https://sandwich.co/work/board/",
+      "player_url": "https://fast.wistia.net/embed/iframe/ed3uk5d92f",
+      "source_url": "https://sandwich.co/work/board/",
+      "sources": [
+        "https://sandwich.co/work/board/"
+      ],
+      "category": "Product introduction",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Physical games, family and shared experience: useful when ReSpace is about the life a room enables. Primary credits/catalogue confirm a colorful hardware explainer.",
+      "metrics": null,
+      "duration_seconds": 66.64,
+      "id": "C075",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve life enabled by a room; selected Playdate covers playful hardware personality."
+    },
+    {
+      "source_id": "creative-robot",
+      "title": "Hello, Robot",
+      "brand": "Robot.com",
+      "url": "https://sandwich.co/work/robot/",
+      "player_url": "https://fast.wistia.net/embed/iframe/duczgphg6r",
+      "source_url": "https://sandwich.co/work/robot/",
+      "sources": [
+        "https://sandwich.co/work/robot/"
+      ],
+      "category": "Brand / product film",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "AI plus physical hardware, tagged comedy by its producer. Candidate for showing capability in an understandable human-scale setting.",
+      "metrics": null,
+      "duration_seconds": 74.95,
+      "id": "C076",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve human-scale AI demonstration; exact story and pace need viewing."
+    },
+    {
+      "source_id": "creative-friend",
+      "title": "Not Imaginary",
+      "brand": "Friend",
+      "url": "https://sandwich.co/work/friend/",
+      "player_url": "https://fast.wistia.net/embed/iframe/v3rlx555s5",
+      "source_url": "https://sandwich.co/work/friend/",
+      "sources": [
+        "https://sandwich.co/work/friend/"
+      ],
+      "category": "Product launch / brand film",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Producer metadata labels the asset friend_launch and the catalogue calls it cinematic AI work. Candidate for lifestyle-based introduction; attention or controversy would not itself prove positive reception.",
+      "metrics": null,
+      "duration_seconds": 104.0,
+      "id": "C077",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve cinematic AI lifestyle; attention or controversy would not prove positive product reception."
+    },
+    {
+      "source_id": "creative-television",
+      "title": "Welcome to the Future of Television",
+      "brand": "Sandwich Vision",
+      "url": "https://sandwich.co/work/television/",
+      "player_url": "https://fast.wistia.net/embed/iframe/pv4e3n99rs",
+      "source_url": "https://sandwich.co/work/television/",
+      "sources": [
+        "https://sandwich.co/work/television/"
+      ],
+      "category": "Product introduction",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "Short consumer software film for spatial computing. Useful format reference for showing a digital experience outside a conventional desktop screen.",
+      "metrics": null,
+      "duration_seconds": 58.07,
+      "id": "C078",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve spatial-computing visual treatment; avoid implying unsupported ReSpace interactions."
+    },
+    {
+      "source_id": "creative-hex",
+      "title": "The Power of Hex",
+      "brand": "Hex",
+      "url": "https://sandwich.co/work/hex/",
+      "player_url": "https://fast.wistia.net/embed/iframe/plhu9pjafy",
+      "source_url": "https://sandwich.co/work/hex/",
+      "sources": [
+        "https://sandwich.co/work/hex/"
+      ],
+      "category": "Brand / product film",
+      "evidence": "Primary studio page + public player metadata verified; footage not watched",
+      "relevance": "A vintage parody about a technical product. Candidate for a strong creative concept holding attention; its 3:43 length makes it a structure reference.",
+      "metrics": null,
+      "duration_seconds": 222.83,
+      "id": "C079",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve committed parody; 3:42 and a niche technical premise reduce first-pass priority."
+    },
+    {
+      "source_id": "creative-remarkable-brain",
+      "title": "Get your brain back",
+      "brand": "reMarkable",
+      "url": "https://www.youtube.com/watch?v=OcdxW2XF0v8",
+      "player_url": null,
+      "source_url": "https://www.youtube.com/watch?v=OcdxW2XF0v8",
+      "sources": [
+        "https://www.youtube.com/watch?v=OcdxW2XF0v8"
+      ],
+      "category": "Brand manifesto / product campaign",
+      "evidence": "Official YouTube metadata and description surfaced in public search; direct web fetch failed",
+      "relevance": "Priority: the official description opens with a societal problem—information overload and lost focus—and asks whether technology is changing us. Closest documented analogue to a human environment/personality thesis leading toward a product.",
+      "metrics": {
+        "views": 2777215,
+        "kind": "YouTube search/API snapshot; paid/organic unknown",
+        "observed_date": "2026-10-17",
+        "source_url": "https://www.youtube.com/watch?v=OcdxW2XF0v8"
+      },
+      "duration_seconds": null,
+      "id": "C080",
+      "rank": 2,
+      "selected": true,
+      "role": "Worldview → product",
+      "duration": "2:37",
+      "transcript_status": "ready",
+      "footage_review": "Automated audiovisual preview at 6 fps: 00:00–01:30 only",
+      "decision": "SELECT 2: Worldview → product"
+    },
+    {
+      "source_id": "creative-remarkable-2",
+      "title": "Introducing reMarkable 2 — the paper tablet (2020)",
+      "brand": "reMarkable",
+      "url": "https://www.youtube.com/watch?v=SWY_bwFMxro",
+      "player_url": null,
+      "source_url": "https://www.youtube.com/watch?v=SWY_bwFMxro",
+      "sources": [
+        "https://www.youtube.com/watch?v=SWY_bwFMxro"
+      ],
+      "category": "Product launch",
+      "evidence": "Official YouTube metadata and description surfaced in public search; direct web fetch failed",
+      "relevance": "Product-first companion to the manifesto. Compare the broader human claim with the specific sensory promise of a digital tool feeling like paper.",
+      "metrics": {
+        "views": 5291762,
+        "kind": "YouTube search-index snapshot observed 2026-10-17; not a live verified count and does not distinguish paid from organic views.",
+        "source_url": "https://www.youtube.com/watch?v=SWY_bwFMxro"
+      },
+      "duration_seconds": null,
+      "id": "C081",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach/product companion: study alongside the selected worldview film, not as a duplicate shortlist slot."
+    },
+    {
+      "source_id": "creative-notion-calendar",
+      "title": "Meet Notion Calendar",
+      "brand": "Notion",
+      "url": "https://www.youtube.com/watch?v=C4Q2ezioTUM",
+      "player_url": null,
+      "source_url": "https://www.notion.com/blog/introducing-notion-calendar",
+      "sources": [
+        "https://www.notion.com/blog/introducing-notion-calendar"
+      ],
+      "category": "Product launch",
+      "evidence": "Official YouTube search metadata + brand launch article; footage not watched",
+      "relevance": "The launch essay starts with the importance of time and then the fragmented tools used to manage it. Candidate for translating a universal life constraint into a precise product role.",
+      "metrics": {
+        "views": 135998,
+        "kind": "YouTube search-index snapshot observed 2026-10-17; not a live verified count and does not distinguish paid from organic views.",
+        "source_url": "https://www.youtube.com/watch?v=C4Q2ezioTUM"
+      },
+      "duration_seconds": null,
+      "id": "C082",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "ready",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve for time-as-human-need; Mail has a more direct personalization proposition."
+    },
+    {
+      "source_id": "creative-notion-mail",
+      "title": "Meet Notion Mail",
+      "brand": "Notion",
+      "url": "https://www.youtube.com/watch?v=54l-1NfXnX8",
+      "player_url": null,
+      "source_url": "https://www.notion.com/fr/blog/introducing-notion-mail",
+      "sources": [
+        "https://www.notion.com/fr/blog/introducing-notion-mail"
+      ],
+      "category": "Product launch",
+      "evidence": "Official YouTube metadata/description in search + brand launch article; direct video fetch failed",
+      "relevance": "Priority: personalization provides a direct rhetorical bridge to spatial personality. The launch proposition is an inbox that thinks like its user; study how identity is connected to an interface.",
+      "metrics": {
+        "views": 5989777,
+        "kind": "YouTube search-index snapshot observed 2026-10-17; not a live verified count and does not distinguish paid from organic views.",
+        "source_url": "https://www.youtube.com/watch?v=54l-1NfXnX8"
+      },
+      "duration_seconds": null,
+      "id": "C083",
+      "rank": 10,
+      "selected": true,
+      "role": "Personalization as promise",
+      "transcript_status": "error",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "SELECT 10: Personalization as promise"
+    },
+    {
+      "source_id": "creative-headspace",
+      "title": "Say Hello to Headspace",
+      "brand": "Headspace",
+      "url": "https://vimeo.com/226652947",
+      "player_url": null,
+      "source_url": "https://dribbble.com/shots/3581319-Say-hello-to-Headspace",
+      "sources": [
+        "https://dribbble.com/shots/3581319-Say-hello-to-Headspace"
+      ],
+      "category": "App relaunch / animated explainer",
+      "evidence": "Primary publisher or creative contributor page; footage not watched",
+      "relevance": "Priority: the director explicitly says this animation introduces both the benefits of mindfulness and how the new app works. Good evidence of the broad human idea → app bridge the user wants.",
+      "metrics": null,
+      "duration_seconds": null,
+      "id": "C084",
+      "rank": 16,
+      "selected": true,
+      "role": "Human benefit → app",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "SELECT 16: Human benefit → app"
+    },
+    {
+      "source_id": "creative-figma-nothing",
+      "title": "Nothing Great Is Made Alone",
+      "brand": "Figma",
+      "url": "https://vimeo.com/666771068",
+      "player_url": null,
+      "source_url": "https://vimeo.com/666771068",
+      "sources": [
+        "https://vimeo.com/666771068"
+      ],
+      "category": "Brand film",
+      "evidence": "Primary publisher or creative contributor page; footage not watched",
+      "relevance": "Human collaboration rather than a feature name supplies the core proposition. Sound studio credits Animade for animation; candidate for combining a universal statement with playful design language.",
+      "metrics": null,
+      "duration_seconds": null,
+      "id": "C085",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve broad thesis and animation; overlaps Dropbox and Headspace roles."
+    },
+    {
+      "source_id": "creative-figma-slides",
+      "title": "Presenting: Figma Slides",
+      "brand": "Figma",
+      "url": "https://www.youtube.com/watch?v=p-B--SGq_ZQ",
+      "player_url": null,
+      "source_url": "https://www.youtube.com/watch?v=p-B--SGq_ZQ",
+      "sources": [
+        "https://www.youtube.com/watch?v=p-B--SGq_ZQ"
+      ],
+      "category": "Product launch",
+      "evidence": "Official YouTube search metadata and description; footage not watched",
+      "relevance": "Candidate for making a familiar software category feel new. Official description emphasizes co-creation, audience participation and interaction; needs viewing to assess how cinematic the launch is.",
+      "metrics": {
+        "views": 54531,
+        "kind": "YouTube search-index snapshot observed 2026-10-17; not a live verified count and does not distinguish paid from organic views.",
+        "source_url": "https://www.youtube.com/watch?v=p-B--SGq_ZQ"
+      },
+      "duration_seconds": null,
+      "id": "C086",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve product launch craft; the underlying category is less relevant than personalized space."
+    },
+    {
+      "source_id": "creative-dropbox-freedom",
+      "title": "Creative Freedom",
+      "brand": "Dropbox",
+      "url": "https://vimeo.com/142497378",
+      "player_url": null,
+      "source_url": "https://vimeo.com/142497378",
+      "sources": [
+        "https://vimeo.com/142497378"
+      ],
+      "category": "Brand film",
+      "evidence": "Primary publisher or creative contributor page; footage not watched",
+      "relevance": "Priority: director Johnny Kelly describes a 60-second film illustrating what creative freedom enables, assembled from more than 100 collaborators. Strong evidence for a broad worldview-led brand film and visual variety.",
+      "metrics": null,
+      "duration_seconds": 60,
+      "id": "C087",
+      "rank": 15,
+      "selected": true,
+      "role": "Visual variety with one thesis",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "SELECT 15: Visual variety with one thesis"
+    },
+    {
+      "source_id": "creative-apple-perspective",
+      "title": "Perspective",
+      "brand": "Apple",
+      "url": "https://www.apple.com/perspective/",
+      "player_url": null,
+      "source_url": "https://www.apple.com/perspective/",
+      "sources": [
+        "https://www.apple.com/perspective/"
+      ],
+      "category": "Brand manifesto",
+      "evidence": "Primary publisher or creative contributor page; footage not watched",
+      "relevance": "Candidate for a design worldview opening and spatial visual storytelling. Brand film, not a startup launch; exact shot and transition observations require viewing.",
+      "metrics": null,
+      "duration_seconds": null,
+      "id": "C088",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve spatial typography and philosophy; less evidence of a consumer product bridge."
+    },
+    {
+      "source_id": "creative-framer-3",
+      "title": "Introducing Framer 3.0",
+      "brand": "Framer",
+      "url": "https://www.youtube.com/watch?v=6aioEoCdBJw",
+      "player_url": null,
+      "source_url": "https://www.framer.com/blog/framer-3/",
+      "sources": [
+        "https://www.framer.com/blog/framer-3/"
+      ],
+      "category": "Product launch",
+      "evidence": "Primary publisher or creative contributor page; footage not watched",
+      "relevance": "A contemporary 76-second launch with multiple capabilities. Useful benchmark for feature compression and the transition from promise to proof; its primary page directly embeds this video.",
+      "metrics": null,
+      "duration_seconds": 76,
+      "id": "C089",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve modern feature compression; no need to make the shortlist dominated by interface films."
+    },
+    {
+      "source_id": "creative-light-iii",
+      "title": "Introducing the Light Phone III",
+      "brand": "Light",
+      "url": "https://www.youtube.com/watch?v=KbMbO-t2MyU",
+      "player_url": null,
+      "source_url": "https://www.linkedin.com/posts/tangkaiwei_introducing-light-phone-iii-back-in-2014-activity-7206313327067631617-YCPr",
+      "sources": [
+        "https://www.linkedin.com/posts/tangkaiwei_introducing-light-phone-iii-back-in-2014-activity-7206313327067631617-YCPr"
+      ],
+      "category": "Product launch",
+      "evidence": "Cofounder launch post + video ID corroborated by published reference; direct video fetch failed",
+      "relevance": "The cofounder introduces the product through attention, data and smartphone consumption. Candidate for a lifestyle thesis that positions technology as serving human life.",
+      "metrics": null,
+      "duration_seconds": null,
+      "id": "C090",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve humane technology positioning; reMarkable provides a better evidenced worldview-to-product arc."
+    },
+    {
+      "source_id": "M001",
+      "title": "DollarShaveClub.com — Our Blades Are F***ing Great",
+      "brand": "Dollar Shave Club",
+      "url": "https://www.youtube.com/watch?v=ZUG9qYTJMsI",
+      "source_url": "https://www.youtube.com/watch?v=ZUG9qYTJMsI",
+      "sources": [
+        "https://www.youtube.com/watch?v=ZUG9qYTJMsI",
+        "https://www.youtube.com/watch?v=ZUG9qYTJMsI"
+      ],
+      "category": "Startup launch",
+      "evidence": "Official/primary source linked; see footage and transcript status separately",
+      "relevance": "Classic founder-led consumer launch; transcript confirms a simple offer with a stream of objections and jokes.",
+      "metrics": {
+        "views": 29030783,
+        "kind": "YouTube search-index snapshot; observed 2026-10-17; paid/organic unknown",
+        "source_url": "https://www.youtube.com/watch?v=ZUG9qYTJMsI"
+      },
+      "id": "C091",
+      "rank": 9,
+      "selected": true,
+      "role": "Founder performance and comic momentum",
+      "transcript_status": "ready",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "SELECT 9: Founder performance and comic momentum",
+      "metadata_check": {
+        "duration": "1:33",
+        "view_count_display": "29M views",
+        "source": "youtube-full /video; 2026-10-17"
+      }
+    },
+    {
+      "source_id": "M002",
+      "title": "So Yeah, We Tried Slack…",
+      "brand": "Slack",
+      "url": "https://www.youtube.com/watch?v=B6zVzWU95Sw",
+      "source_url": "https://buildingslack.com/year-1/",
+      "sources": [
+        "https://buildingslack.com/year-1/",
+        "https://www.youtube.com/watch?v=B6zVzWU95Sw"
+      ],
+      "category": "Startup campaign / testimonial",
+      "evidence": "Official/primary source linked; see footage and transcript status separately",
+      "relevance": "Human workflow friction becomes a reason to introduce software; actual preview shows the transition.",
+      "metrics": {
+        "views": 1468828,
+        "kind": "YouTube search-index snapshot; observed 2026-10-17; paid/organic unknown",
+        "source_url": "https://www.youtube.com/watch?v=B6zVzWU95Sw"
+      },
+      "id": "C092",
+      "rank": 7,
+      "selected": true,
+      "role": "Chaos → relief",
+      "transcript_status": "ready",
+      "footage_review": "Automated audiovisual preview at 6 fps: 00:00–01:30 only",
+      "decision": "SELECT 7: Chaos → relief",
+      "metadata_check": {
+        "duration": "2:20",
+        "view_count_display": "1.4M views",
+        "source": "youtube-full /video; 2026-10-17"
+      }
+    },
+    {
+      "source_id": "M003",
+      "title": "Meet Arc, Act II",
+      "brand": "The Browser Company",
+      "url": "https://www.youtube.com/watch?v=WIeJF3kL5ng",
+      "source_url": "https://www.youtube.com/watch?v=WIeJF3kL5ng",
+      "sources": [
+        "https://www.youtube.com/watch?v=WIeJF3kL5ng",
+        "https://www.youtube.com/watch?v=WIeJF3kL5ng"
+      ],
+      "category": "Product announcement",
+      "evidence": "Official/primary source linked; see footage and transcript status separately",
+      "relevance": "Self-aware launch-film format; actual first-90-second preview supports the false-start device.",
+      "metrics": null,
+      "id": "C093",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "ready",
+      "footage_review": "Automated audiovisual preview at 6 fps: 00:00–01:30 only",
+      "decision": "Reserve: the first 90 seconds spend substantial time on false starts; weak pace model for this brief."
+    },
+    {
+      "source_id": "M004",
+      "title": "Break up with your keyboard",
+      "brand": "Wispr Flow",
+      "url": "https://www.youtube.com/watch?v=9KqGpxtsawc",
+      "source_url": "https://wisprflow.ai/media-kit",
+      "sources": [
+        "https://wisprflow.ai/media-kit",
+        "https://www.youtube.com/watch?v=9KqGpxtsawc"
+      ],
+      "category": "Product campaign",
+      "evidence": "Official/primary source linked; see footage and transcript status separately",
+      "relevance": "A human relationship joke leads into the software remedy and proof.",
+      "metrics": {
+        "views": 5460,
+        "kind": "YouTube search/API snapshot; paid/organic unknown",
+        "observed_date": "2026-10-17",
+        "source_url": "https://www.youtube.com/watch?v=9KqGpxtsawc"
+      },
+      "id": "C094",
+      "rank": 3,
+      "selected": true,
+      "role": "Human tension → software",
+      "duration": "1:26",
+      "transcript_status": "ready",
+      "footage_review": "Automated audiovisual preview at 6 fps: 00:00–01:30 requested; 86-second film",
+      "decision": "SELECT 3: Human tension → software"
+    },
+    {
+      "source_id": "M005",
+      "title": "Wispr Flow for iPhone",
+      "brand": "Wispr Flow",
+      "url": "https://www.youtube.com/watch?v=0bB8_-wOmLs",
+      "source_url": "https://wisprflow.ai/media-kit",
+      "sources": [
+        "https://wisprflow.ai/media-kit",
+        "https://www.youtube.com/watch?v=0bB8_-wOmLs"
+      ],
+      "category": "Product launch",
+      "evidence": "Official/primary source linked; see footage and transcript status separately",
+      "relevance": "Companion mobile-launch candidate for carrying a software promise into everyday physical contexts.",
+      "metrics": null,
+      "id": "C095",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve: mobile companion launch; the keyboard film has a stronger evidenced human-problem transition."
+    },
+    {
+      "source_id": "M006",
+      "title": "Introducing the new Notion AI",
+      "brand": "Notion",
+      "url": "https://www.youtube.com/watch?v=S92KX8-Hmlc",
+      "source_url": "https://www.youtube.com/watch?v=S92KX8-Hmlc",
+      "sources": [
+        "https://www.youtube.com/watch?v=S92KX8-Hmlc",
+        "https://www.youtube.com/watch?v=S92KX8-Hmlc"
+      ],
+      "category": "Product launch",
+      "evidence": "Official/primary source linked; see footage and transcript status separately",
+      "relevance": "Short, designed product-proof vignettes; useful for the middle of a larger human story.",
+      "metrics": {
+        "views": 8182193,
+        "kind": "YouTube search-index snapshot; observed 2026-10-17; paid/organic unknown",
+        "source_url": "https://www.youtube.com/watch?v=S92KX8-Hmlc"
+      },
+      "id": "C096",
+      "rank": 20,
+      "selected": true,
+      "role": "Compressed product proof",
+      "transcript_status": "error",
+      "footage_review": "Automated audiovisual preview at 6 fps: 00:00–01:30 requested; approximately 57-second film",
+      "decision": "SELECT 20: Compressed product proof"
+    },
+    {
+      "source_id": "M007",
+      "title": "Introducing Granola — launch sizzle",
+      "brand": "Granola",
+      "url": "https://player.vimeo.com/video/948907406",
+      "source_url": "https://www.granola.ai/blog/announcement",
+      "sources": [
+        "https://www.granola.ai/blog/announcement",
+        "https://player.vimeo.com/video/948907406"
+      ],
+      "category": "Startup launch",
+      "evidence": "Official/primary source linked; see footage and transcript status separately",
+      "relevance": "Primary launch essay explains AI augmenting the user while keeping them in control, and links the sizzle film.",
+      "metrics": null,
+      "id": "C097",
+      "rank": 17,
+      "selected": true,
+      "role": "Human agency in AI",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "SELECT 17: Human agency in AI"
+    },
+    {
+      "source_id": "Y-rNSIwjmynYQ",
+      "title": "We are Bolt, the Fastest-Growing Tech Company in Europe",
+      "brand": "Bolt",
+      "url": "https://www.youtube.com/watch?v=rNSIwjmynYQ",
+      "source_url": "https://www.youtube.com/watch?v=rNSIwjmynYQ",
+      "sources": [
+        "https://www.youtube.com/watch?v=rNSIwjmynYQ"
+      ],
+      "category": "Brand introduction",
+      "evidence": "youtube-full search metadata only; exact film pacing unreviewed",
+      "relevance": "High-reach technology brand film; possible benchmark for rapid breadth and confidence.",
+      "metrics": {
+        "views": 1626101,
+        "kind": "YouTube search/API snapshot; paid/organic unknown",
+        "observed_date": "2026-10-17",
+        "source_url": "https://www.youtube.com/watch?v=rNSIwjmynYQ"
+      },
+      "id": "C098",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "duration": "1:55",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve: broad mobility brand scope; no footage pass to establish a stronger fit than the selected films."
+    },
+    {
+      "source_id": "Y-sitXeGjm4Mc",
+      "title": "Lamborghini Revuelto – From Now On",
+      "brand": "Lamborghini",
+      "url": "https://www.youtube.com/watch?v=sitXeGjm4Mc",
+      "source_url": "https://www.youtube.com/watch?v=sitXeGjm4Mc",
+      "sources": [
+        "https://www.youtube.com/watch?v=sitXeGjm4Mc"
+      ],
+      "category": "Product launch / luxury stretch",
+      "evidence": "youtube-full search metadata only; exact film pacing unreviewed",
+      "relevance": "High-reach cinematic physical-product launch; stretch reference for dramatic reveal.",
+      "metrics": {
+        "views": 8936453,
+        "kind": "YouTube search/API snapshot; paid/organic unknown",
+        "observed_date": "2026-10-17",
+        "source_url": "https://www.youtube.com/watch?v=sitXeGjm4Mc"
+      },
+      "id": "C099",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "duration": "2:17",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach benchmark: luxury-car spectacle and budget are poorly matched to the core ReSpace story."
+    },
+    {
+      "source_id": "Y-OaNIN4jv7tw",
+      "title": "Realize.Design Promo Video",
+      "brand": "Realize.Design",
+      "url": "https://www.youtube.com/watch?v=OaNIN4jv7tw",
+      "source_url": "https://www.youtube.com/watch?v=OaNIN4jv7tw",
+      "sources": [
+        "https://www.youtube.com/watch?v=OaNIN4jv7tw"
+      ],
+      "category": "Direct spatial product promo",
+      "evidence": "youtube-full search metadata only; exact film pacing unreviewed",
+      "relevance": "Direct room-design product candidate; short category benchmark.",
+      "metrics": {
+        "views": 219,
+        "kind": "YouTube search/API snapshot; paid/organic unknown",
+        "observed_date": "2026-10-17",
+        "source_url": "https://www.youtube.com/watch?v=OaNIN4jv7tw"
+      },
+      "id": "C100",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "duration": "0:25",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Competitor benchmark: 219 indexed views and no established story advantage over the selected spatial films."
+    },
+    {
+      "source_id": "Y-dmahvy5sf6o",
+      "title": "Home Design 3D VR | Launch Trailer | Koalabs & Microids",
+      "brand": "Microids",
+      "url": "https://www.youtube.com/watch?v=dmahvy5sf6o",
+      "source_url": "https://www.youtube.com/watch?v=dmahvy5sf6o",
+      "sources": [
+        "https://www.youtube.com/watch?v=dmahvy5sf6o"
+      ],
+      "category": "Spatial software launch trailer",
+      "evidence": "youtube-full search metadata only; exact film pacing unreviewed",
+      "relevance": "Room-design software with explicit launch-trailer framing.",
+      "metrics": {
+        "views": 48885,
+        "kind": "YouTube search/API snapshot; paid/organic unknown",
+        "observed_date": "2026-10-17",
+        "source_url": "https://www.youtube.com/watch?v=dmahvy5sf6o"
+      },
+      "id": "C101",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "duration": "1:09",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Competitor benchmark: VR/game framing may confuse ReSpace’s actual iPhone workflow."
+    },
+    {
+      "source_id": "Y-6MF-AsbHo3A",
+      "title": "Pinterest | You Just Might Surprise Yourself",
+      "brand": "Pinterest",
+      "url": "https://www.youtube.com/watch?v=6MF-AsbHo3A",
+      "source_url": "https://www.youtube.com/watch?v=6MF-AsbHo3A",
+      "sources": [
+        "https://www.youtube.com/watch?v=6MF-AsbHo3A"
+      ],
+      "category": "Brand campaign",
+      "evidence": "youtube-full search metadata only; exact film pacing unreviewed",
+      "relevance": "Personal discovery and taste offer a broader identity-based alternative to room makeover.",
+      "metrics": {
+        "views": 94950,
+        "kind": "YouTube search/API snapshot; paid/organic unknown",
+        "observed_date": "2026-10-17",
+        "source_url": "https://www.youtube.com/watch?v=6MF-AsbHo3A"
+      },
+      "id": "C102",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "duration": "1:18",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Close reserve: selected Disco Treehouse makes the spatial relevance more concrete."
+    },
+    {
+      "source_id": "Y-ZI8KRElcjV4",
+      "title": "Figma Slides: All hands on deck | Figma",
+      "brand": "Figma",
+      "url": "https://www.youtube.com/watch?v=ZI8KRElcjV4",
+      "source_url": "https://www.youtube.com/watch?v=ZI8KRElcjV4",
+      "sources": [
+        "https://www.youtube.com/watch?v=ZI8KRElcjV4"
+      ],
+      "category": "Software campaign",
+      "evidence": "youtube-full search metadata only; exact film pacing unreviewed",
+      "relevance": "Modern designed presentation-software film to compare feature delivery.",
+      "metrics": {
+        "views": 23758,
+        "kind": "YouTube search/API snapshot; paid/organic unknown",
+        "observed_date": "2026-10-17",
+        "source_url": "https://www.youtube.com/watch?v=ZI8KRElcjV4"
+      },
+      "id": "C103",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "duration": "1:07",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reserve: different film from Presenting Figma Slides, but overlaps existing software proof references."
+    },
+    {
+      "source_id": "Y-Cx2dkpBxst8",
+      "title": "What's Figma? [2019]",
+      "brand": "Figma",
+      "url": "https://www.youtube.com/watch?v=Cx2dkpBxst8",
+      "source_url": "https://www.youtube.com/watch?v=Cx2dkpBxst8",
+      "sources": [
+        "https://www.youtube.com/watch?v=Cx2dkpBxst8"
+      ],
+      "category": "Product explainer",
+      "evidence": "youtube-full search metadata only; exact film pacing unreviewed",
+      "relevance": "High-reach explanation of a visual creation tool.",
+      "metrics": {
+        "views": 2024200,
+        "kind": "YouTube search/API snapshot; paid/organic unknown",
+        "observed_date": "2026-10-17",
+        "source_url": "https://www.youtube.com/watch?v=Cx2dkpBxst8"
+      },
+      "id": "C104",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "duration": "1:35",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach benchmark: foundational explainer rather than the broad human opening requested."
+    },
+    {
+      "source_id": "Y-gI0cLpUDf1U",
+      "title": "Tropical Getaway | It’s Possible | Pinterest",
+      "brand": "Pinterest",
+      "url": "https://www.youtube.com/watch?v=gI0cLpUDf1U",
+      "source_url": "https://www.youtube.com/watch?v=gI0cLpUDf1U",
+      "sources": [
+        "https://www.youtube.com/watch?v=gI0cLpUDf1U"
+      ],
+      "category": "Brand campaign / 15-second edit",
+      "evidence": "youtube-full search metadata only; exact film pacing unreviewed",
+      "relevance": "High-view short Pinterest creative; compare to Disco Treehouse for compression.",
+      "metrics": {
+        "views": 11095734,
+        "kind": "YouTube search/API snapshot; paid/organic unknown",
+        "observed_date": "2026-10-17",
+        "source_url": "https://www.youtube.com/watch?v=gI0cLpUDf1U"
+      },
+      "id": "C105",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "duration": "0:15",
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach companion: a distinct creative in the same campaign; spatial identity is clearer in Disco Treehouse."
+    },
+    {
+      "source_id": "X-1",
+      "title": "1X — launch post (index label)",
+      "brand": "1X",
+      "url": "https://x.com/1x_tech/status/1983233494575952138",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/1x_tech/status/1983233494575952138"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Home robotics is adjacent to the future-of-home territory; exceptionally high source-reported reach.",
+      "metrics": {
+        "views": 69276632,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": null,
+      "id": "C106",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-2",
+      "title": "Okara AI CMO — launch post (index label)",
+      "brand": "Okara AI CMO",
+      "url": "https://x.com/askOkara/status/2033562024651968657",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/askOkara/status/2033562024651968657"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "AI service launch with very high reported reach; a benchmark for the contemporary launch market.",
+      "metrics": {
+        "views": 14076827,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": 54,
+      "id": "C107",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-3",
+      "title": "Reactor — launch post (index label)",
+      "brand": "Reactor",
+      "url": "https://x.com/reactorworld/status/2060015607928819876",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/reactorworld/status/2060015607928819876"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Source labels this a dynamic 112-second product-led launch; useful pacing lead.",
+      "metrics": {
+        "views": 12739341,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": 112,
+      "id": "C108",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-4",
+      "title": "rabbit inc. — launch post (index label)",
+      "brand": "rabbit inc.",
+      "url": "https://x.com/rabbit_hmi/status/1744781083831574824",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/rabbit_hmi/status/1744781083831574824"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Consumer AI hardware launch; broad curiosity and tangible product promise are relevant contrasts.",
+      "metrics": {
+        "views": 11124687,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": null,
+      "id": "C109",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-5",
+      "title": "Slate Auto — launch post (index label)",
+      "brand": "Slate Auto",
+      "url": "https://x.com/slateauto/status/1915591929200340998",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/slateauto/status/1915591929200340998"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Physical consumer product launch with reported dynamic pacing; tangible transformation lead.",
+      "metrics": {
+        "views": 10767618,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": 90,
+      "id": "C110",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-6",
+      "title": "Stickerbox — launch post (index label)",
+      "brand": "Stickerbox",
+      "url": "https://x.com/dflieb/status/2005674455474000324",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/dflieb/status/2005674455474000324"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Short consumer hardware launch; candidate for immediate, understandable proof.",
+      "metrics": {
+        "views": 5490812,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": 28,
+      "id": "C111",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-8",
+      "title": "Moda — launch post (index label)",
+      "brand": "Moda",
+      "url": "https://x.com/anvisha/status/2036474296353411290",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/anvisha/status/2036474296353411290"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Source labels a dynamic talking-head launch; candidate for integrating a presenter and product.",
+      "metrics": {
+        "views": 4550624,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": 104,
+      "id": "C112",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-11",
+      "title": "Anything — launch post (index label)",
+      "brand": "Anything",
+      "url": "https://x.com/anything/status/1953439316815786478",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/anything/status/1953439316815786478"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Seventeen-second launch; useful compression counterpoint to longer worldview films.",
+      "metrics": {
+        "views": 3412866,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": 17,
+      "id": "C113",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-13",
+      "title": "Poke — launch post (index label)",
+      "brand": "Poke",
+      "url": "https://x.com/interaction/status/1965093198482866317",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/interaction/status/1965093198482866317"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Text-led 157-second launch; candidate for testing how far a broad premise can carry attention.",
+      "metrics": {
+        "views": 3261378,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": 157,
+      "id": "C114",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-14",
+      "title": "Twin — launch post (index label)",
+      "brand": "Twin",
+      "url": "https://x.com/hugomercierooo/status/2016222038248083857",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/hugomercierooo/status/2016222038248083857"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Text-led 56-second launch; potential short-form bridge from promise to proof.",
+      "metrics": {
+        "views": 3252671,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": 56,
+      "id": "C115",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-15",
+      "title": "Palmier — launch post (index label)",
+      "brand": "Palmier",
+      "url": "https://x.com/Marcos12345rico/status/2067264877463261400",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/Marcos12345rico/status/2067264877463261400"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Thirty-nine-second product-led launch; candidate for compact proof and visual novelty.",
+      "metrics": {
+        "views": 3027712,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": 39,
+      "id": "C116",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-20",
+      "title": "Higgsfield AI — launch post (index label)",
+      "brand": "Higgsfield AI",
+      "url": "https://x.com/higgsfield_ai/status/2013725784800927919",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/higgsfield_ai/status/2013725784800927919"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Creative AI product lead; potential visual-surprise reference.",
+      "metrics": {
+        "views": 1926198,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": 42,
+      "id": "C117",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-22",
+      "title": "Aside — launch post (index label)",
+      "brand": "Aside",
+      "url": "https://x.com/hyojun_at/status/2069497198879048131",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/hyojun_at/status/2069497198879048131"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Eighty-eight-second product-led launch; contemporary software launch comparison.",
+      "metrics": {
+        "views": 1701380,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": 88,
+      "id": "C118",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-25",
+      "title": "Pencil — launch post (index label)",
+      "brand": "Pencil",
+      "url": "https://x.com/tomkrcha/status/2014028990810300498",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/tomkrcha/status/2014028990810300498"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Design-related product lead; potential relevance to visual creation workflows.",
+      "metrics": {
+        "views": 1503733,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": 80,
+      "id": "C119",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    },
+    {
+      "source_id": "X-29",
+      "title": "Wabi — launch post (index label)",
+      "brand": "Wabi",
+      "url": "https://x.com/wabi/status/1976330759133868131",
+      "source_url": "https://infinite.fast/startup-launch-videos",
+      "sources": [
+        "https://infinite.fast/startup-launch-videos",
+        "https://x.com/wabi/status/1976330759133868131"
+      ],
+      "category": "X startup launch discovery lead",
+      "evidence": "Third-party index only; direct X post inaccessible in this run; source analysis not independently verified",
+      "relevance": "Nineteen-second motion-led launch; candidate for an immediate visual opening.",
+      "metrics": {
+        "views": 1154482,
+        "kind": "Source-reported X POST views, not verified video plays",
+        "observed_date": "2026-10-17",
+        "source_url": "https://infinite.fast/startup-launch-videos"
+      },
+      "duration_seconds": 19,
+      "id": "C120",
+      "rank": null,
+      "selected": false,
+      "role": null,
+      "transcript_status": "not requested",
+      "footage_review": "No footage reviewed in this selection pass",
+      "decision": "Reach lead only: require direct footage and metric verification before promoting over the evidenced shortlist."
+    }
+  ]
+}

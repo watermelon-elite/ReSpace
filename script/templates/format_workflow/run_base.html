@@ -1,0 +1,12 @@
+{% extends 'format_workflow/base.html' %}
+{% block body %}
+<main class="format-shell{% block main_class %}{% endblock %}">
+  <div class="format-run-heading">
+    <div>
+      <p class="format-eyebrow">{{ run.week_label }}</p>
+      <h1>{{ run.title }}</h1>
+    </div>
+  </div>
+  {% block run_body %}{% endblock %}
+</main>
+{% endblock %}
