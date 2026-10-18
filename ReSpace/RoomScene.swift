@@ -134,7 +134,8 @@ struct RoomScene: UIViewRepresentable {
                 container.orientation = simd_quatf(angle: Float(placement.yaw), axis: [0, 1, 0])
                 if removed { container.components.set(OpacityComponent(opacity: 0.2)) }
                 content.addChild(container); itemRoots[id] = container; itemDocuments[id] = item
-                let fallback = ModelEntity(mesh: .generateBox(size: size), materials: [material(tint(item["render"]["tint"].string))])
+                let observedColor = ObservedColor.hex(for: item, room: scene["room"])
+                let fallback = ModelEntity(mesh: .generateBox(size: size), materials: [material(tint(observedColor))])
                 fallback.position.y = size.y / 2; fallback.generateCollisionShapes(recursive: false); container.addChild(fallback)
                 let label = ModelEntity(mesh: .generateText(item["label"].string ?? item["category"].text, extrusionDepth: 0.001, font: .systemFont(ofSize: 0.12)), materials: [UnlitMaterial(color: .darkGray)])
                 label.position = [-size.x / 2, size.y + 0.03, 0]; container.addChild(label)
@@ -142,11 +143,11 @@ struct RoomScene: UIViewRepresentable {
                 highlight.position.y = size.y / 2; highlight.isEnabled = id == parent.selectedID; container.addChild(highlight); highlights[id] = highlight
                 assetTasks[id] = Task { [weak self, weak container] in
                     guard let self, let container else { return }
-                    await self.upgrade(item, placement: placement, container: container, fallback: fallback, label: label)
+                    await self.upgrade(item, placement: placement, container: container, fallback: fallback, label: label, observedColor: observedColor)
                 }
             }
         }
-        func upgrade(_ item: JSONValue, placement: Placement, container: Entity, fallback: ModelEntity, label: ModelEntity) async {
+        func upgrade(_ item: JSONValue, placement: Placement, container: Entity, fallback: ModelEntity, label: ModelEntity, observedColor: String?) async {
             guard let baseURL = parent.assetBaseURL else { return }
             let descriptor = item["render"]
             let id = item["id"].text
@@ -177,11 +178,19 @@ struct RoomScene: UIViewRepresentable {
                     let url = try await RenderAssetCache.shared.file(for: asset, baseURL: baseURL)
                     let model = try await RealityAssetLoader.load(asset, from: url, savedSize: placement.size)
                     guard !Task.isCancelled, itemRoots[id] === container else { return }
+                    if item["origin"].text == "existing", item["selection_id"].string == nil { tintObserved(model, color: tint(observedColor)) }
                     model.generateCollisionShapes(recursive: true)
                     RealityAssetLoader.install(model, in: container, replacing: [fallback, label])
                     return
                 } catch { if Task.isCancelled { return } }
             }
+        }
+        func tintObserved(_ entity: Entity, color: UIColor) {
+            if var component = entity.components[ModelComponent.self] {
+                component.materials = component.materials.map { _ in material(color) }
+                entity.components.set(component)
+            }
+            for child in entity.children { tintObserved(child, color: color) }
         }
         func buildNative(_ room: JSONValue) {
             var nativeCenter = SIMD3<Float>.zero

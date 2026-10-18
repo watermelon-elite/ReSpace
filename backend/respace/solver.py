@@ -89,6 +89,9 @@ def validate_scene(snapshot, scene, constraints=None):
         conflicts.append({"code": "duplicate_identity", "reason": "Scene Item IDs must be unique.", "target_ids": [], "action_ids": []})
     for item in active.values():
         placement = item["placement"]
+        anchor_target = _target_id(item.get("anchor", {}).get("target"))
+        if anchor_target and anchor_target not in active:
+            conflicts.append({"code": "missing_target", "target_ids": [item["id"]], "action_ids": [], "reason": "Required Anchor target is absent or removed."})
         try:
             values = [*placement["position"], *placement["size"], placement["yaw"]]
             if len(placement["position"]) != 3 or len(placement["size"]) != 3 or not all(math.isfinite(v) for v in values) or min(placement["size"]) <= 0:
@@ -386,6 +389,7 @@ def _find_placement(room, scene, item, anchor, constraints):
         for placement in _candidates(room, anchor, item["placement"]["size"], item["category"], scene["items"], constraints):
             candidate = deepcopy(item)
             candidate["placement"] = placement
+            candidate["anchor"] = deepcopy(anchor)
             trial = {**scene, "items": [i for i in scene["items"] if i["id"] != item["id"]] + [candidate]}
             issues = validate_scene(room, trial, constraints if constraints.get("_base_scene_edit") else None)
             if not issues:
@@ -395,7 +399,72 @@ def _find_placement(room, scene, item, anchor, constraints):
     return None, issues or [{"code": "collision", "reason": "No valid placement was found."}]
 
 
-def _apply_edit(room, scene, action, kind, selections, constraints):
+def _required(item, constraints):
+    return (item.get("add_id") in constraints.get("must_have_add_ids", [])
+            or item.get("selection_id") in constraints.get("must_have_selection_ids", [])
+            or item["category"] in constraints.get("must_have_categories", []))
+
+
+def _remove_item(item):
+    item["last_valid_placement"] = deepcopy(item["placement"])
+    item["pre_removal_status"] = item["status"]
+    item["status"] = "removed"
+
+
+def _dependent_consequences(room, scene, target_id, before, constraints):
+    previous = {i["id"]: i for i in before}
+    changed, dependents = {target_id}, []
+    remaining = [i for i in scene["items"] if i["id"] != target_id and i.get("status") != "removed"]
+    while True:
+        ready = [i for i in remaining if i["placement"].get("support_id") in changed
+                 or _target_id(i.get("anchor", {}).get("target")) in changed]
+        if not ready:
+            break
+        for item in ready:
+            remaining.remove(item)
+            dependents.append(item)
+            changed.add(item["id"])
+    if not dependents:
+        return [], None
+    for item in dependents:
+        _remove_item(item)
+    consequences = []
+    for item in dependents:
+        original = previous[item["id"]]
+        item.update(deepcopy(original))
+        if not validate_scene(room, scene, constraints if constraints.get("_base_scene_edit") else None):
+            continue
+        _remove_item(item)
+        if _protected(original, constraints):
+            return [], {"code": "protected_dependent", "reason": "A protected dependent must stay at its saved placement."}
+        if not (constraints.get("allow_dependent_relocation") or constraints.get("allow_dependent_omission")):
+            return [], {"code": "unresolved_dependent", "reason": "The dependent has no permitted valid placement or omission."}
+        approved = item["id"] in constraints.get("approved_consequence_item_ids", [])
+        if _required(original, constraints) and not approved:
+            return [], {"code": "consequence_approval_required", "reason": "Changing this support would materially change a must-have dependent.",
+                        "item_ids": [i["id"] for i in dependents if _required(previous[i["id"]], constraints)]}
+        anchors = []
+        if constraints.get("allow_dependent_relocation"):
+            anchor = original.get("anchor") or ({"type": "on_top_of", "target": {"kind": "item", "id": original["placement"]["support_id"]}} if original["placement"].get("support_id") else None)
+            if anchor:
+                anchors = [anchor, *anchor.get("alternatives", [])]
+        for anchor in anchors:
+            placement, _ = _find_placement(room, scene, original, anchor, {**constraints, "allow_adjustments": False})
+            if placement is not None:
+                item.update(deepcopy(original), placement=placement, last_valid_placement=deepcopy(placement), anchor=deepcopy(anchor))
+                if item["origin"] == "existing":
+                    item["status"] = "moved"
+                consequences.append({"item_id": item["id"], "code": "dependent_relocated", "message": f"Relocated {item.get('label', item['category'])} after its support or Anchor changed."})
+                break
+        else:
+            if not constraints.get("allow_dependent_omission"):
+                return [], {"code": "unresolved_dependent", "reason": "The dependent has no permitted valid placement or omission."}
+            item["reason"] = "Omitted because its support or Anchor changed."
+            consequences.append({"item_id": item["id"], "code": "dependent_omitted", "message": f"Removed dependent {item.get('label', item['category'])} because its support or Anchor changed."})
+    return consequences, None
+
+
+def _apply_edit(room, scene, action, kind, selections, constraints, result):
     target_id = action.get("target_item_id", action.get("removed_item_id", _target_id(action.get("target"))))
     item = next((i for i in scene["items"] if i["id"] == target_id), None)
     if not item:
@@ -416,6 +485,8 @@ def _apply_edit(room, scene, action, kind, selections, constraints):
     if kind != "restore" and item.get("status") == "removed":
         return "failed", "missing_target", "Target is removed from this Scene.", []
     before = deepcopy(item)
+    before_items = deepcopy(scene["items"])
+    consequences = []
     if kind == "move":
         placement, issues = _find_placement(room, scene, item, action["anchor"], constraints)
         if placement is None:
@@ -429,15 +500,14 @@ def _apply_edit(room, scene, action, kind, selections, constraints):
         if item["origin"] == "existing":
             item["status"] = "moved"
     elif kind == "remove":
-        if item.get("add_id") in constraints.get("must_have_add_ids", []) or item.get("selection_id") in constraints.get("must_have_selection_ids", []) or item["category"] in constraints.get("must_have_categories", []):
+        if _required(item, constraints):
             return "failed", "protected_requirement", "A required Item cannot be omitted.", []
-        item["last_valid_placement"] = deepcopy(item["placement"])
-        item["status"] = "removed"
+        _remove_item(item)
     elif kind == "restore":
         if item.get("status") != "removed":
             return "no_op", "already_present", "Target is already present.", []
         item["placement"] = deepcopy(item.get("last_valid_placement") or item.get("original_placement"))
-        item["status"] = "new" if item["origin"] == "new" else "existing" if item["placement"] == item.get("original_placement") else "moved"
+        item["status"] = item.get("pre_removal_status") or ("new" if item["origin"] == "new" else "existing" if item["placement"] == item.get("original_placement") else "moved")
     elif kind == "replace":
         try:
             selection = _verified_selection(selections, action["selection_id"], item["category"])
@@ -451,15 +521,24 @@ def _apply_edit(room, scene, action, kind, selections, constraints):
         item.update(selection_id=selection["selection_id"], variant_id=selection["variant_id"],
             offer_id=selection["offer_id"], product=deepcopy(selection), render=deepcopy(selection.get("render", {})),
             label=selection.get("title", item["category"]))
+    if kind in ("remove", "replace"):
+        consequence_constraints = {**constraints, "approved_consequence_item_ids":
+                                  constraints.get("approved_consequences", {}).get(action["action_id"], [])}
+        consequences, issue = _dependent_consequences(room, scene, target_id, before_items, consequence_constraints)
+        if issue:
+            scene["items"] = before_items
+            if issue["code"] == "consequence_approval_required":
+                result.setdefault("required_questions", []).append({"action_id": action["action_id"], "target_item_id": target_id, "affected_item_ids": issue["item_ids"]})
+            return "failed", issue["code"], issue["reason"], []
     issues = validate_scene(room, scene, constraints if constraints.get("_base_scene_edit") else None)
     if issues:
-        item.clear()
-        item.update(before)
+        scene["items"] = before_items
         return "failed", issues[0]["code"], issues[0]["reason"], []
+    result["warnings"].extend({**consequence, "action_id": action["action_id"]} for consequence in consequences)
     if kind != "remove":
         item["last_valid_placement"] = deepcopy(item["placement"])
     item["reason"] = action.get("reason", "")
-    return "applied", "placed" if kind in ("move", "restore", "replace") else "removed", "Requested change applied.", [item["id"]]
+    return "applied", "placed" if kind in ("move", "restore", "replace") else "removed", "Requested change applied." + (" " + " ".join(c["message"] for c in consequences) if consequences else ""), [item["id"], *(c["item_id"] for c in consequences)]
 
 
 def solve(room_snapshot, plan, selections, constraints, base_scene=None):
@@ -506,6 +585,7 @@ def solve(room_snapshot, plan, selections, constraints, base_scene=None):
             support_id = (retained.get("last_valid_placement") or retained.get("original_placement") or {}).get("support_id")
             if support_id in producers:
                 required.add(producers[support_id])
+            required.update(producers[target] for target in _anchor_target_ids(retained.get("anchor", {})) if target in producers)
         if kind not in ("unlock", "add") and target_id in unlocks:
             required.add(unlocks[target_id])
         # Explicit dependent moves/removals must finish before changing their support.
@@ -532,7 +612,7 @@ def solve(room_snapshot, plan, selections, constraints, base_scene=None):
         pending.remove(ready)
         kind, action, _ = ready
         if kind != "add":
-            outcome, code, reason, affected = _apply_edit(room, scene, action, kind, selections, constraints)
+            outcome, code, reason, affected = _apply_edit(room, scene, action, kind, selections, constraints, result)
             _outcome(result, action, kind, outcome, code, reason, affected)
             completed.add(action["action_id"])
             continue

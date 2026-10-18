@@ -88,6 +88,13 @@ class EditController:
         snapshot=self.store.get('snapshots',base['snapshot_id'])
         require(snapshot is not None,'stale_snapshot','The saved measured snapshot is unavailable.')
         data=operation.get('edit',{})
+        if operation['kind']=='edit' and 'item_id' in operation['request'] and 'text' not in operation['request']:
+            if not data.get('plan'):
+                item_id=operation['request']['item_id']
+                data.update(selections=deepcopy(base['scene']['selections']),explicit_target_ids=[item_id],plan={'summary':'Removed the selected Item.','removes':[{'action_id':'remove','target':{'kind':'item','id':item_id},'reason':'Explicit direct Remove'}]})
+                self._save(operation_id,data)
+            self._execute(operation_id,base,snapshot,data)
+            return
         if operation['kind']=='swap':
             if not data.get('plan'):
                 choice=await asyncio.to_thread(self._swap_choice,operation,base)
@@ -107,7 +114,8 @@ class EditController:
             selected=operation['request'].get('selected_item_id')
             if not targets and not ambiguous and re.search(r'\b(?:this|it)\b',operation['request']['text'],re.I):
                 if selected:
-                    require(any(i['id']==selected and i.get('status')!='removed' for i in base['scene']['items']),'invalid_target','The selected Item is stale. Select a current Item.',422)
+                    restoring=bool(affirmative_matches(r'\b(?:restore|bring back)\b',operation['request']['text']))
+                    require(any(i['id']==selected and (restoring or i.get('status')!='removed') for i in base['scene']['items']),'invalid_target','The selected Item is stale. Select a current Item.',422)
                     targets=[selected]
                 else:ambiguous=[i for i in base['scene']['items'] if i.get('status')!='removed']
             deictic_unlock=bool(affirmative_matches(r'\b(?:unlock|unkeep)\s+(?:and\s+(?:move|remove|replace)\s+)?(?:this|it)\b',operation['request']['text']))
@@ -258,9 +266,20 @@ class EditController:
         if explicit:
             require(all(target in explicit or ('i_'+target) in explicit for target in targets),'target_mismatch','The command names a different Item than the selected context. Clarify the target.',422)
         unlock_ids=data.get('explicit_unlock_ids',[])
-        constraints={'intent':'redesign','instructions':instructions,'allow_adjustments':False,'explicit_unlock_ids':unlock_ids,'decision_revision':operation['decision_revision'],'base':operation['base_context'],'must_have_add_ids':[i['add_id'] for i in base['scene']['items'] if i.get('add_id') and i.get('status')!='removed' and base['scene'].get('selections',{}).get(i.get('selection_id'),{}).get('must_have')]}
+        constraints={'intent':'redesign','instructions':instructions,'allow_adjustments':False,'allow_dependent_omission':operation['kind']!='swap','allow_dependent_relocation':operation['kind']!='swap','explicit_unlock_ids':unlock_ids,'decision_revision':operation['decision_revision'],'base':operation['base_context'],'must_have_add_ids':[i['add_id'] for i in base['scene']['items'] if i.get('add_id') and i.get('status')!='removed' and base['scene'].get('selections',{}).get(i.get('selection_id'),{}).get('must_have')]}
         constraints['must_have_selection_ids']=[i['selection_id'] for i in base['scene']['items'] if i.get('selection_id') and i.get('status')!='removed' and base['scene'].get('selections',{}).get(i['selection_id'],{}).get('must_have')]
         requirement_failures=[]
+        for answer in self.operations.effective_answers(operation):
+            question=answer['question']
+            if not question.get('topic','').startswith('removal_consequence:'):continue
+            if answer['request'].get('choice_ids')==['allow_consequences']:
+                constraints.setdefault('approved_consequences',{})[question['consequence_action_id']]=question['consequence_item_ids']
+            else:
+                for group in ('removes','replaces'):
+                    rejected=next((entry for entry in raw.get(group,[]) if entry['action_id']==question['consequence_action_id']),None)
+                    if rejected:
+                        raw[group].remove(rejected)
+                        requirement_failures.append({'action_id':rejected['action_id'],'type':group.rstrip('s'),'outcome':'failed','code':'consequence_declined','reason':'The target was preserved because its dependent changes were not approved.','affected_item_ids':[]})
         for replacement in list(raw.get('replaces',[])):
             target=next((i for i in base['scene']['items'] if i['id']==replacement.get('target_item_id')),None)
             choice=selections.get(replacement.get('selection_id'))
@@ -278,6 +297,20 @@ class EditController:
         plan=validated['plan']
         failed=requirement_failures+[{'action_id':d.get('action_id'),'type':d.get('group','action').rstrip('s'),'outcome':'failed','code':d['code'],'reason':d['reason'],'affected_item_ids':[]} for d in validated['diagnostics']]
         result=solve(snapshot,plan,selections,constraints,base['scene'])
+        if result.get('required_questions'):
+            consequence=result['required_questions'][0]
+            items={i['id']:i for i in base['scene']['items']}
+            labels=', '.join(items[item_id].get('label') or items[item_id]['category'].replace('_',' ') for item_id in consequence['affected_item_ids'])
+            question={'kind':'single_choice','context':'command','topic':'removal_consequence:'+consequence['action_id'],
+                      'text':f'This support or Anchor change would relocate or remove required dependent Items: {labels}. Allow those consequences?',
+                      'choices':[{'choice_id':'keep_target','label':'Keep the target and required dependents'},
+                                 {'choice_id':'allow_consequences','label':'Allow relocation or removal of these required dependents'}],
+                      'consequence_action_id':consequence['action_id'],'consequence_target_item_id':consequence['target_item_id'],
+                      'consequence_item_ids':consequence['affected_item_ids'],'allow_skip':False,'allow_delegate':False}
+            with self.store.transaction():
+                data['private_candidate']=result;self._save(operation_id,data)
+                self.operations.ask(operation_id,question)
+            return
         ceiling=base['scene']['purchase_summary']['approved_ceiling']
         offers={s['offer_id']:s['offer'] for s in selections.values()}
         offers.update({s['offer_id']:s['offer'] for s in base['scene']['selections'].values()})

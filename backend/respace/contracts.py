@@ -176,6 +176,10 @@ class Edit(Undo):
     selected_item_id: ID | None=None
 
 
+class Remove(Undo):
+    item_id: ID
+
+
 class Swap(Undo):
     item_id: ID
     variant_id: ID

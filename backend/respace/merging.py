@@ -8,6 +8,7 @@ import numpy as np
 from shapely.geometry import MultiPoint, Point
 
 from .categories import CATEGORIES, PERMANENT_CATEGORIES, WALL_FEATURES
+from .colors import merge_colors
 from .lifting import _footprint
 
 
@@ -189,6 +190,7 @@ def merge(base_room, lifts, previous=None):
     room["objects"].sort(key=lambda obj: int(obj["id"].split("_")[-1]))
     room["wall_features"].sort(key=lambda f: int(f["id"].split("_")[-1]))
     room["identity_counters"] = {"object": object_number, "wall_feature": feature_number}
+    merge_colors(room, lifts)
     succeeded = sum(lift.get("state", "succeeded") == "succeeded" for lift in lifts)
     room["processing"] = {"expected_frames": len(lifts), "not_started": 0, "pending": 0,
                           "succeeded": succeeded, "failed": len(lifts)-succeeded,

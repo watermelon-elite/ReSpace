@@ -166,11 +166,15 @@ def _rejection(room, origin, direction, hit, category):
 
 def lift_keyframe(base_room, keyframe, detections, rgb, depth=None):
     """Raycasts establish Mount/elevation; qualified optical depth only refines X/Z."""
+    from .colors import detected_sample, native_samples
+
     camera, calibration = _calibration(base_room, keyframe, rgb, depth)
     origin = camera[:3, 3]
     result = {"schema_version": 1, "capture_id": keyframe["capture_id"], "frame_id": keyframe["frame_id"],
               "input_revision": keyframe.get("input_revision", 1), "idx": keyframe["idx"],
               "state": "succeeded", "detections": [], "color_samples": [], "rejected": [], "diagnostics": []}
+    result["color_samples"], result["color_diagnostics"] = native_samples(
+        base_room, keyframe, camera, calibration, rgb, depth)
     for index, detection in enumerate(detections):
         category = detection["category"]
         evidence = {"id": f"det:{keyframe['frame_id']}:{index}", "category": category,
@@ -232,6 +236,9 @@ def lift_keyframe(base_room, keyframe, detections, rgb, depth=None):
                 "floor_points": [p[[0, 2]].tolist() for p in points] if category == "rug" else [],
                 "method": "raycast+depth" if all(m == "raycast+depth" for m in methods) else "raycast",
                 "depth_evidence": depth_evidence})
+            sample = detected_sample(evidence["id"], (x1, y1, x2, y2), rgb)
+            if sample is not None:
+                result["color_samples"].append(sample)
         except (ValueError, TypeError) as exc:
             result["rejected"].append({**evidence, "reason": str(exc)})
     result["diagnostics"] = [{"id": d["id"], "method": d["method"], "depth": d["depth_evidence"]}
@@ -255,6 +262,14 @@ def calibrated_overlay_svg(room, keyframe, lift):
     from html import escape
 
     elements = []
+    masks = lift.get("color_diagnostics", {})
+    for mask in masks.get("masks", []):
+        for kind, color, alpha in (("visible", "#ffb347", .15), ("usable", "#00bb88", .3)):
+            for y, x, length in mask[kind+"_runs"]:
+                sx, sy = keyframe["w"]/masks["width"], keyframe["h"]/masks["height"]
+                elements.append(f'<rect data-mask="{kind}" data-object="{escape(mask["object_id"])}" '
+                                f'x="{x*sx:.3f}" y="{y*sy:.3f}" width="{length*sx:.3f}" height="{sy:.3f}" '
+                                f'fill="{color}" fill-opacity="{alpha}"/>')
     def wireframe(points, edges, attribute, identity, color):
         pixels = project_room_points(room, keyframe, points)
         for a, b in edges:

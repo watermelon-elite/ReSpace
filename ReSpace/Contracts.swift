@@ -126,7 +126,7 @@ public struct SavedDesign: Sendable {
         for item in items {
             guard let id = item["id"].string, identities.insert(id).inserted else { throw ContractError.invalid("Saved design Item identities are invalid.") }
             _ = try Placement(item["placement"])
-            if item["status"].text == "removed", item["origin"].text == "existing" { _ = try Placement(item["last_valid_placement"]) }
+            if item["status"].text == "removed" { _ = try Placement(item["last_valid_placement"]) }
             if let selection = item["selection_id"].string { _ = try ProductChoice(value["scene"]["selections"][selection]) }
         }
         self.value = value; self.items = items
@@ -160,6 +160,15 @@ public struct RoomRecord: Sendable {
 public enum SceneItems {
     public static func visible(in scene: JSONValue, showGhosts: Bool) -> [JSONValue] {
         scene["items"].array.filter { $0["status"].text != "removed" || ($0["origin"].text == "existing" && showGhosts) }
+    }
+}
+
+public enum ObservedColor {
+    public static func hex(for item: JSONValue, room: JSONValue) -> String? {
+        let sampled = item["origin"].text == "existing" && item["selection_id"].string == nil ? room["objects"].array.first { $0["id"] == item["object_id"] }?["attrs"]["color"].string : nil
+        return [sampled, item["render"]["tint"].string].compactMap { $0 }.first {
+            $0.range(of: #"^#[0-9A-Fa-f]{6}$"#, options: .regularExpression) != nil
+        }
     }
 }
 

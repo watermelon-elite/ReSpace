@@ -158,26 +158,26 @@ class SpatialPipeline:
                     self.operations.guard(operation_id)
                     self.store.put('detection_outcomes',frame['frame_id'],outcome)
                 if bounded:return None
-            input_fingerprint=stable_id('lift_input',[1,capture['raw_export'],frame,outcome])
+            input_fingerprint=stable_id('lift_input',[2,capture['raw_export'],frame,outcome])
             lift_id=stable_id('lift',[frame['frame_id'],input_fingerprint])
             lift=self.store.get('keyframe_lifts',lift_id)
             if lift is None:
-                if outcome.get('state')=='succeeded':
-                    rgb=np.asarray(Image.open(BytesIO(await artifact_bytes('jpeg'))).convert('RGB'))
-                    depth=None
-                    if any(d['kind']=='depth' for d in frame['artifacts']):
-                        confidence=await artifact_bytes('confidence') if any(d['kind']=='confidence' for d in frame['artifacts']) else None
-                        depth=decode_depth(await artifact_bytes('depth'),confidence,frame['depth_w'],frame['depth_h'],depth_format=frame['depth_format'],confidence_format=frame.get('confidence_format','uint8'))
-                    lift=lift_keyframe(measured,frame,outcome.get('detections',[]),rgb,depth)
-                else:
-                    lift={'schema_version':1,'capture_id':frame['capture_id'],'frame_id':frame['frame_id'],'idx':frame['idx'],'input_revision':1,'state':'failed','detections':[],'rejected':[],'diagnostics':[{'code':'detection_failed'}]}
+                rgb=np.asarray(Image.open(BytesIO(await artifact_bytes('jpeg'))).convert('RGB'))
+                depth=None
+                if any(d['kind']=='depth' for d in frame['artifacts']):
+                    confidence=await artifact_bytes('confidence') if any(d['kind']=='confidence' for d in frame['artifacts']) else None
+                    depth=decode_depth(await artifact_bytes('depth'),confidence,frame['depth_w'],frame['depth_h'],depth_format=frame['depth_format'],confidence_format=frame.get('confidence_format','uint8'))
+                succeeded=outcome.get('state')=='succeeded'
+                lift=lift_keyframe(measured,frame,outcome.get('detections',[]) if succeeded else [],rgb,depth)
+                if not succeeded:
+                    lift.update(state='failed',diagnostics=[{'code':'detection_failed'}])
                 lift.update(lift_id=lift_id,room_id=room['room_id'],input_fingerprint=input_fingerprint)
                 with self.store.transaction():
                     self.operations.guard(operation_id)
                     self.store.put('keyframe_lifts',lift_id,lift)
                 if bounded:return None
             lifts.append(lift);outcomes.append(outcome);references.append({'frame_id':frame['frame_id'],'lift_id':lift_id})
-        fingerprint=stable_id('snapshot_input',[1,capture['raw_export'],references])
+        fingerprint=stable_id('snapshot_input',[2,capture['raw_export'],references])
         previous=self.store.get('snapshots',room.get('latest_snapshot_id'))
         if previous and previous['capture_id']==room['latest_capture_id'] and previous.get('input_fingerprint')==fingerprint:
             snapshot=previous

@@ -277,6 +277,10 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         require(bool(body.text.strip()),'invalid_command','Enter a design instruction.',422)
         return submit_edit(design_id,body,'edit',background,device(x_device_id))
 
+    @app.post('/v1/designs/{design_id}/remove')
+    def remove(design_id:contracts.ID,body:contracts.Remove,background:BackgroundTasks,x_device_id:str=Header()):
+        return submit_edit(design_id,body,'edit',background,device(x_device_id))
+
     @app.post('/v1/designs/{design_id}/swap')
     def swap(design_id:contracts.ID,body:contracts.Swap,background:BackgroundTasks,x_device_id:str=Header()):
         return submit_edit(design_id,body,'swap',background,device(x_device_id))

@@ -1,0 +1,969 @@
+{
+  "schema_version": 1,
+  "snapshot": {
+    "schema_version": 1,
+    "snapshot": {
+      "schema_version": 1,
+      "snapshot_id": "032719b3-8721-4095-95b3-54b92da3114f",
+      "revision": 1,
+      "room_id": "room",
+      "capture_id": "capture",
+      "created_at": "2026-10-18T03:53:02.403354+00:00",
+      "input_fingerprint": "snapshot_input_f6c1693558b4eddfa3f2dcd0",
+      "room": {
+        "schema_version": 1,
+        "category_version": 1,
+        "room_id": "room",
+        "capture_id": "capture",
+        "height": 2.6,
+        "frame": {
+          "room_from_world": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            -2.0,
+            1.2,
+            -3.0,
+            1.0
+          ]
+        },
+        "floor": {
+          "polygon": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              4.0,
+              0.0
+            ],
+            [
+              4.0,
+              3.0
+            ],
+            [
+              0.0,
+              3.0
+            ]
+          ],
+          "area": 12.0
+        },
+        "walls": [
+          {
+            "id": "w_1",
+            "a": [
+              0.0,
+              0.0
+            ],
+            "b": [
+              4.0,
+              0.0
+            ],
+            "length": 4.0,
+            "inward_normal": [
+              -0.0,
+              1.0
+            ],
+            "virtual": false,
+            "source_ids": [
+              "native-wall-0"
+            ]
+          },
+          {
+            "id": "w_2",
+            "a": [
+              4.0,
+              0.0
+            ],
+            "b": [
+              4.0,
+              3.0
+            ],
+            "length": 3.0,
+            "inward_normal": [
+              -1.0,
+              0.0
+            ],
+            "virtual": false,
+            "source_ids": [
+              "native-wall-1"
+            ]
+          },
+          {
+            "id": "w_3",
+            "a": [
+              4.0,
+              3.0
+            ],
+            "b": [
+              0.0,
+              3.0
+            ],
+            "length": 4.0,
+            "inward_normal": [
+              -0.0,
+              -1.0
+            ],
+            "virtual": false,
+            "source_ids": [
+              "native-wall-2"
+            ]
+          },
+          {
+            "id": "w_4",
+            "a": [
+              0.0,
+              3.0
+            ],
+            "b": [
+              0.0,
+              0.0
+            ],
+            "length": 3.0,
+            "inward_normal": [
+              1.0,
+              0.0
+            ],
+            "virtual": false,
+            "source_ids": [
+              "native-wall-3"
+            ]
+          }
+        ],
+        "corners": [
+          {
+            "id": "c_1",
+            "position": [
+              0.0,
+              0.0
+            ],
+            "wall_ids": [
+              "w_4",
+              "w_1"
+            ]
+          },
+          {
+            "id": "c_2",
+            "position": [
+              4.0,
+              0.0
+            ],
+            "wall_ids": [
+              "w_1",
+              "w_2"
+            ]
+          },
+          {
+            "id": "c_3",
+            "position": [
+              4.0,
+              3.0
+            ],
+            "wall_ids": [
+              "w_2",
+              "w_3"
+            ]
+          },
+          {
+            "id": "c_4",
+            "position": [
+              0.0,
+              3.0
+            ],
+            "wall_ids": [
+              "w_3",
+              "w_4"
+            ]
+          }
+        ],
+        "openings": [],
+        "objects": [
+          {
+            "source_ids": [
+              "native-unseen-chair"
+            ],
+            "category": "chair",
+            "source": "roomplan",
+            "center": [
+              0.2999999999999998,
+              2.7
+            ],
+            "base_y": -5.551115123125783e-17,
+            "yaw": 0.0,
+            "size": [
+              0.2,
+              0.2,
+              0.4
+            ],
+            "mount": "floor",
+            "wall_id": null,
+            "support_id": null,
+            "fixed_in_place": false,
+            "attrs": {},
+            "native_attributes": [],
+            "observation_count": 0,
+            "against_wall": "w_3",
+            "id": "o_1",
+            "color_evidence": {
+              "kind": "observed_camera_rgb",
+              "usable_pixels": 0,
+              "views": []
+            }
+          },
+          {
+            "source_ids": [
+              "native-colored-chair"
+            ],
+            "category": "chair",
+            "source": "roomplan",
+            "center": [
+              2.0,
+              1.0
+            ],
+            "base_y": 0.0,
+            "yaw": 0.0,
+            "size": [
+              1.0,
+              0.5,
+              1.0
+            ],
+            "mount": "floor",
+            "wall_id": null,
+            "support_id": null,
+            "fixed_in_place": false,
+            "attrs": {
+              "color": "#408141"
+            },
+            "native_attributes": [],
+            "observation_count": 0,
+            "id": "o_2",
+            "color_evidence": {
+              "kind": "observed_camera_rgb",
+              "usable_pixels": 2290,
+              "views": [
+                {
+                  "reference": {
+                    "kind": "object",
+                    "id": "o_2"
+                  },
+                  "rgb": [
+                    64,
+                    129,
+                    65
+                  ],
+                  "usable_pixels": 2290,
+                  "method": "native_visibility",
+                  "frame_id": "color-frame"
+                }
+              ]
+            }
+          }
+        ],
+        "wall_features": [],
+        "zones": [],
+        "style_hints": {},
+        "identity_map": {
+          "native-wall-0": {
+            "kind": "wall",
+            "id": "w_1",
+            "ids": [
+              "w_1"
+            ]
+          },
+          "native-wall-1": {
+            "kind": "wall",
+            "id": "w_2",
+            "ids": [
+              "w_2"
+            ]
+          },
+          "native-wall-2": {
+            "kind": "wall",
+            "id": "w_3",
+            "ids": [
+              "w_3"
+            ]
+          },
+          "native-wall-3": {
+            "kind": "wall",
+            "id": "w_4",
+            "ids": [
+              "w_4"
+            ]
+          },
+          "native-unseen-chair": {
+            "kind": "object",
+            "id": "o_1"
+          },
+          "native-colored-chair": {
+            "kind": "object",
+            "id": "o_2"
+          }
+        },
+        "processing": {
+          "expected_frames": 1,
+          "not_started": 0,
+          "pending": 0,
+          "succeeded": 0,
+          "failed": 1,
+          "lifted": 0,
+          "completed": 0,
+          "outcomes": [
+            {
+              "frame_id": "color-frame",
+              "room_id": "room",
+              "capture_id": "capture",
+              "state": "failed",
+              "detections": [],
+              "failure": {
+                "code": "timeout"
+              }
+            }
+          ],
+          "lift_refs": [
+            {
+              "frame_id": "color-frame",
+              "lift_id": "lift_76ec4209e21a4e882aab0f35"
+            }
+          ]
+        },
+        "validity": {
+          "usable": true,
+          "reasons": [],
+          "warnings": []
+        },
+        "identity_counters": {
+          "object": 2,
+          "wall_feature": 0
+        }
+      },
+      "identity_map": {
+        "native-wall-0": {
+          "kind": "wall",
+          "id": "w_1",
+          "ids": [
+            "w_1"
+          ]
+        },
+        "native-wall-1": {
+          "kind": "wall",
+          "id": "w_2",
+          "ids": [
+            "w_2"
+          ]
+        },
+        "native-wall-2": {
+          "kind": "wall",
+          "id": "w_3",
+          "ids": [
+            "w_3"
+          ]
+        },
+        "native-wall-3": {
+          "kind": "wall",
+          "id": "w_4",
+          "ids": [
+            "w_4"
+          ]
+        },
+        "native-unseen-chair": {
+          "kind": "object",
+          "id": "o_1"
+        },
+        "native-colored-chair": {
+          "kind": "object",
+          "id": "o_2"
+        }
+      },
+      "validity": {
+        "usable": true,
+        "reasons": [],
+        "warnings": []
+      },
+      "processing": {
+        "expected_frames": 1,
+        "not_started": 0,
+        "pending": 0,
+        "succeeded": 0,
+        "failed": 1,
+        "lifted": 0,
+        "completed": 0,
+        "outcomes": [
+          {
+            "frame_id": "color-frame",
+            "room_id": "room",
+            "capture_id": "capture",
+            "state": "failed",
+            "detections": [],
+            "failure": {
+              "code": "timeout"
+            }
+          }
+        ],
+        "lift_refs": [
+          {
+            "frame_id": "color-frame",
+            "lift_id": "lift_76ec4209e21a4e882aab0f35"
+          }
+        ]
+      }
+    }
+  },
+  "design": {
+    "schema_version": 1,
+    "design": {
+      "schema_version": 1,
+      "design_id": "5da48757-cdf7-4207-a727-92b8b80c26a9",
+      "parent_id": null,
+      "room_id": "room",
+      "capture_id": "capture",
+      "snapshot_id": "032719b3-8721-4095-95b3-54b92da3114f",
+      "planning_snapshot": null,
+      "decision_snapshot": [],
+      "selection_snapshot": {},
+      "generation_inputs": {
+        "operation_id": "process-color",
+        "capture_id": "capture",
+        "planning_revision": 0,
+        "expected_active_revision": 0
+      },
+      "plan": {
+        "summary": "Observed room",
+        "adds": []
+      },
+      "scene": {
+        "schema_version": 1,
+        "room": {
+          "schema_version": 1,
+          "category_version": 1,
+          "room_id": "room",
+          "capture_id": "capture",
+          "height": 2.6,
+          "frame": {
+            "room_from_world": [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              -2.0,
+              1.2,
+              -3.0,
+              1.0
+            ]
+          },
+          "floor": {
+            "polygon": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                4.0,
+                0.0
+              ],
+              [
+                4.0,
+                3.0
+              ],
+              [
+                0.0,
+                3.0
+              ]
+            ],
+            "area": 12.0
+          },
+          "walls": [
+            {
+              "id": "w_1",
+              "a": [
+                0.0,
+                0.0
+              ],
+              "b": [
+                4.0,
+                0.0
+              ],
+              "length": 4.0,
+              "inward_normal": [
+                -0.0,
+                1.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-0"
+              ]
+            },
+            {
+              "id": "w_2",
+              "a": [
+                4.0,
+                0.0
+              ],
+              "b": [
+                4.0,
+                3.0
+              ],
+              "length": 3.0,
+              "inward_normal": [
+                -1.0,
+                0.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-1"
+              ]
+            },
+            {
+              "id": "w_3",
+              "a": [
+                4.0,
+                3.0
+              ],
+              "b": [
+                0.0,
+                3.0
+              ],
+              "length": 4.0,
+              "inward_normal": [
+                -0.0,
+                -1.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-2"
+              ]
+            },
+            {
+              "id": "w_4",
+              "a": [
+                0.0,
+                3.0
+              ],
+              "b": [
+                0.0,
+                0.0
+              ],
+              "length": 3.0,
+              "inward_normal": [
+                1.0,
+                0.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-3"
+              ]
+            }
+          ],
+          "corners": [
+            {
+              "id": "c_1",
+              "position": [
+                0.0,
+                0.0
+              ],
+              "wall_ids": [
+                "w_4",
+                "w_1"
+              ]
+            },
+            {
+              "id": "c_2",
+              "position": [
+                4.0,
+                0.0
+              ],
+              "wall_ids": [
+                "w_1",
+                "w_2"
+              ]
+            },
+            {
+              "id": "c_3",
+              "position": [
+                4.0,
+                3.0
+              ],
+              "wall_ids": [
+                "w_2",
+                "w_3"
+              ]
+            },
+            {
+              "id": "c_4",
+              "position": [
+                0.0,
+                3.0
+              ],
+              "wall_ids": [
+                "w_3",
+                "w_4"
+              ]
+            }
+          ],
+          "openings": [],
+          "objects": [
+            {
+              "source_ids": [
+                "native-unseen-chair"
+              ],
+              "category": "chair",
+              "source": "roomplan",
+              "center": [
+                0.2999999999999998,
+                2.7
+              ],
+              "base_y": -5.551115123125783e-17,
+              "yaw": 0.0,
+              "size": [
+                0.2,
+                0.2,
+                0.4
+              ],
+              "mount": "floor",
+              "wall_id": null,
+              "support_id": null,
+              "fixed_in_place": false,
+              "attrs": {},
+              "native_attributes": [],
+              "observation_count": 0,
+              "against_wall": "w_3",
+              "id": "o_1",
+              "color_evidence": {
+                "kind": "observed_camera_rgb",
+                "usable_pixels": 0,
+                "views": []
+              }
+            },
+            {
+              "source_ids": [
+                "native-colored-chair"
+              ],
+              "category": "chair",
+              "source": "roomplan",
+              "center": [
+                2.0,
+                1.0
+              ],
+              "base_y": 0.0,
+              "yaw": 0.0,
+              "size": [
+                1.0,
+                0.5,
+                1.0
+              ],
+              "mount": "floor",
+              "wall_id": null,
+              "support_id": null,
+              "fixed_in_place": false,
+              "attrs": {
+                "color": "#408141"
+              },
+              "native_attributes": [],
+              "observation_count": 0,
+              "id": "o_2",
+              "color_evidence": {
+                "kind": "observed_camera_rgb",
+                "usable_pixels": 2290,
+                "views": [
+                  {
+                    "reference": {
+                      "kind": "object",
+                      "id": "o_2"
+                    },
+                    "rgb": [
+                      64,
+                      129,
+                      65
+                    ],
+                    "usable_pixels": 2290,
+                    "method": "native_visibility",
+                    "frame_id": "color-frame"
+                  }
+                ]
+              }
+            }
+          ],
+          "wall_features": [],
+          "zones": [],
+          "style_hints": {},
+          "identity_map": {
+            "native-wall-0": {
+              "kind": "wall",
+              "id": "w_1",
+              "ids": [
+                "w_1"
+              ]
+            },
+            "native-wall-1": {
+              "kind": "wall",
+              "id": "w_2",
+              "ids": [
+                "w_2"
+              ]
+            },
+            "native-wall-2": {
+              "kind": "wall",
+              "id": "w_3",
+              "ids": [
+                "w_3"
+              ]
+            },
+            "native-wall-3": {
+              "kind": "wall",
+              "id": "w_4",
+              "ids": [
+                "w_4"
+              ]
+            },
+            "native-unseen-chair": {
+              "kind": "object",
+              "id": "o_1"
+            },
+            "native-colored-chair": {
+              "kind": "object",
+              "id": "o_2"
+            }
+          },
+          "processing": {
+            "expected_frames": 1,
+            "not_started": 0,
+            "pending": 0,
+            "succeeded": 0,
+            "failed": 1,
+            "lifted": 0,
+            "completed": 0,
+            "outcomes": [
+              {
+                "frame_id": "color-frame",
+                "room_id": "room",
+                "capture_id": "capture",
+                "state": "failed",
+                "detections": [],
+                "failure": {
+                  "code": "timeout"
+                }
+              }
+            ],
+            "lift_refs": [
+              {
+                "frame_id": "color-frame",
+                "lift_id": "lift_76ec4209e21a4e882aab0f35"
+              }
+            ]
+          },
+          "validity": {
+            "usable": true,
+            "reasons": [],
+            "warnings": []
+          },
+          "identity_counters": {
+            "object": 2,
+            "wall_feature": 0
+          }
+        },
+        "room_snapshot_id": "032719b3-8721-4095-95b3-54b92da3114f",
+        "items": [
+          {
+            "id": "i_o_1",
+            "object_id": "o_1",
+            "add_id": null,
+            "origin": "existing",
+            "status": "existing",
+            "category": "chair",
+            "label": "chair",
+            "placement": {
+              "position": [
+                0.2999999999999998,
+                -5.551115123125783e-17,
+                2.7
+              ],
+              "yaw": 0.0,
+              "size": [
+                0.2,
+                0.2,
+                0.4
+              ],
+              "mount": "floor",
+              "wall_id": null,
+              "support_id": null
+            },
+            "original_placement": {
+              "position": [
+                0.2999999999999998,
+                -5.551115123125783e-17,
+                2.7
+              ],
+              "yaw": 0.0,
+              "size": [
+                0.2,
+                0.2,
+                0.4
+              ],
+              "mount": "floor",
+              "wall_id": null,
+              "support_id": null
+            },
+            "last_valid_placement": {
+              "position": [
+                0.2999999999999998,
+                -5.551115123125783e-17,
+                2.7
+              ],
+              "yaw": 0.0,
+              "size": [
+                0.2,
+                0.2,
+                0.4
+              ],
+              "mount": "floor",
+              "wall_id": null,
+              "support_id": null
+            },
+            "instruction": "decide",
+            "fixed_in_place": false,
+            "reason": "Measured original Object",
+            "render": {
+              "kind": "standin",
+              "category": "chair",
+              "asset_id": "kenney-chair",
+              "asset_revision": "67d8cb9ab6c620bb",
+              "asset_url": "/v1/catalog/assets/kenney-chair/67d8cb9ab6c620bb",
+              "sha256": "67d8cb9ab6c620bb1a2647520ab99cb1a58a940238060622d4f198c7d82d1df5",
+              "byte_count": 12862,
+              "tint": "#B9ADA0",
+              "texture_url": null,
+              "authored_bounds": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "units": "meters",
+              "scaling_mode": "normalized",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z",
+              "up_axis": "+Y"
+            }
+          },
+          {
+            "id": "i_o_2",
+            "object_id": "o_2",
+            "add_id": null,
+            "origin": "existing",
+            "status": "existing",
+            "category": "chair",
+            "label": "chair",
+            "placement": {
+              "position": [
+                2.0,
+                0.0,
+                1.0
+              ],
+              "yaw": 0.0,
+              "size": [
+                1.0,
+                0.5,
+                1.0
+              ],
+              "mount": "floor",
+              "wall_id": null,
+              "support_id": null
+            },
+            "original_placement": {
+              "position": [
+                2.0,
+                0.0,
+                1.0
+              ],
+              "yaw": 0.0,
+              "size": [
+                1.0,
+                0.5,
+                1.0
+              ],
+              "mount": "floor",
+              "wall_id": null,
+              "support_id": null
+            },
+            "last_valid_placement": {
+              "position": [
+                2.0,
+                0.0,
+                1.0
+              ],
+              "yaw": 0.0,
+              "size": [
+                1.0,
+                0.5,
+                1.0
+              ],
+              "mount": "floor",
+              "wall_id": null,
+              "support_id": null
+            },
+            "instruction": "decide",
+            "fixed_in_place": false,
+            "reason": "Measured original Object",
+            "render": {
+              "kind": "standin",
+              "category": "chair",
+              "asset_id": "kenney-chair",
+              "asset_revision": "67d8cb9ab6c620bb",
+              "asset_url": "/v1/catalog/assets/kenney-chair/67d8cb9ab6c620bb",
+              "sha256": "67d8cb9ab6c620bb1a2647520ab99cb1a58a940238060622d4f198c7d82d1df5",
+              "byte_count": 12862,
+              "tint": "#408141",
+              "texture_url": null,
+              "authored_bounds": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "units": "meters",
+              "scaling_mode": "normalized",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z",
+              "up_axis": "+Y"
+            }
+          }
+        ],
+        "products": [],
+        "purchase_summary": {
+          "schema_version": 1,
+          "currency": "USD",
+          "lines": [],
+          "total": "0.00",
+          "approved_ceiling": "100.00",
+          "within_budget": true,
+          "tax_excluded": true,
+          "shipping_excluded": true,
+          "existing_objects_excluded": true,
+          "warnings": []
+        },
+        "summary": "Observed room",
+        "warnings": [],
+        "design_id": "5da48757-cdf7-4207-a727-92b8b80c26a9",
+        "parent_id": null,
+        "action_outcomes": [],
+        "selections": {}
+      },
+      "created_at": "2026-10-18T03:53:02.408080+00:00"
+    }
+  }
+}

@@ -102,7 +102,14 @@ struct DesignView: View {
             if let placement = try? Placement(item["placement"]) { Text(String(format: "%.2f × %.2f × %.2f m · %@", placement.size[0], placement.size[1], placement.size[2], placement.mount)).font(.caption) }
             Text("Representative geometry · saved placement validated").font(.caption).foregroundStyle(.secondary)
             if product != .null { ProductSummary(product: product); Button("Product evidence and options") { selectedProductItemID = id; selectedProduct = product } }
-            HStack { Button("Remove") { Task { await mutate("designs/\(design["design_id"].text)/remove", body: ["item_id": .string(id)]) } }.disabled(locked || item["status"].text == "removed"); if product != .null { Button("Find more") { Task { await mutate("designs/\(design["design_id"].text)/find-more", body: ["item_id": .string(id)]) } }.disabled(locked) } }
+            HStack {
+                if item["status"].text == "removed" {
+                    Button("Restore") { Task { await mutate("designs/\(design["design_id"].text)/chat", body: ["text": .string("Restore this"), "selected_item_id": .string(id)]) } }.disabled(locked)
+                } else {
+                    Button("Remove") { Task { await mutate("designs/\(design["design_id"].text)/remove", body: ["item_id": .string(id)]) } }.disabled(locked)
+                    if product != .null { Button("Find more") { Task { await mutate("designs/\(design["design_id"].text)/find-more", body: ["item_id": .string(id)]) } }.disabled(locked) }
+                }
+            }
         }.padding().background(selectedID == id ? Color.accentColor.opacity(0.1) : Color.secondary.opacity(0.06)).clipShape(RoundedRectangle(cornerRadius: 12))
     }
     func load(initial: Bool = false) async {
