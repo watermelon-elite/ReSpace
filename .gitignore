@@ -8,3 +8,6 @@ DerivedData/
 .venv/
 .env
 .local/
+.DS_Store
+.swiftpm/
+xcuserdata/

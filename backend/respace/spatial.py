@@ -44,6 +44,13 @@ class SpatialPipeline:
             instructions[normalized_id]=entry['instruction']
         constraints=deepcopy(data.get('candidate_constraints') or {'intent':selection.get('approved_intent',operation['request']['intent']),'instructions':instructions,'approved_ceiling':selection['approved_ceiling'],'decision_revision':operation['decision_revision'],'base':operation['base_context'],'must_have_selection_ids':[key for key,record in selections.items() if record.get('must_have')],'explicit_selection_ids':[key for key,record in selections.items() if record.get('explicit_choice') or record.get('requirements_text')],'required_product_attributes':{key:record['requirements'] for key,record in selections.items() if record.get('requirements')}})
         if 'plan' not in data:
+            constraints['user_request']={'text':operation['request'].get('text',''),
+                'answers':self.operations.effective_answers(operation),'assumptions':selection.get('assumptions',[])}
+            if selected_id:=operation['request'].get('selected_object_id'):
+                mapping=snapshot['identity_map'].get(selected_id)
+                normalized_id=mapping.get('id') if isinstance(mapping,dict) and mapping.get('kind')=='object' else mapping if isinstance(mapping,str) else None
+                require(isinstance(normalized_id,str),'unresolved_identity','The selected Object could not be mapped into the processed Room. Select it again before generating.')
+                constraints['user_request']['selected_object_id']=normalized_id
             self.operations.checkpoint(operation_id,'planning_layout')
             photos=[]
             frames=sorted([frame for frame in self.store.list('keyframes',room['room_id']) if frame['capture_id']==room['latest_capture_id']],key=lambda frame:frame['idx'])

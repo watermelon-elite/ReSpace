@@ -18,7 +18,7 @@ class Publisher:
             if scene.get('purchase_summary'):
                 from .products import money
                 purchases=scene['purchase_summary']
-                require(money(purchases['total'])<=money(purchases['approved_ceiling'],positive=True),'budget_conflict','Saved purchases exceed the approved ceiling.')
+                require(money(purchases['total'])<=money(purchases['approved_ceiling']),'budget_conflict','Saved purchases exceed the approved ceiling.')
             measured=snapshot.get('room',snapshot.get('room_model',{}))
             require(measured.get('validity',{}).get('usable',False),'invalid_room','A usable measured boundary is required.')
             require(not self.validate_scene(measured,scene),'invalid_scene','The final Scene failed validation.')

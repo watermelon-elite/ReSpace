@@ -16,11 +16,12 @@ from typing import Any
 from urllib.parse import urlsplit, urlunsplit
 
 
-RULE_VERSION = "practical60-style30-value10-v1"
+RULE_VERSION = "practical60-style30-value10-evidence-first-v2"
 UNITS = {"m": Decimal(1), "cm": Decimal("0.01"), "mm": Decimal("0.001"),
          "in": Decimal("0.0254"), "inch": Decimal("0.0254"),
          "inches": Decimal("0.0254"), '"': Decimal("0.0254"), "″": Decimal("0.0254"),
-         "ft": Decimal("0.3048"), "'": Decimal("0.3048")}
+         "ft": Decimal("0.3048"), "foot": Decimal("0.3048"), "feet": Decimal("0.3048"),
+         "'": Decimal("0.3048"), "′": Decimal("0.3048")}
 
 
 class ProductError(ValueError):
@@ -122,6 +123,10 @@ def dimension_evidence(variant_id: str, source_url: str, facts: dict,
             result["outcome"] = "invalid_dimensions"
             return result
         axes[axis] = float(value)
+    assumed_axes = {}
+    if category and category.get('id') == 'rug' and set(axes) == {'width', 'depth'}:
+        assumed_axes['height'] = category['default_size'][2]
+        axes.update(assumed_axes)
     if len(axes) != 3:
         return result
     size = [axes[axis] for axis in ("width", "depth", "height")]
@@ -135,6 +140,9 @@ def dimension_evidence(variant_id: str, source_url: str, facts: dict,
             result["outcome"] = "dimension_range_conflict"
             return result
     result.update(dimensions=size, outcome="verified")
+    if assumed_axes:
+        result.update(assumed_axes=assumed_axes, verified_axes=[axis for axis in axes if axis not in assumed_axes],
+            warnings=['Rug thickness is not published; the category thickness is used only for representative geometry.'])
     return result
 
 
@@ -163,7 +171,7 @@ def offer_eligible(offer: dict, *, now: datetime | None = None, freshness: bool 
         validate_pack(offer)
     except ProductError:
         return False
-    return (offer.get("currency") == "USD" and offer.get("availability") == "in_stock"
+    return (offer.get("currency") == "USD" and offer.get("availability") in ("in_stock", "unverified")
             and offer.get("exact_variant") is True
             and (not freshness or recent(offer.get("checked_at"), 1, now)))
 
@@ -185,7 +193,10 @@ def choice_eligible(choice: dict, request: dict, *, now: datetime | None = None,
     size = choice.get("dimensions", [])
     if len(size) != 3 or any(not isinstance(v, (int, float)) or not math.isfinite(v) or v <= 0 for v in size):
         return False
-    if request.get("max_dimensions") and any(v > limit for v, limit in zip(size, request["max_dimensions"], strict=True)):
+    if request.get("max_dimensions") and any(limit is not None and v > limit for v, limit in zip(size, request["max_dimensions"], strict=True)):
+        return False
+    if request.get('max_dimensions') and any(limit is not None and axis in evidence.get('assumed_axes', {})
+            for axis, limit in zip(('width', 'depth', 'height'), request['max_dimensions'], strict=True)):
         return False
     features = choice.get("features", {})
     if any(features.get(key) != value for key, value in request.get("must_have", {}).items()):
@@ -205,7 +216,8 @@ def choice_eligible(choice: dict, request: dict, *, now: datetime | None = None,
 def _comparable(a: dict, b: dict) -> bool:
     if a["category"] != b["category"] or a["variant_id"] == b["variant_id"]:
         return False
-    if any(not 0.75 <= x / y <= 1.33333334 for x, y in zip(a["dimensions"], b["dimensions"], strict=True)):
+    dimensions = 2 if a['category'] == 'rug' else 3
+    if any(not 0.75 <= x / y <= 1.33333334 for x, y in zip(a["dimensions"][:dimensions], b["dimensions"][:dimensions], strict=True)):
         return False
     keys = ("function", "material", "capacity", "condition")
     return all(a.get("features", {}).get(k) == b.get("features", {}).get(k) for k in keys)
@@ -218,15 +230,37 @@ def _unit_price(choice: dict) -> Decimal:
     return money(choice["offer"]["price"], positive=True) / components[0]["units"]
 
 
+def verification_priority(choice: dict) -> int:
+    offer = choice.get('offer', {})
+    return int(offer.get('availability') != 'in_stock'
+        or any(choice.get('dimension_evidence', {}).get('conflicts', {}).values())
+        or any(offer.get('evidence', {}).get('conflicts', {}).values()))
+
+
+def choice_offer_key(choice: dict) -> tuple[int, Decimal, str]:
+    return verification_priority(choice), money(choice['offer']['price']), choice['offer']['offer_id']
+
+
+def verification_warnings(choice: dict) -> list[str]:
+    evidence, offer = choice.get('dimension_evidence', {}), choice.get('offer', {})
+    warnings = list(evidence.get('warnings', [])) + list(offer.get('warnings', []))
+    conflicts = {**evidence.get('conflicts', {}), **offer.get('evidence', {}).get('conflicts', {})}
+    warnings.extend(f'Conflicting {field} evidence; confirm the selected option on the merchant page.'
+                    for field, values in conflicts.items() if values)
+    if offer.get('availability') == 'unverified':
+        warnings.append('Availability is uncertain; confirm stock on the merchant page.')
+    return list(dict.fromkeys(warnings))
+
+
 def rank_choices(choices: list[dict], request: dict, *, now: datetime | None = None,
-                 allow_stale_offers: bool = False) -> tuple[list[dict], dict]:
+                 allow_stale_offers: bool = False, allow_unscored: bool = False) -> tuple[list[dict], dict]:
     """One frozen benchmark for both sources; merchant offers never multiply samples."""
     selected: dict[str, dict] = {}
     for choice in choices:
         if not choice_eligible(choice, request, now=now, allow_stale_offers=allow_stale_offers):
             continue
         previous = selected.get(choice["variant_id"])
-        if previous is None or (money(choice["offer"]["price"]), choice["offer"]["offer_id"]) < (money(previous["offer"]["price"]), previous["offer"]["offer_id"]):
+        if previous is None or choice_offer_key(choice) < choice_offer_key(previous):
             selected[choice["variant_id"]] = choice
     members = []
     for choice in sorted(selected.values(), key=lambda c: c["variant_id"]):
@@ -240,11 +274,13 @@ def rank_choices(choices: list[dict], request: dict, *, now: datetime | None = N
                         "unit_price": str(unit_price), "checked_at": choice["offer"]["checked_at"],
                         "inclusion_reason": "Same type/function, approximate size/capacity, known material/features and condition"})
     snapshot: dict = {"schema_version": 1, "rule_version": RULE_VERSION, "created_at": timestamp(now),
-                "context": {key: deepcopy(request[key]) for key in ("category", "must_have", "avoid", "styles") if key in request},
+                "context": {key: deepcopy(request[key]) for key in ("category", "function", "quantity", "must_have", "avoid", "max_dimensions", "styles") if key in request},
                 "members": members, "sample_count": len(members), "comparisons": {}}
     snapshot["snapshot_id"] = stable_id("comparison", snapshot)
     ranked = []
     for choice in selected.values():
+        if allow_unscored and ('practical_score' not in choice or 'style_score' not in choice):
+            continue
         comparable = [m for m in members if _comparable(choice, selected[m["variant_id"]])]
         value, benchmark = Decimal(50), None
         uncertainty: str | None = "insufficient comparison evidence"
@@ -264,16 +300,17 @@ def rank_choices(choices: list[dict], request: dict, *, now: datetime | None = N
         result = deepcopy(choice)
         same_variant_offers = {c["offer"]["offer_id"]: deepcopy(c["offer"]) for c in choices
                                if c["variant_id"] == choice["variant_id"] and offer_eligible(c.get("offer", {}), now=now)}
-        result["offers"] = sorted(same_variant_offers.values(), key=lambda offer: (money(offer["price"]), offer["offer_id"]))
+        result["offers"] = sorted(same_variant_offers.values(), key=lambda offer: choice_offer_key({'offer': offer}))
+        warnings = verification_warnings(choice)
         result.update(schema_version=1, comparison_snapshot_id=snapshot["snapshot_id"], rule_version=RULE_VERSION,
                       scores={"practical": practical, "style": style, "value": float(value), "overall": float(score)},
                       reasons={"practical": choice.get("practical_reason", ""), "style": choice.get("style_reason", ""),
                                "value": uncertainty or "Price relative to the median of comparable discoveries"},
-                      uncertainty=uncertainty)
+                      verification_warnings=warnings, uncertainty=uncertainty)
         snapshot["comparisons"][choice["variant_id"]] = {"members": [m["variant_id"] for m in comparable],
             "sample_count": len(comparable), "median": str(benchmark) if benchmark else None, "uncertainty": uncertainty}
         ranked.append(result)
-    ranked.sort(key=lambda c: (-c["scores"]["overall"], -int(c.get("render", {}).get("kind") == "catalog"), c["variant_id"]))
+    ranked.sort(key=lambda c: (verification_priority(c), -c["scores"]["overall"], -int(c.get("render", {}).get("kind") == "catalog"), c["variant_id"]))
     return ranked, snapshot
 
 
@@ -289,7 +326,7 @@ def is_product_item(item: dict) -> bool:
 
 
 def calculate_purchases(items: list[dict], offers: dict[str, dict] | list[dict], approved_ceiling: str) -> dict:
-    ceiling = money(approved_ceiling, positive=True)
+    ceiling = money(approved_ceiling)
     by_id = {offer["offer_id"]: offer for offer in offers} if isinstance(offers, list) else offers
     demands: dict[str, dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
     all_ids = set()
@@ -330,7 +367,7 @@ def calculate_purchases(items: list[dict], offers: dict[str, dict] | list[dict],
 
 def build_budget_proposal(old_ceiling: str, purchase_summary: dict, alternatives: list[dict], reason: str,
                           *, now: datetime | None = None, functional_consequences: list[str] | None = None) -> dict | None:
-    ceiling, total = money(old_ceiling, positive=True), money(purchase_summary["total"])
+    ceiling, total = money(old_ceiling), money(purchase_summary["total"])
     if total <= ceiling or any(money(option["total"]) <= ceiling for option in alternatives):
         return None
     if not reason.strip() or not purchase_summary.get("lines"):

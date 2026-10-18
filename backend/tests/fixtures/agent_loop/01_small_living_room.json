@@ -1,0 +1,1034 @@
+{
+  "schema_version": 1,
+  "scenario_id": "01_small_living_room",
+  "title": "Small living room",
+  "provenance": {
+    "kind": "synthetic",
+    "created_at": "2026-10-18T00:00:00+00:00",
+    "description": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.",
+    "measurement_accuracy": "Internally consistent authored values, not calibrated real-world measurements.",
+    "listing_evidence": "Fictional page text for offline verifier tests only. Never load these records into a production Product catalog."
+  },
+  "agent_context": {
+    "measured_context": {
+      "capture_id": "capture_01_small_living_room",
+      "captured_at": "2026-10-18T00:00:00+00:00",
+      "source": "synthetic_json",
+      "units": "meters",
+      "frame": "normalized_room",
+      "height": 2.6,
+      "extents": {
+        "width": 4.2,
+        "depth": 3.6,
+        "meaning": "Bounding extents only; use floor.polygon for usable floor."
+      },
+      "floor": {
+        "polygon": [
+          [
+            0,
+            0
+          ],
+          [
+            4.2,
+            0
+          ],
+          [
+            4.2,
+            3.6
+          ],
+          [
+            0,
+            3.6
+          ]
+        ],
+        "area": 15.12
+      },
+      "walls": [
+        {
+          "id": "w_1",
+          "a": [
+            0,
+            0
+          ],
+          "b": [
+            4.2,
+            0
+          ],
+          "length": 4.2,
+          "inward_normal": [
+            0.0,
+            1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_2",
+          "a": [
+            4.2,
+            0
+          ],
+          "b": [
+            4.2,
+            3.6
+          ],
+          "length": 3.6,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_3",
+          "a": [
+            4.2,
+            3.6
+          ],
+          "b": [
+            0,
+            3.6
+          ],
+          "length": 4.2,
+          "inward_normal": [
+            -0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_4",
+          "a": [
+            0,
+            3.6
+          ],
+          "b": [
+            0,
+            0
+          ],
+          "length": 3.6,
+          "inward_normal": [
+            1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        }
+      ],
+      "openings": [
+        {
+          "id": "entry",
+          "type": "door",
+          "wall_id": "w_4",
+          "offset": 0.5,
+          "width": 0.85,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        },
+        {
+          "id": "window",
+          "type": "window",
+          "wall_id": "w_3",
+          "offset": 1.1,
+          "width": 1.8,
+          "bottom": 0.9,
+          "height": 1.2,
+          "source_ids": []
+        }
+      ],
+      "objects": [
+        {
+          "id": "sofa",
+          "source_ids": [],
+          "category": "sofa",
+          "source": "synthetic",
+          "center": [
+            2.1,
+            0.6
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            1.8,
+            0.9,
+            0.85
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "side_table",
+          "source_ids": [],
+          "category": "side_table",
+          "source": "synthetic",
+          "center": [
+            3.7,
+            0.5
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            0.5,
+            0.5,
+            0.5
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "art",
+          "source_ids": [],
+          "category": "wall_art",
+          "source": "synthetic",
+          "center": [
+            2.1,
+            0.06
+          ],
+          "base_y": 1.4,
+          "yaw": 0,
+          "size": [
+            0.7,
+            0.04,
+            0.5
+          ],
+          "mount": "wall",
+          "wall_id": "w_1",
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        }
+      ],
+      "uncertainty": "Exact authored test values; physical measurement accuracy and sensor confidence are untested."
+    },
+    "planning": {
+      "room_id": "room_01_small_living_room",
+      "capture_id": "capture_01_small_living_room",
+      "planning_revision": 0,
+      "instructions": [
+        {
+          "target": {
+            "kind": "object",
+            "id": "sofa",
+            "capture_id": "capture_01_small_living_room"
+          },
+          "instruction": "keep"
+        }
+      ]
+    },
+    "request": {
+      "schema_version": 1,
+      "operation_id": "generate_01_small_living_room",
+      "capture_id": "capture_01_small_living_room",
+      "snapshot_id": "snapshot_01_small_living_room",
+      "planning_revision": 0,
+      "expected_active_design_id": null,
+      "expected_active_revision": 0,
+      "intent": "add",
+      "styles": [
+        "Cozy"
+      ],
+      "budget": "250.00",
+      "currency": "USD",
+      "text": "Add a floor lamp and a rug for a reading corner. Preserve all existing Objects and keep the entry clear."
+    },
+    "answers": [],
+    "initial_products": {
+      "state": "empty",
+      "displayed_choices": [],
+      "reasons": [
+        "Offline fixture before discovery; verify the fictional evidence through the controlled provider."
+      ]
+    },
+    "actions": [],
+    "approved_budget": "250.00",
+    "categories": [
+      "sofa",
+      "armchair",
+      "chair",
+      "stool",
+      "table",
+      "dining_table",
+      "coffee_table",
+      "side_table",
+      "desk",
+      "nightstand",
+      "dresser",
+      "counter",
+      "shelf",
+      "cabinet",
+      "tv_stand",
+      "bed",
+      "tv",
+      "floor_lamp",
+      "table_lamp",
+      "plant",
+      "decor",
+      "mirror",
+      "wall_art",
+      "rug",
+      "curtain",
+      "ceiling_light",
+      "outlet",
+      "light_switch",
+      "radiator",
+      "vent",
+      "sink",
+      "toilet",
+      "bathtub",
+      "refrigerator",
+      "stove",
+      "oven",
+      "dishwasher",
+      "washer_dryer",
+      "fireplace",
+      "stairs"
+    ]
+  },
+  "room_snapshot": {
+    "schema_version": 1,
+    "snapshot_id": "snapshot_01_small_living_room",
+    "revision": 1,
+    "room_id": "room_01_small_living_room",
+    "capture_id": "capture_01_small_living_room",
+    "created_at": "2026-10-18T00:00:00+00:00",
+    "room": {
+      "schema_version": 1,
+      "category_version": 1,
+      "room_id": "room_01_small_living_room",
+      "capture_id": "capture_01_small_living_room",
+      "height": 2.6,
+      "frame": {
+        "room_from_world": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "floor": {
+        "polygon": [
+          [
+            0,
+            0
+          ],
+          [
+            4.2,
+            0
+          ],
+          [
+            4.2,
+            3.6
+          ],
+          [
+            0,
+            3.6
+          ]
+        ],
+        "area": 15.12
+      },
+      "walls": [
+        {
+          "id": "w_1",
+          "a": [
+            0,
+            0
+          ],
+          "b": [
+            4.2,
+            0
+          ],
+          "length": 4.2,
+          "inward_normal": [
+            0.0,
+            1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_2",
+          "a": [
+            4.2,
+            0
+          ],
+          "b": [
+            4.2,
+            3.6
+          ],
+          "length": 3.6,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_3",
+          "a": [
+            4.2,
+            3.6
+          ],
+          "b": [
+            0,
+            3.6
+          ],
+          "length": 4.2,
+          "inward_normal": [
+            -0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_4",
+          "a": [
+            0,
+            3.6
+          ],
+          "b": [
+            0,
+            0
+          ],
+          "length": 3.6,
+          "inward_normal": [
+            1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        }
+      ],
+      "corners": [
+        {
+          "id": "c_1",
+          "position": [
+            0,
+            0
+          ],
+          "wall_ids": [
+            "w_4",
+            "w_1"
+          ]
+        },
+        {
+          "id": "c_2",
+          "position": [
+            4.2,
+            0
+          ],
+          "wall_ids": [
+            "w_1",
+            "w_2"
+          ]
+        },
+        {
+          "id": "c_3",
+          "position": [
+            4.2,
+            3.6
+          ],
+          "wall_ids": [
+            "w_2",
+            "w_3"
+          ]
+        },
+        {
+          "id": "c_4",
+          "position": [
+            0,
+            3.6
+          ],
+          "wall_ids": [
+            "w_3",
+            "w_4"
+          ]
+        }
+      ],
+      "openings": [
+        {
+          "id": "entry",
+          "type": "door",
+          "wall_id": "w_4",
+          "offset": 0.5,
+          "width": 0.85,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        },
+        {
+          "id": "window",
+          "type": "window",
+          "wall_id": "w_3",
+          "offset": 1.1,
+          "width": 1.8,
+          "bottom": 0.9,
+          "height": 1.2,
+          "source_ids": []
+        }
+      ],
+      "objects": [
+        {
+          "id": "sofa",
+          "source_ids": [],
+          "category": "sofa",
+          "source": "synthetic",
+          "center": [
+            2.1,
+            0.6
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            1.8,
+            0.9,
+            0.85
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "side_table",
+          "source_ids": [],
+          "category": "side_table",
+          "source": "synthetic",
+          "center": [
+            3.7,
+            0.5
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            0.5,
+            0.5,
+            0.5
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "art",
+          "source_ids": [],
+          "category": "wall_art",
+          "source": "synthetic",
+          "center": [
+            2.1,
+            0.06
+          ],
+          "base_y": 1.4,
+          "yaw": 0,
+          "size": [
+            0.7,
+            0.04,
+            0.5
+          ],
+          "mount": "wall",
+          "wall_id": "w_1",
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        }
+      ],
+      "wall_features": [],
+      "zones": [
+        {
+          "id": "z_entry",
+          "type": "keep_clear",
+          "reason": "door",
+          "opening_id": "entry",
+          "polygon": [
+            [
+              0.0,
+              3.25
+            ],
+            [
+              0.9,
+              3.25
+            ],
+            [
+              0.9,
+              2.1
+            ],
+            [
+              0.0,
+              2.1
+            ]
+          ]
+        }
+      ],
+      "style_hints": {},
+      "identity_map": {
+        "sofa": {
+          "kind": "object",
+          "id": "sofa"
+        },
+        "side_table": {
+          "kind": "object",
+          "id": "side_table"
+        },
+        "art": {
+          "kind": "object",
+          "id": "art"
+        }
+      },
+      "processing": {
+        "expected_frames": 0,
+        "not_started": 0,
+        "pending": 0,
+        "succeeded": 0,
+        "failed": 0,
+        "lifted": 0,
+        "completed": 0
+      },
+      "validity": {
+        "usable": true,
+        "reasons": [],
+        "warnings": [
+          {
+            "code": "synthetic_input",
+            "message": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers."
+          }
+        ]
+      }
+    },
+    "identity_map": {
+      "sofa": {
+        "kind": "object",
+        "id": "sofa"
+      },
+      "side_table": {
+        "kind": "object",
+        "id": "side_table"
+      },
+      "art": {
+        "kind": "object",
+        "id": "art"
+      }
+    }
+  },
+  "listings": [
+    {
+      "listing_id": "reading_lamp",
+      "candidate": {
+        "title": "SYNTHETIC reading lamp / oak",
+        "category": "floor_lamp",
+        "product_url": "https://fixtures.example.com/reading_lamp",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "reading_lamp"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC reading lamp / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "reading_lamp",
+        "identity_quote": "Synthetic Fixtures model reading_lamp",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "12",
+            "unit": "in",
+            "quote": "Width 12 in"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "12",
+            "unit": "in",
+            "quote": "Depth 12 in"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "60",
+            "unit": "in",
+            "quote": "Height 60 in"
+          }
+        ],
+        "price": "79.99",
+        "currency": "USD",
+        "price_quote": "USD 79.99",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical floor_lamp units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/reading_lamp",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC reading lamp / oak\nSynthetic Fixtures model reading_lamp\nWidth 12 in\nDepth 12 in\nHeight 60 in\nUSD 79.99\nin stock\nContains 1 identical floor_lamp units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          0.3048,
+          0.3048,
+          1.524
+        ],
+        "offer_available": true
+      }
+    },
+    {
+      "listing_id": "reading_lamp_other_merchant",
+      "candidate": {
+        "title": "SYNTHETIC reading lamp / oak",
+        "category": "floor_lamp",
+        "product_url": "https://fixtures.example.com/reading_lamp_other_merchant",
+        "merchant": "Synthetic Outlet",
+        "source_key": "reading_lamp_other_merchant"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC reading lamp / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "reading_lamp",
+        "identity_quote": "Synthetic Fixtures model reading_lamp",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "12",
+            "unit": "in",
+            "quote": "Width 12 in"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "12",
+            "unit": "in",
+            "quote": "Depth 12 in"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "60",
+            "unit": "in",
+            "quote": "Height 60 in"
+          }
+        ],
+        "price": "89.99",
+        "currency": "USD",
+        "price_quote": "USD 89.99",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical floor_lamp units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/reading_lamp_other_merchant",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC reading lamp / oak\nSynthetic Fixtures model reading_lamp\nWidth 12 in\nDepth 12 in\nHeight 60 in\nUSD 89.99\nin stock\nContains 1 identical floor_lamp units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          0.3048,
+          0.3048,
+          1.524
+        ],
+        "offer_available": true
+      }
+    },
+    {
+      "listing_id": "living_rug",
+      "candidate": {
+        "title": "SYNTHETIC living rug / oak",
+        "category": "rug",
+        "product_url": "https://fixtures.example.com/living_rug",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "living_rug"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC living rug / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "living_rug",
+        "identity_quote": "Synthetic Fixtures model living_rug",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "240",
+            "unit": "cm",
+            "quote": "Width 240 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "170",
+            "unit": "cm",
+            "quote": "Depth 170 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "1.2",
+            "unit": "cm",
+            "quote": "Height 1.2 cm"
+          }
+        ],
+        "price": "109.50",
+        "currency": "USD",
+        "price_quote": "USD 109.50",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical rug units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/living_rug",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC living rug / oak\nSynthetic Fixtures model living_rug\nWidth 240 cm\nDepth 170 cm\nHeight 1.2 cm\nUSD 109.50\nin stock\nContains 1 identical rug units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          2.4,
+          1.7,
+          0.012
+        ],
+        "offer_available": true
+      }
+    },
+    {
+      "listing_id": "rug_missing_thickness",
+      "candidate": {
+        "title": "SYNTHETIC rug missing thickness / oak",
+        "category": "rug",
+        "product_url": "https://fixtures.example.com/rug_missing_thickness",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "rug_missing_thickness"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC rug missing thickness / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "rug_missing_thickness",
+        "identity_quote": "Synthetic Fixtures model rug_missing_thickness",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "240",
+            "unit": "cm",
+            "quote": "Width 240 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "170",
+            "unit": "cm",
+            "quote": "Depth 170 cm"
+          }
+        ],
+        "price": "69.99",
+        "currency": "USD",
+        "price_quote": "USD 69.99",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical rug units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/rug_missing_thickness",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC rug missing thickness / oak\nSynthetic Fixtures model rug_missing_thickness\nWidth 240 cm\nDepth 170 cm\nUSD 69.99\nin stock\nContains 1 identical rug units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [2.4, 1.7, 0.02],
+        "offer_available": true
+      }
+    }
+  ],
+  "replay": {
+    "actions": [
+      {
+        "action": "ask_user",
+        "payload": {
+          "kind": "numeric",
+          "topic": "occupants",
+          "text": "How many people usually use this room?",
+          "numeric_min": 1,
+          "numeric_max": 8,
+          "numeric_step": 1,
+          "allow_skip": true,
+          "allow_delegate": true,
+          "choices": []
+        }
+      },
+      {
+        "action": "search_products",
+        "payload": {
+          "category": "floor_lamp",
+          "function": "Synthetic Small living room",
+          "quantity": 1
+        }
+      },
+      {
+        "action": "search_products",
+        "payload": {
+          "category": "rug",
+          "function": "Synthetic Small living room",
+          "quantity": 1
+        }
+      },
+      {
+        "action": "finalize_selection",
+        "payload": {
+          "selected": [
+            {
+              "variant_id": "v_46809205468eb5af074804d9",
+              "offer_id": "offer_5bc559f27048bff365cea24a",
+              "quantity": 1,
+              "selection_id": "selection_lamp"
+            },
+            {
+              "variant_id": "v_83e3c4b1ab080bd539157b2f",
+              "offer_id": "offer_96e22217d2c478ec38f829c4",
+              "quantity": 1,
+              "selection_id": "selection_rug"
+            }
+          ],
+          "assumptions": [
+            "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers."
+          ],
+          "reasons": [
+            "Recorded offline replay; the live model may ask different valid questions."
+          ]
+        }
+      }
+    ],
+    "answer": {
+      "action": "answer",
+      "number": 2
+    },
+    "selection_listings": {
+      "lamp": "reading_lamp",
+      "rug": "living_rug"
+    }
+  },
+  "spatial_case": {
+    "plan": {
+      "summary": "SYNTHETIC: Small living room",
+      "adds": [
+        {
+          "action_id": "add_lamp",
+          "add_id": "lamp",
+          "category": "floor_lamp",
+          "priority": 1,
+          "quantity": 1,
+          "selection_id": "selection_lamp",
+          "anchor": {
+            "type": "against_wall",
+            "wall_id": "w_2",
+            "alignment": "center"
+          },
+          "reason": "Controlled synthetic placement case."
+        },
+        {
+          "action_id": "add_rug",
+          "add_id": "rug",
+          "category": "rug",
+          "priority": 2,
+          "quantity": 1,
+          "selection_id": "selection_rug",
+          "anchor": {
+            "type": "room_center"
+          },
+          "reason": "Controlled synthetic placement case."
+        }
+      ],
+      "moves": [],
+      "removes": [],
+      "replaces": [],
+      "restores": [],
+      "unlocks": []
+    },
+    "constraints": {
+      "intent": "add",
+      "instructions": {
+        "sofa": "keep"
+      },
+      "approved_ceiling": "250.00",
+      "must_have_add_ids": [],
+      "allow_adjustments": true
+    }
+  },
+  "expected": {
+    "floor_area": 15.12,
+    "selected_total": "189.49",
+    "candidate_total": "189.49",
+    "new_item_count": 2,
+    "conflict_codes": [],
+    "omitted_add_ids": [],
+    "eligible_choices_by_category": {
+      "floor_lamp": 1,
+      "rug": 2
+    },
+    "checks": [
+      "inch-to-meter conversion",
+      "same exact variant across two merchants uses cheaper offer",
+      "missing rug thickness accepted with a disclosed representative height",
+      "Add preserves Objects"
+    ]
+  }
+}

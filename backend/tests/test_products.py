@@ -32,6 +32,13 @@ def choice(variant, price, practical=80, source="live"):
             "practical_reason": "Meets requested function", "style_reason": "Matches requested style"}
 
 
+def test_single_axis_limit_rejects_oversize_without_inventing_other_limits():
+    from respace.products import choice_eligible
+    product = choice('table', '100.00')
+    assert choice_eligible(product, {'max_dimensions': [0.5, None, None]}, now=NOW)
+    assert not choice_eligible(product, {'max_dimensions': [0.49, None, None]}, now=NOW)
+
+
 def test_whole_packs_surplus_removal_and_decimal_cents():
     selected = offer()
     items = [{"id": f"i_{i}", "origin": "new", "status": "new",

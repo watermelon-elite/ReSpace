@@ -45,6 +45,7 @@ struct APIClient {
     var busy = false
     private var recoveryBlocked = false
     var pending: [PendingRequest] = []
+    var shoppingLists: ShoppingListStore?
     private(set) var deviceID = ""
     private(set) var disk = FileManager.default.temporaryDirectory
     init() {
@@ -54,6 +55,8 @@ struct APIClient {
             try FileManager.default.createDirectory(at: disk, withIntermediateDirectories: true)
             let queue = disk.appendingPathComponent("requests.json")
             if FileManager.default.fileExists(atPath: queue.path) { pending = try JSONDecoder().decode([PendingRequest].self, from: Data(contentsOf: queue)) }
+            do { shoppingLists = try ShoppingListStore(fileURL: disk.appendingPathComponent("shopping-lists.json")) }
+            catch { self.error = "Saved shopping lists could not be opened: \(error.localizedDescription)" }
         } catch { recoveryBlocked = true; self.error = "Local request recovery is unavailable: \(error.localizedDescription)" }
     }
     var client: APIClient? {
@@ -86,6 +89,10 @@ struct APIClient {
         if !pending.contains(where: { $0.operationID == request.operationID }) { pending.append(request); try persistPending() }
         do {
             let result = try await client.request(request.path, method: request.method, body: request.body)
+            if request.method == "DELETE", result["deletion"]["state"].text == "deleted", let roomID = request.roomID {
+                guard let shoppingLists else { throw ContractError.invalid("Saved shopping lists are unavailable. Reopen the app to finish local cleanup.") }
+                try shoppingLists.remove(roomID: roomID)
+            }
             if result["deletion"]["state"].text != "pending" { pending.removeAll { $0.operationID == request.operationID }; try persistPending() }
             return result
         } catch let error as APIError {

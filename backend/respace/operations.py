@@ -3,6 +3,7 @@ import json
 import math
 from datetime import datetime, timezone
 from uuid import uuid4
+from . import tracing
 
 
 def now():
@@ -66,6 +67,7 @@ class OperationService:
             self.store.put('operations',op_id,operation)
             room['current_operation_id']=op_id
             self.store.put('rooms',room_id,room)
+            tracing.emit('operation.submitted', operation_id=op_id, room_id=room_id, kind=kind, request=request)
             return operation
 
     def guard(self, operation_id, allow_question=False):
@@ -88,6 +90,7 @@ class OperationService:
             if output is not None:
                 operation.setdefault('steps',[]).append({'phase':phase,'output':output,'completed_at':now()})
             self.store.put('operations',operation_id,operation)
+            tracing.emit('operation.phase', operation_id=operation_id, phase=phase)
             return operation
 
     def ask(self, operation_id, question):
@@ -111,6 +114,7 @@ class OperationService:
             operation['question_history'].append(question)
             self.store.put('messages',question['question_id'],{'message_id':question['question_id'],'room_id':operation['room_id'],'context':'review' if operation['kind']=='planning_command' else 'design','role':'assistant','event_kind':'question','text':question['text'],'question':question,'created_at':now(),'operation_id':operation_id,'base_context':operation['base_context']})
             self.store.put('operations',operation_id,operation)
+            tracing.emit('operation.question', operation_id=operation_id, question=question)
             return question
 
     @staticmethod
@@ -181,6 +185,7 @@ class OperationService:
             operation['answer_history'].append(answer)
             operation.update(decision_revision=operation['decision_revision']+1,pending_question=None,state='queued',phase='answer_saved',updated_at=now())
             self.store.put('operations',operation_id,operation)
+            tracing.emit('operation.answer', operation_id=operation_id, answer=answer, decision_revision=operation['decision_revision'])
             return operation
 
     def finish(self, operation_id, state, outcome=None, failure=None):
@@ -197,6 +202,7 @@ class OperationService:
             room['current_operation_id']=None
             self.store.put('operations',operation_id,operation)
             self.store.put('rooms',room['room_id'],room)
+            tracing.emit('operation.finished', operation_id=operation_id, state=state, outcome=outcome, failure=failure)
             return operation
 
     def cancel(self, device_id, operation_id, cancellation_id):

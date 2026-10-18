@@ -115,7 +115,7 @@ The broader discovered Products before ranking narrows the choices.
 The ranked candidates retained from one discovery source for a particular decision.
 
 **Product-verified choice**:
-A Product with verified dimensions and an acceptable checked offer, whose final room placement may still await validation.
+A Product with sufficient dimensional evidence and an acceptable checked shopping offer, whose final room placement may still await validation. Reasonable assumptions and unresolved merchant conflicts are disclosed rather than automatically excluding the choice.
 
 **Eligible product**:
 A candidate satisfying the required evidence and constraints for the action currently being considered.
@@ -124,7 +124,7 @@ A candidate satisfying the required evidence and constraints for the action curr
 A retained candidate excluded from selectable options, with its rejection reason preserved.
 
 **Verified product dimensions**:
-Actual measurements for the exact physical variant, supported by retailer or manufacturer evidence.
+Actual measurements for fit-critical axes of the selected physical variant, supported by retailer or manufacturer evidence. Unpublished noncritical axes, such as rug thickness, remain disclosed assumptions rather than verified measurements.
 _Avoid_: Package dimensions, estimated size
 
 **Purchase offer**:

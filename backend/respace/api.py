@@ -25,6 +25,9 @@ class LazyProductModels:
         return self.model
     def extract(self,*args): return self._get().extract(*args)
     def score(self,*args): return self._get().score(*args)
+    def select_batch(self,*args,**kwargs): return self._get().select_batch(*args,**kwargs)
+    def extract_batch(self,*args): return self._get().extract_batch(*args)
+    def score_batch(self,*args): return self._get().score_batch(*args)
 
 
 class LazyPlanningModel:
@@ -152,6 +155,10 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
     def create_room(body:contracts.CreateRoom, x_device_id:str=Header()):
         return captures.create(device(x_device_id),body.model_dump(exclude_none=True))
 
+    @app.post('/v1/rooms/imported')
+    def import_room(body:contracts.ImportedRoom,x_device_id:str=Header()):
+        return captures.import_context(device(x_device_id),body.model_dump(exclude_none=True))
+
     @app.get('/v1/rooms')
     def rooms(x_device_id:str=Header()):
         current_device=device(x_device_id)
@@ -238,9 +245,13 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
 
     @app.post('/v1/rooms/{room_id}/designs')
     def generate(room_id:contracts.ID,body:contracts.Generation,background:BackgroundTasks,x_device_id:str=Header()):
-        money(body.budget,positive=True)
+        if body.budget is not None: money(body.budget,positive=body.intent!='auto')
         room=operations.room(device(x_device_id),room_id)
         require(room['capture_state']=='complete','capture_incomplete','Complete this capture before generating.')
+        if body.selected_object_id:
+            capture=store.get('captures',room['latest_capture_id'])
+            require(any(body.selected_object_id in {obj.get('id'),obj.get('native_id')} for obj in capture.get('measured_context',{}).get('objects',[])),
+                'unknown_object','Select an Object from this Room.',422)
         request=body.model_dump()
         if request['snapshot_id'] is None:del request['snapshot_id']
         operation=operations.submit(device(x_device_id),room_id,'generation',request)

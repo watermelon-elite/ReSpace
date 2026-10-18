@@ -33,6 +33,22 @@ import UniformTypeIdentifiers
         XCTAssertEqual(Double(bounds.center.x), 0, accuracy: 0.005)
         XCTAssertEqual(Double(bounds.center.z), 0, accuracy: 0.005)
     }
+    func testImportedScanPreservesAllPartIdentitiesAndWorldBounds() async throws {
+        let folder = root.appendingPathComponent("ReSpace/Resources/ImportedKitchenette")
+        let manifest = try JSONDecoder().decode(JSONValue.self, from: Data(contentsOf: folder.appendingPathComponent("kitchenette.json")))
+        let model = try await Entity(contentsOf: folder.appendingPathComponent("kitchenette.usdz"))
+        XCTAssertEqual(manifest["entities"].array.count, 50)
+        for record in manifest["entities"].array {
+            let part = try XCTUnwrap(model.findEntity(named: record["node_name"].text), record["id"].text)
+            let bounds = part.visualBounds(relativeTo: model)
+            let actual = [Double(bounds.min.x), Double(bounds.min.y), Double(bounds.min.z), Double(bounds.max.x), Double(bounds.max.y), Double(bounds.max.z)]
+            let expected = record["bounds_min"].numbers + record["bounds_max"].numbers
+            XCTAssertEqual(expected.count, 6)
+            for (value, reference) in zip(actual, expected) { XCTAssertEqual(value, reference, accuracy: 0.005, record["id"].text) }
+        }
+        let floor = try XCTUnwrap(model.findEntity(named: "scan_floor_7048b65d2e5946c48f90"))
+        XCTAssertEqual(Double(floor.visualBounds(relativeTo: model).center.y), 0, accuracy: 0.0001)
+    }
     func testExpandedLicensedStandinsLoadAtSavedDimensionsAndPivot() async throws {
         let manifest = try JSONDecoder().decode(JSONValue.self, from: Data(contentsOf: root.appendingPathComponent("assets/manifest.json")))
         XCTAssertEqual(manifest["assets"].array.count, 21)

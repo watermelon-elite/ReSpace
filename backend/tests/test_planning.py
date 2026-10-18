@@ -1,7 +1,73 @@
 import pytest
+from types import SimpleNamespace
+from respace.planning import GeminiPlanningModel
 from respace.operations import OperationService
 from respace.planning import PlanningController
 from test_operations import room
+
+
+@pytest.mark.asyncio
+async def test_search_tool_rejects_prose_in_one_attempt_and_preserves_axis_limits_on_retry():
+    import json
+    payloads = [
+        {'category': 'side_table', 'function': 'coffee and a book', 'must_have': 'wood, maximum width 50 cm'},
+        {'category': 'side_table', 'function': 'coffee and a book', 'must_have': {},
+         'avoid': {'material': 'glass'}, 'max_dimensions': [0.5, None, None]},
+    ]
+    calls = []
+    async def generate(**kwargs):
+        calls.append(kwargs)
+        return SimpleNamespace(text=json.dumps({'action': 'search_products', 'payload': payloads[len(calls)-1]}))
+    client = SimpleNamespace(aio=SimpleNamespace(models=SimpleNamespace(generate_content=generate)))
+    from respace.operations import DomainError
+    model = GeminiPlanningModel(client=client, model='configured-model')
+    with pytest.raises(DomainError) as failure:
+        await model.act({})
+    assert failure.value.retryable and len(calls) == 1
+    action = await model.act({})
+    assert len(calls) == 2
+    controller = PlanningController(None, None, None, None, None)
+    operation = {'room_id': 'r', 'operation_id': 'op', 'request': {'budget': '300'}, 'base_context': {}, 'answer_history': []}
+    request = controller._search_request(operation, action['payload'])
+    assert request['avoid'] == {'material': 'glass'}
+    assert request['max_dimensions'] == [0.5, None, None]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('code,phrase', [(404, 'not available'), (429, 'quota')])
+async def test_planning_reports_unavailable_model_or_quota_without_immediate_retry(code, phrase):
+    calls = []
+    async def generate(**kwargs):
+        calls.append(kwargs)
+        error = RuntimeError('Provider detail must remain in private logs')
+        error.code = code
+        raise error
+    client = SimpleNamespace(aio=SimpleNamespace(models=SimpleNamespace(generate_content=generate)))
+    from respace.operations import DomainError
+    with pytest.raises(DomainError) as failure:
+        await GeminiPlanningModel(client=client, model='configured-model').act({})
+    assert phrase in str(failure.value)
+    assert failure.value.retryable is False
+    assert len(calls) == 1
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('text,category', [('Add a side table', 'side_table'), ('Add a coffee table', 'coffee_table'),
+                                         ('Add an armchair', 'armchair'), ('Add a table lamp', 'table_lamp')])
+async def test_initial_discovery_uses_the_specific_requested_category(store, text, category):
+    room(store)
+    with store.transaction():
+        store.put('captures', 'capture', {'state': 'complete', 'measured_context': {}, 'room_id': 'room'})
+    operations = OperationService(store)
+    operations.submit('device', 'room', 'generation', {'operation_id': 'op', 'capture_id': 'capture',
+        'planning_revision': 0, 'expected_active_revision': 0, 'budget': '300.00', 'intent': 'add', 'text': text})
+    calls = []
+    class Products:
+        def search(self, request, *args, **kwargs):
+            calls.append(request)
+            return {'state': 'no_match', 'displayed_choices': []}
+    await PlanningController(store, operations, Products(), None, None).run('op', bounded=True)
+    assert calls[0]['category'] == category
 
 
 @pytest.mark.asyncio

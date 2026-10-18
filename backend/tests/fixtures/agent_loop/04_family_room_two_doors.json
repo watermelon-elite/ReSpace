@@ -1,0 +1,1152 @@
+{
+  "schema_version": 1,
+  "scenario_id": "04_family_room_two_doors",
+  "title": "Family room with two doors",
+  "provenance": {
+    "kind": "synthetic",
+    "created_at": "2026-10-18T00:00:00+00:00",
+    "description": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.",
+    "measurement_accuracy": "Internally consistent authored values, not calibrated real-world measurements.",
+    "listing_evidence": "Fictional page text for offline verifier tests only. Never load these records into a production Product catalog."
+  },
+  "agent_context": {
+    "measured_context": {
+      "capture_id": "capture_04_family_room_two_doors",
+      "captured_at": "2026-10-18T00:00:00+00:00",
+      "source": "synthetic_json",
+      "units": "meters",
+      "frame": "normalized_room",
+      "height": 2.8,
+      "extents": {
+        "width": 8,
+        "depth": 6,
+        "meaning": "Bounding extents only; use floor.polygon for usable floor."
+      },
+      "floor": {
+        "polygon": [
+          [
+            0,
+            0
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            8,
+            6
+          ],
+          [
+            0,
+            6
+          ]
+        ],
+        "area": 48.0
+      },
+      "walls": [
+        {
+          "id": "w_1",
+          "a": [
+            0,
+            0
+          ],
+          "b": [
+            8,
+            0
+          ],
+          "length": 8.0,
+          "inward_normal": [
+            0.0,
+            1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_2",
+          "a": [
+            8,
+            0
+          ],
+          "b": [
+            8,
+            6
+          ],
+          "length": 6.0,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_3",
+          "a": [
+            8,
+            6
+          ],
+          "b": [
+            0,
+            6
+          ],
+          "length": 8.0,
+          "inward_normal": [
+            0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_4",
+          "a": [
+            0,
+            6
+          ],
+          "b": [
+            0,
+            0
+          ],
+          "length": 6.0,
+          "inward_normal": [
+            1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        }
+      ],
+      "openings": [
+        {
+          "id": "entry",
+          "type": "door",
+          "wall_id": "w_1",
+          "offset": 0.4,
+          "width": 0.85,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        },
+        {
+          "id": "patio",
+          "type": "door",
+          "wall_id": "w_2",
+          "offset": 3.8,
+          "width": 1.6,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        },
+        {
+          "id": "window",
+          "type": "window",
+          "wall_id": "w_3",
+          "offset": 1,
+          "width": 2.4,
+          "bottom": 0.9,
+          "height": 1.2,
+          "source_ids": []
+        },
+        {
+          "id": "hall",
+          "type": "opening",
+          "wall_id": "w_4",
+          "offset": 1.2,
+          "width": 1.1,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        }
+      ],
+      "objects": [
+        {
+          "id": "sofa",
+          "source_ids": [],
+          "category": "sofa",
+          "source": "synthetic",
+          "center": [
+            4,
+            0.6
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            2.2,
+            0.95,
+            0.85
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "dining_table",
+          "source_ids": [],
+          "category": "dining_table",
+          "source": "synthetic",
+          "center": [
+            4,
+            3
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            1.8,
+            0.9,
+            0.75
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "fireplace",
+          "source_ids": [],
+          "category": "fireplace",
+          "source": "synthetic",
+          "center": [
+            0.35,
+            2.5
+          ],
+          "base_y": 0,
+          "yaw": 1.5707963267948966,
+          "size": [
+            1.2,
+            0.5,
+            1
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": true,
+          "attrs": {},
+          "observation_count": 0
+        }
+      ],
+      "uncertainty": "Exact authored test values; physical measurement accuracy and sensor confidence are untested."
+    },
+    "planning": {
+      "room_id": "room_04_family_room_two_doors",
+      "capture_id": "capture_04_family_room_two_doors",
+      "planning_revision": 0,
+      "instructions": [
+        {
+          "target": {
+            "kind": "object",
+            "id": "sofa",
+            "capture_id": "capture_04_family_room_two_doors"
+          },
+          "instruction": "keep"
+        },
+        {
+          "target": {
+            "kind": "object",
+            "id": "dining_table",
+            "capture_id": "capture_04_family_room_two_doors"
+          },
+          "instruction": "keep"
+        }
+      ]
+    },
+    "request": {
+      "schema_version": 1,
+      "operation_id": "generate_04_family_room_two_doors",
+      "capture_id": "capture_04_family_room_two_doors",
+      "snapshot_id": "snapshot_04_family_room_two_doors",
+      "planning_revision": 0,
+      "expected_active_design_id": null,
+      "expected_active_revision": 0,
+      "intent": "add",
+      "styles": [
+        "Mid-century"
+      ],
+      "budget": "300.00",
+      "currency": "USD",
+      "text": "Add three chairs and a rug. Preserve the sofa, dining table and fireplace. Keep both doors and the hall opening clear."
+    },
+    "answers": [],
+    "initial_products": {
+      "state": "empty",
+      "displayed_choices": [],
+      "reasons": [
+        "Offline fixture before discovery; verify the fictional evidence through the controlled provider."
+      ]
+    },
+    "actions": [],
+    "approved_budget": "300.00",
+    "categories": [
+      "sofa",
+      "armchair",
+      "chair",
+      "stool",
+      "table",
+      "dining_table",
+      "coffee_table",
+      "side_table",
+      "desk",
+      "nightstand",
+      "dresser",
+      "counter",
+      "shelf",
+      "cabinet",
+      "tv_stand",
+      "bed",
+      "tv",
+      "floor_lamp",
+      "table_lamp",
+      "plant",
+      "decor",
+      "mirror",
+      "wall_art",
+      "rug",
+      "curtain",
+      "ceiling_light",
+      "outlet",
+      "light_switch",
+      "radiator",
+      "vent",
+      "sink",
+      "toilet",
+      "bathtub",
+      "refrigerator",
+      "stove",
+      "oven",
+      "dishwasher",
+      "washer_dryer",
+      "fireplace",
+      "stairs"
+    ]
+  },
+  "room_snapshot": {
+    "schema_version": 1,
+    "snapshot_id": "snapshot_04_family_room_two_doors",
+    "revision": 1,
+    "room_id": "room_04_family_room_two_doors",
+    "capture_id": "capture_04_family_room_two_doors",
+    "created_at": "2026-10-18T00:00:00+00:00",
+    "room": {
+      "schema_version": 1,
+      "category_version": 1,
+      "room_id": "room_04_family_room_two_doors",
+      "capture_id": "capture_04_family_room_two_doors",
+      "height": 2.8,
+      "frame": {
+        "room_from_world": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "floor": {
+        "polygon": [
+          [
+            0,
+            0
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            8,
+            6
+          ],
+          [
+            0,
+            6
+          ]
+        ],
+        "area": 48.0
+      },
+      "walls": [
+        {
+          "id": "w_1",
+          "a": [
+            0,
+            0
+          ],
+          "b": [
+            8,
+            0
+          ],
+          "length": 8.0,
+          "inward_normal": [
+            0.0,
+            1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_2",
+          "a": [
+            8,
+            0
+          ],
+          "b": [
+            8,
+            6
+          ],
+          "length": 6.0,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_3",
+          "a": [
+            8,
+            6
+          ],
+          "b": [
+            0,
+            6
+          ],
+          "length": 8.0,
+          "inward_normal": [
+            0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_4",
+          "a": [
+            0,
+            6
+          ],
+          "b": [
+            0,
+            0
+          ],
+          "length": 6.0,
+          "inward_normal": [
+            1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        }
+      ],
+      "corners": [
+        {
+          "id": "c_1",
+          "position": [
+            0,
+            0
+          ],
+          "wall_ids": [
+            "w_4",
+            "w_1"
+          ]
+        },
+        {
+          "id": "c_2",
+          "position": [
+            8,
+            0
+          ],
+          "wall_ids": [
+            "w_1",
+            "w_2"
+          ]
+        },
+        {
+          "id": "c_3",
+          "position": [
+            8,
+            6
+          ],
+          "wall_ids": [
+            "w_2",
+            "w_3"
+          ]
+        },
+        {
+          "id": "c_4",
+          "position": [
+            0,
+            6
+          ],
+          "wall_ids": [
+            "w_3",
+            "w_4"
+          ]
+        }
+      ],
+      "openings": [
+        {
+          "id": "entry",
+          "type": "door",
+          "wall_id": "w_1",
+          "offset": 0.4,
+          "width": 0.85,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        },
+        {
+          "id": "patio",
+          "type": "door",
+          "wall_id": "w_2",
+          "offset": 3.8,
+          "width": 1.6,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        },
+        {
+          "id": "window",
+          "type": "window",
+          "wall_id": "w_3",
+          "offset": 1,
+          "width": 2.4,
+          "bottom": 0.9,
+          "height": 1.2,
+          "source_ids": []
+        },
+        {
+          "id": "hall",
+          "type": "opening",
+          "wall_id": "w_4",
+          "offset": 1.2,
+          "width": 1.1,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        }
+      ],
+      "objects": [
+        {
+          "id": "sofa",
+          "source_ids": [],
+          "category": "sofa",
+          "source": "synthetic",
+          "center": [
+            4,
+            0.6
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            2.2,
+            0.95,
+            0.85
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "dining_table",
+          "source_ids": [],
+          "category": "dining_table",
+          "source": "synthetic",
+          "center": [
+            4,
+            3
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            1.8,
+            0.9,
+            0.75
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "fireplace",
+          "source_ids": [],
+          "category": "fireplace",
+          "source": "synthetic",
+          "center": [
+            0.35,
+            2.5
+          ],
+          "base_y": 0,
+          "yaw": 1.5707963267948966,
+          "size": [
+            1.2,
+            0.5,
+            1
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": true,
+          "attrs": {},
+          "observation_count": 0
+        }
+      ],
+      "wall_features": [],
+      "zones": [
+        {
+          "id": "z_entry",
+          "type": "keep_clear",
+          "reason": "door",
+          "opening_id": "entry",
+          "polygon": [
+            [
+              0.25,
+              0.0
+            ],
+            [
+              0.25,
+              0.9
+            ],
+            [
+              1.4,
+              0.9
+            ],
+            [
+              1.4,
+              0.0
+            ]
+          ]
+        },
+        {
+          "id": "z_patio",
+          "type": "keep_clear",
+          "reason": "door",
+          "opening_id": "patio",
+          "polygon": [
+            [
+              8.0,
+              3.65
+            ],
+            [
+              7.1,
+              3.65
+            ],
+            [
+              7.1,
+              5.55
+            ],
+            [
+              8.0,
+              5.55
+            ]
+          ]
+        },
+        {
+          "id": "z_hall",
+          "type": "keep_clear",
+          "reason": "opening",
+          "opening_id": "hall",
+          "polygon": [
+            [
+              0.0,
+              4.95
+            ],
+            [
+              0.9,
+              4.95
+            ],
+            [
+              0.9,
+              3.55
+            ],
+            [
+              0.0,
+              3.55
+            ]
+          ]
+        }
+      ],
+      "style_hints": {},
+      "identity_map": {
+        "sofa": {
+          "kind": "object",
+          "id": "sofa"
+        },
+        "dining_table": {
+          "kind": "object",
+          "id": "dining_table"
+        },
+        "fireplace": {
+          "kind": "object",
+          "id": "fireplace"
+        }
+      },
+      "processing": {
+        "expected_frames": 0,
+        "not_started": 0,
+        "pending": 0,
+        "succeeded": 0,
+        "failed": 0,
+        "lifted": 0,
+        "completed": 0
+      },
+      "validity": {
+        "usable": true,
+        "reasons": [],
+        "warnings": [
+          {
+            "code": "synthetic_input",
+            "message": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers."
+          }
+        ]
+      }
+    },
+    "identity_map": {
+      "sofa": {
+        "kind": "object",
+        "id": "sofa"
+      },
+      "dining_table": {
+        "kind": "object",
+        "id": "dining_table"
+      },
+      "fireplace": {
+        "kind": "object",
+        "id": "fireplace"
+      }
+    }
+  },
+  "listings": [
+    {
+      "listing_id": "chair_two_pack",
+      "candidate": {
+        "title": "SYNTHETIC chair two pack / oak",
+        "category": "chair",
+        "product_url": "https://fixtures.example.com/chair_two_pack",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "chair_two_pack"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC chair two pack / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "chair_two_pack",
+        "identity_quote": "Synthetic Fixtures model chair_two_pack",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "50",
+            "unit": "cm",
+            "quote": "Width 50 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "55",
+            "unit": "cm",
+            "quote": "Depth 55 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "82",
+            "unit": "cm",
+            "quote": "Height 82 cm"
+          }
+        ],
+        "price": "100.00",
+        "currency": "USD",
+        "price_quote": "USD 100.00",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 2,
+        "pack_quote": "Contains 2 identical chair units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/chair_two_pack",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC chair two pack / oak\nSynthetic Fixtures model chair_two_pack\nWidth 50 cm\nDepth 55 cm\nHeight 82 cm\nUSD 100.00\nin stock\nContains 2 identical chair units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          0.5,
+          0.55,
+          0.82
+        ],
+        "offer_available": true
+      }
+    },
+    {
+      "listing_id": "chair_single",
+      "candidate": {
+        "title": "SYNTHETIC chair single / oak",
+        "category": "chair",
+        "product_url": "https://fixtures.example.com/chair_single",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "chair_single"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC chair single / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "chair_single",
+        "identity_quote": "Synthetic Fixtures model chair_single",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "48",
+            "unit": "cm",
+            "quote": "Width 48 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "53",
+            "unit": "cm",
+            "quote": "Depth 53 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "80",
+            "unit": "cm",
+            "quote": "Height 80 cm"
+          }
+        ],
+        "price": "84.99",
+        "currency": "USD",
+        "price_quote": "USD 84.99",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical chair units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/chair_single",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC chair single / oak\nSynthetic Fixtures model chair_single\nWidth 48 cm\nDepth 53 cm\nHeight 80 cm\nUSD 84.99\nin stock\nContains 1 identical chair units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          0.48,
+          0.53,
+          0.8
+        ],
+        "offer_available": true
+      }
+    },
+    {
+      "listing_id": "chair_out_of_stock",
+      "candidate": {
+        "title": "SYNTHETIC chair out of stock / oak",
+        "category": "chair",
+        "product_url": "https://fixtures.example.com/chair_out_of_stock",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "chair_out_of_stock"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC chair out of stock / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "chair_out_of_stock",
+        "identity_quote": "Synthetic Fixtures model chair_out_of_stock",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "50",
+            "unit": "cm",
+            "quote": "Width 50 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "55",
+            "unit": "cm",
+            "quote": "Depth 55 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "82",
+            "unit": "cm",
+            "quote": "Height 82 cm"
+          }
+        ],
+        "price": "89.99",
+        "currency": "USD",
+        "price_quote": "USD 89.99",
+        "availability": "out_of_stock",
+        "availability_quote": "out of stock",
+        "units_per_pack": 2,
+        "pack_quote": "Contains 2 identical chair units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/chair_out_of_stock",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC chair out of stock / oak\nSynthetic Fixtures model chair_out_of_stock\nWidth 50 cm\nDepth 55 cm\nHeight 82 cm\nUSD 89.99\nout of stock\nContains 2 identical chair units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          0.5,
+          0.55,
+          0.82
+        ],
+        "offer_available": false
+      }
+    },
+    {
+      "listing_id": "dining_rug",
+      "candidate": {
+        "title": "SYNTHETIC dining rug / oak",
+        "category": "rug",
+        "product_url": "https://fixtures.example.com/dining_rug",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "dining_rug"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC dining rug / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "dining_rug",
+        "identity_quote": "Synthetic Fixtures model dining_rug",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "280",
+            "unit": "cm",
+            "quote": "Width 280 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "200",
+            "unit": "cm",
+            "quote": "Depth 200 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "1.4",
+            "unit": "cm",
+            "quote": "Height 1.4 cm"
+          }
+        ],
+        "price": "79.99",
+        "currency": "USD",
+        "price_quote": "USD 79.99",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical rug units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/dining_rug",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC dining rug / oak\nSynthetic Fixtures model dining_rug\nWidth 280 cm\nDepth 200 cm\nHeight 1.4 cm\nUSD 79.99\nin stock\nContains 1 identical rug units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          2.8,
+          2.0,
+          0.014
+        ],
+        "offer_available": true
+      }
+    }
+  ],
+  "replay": {
+    "actions": [
+      {
+        "action": "ask_user",
+        "payload": {
+          "kind": "numeric",
+          "topic": "occupants",
+          "text": "How many people usually use this room?",
+          "numeric_min": 1,
+          "numeric_max": 8,
+          "numeric_step": 1,
+          "allow_skip": true,
+          "allow_delegate": true,
+          "choices": []
+        }
+      },
+      {
+        "action": "search_products",
+        "payload": {
+          "category": "chair",
+          "function": "Synthetic Family room with two doors",
+          "quantity": 3
+        }
+      },
+      {
+        "action": "search_products",
+        "payload": {
+          "category": "rug",
+          "function": "Synthetic Family room with two doors",
+          "quantity": 1
+        }
+      },
+      {
+        "action": "finalize_selection",
+        "payload": {
+          "selected": [
+            {
+              "variant_id": "v_6259890b671a73d8fa373b07",
+              "offer_id": "offer_b1de57bd5b4ea2dd8b252765",
+              "quantity": 3,
+              "selection_id": "selection_chairs"
+            },
+            {
+              "variant_id": "v_4d1c5aec5c5f1128e6692051",
+              "offer_id": "offer_ff3260658f73fe45ed844bb1",
+              "quantity": 1,
+              "selection_id": "selection_rug"
+            }
+          ],
+          "assumptions": [
+            "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers."
+          ],
+          "reasons": [
+            "Recorded offline replay; the live model may ask different valid questions."
+          ]
+        }
+      }
+    ],
+    "answer": {
+      "action": "answer",
+      "number": 3
+    },
+    "selection_listings": {
+      "chairs": "chair_two_pack",
+      "rug": "dining_rug"
+    }
+  },
+  "spatial_case": {
+    "plan": {
+      "summary": "SYNTHETIC: Family room with two doors",
+      "adds": [
+        {
+          "action_id": "add_chairs",
+          "add_id": "chairs",
+          "category": "chair",
+          "priority": 1,
+          "quantity": 3,
+          "selection_id": "selection_chairs",
+          "anchor": {
+            "type": "against_wall",
+            "wall_id": "w_3",
+            "alignment": "center"
+          },
+          "reason": "Controlled synthetic placement case."
+        },
+        {
+          "action_id": "add_rug",
+          "add_id": "rug",
+          "category": "rug",
+          "priority": 2,
+          "quantity": 1,
+          "selection_id": "selection_rug",
+          "anchor": {
+            "type": "under",
+            "target": {
+              "kind": "object",
+              "id": "dining_table"
+            }
+          },
+          "reason": "Controlled synthetic placement case."
+        }
+      ],
+      "moves": [],
+      "removes": [],
+      "replaces": [],
+      "restores": [],
+      "unlocks": []
+    },
+    "constraints": {
+      "intent": "add",
+      "instructions": {
+        "sofa": "keep",
+        "dining_table": "keep"
+      },
+      "approved_ceiling": "300.00",
+      "must_have_add_ids": [],
+      "allow_adjustments": true
+    }
+  },
+  "expected": {
+    "floor_area": 48.0,
+    "selected_total": "279.99",
+    "candidate_total": "279.99",
+    "new_item_count": 4,
+    "conflict_codes": [],
+    "omitted_add_ids": [],
+    "eligible_choices_by_category": {
+      "chair": 2,
+      "rug": 1
+    },
+    "chair_packs": 2,
+    "chair_supplied": 4,
+    "chair_paid_surplus": 1,
+    "checks": [
+      "narrow door",
+      "double-door swing approximation",
+      "doorless opening",
+      "three placed chairs require two whole packs",
+      "paid surplus costs money",
+      "out of stock rejected",
+      "rug under existing table"
+    ]
+  }
+}

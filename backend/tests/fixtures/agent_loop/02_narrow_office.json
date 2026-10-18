@@ -1,0 +1,927 @@
+{
+  "schema_version": 1,
+  "scenario_id": "02_narrow_office",
+  "title": "Narrow home office",
+  "provenance": {
+    "kind": "synthetic",
+    "created_at": "2026-10-18T00:00:00+00:00",
+    "description": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.",
+    "measurement_accuracy": "Internally consistent authored values, not calibrated real-world measurements.",
+    "listing_evidence": "Fictional page text for offline verifier tests only. Never load these records into a production Product catalog."
+  },
+  "agent_context": {
+    "measured_context": {
+      "capture_id": "capture_02_narrow_office",
+      "captured_at": "2026-10-18T00:00:00+00:00",
+      "source": "synthetic_json",
+      "units": "meters",
+      "frame": "normalized_room",
+      "height": 2.45,
+      "extents": {
+        "width": 2.4,
+        "depth": 4.8,
+        "meaning": "Bounding extents only; use floor.polygon for usable floor."
+      },
+      "floor": {
+        "polygon": [
+          [
+            0,
+            0
+          ],
+          [
+            2.4,
+            0
+          ],
+          [
+            2.4,
+            4.8
+          ],
+          [
+            0,
+            4.8
+          ]
+        ],
+        "area": 11.52
+      },
+      "walls": [
+        {
+          "id": "w_1",
+          "a": [
+            0,
+            0
+          ],
+          "b": [
+            2.4,
+            0
+          ],
+          "length": 2.4,
+          "inward_normal": [
+            0.0,
+            1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_2",
+          "a": [
+            2.4,
+            0
+          ],
+          "b": [
+            2.4,
+            4.8
+          ],
+          "length": 4.8,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_3",
+          "a": [
+            2.4,
+            4.8
+          ],
+          "b": [
+            0,
+            4.8
+          ],
+          "length": 2.4,
+          "inward_normal": [
+            -0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_4",
+          "a": [
+            0,
+            4.8
+          ],
+          "b": [
+            0,
+            0
+          ],
+          "length": 4.8,
+          "inward_normal": [
+            1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        }
+      ],
+      "openings": [
+        {
+          "id": "entry",
+          "type": "door",
+          "wall_id": "w_1",
+          "offset": 0.15,
+          "width": 0.75,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        },
+        {
+          "id": "window",
+          "type": "window",
+          "wall_id": "w_3",
+          "offset": 0.5,
+          "width": 1.4,
+          "bottom": 0.85,
+          "height": 1.1,
+          "source_ids": []
+        }
+      ],
+      "objects": [
+        {
+          "id": "shelf",
+          "source_ids": [],
+          "category": "shelf",
+          "source": "synthetic",
+          "center": [
+            2.1,
+            3.4
+          ],
+          "base_y": 0,
+          "yaw": -1.5707963267948966,
+          "size": [
+            0.8,
+            0.4,
+            1.8
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "radiator",
+          "source_ids": [],
+          "category": "radiator",
+          "source": "synthetic",
+          "center": [
+            1.2,
+            4.64
+          ],
+          "base_y": 0,
+          "yaw": 3.141592653589793,
+          "size": [
+            0.8,
+            0.2,
+            0.6
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": true,
+          "attrs": {},
+          "observation_count": 0
+        }
+      ],
+      "uncertainty": "Exact authored test values; physical measurement accuracy and sensor confidence are untested."
+    },
+    "planning": {
+      "room_id": "room_02_narrow_office",
+      "capture_id": "capture_02_narrow_office",
+      "planning_revision": 0,
+      "instructions": [
+        {
+          "target": {
+            "kind": "object",
+            "id": "shelf",
+            "capture_id": "capture_02_narrow_office"
+          },
+          "instruction": "keep"
+        }
+      ]
+    },
+    "request": {
+      "schema_version": 1,
+      "operation_id": "generate_02_narrow_office",
+      "capture_id": "capture_02_narrow_office",
+      "snapshot_id": "snapshot_02_narrow_office",
+      "planning_revision": 0,
+      "expected_active_design_id": null,
+      "expected_active_revision": 0,
+      "intent": "add",
+      "styles": [
+        "Minimal"
+      ],
+      "budget": "220.00",
+      "currency": "USD",
+      "text": "Add a desk and a table lamp for laptop work. Put the lamp on the desk. Preserve the shelf and radiator."
+    },
+    "answers": [],
+    "initial_products": {
+      "state": "empty",
+      "displayed_choices": [],
+      "reasons": [
+        "Offline fixture before discovery; verify the fictional evidence through the controlled provider."
+      ]
+    },
+    "actions": [],
+    "approved_budget": "220.00",
+    "categories": [
+      "sofa",
+      "armchair",
+      "chair",
+      "stool",
+      "table",
+      "dining_table",
+      "coffee_table",
+      "side_table",
+      "desk",
+      "nightstand",
+      "dresser",
+      "counter",
+      "shelf",
+      "cabinet",
+      "tv_stand",
+      "bed",
+      "tv",
+      "floor_lamp",
+      "table_lamp",
+      "plant",
+      "decor",
+      "mirror",
+      "wall_art",
+      "rug",
+      "curtain",
+      "ceiling_light",
+      "outlet",
+      "light_switch",
+      "radiator",
+      "vent",
+      "sink",
+      "toilet",
+      "bathtub",
+      "refrigerator",
+      "stove",
+      "oven",
+      "dishwasher",
+      "washer_dryer",
+      "fireplace",
+      "stairs"
+    ]
+  },
+  "room_snapshot": {
+    "schema_version": 1,
+    "snapshot_id": "snapshot_02_narrow_office",
+    "revision": 1,
+    "room_id": "room_02_narrow_office",
+    "capture_id": "capture_02_narrow_office",
+    "created_at": "2026-10-18T00:00:00+00:00",
+    "room": {
+      "schema_version": 1,
+      "category_version": 1,
+      "room_id": "room_02_narrow_office",
+      "capture_id": "capture_02_narrow_office",
+      "height": 2.45,
+      "frame": {
+        "room_from_world": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "floor": {
+        "polygon": [
+          [
+            0,
+            0
+          ],
+          [
+            2.4,
+            0
+          ],
+          [
+            2.4,
+            4.8
+          ],
+          [
+            0,
+            4.8
+          ]
+        ],
+        "area": 11.52
+      },
+      "walls": [
+        {
+          "id": "w_1",
+          "a": [
+            0,
+            0
+          ],
+          "b": [
+            2.4,
+            0
+          ],
+          "length": 2.4,
+          "inward_normal": [
+            0.0,
+            1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_2",
+          "a": [
+            2.4,
+            0
+          ],
+          "b": [
+            2.4,
+            4.8
+          ],
+          "length": 4.8,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_3",
+          "a": [
+            2.4,
+            4.8
+          ],
+          "b": [
+            0,
+            4.8
+          ],
+          "length": 2.4,
+          "inward_normal": [
+            -0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_4",
+          "a": [
+            0,
+            4.8
+          ],
+          "b": [
+            0,
+            0
+          ],
+          "length": 4.8,
+          "inward_normal": [
+            1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        }
+      ],
+      "corners": [
+        {
+          "id": "c_1",
+          "position": [
+            0,
+            0
+          ],
+          "wall_ids": [
+            "w_4",
+            "w_1"
+          ]
+        },
+        {
+          "id": "c_2",
+          "position": [
+            2.4,
+            0
+          ],
+          "wall_ids": [
+            "w_1",
+            "w_2"
+          ]
+        },
+        {
+          "id": "c_3",
+          "position": [
+            2.4,
+            4.8
+          ],
+          "wall_ids": [
+            "w_2",
+            "w_3"
+          ]
+        },
+        {
+          "id": "c_4",
+          "position": [
+            0,
+            4.8
+          ],
+          "wall_ids": [
+            "w_3",
+            "w_4"
+          ]
+        }
+      ],
+      "openings": [
+        {
+          "id": "entry",
+          "type": "door",
+          "wall_id": "w_1",
+          "offset": 0.15,
+          "width": 0.75,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        },
+        {
+          "id": "window",
+          "type": "window",
+          "wall_id": "w_3",
+          "offset": 0.5,
+          "width": 1.4,
+          "bottom": 0.85,
+          "height": 1.1,
+          "source_ids": []
+        }
+      ],
+      "objects": [
+        {
+          "id": "shelf",
+          "source_ids": [],
+          "category": "shelf",
+          "source": "synthetic",
+          "center": [
+            2.1,
+            3.4
+          ],
+          "base_y": 0,
+          "yaw": -1.5707963267948966,
+          "size": [
+            0.8,
+            0.4,
+            1.8
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "radiator",
+          "source_ids": [],
+          "category": "radiator",
+          "source": "synthetic",
+          "center": [
+            1.2,
+            4.64
+          ],
+          "base_y": 0,
+          "yaw": 3.141592653589793,
+          "size": [
+            0.8,
+            0.2,
+            0.6
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": true,
+          "attrs": {},
+          "observation_count": 0
+        }
+      ],
+      "wall_features": [],
+      "zones": [
+        {
+          "id": "z_entry",
+          "type": "keep_clear",
+          "reason": "door",
+          "opening_id": "entry",
+          "polygon": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.9
+            ],
+            [
+              1.05,
+              0.9
+            ],
+            [
+              1.05,
+              0.0
+            ]
+          ]
+        }
+      ],
+      "style_hints": {},
+      "identity_map": {
+        "shelf": {
+          "kind": "object",
+          "id": "shelf"
+        },
+        "radiator": {
+          "kind": "object",
+          "id": "radiator"
+        }
+      },
+      "processing": {
+        "expected_frames": 0,
+        "not_started": 0,
+        "pending": 0,
+        "succeeded": 0,
+        "failed": 0,
+        "lifted": 0,
+        "completed": 0
+      },
+      "validity": {
+        "usable": true,
+        "reasons": [],
+        "warnings": [
+          {
+            "code": "synthetic_input",
+            "message": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers."
+          }
+        ]
+      }
+    },
+    "identity_map": {
+      "shelf": {
+        "kind": "object",
+        "id": "shelf"
+      },
+      "radiator": {
+        "kind": "object",
+        "id": "radiator"
+      }
+    }
+  },
+  "listings": [
+    {
+      "listing_id": "compact_desk",
+      "candidate": {
+        "title": "SYNTHETIC compact desk / oak",
+        "category": "desk",
+        "product_url": "https://fixtures.example.com/compact_desk",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "compact_desk"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC compact desk / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "compact_desk",
+        "identity_quote": "Synthetic Fixtures model compact_desk",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "120",
+            "unit": "cm",
+            "quote": "Width 120 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "60",
+            "unit": "cm",
+            "quote": "Depth 60 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "74",
+            "unit": "cm",
+            "quote": "Height 74 cm"
+          }
+        ],
+        "price": "129.00",
+        "currency": "USD",
+        "price_quote": "USD 129.00",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical desk units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/compact_desk",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC compact desk / oak\nSynthetic Fixtures model compact_desk\nWidth 120 cm\nDepth 60 cm\nHeight 74 cm\nUSD 129.00\nin stock\nContains 1 identical desk units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          1.2,
+          0.6,
+          0.74
+        ],
+        "offer_available": true
+      }
+    },
+    {
+      "listing_id": "desk_package_only",
+      "candidate": {
+        "title": "SYNTHETIC desk package only / oak",
+        "category": "desk",
+        "product_url": "https://fixtures.example.com/desk_package_only",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "desk_package_only"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC desk package only / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "desk_package_only",
+        "identity_quote": "Synthetic Fixtures model desk_package_only",
+        "classification": "package",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "130",
+            "unit": "cm",
+            "quote": "Width 130 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "70",
+            "unit": "cm",
+            "quote": "Depth 70 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "20",
+            "unit": "cm",
+            "quote": "Height 20 cm"
+          }
+        ],
+        "price": "89.99",
+        "currency": "USD",
+        "price_quote": "USD 89.99",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical desk units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/desk_package_only",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC desk package only / oak\nSynthetic Fixtures model desk_package_only\nWidth 130 cm\nDepth 70 cm\nHeight 20 cm\nUSD 89.99\nin stock\nContains 1 identical desk units"
+      },
+      "expected": {
+        "dimension_outcome": "package_dimensions",
+        "dimensions": null,
+        "offer_available": false
+      }
+    },
+    {
+      "listing_id": "task_lamp",
+      "candidate": {
+        "title": "SYNTHETIC task lamp / oak",
+        "category": "table_lamp",
+        "product_url": "https://fixtures.example.com/task_lamp",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "task_lamp"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC task lamp / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "task_lamp",
+        "identity_quote": "Synthetic Fixtures model task_lamp",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "160",
+            "unit": "mm",
+            "quote": "Width 160 mm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "160",
+            "unit": "mm",
+            "quote": "Depth 160 mm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "420",
+            "unit": "mm",
+            "quote": "Height 420 mm"
+          }
+        ],
+        "price": "34.50",
+        "currency": "USD",
+        "price_quote": "USD 34.50",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical table_lamp units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/task_lamp",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC task lamp / oak\nSynthetic Fixtures model task_lamp\nWidth 160 mm\nDepth 160 mm\nHeight 420 mm\nUSD 34.50\nin stock\nContains 1 identical table_lamp units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          0.16,
+          0.16,
+          0.42
+        ],
+        "offer_available": true
+      }
+    }
+  ],
+  "replay": {
+    "actions": [
+      {
+        "action": "ask_user",
+        "payload": {
+          "kind": "numeric",
+          "topic": "occupants",
+          "text": "How many people usually use this room?",
+          "numeric_min": 1,
+          "numeric_max": 8,
+          "numeric_step": 1,
+          "allow_skip": true,
+          "allow_delegate": true,
+          "choices": []
+        }
+      },
+      {
+        "action": "search_products",
+        "payload": {
+          "category": "desk",
+          "function": "Synthetic Narrow home office",
+          "quantity": 1
+        }
+      },
+      {
+        "action": "search_products",
+        "payload": {
+          "category": "table_lamp",
+          "function": "Synthetic Narrow home office",
+          "quantity": 1
+        }
+      },
+      {
+        "action": "finalize_selection",
+        "payload": {
+          "selected": [
+            {
+              "variant_id": "v_b4fdc63eb700366e45632cb7",
+              "offer_id": "offer_928f21de8c616347b7ef9341",
+              "quantity": 1,
+              "selection_id": "selection_desk"
+            },
+            {
+              "variant_id": "v_7ab970b40bcdc07fbf19b1bb",
+              "offer_id": "offer_3ccc46b1652bdcde855b2c3e",
+              "quantity": 1,
+              "selection_id": "selection_lamp"
+            }
+          ],
+          "assumptions": [
+            "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers."
+          ],
+          "reasons": [
+            "Recorded offline replay; the live model may ask different valid questions."
+          ]
+        }
+      }
+    ],
+    "answer": {
+      "action": "answer",
+      "number": 1
+    },
+    "selection_listings": {
+      "desk": "compact_desk",
+      "lamp": "task_lamp"
+    }
+  },
+  "spatial_case": {
+    "plan": {
+      "summary": "SYNTHETIC: Narrow home office",
+      "adds": [
+        {
+          "action_id": "add_desk",
+          "add_id": "desk",
+          "category": "desk",
+          "priority": 2,
+          "quantity": 1,
+          "selection_id": "selection_desk",
+          "anchor": {
+            "type": "against_wall",
+            "wall_id": "w_4",
+            "alignment": "center"
+          },
+          "reason": "Controlled synthetic placement case."
+        },
+        {
+          "action_id": "add_lamp",
+          "add_id": "lamp",
+          "category": "table_lamp",
+          "priority": 1,
+          "quantity": 1,
+          "selection_id": "selection_lamp",
+          "anchor": {
+            "type": "on_top_of",
+            "target": {
+              "kind": "addition_unit",
+              "id": "desk",
+              "add_id": "desk",
+              "unit_index": 0
+            }
+          },
+          "reason": "Controlled synthetic placement case."
+        }
+      ],
+      "moves": [],
+      "removes": [],
+      "replaces": [],
+      "restores": [],
+      "unlocks": []
+    },
+    "constraints": {
+      "intent": "add",
+      "instructions": {
+        "shelf": "keep"
+      },
+      "approved_ceiling": "220.00",
+      "must_have_add_ids": [],
+      "allow_adjustments": true
+    }
+  },
+  "expected": {
+    "floor_area": 11.52,
+    "selected_total": "163.50",
+    "candidate_total": "163.50",
+    "new_item_count": 2,
+    "conflict_codes": [],
+    "omitted_add_ids": [],
+    "eligible_choices_by_category": {
+      "desk": 1,
+      "table_lamp": 1
+    },
+    "checks": [
+      "narrow doorway clearance",
+      "permanent radiator",
+      "package dimensions rejected",
+      "millimeter conversion",
+      "support dependency precedes lamp Priority"
+    ]
+  }
+}
