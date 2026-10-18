@@ -41,7 +41,7 @@ def configure(monkeypatch):
     monkeypatch.setattr(astra_spending, "count_input_tokens", lambda *args: 1000)
 
 
-def test_staged_default_generates_sol_batch_with_photos_materials_and_receipts(tmp_path, monkeypatch):
+def test_staged_default_generates_astra_batch_with_photos_materials_and_receipts(tmp_path, monkeypatch):
     room_capture(tmp_path)
     configure(monkeypatch)
     calls = []
@@ -60,7 +60,7 @@ def test_staged_default_generates_sol_batch_with_photos_materials_and_receipts(t
     context = json.loads(calls[1]["input"][0]["content"][0]["text"])["objects"][0]
     assert "observed_mesh_region" in context and "crop_pixels_left_top_right_bottom" in context["selected_photos"][0]
     assert quality["budget"]["ceiling_usd"] == 10.
-    assert quality["budget"]["known_cost_usd"] == .024
+    assert quality["budget"]["known_cost_usd"] == .12
     assert quality["objects"][0]["detail"] == "detailed"
     saved = json.loads((output/"astra-furnishings.json").read_text())
     assert len(saved["entities"][0]["parts"]) == 8
@@ -80,7 +80,7 @@ def test_staged_default_generates_sol_batch_with_photos_materials_and_receipts(t
     assert astra_room.process_astra_room(tmp_path, 2)["status"] == "succeeded"
     assert len(calls) == 2
     repeated = json.loads((tmp_path/"results/2/quality.json").read_text())
-    assert repeated["response_reused"] and repeated["budget"]["known_cost_usd"] == .024
+    assert repeated["response_reused"] and repeated["budget"]["known_cost_usd"] == .12
 
 
 def test_budget_limit_keeps_complete_coarse_object_instead_of_dropping_furniture(tmp_path, monkeypatch):
@@ -271,7 +271,7 @@ def test_multiple_objects_share_calls_and_keep_separate_identity_materials_and_c
         calls.append(body)
         if len(calls) == 1:
             return reply(inventory)
-        assert body["model"] == "gpt-6-sol" and body["reasoning"]["effort"] == "low"
+        assert body["model"] == "gpt-6-astra" and body["reasoning"]["effort"] == "low"
         context = json.loads(body["input"][0]["content"][0]["text"])["objects"]
         assert 1 <= len(context) <= 4
         assert all(1 <= len(item["selected_photos"]) <= 3 for item in context)

@@ -53,7 +53,7 @@ def test_evidence_has_bounded_photos_lidar_meshes_and_calibration(tmp_path, capt
         assert len(frame["camera_to_scan_columns"]) == 16
         assert frame["intrinsics_fx_fy_cx_cy"] == [480, 480, 320, 240]
     body = astra.request_body(evidence, photos)
-    assert body["model"] == "gpt-6-sol"
+    assert body["model"] == "gpt-6-astra"
     assert body["reasoning"] == {"effort": "high"}
     assert body["store"] is False
     assert body["text"]["format"]["strict"] is True
@@ -243,7 +243,7 @@ def test_pipeline_generates_served_model_overlay_and_reuses_paid_response(tmp_pa
     monkeypatch.setattr(pipeline, "refine_and_texture", measured_photos)
     result = pipeline.process(tmp_path, 1)
     assert result["status"] == "succeeded" and result["model_filename"] == "astra.obj"
-    assert result["generation_model"] == "gpt-6-sol" and result["generated_triangle_count"] == 1
+    assert result["generation_model"] == "gpt-6-astra" and result["generated_triangle_count"] == 1
     assert result["needs_review"]
     output = tmp_path / "results/1"
     assert (output / "inferred.obj").is_file()

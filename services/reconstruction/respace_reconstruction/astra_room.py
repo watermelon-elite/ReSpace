@@ -412,7 +412,7 @@ def usage_cost(response):
     from .astra_spending import actual_units
     cost = actual_units(response, astra.MODEL)/1e6
     return {"usage": usage, "estimated_cost_usd": cost,
-            "pricing_basis": "2026-10-18 Sol Standard USD; reasoning and reported cache writes included; excludes tax"}
+            "pricing_basis": "2026-10-18 Astra Standard USD; reasoning and reported cache writes included; excludes tax"}
 
 
 def measured_structure(evidence):
@@ -563,7 +563,7 @@ def process_astra_room(folder: Path, revision: int, detailed=True):
                     "lidar_frame_count": len(manifest.frames), "valid_depth_pixel_count": evidence["valid_depth_pixel_count"],
                     "selected_frame_ids": [p["frame_id"] for p in evidence["selected_photos"]],
                     "assumptions": plan.assumptions, "ignored_evidence": plan.ignored_evidence,
-                    "geometry": "RoomPlan shell built locally; intentional room contents, appliances and fixtures authored by Sol; random incidental junk excluded"})
+                    "geometry": "RoomPlan shell built locally; intentional room contents, appliances and fixtures authored by Astra; random incidental junk excluded"})
         report = {"ready": True, "capture_id": manifest.capture_id, "pipeline": "astra", "generation_model": astra.MODEL,
                   "triangle_count": count, "entity_count": len(entities), "response_reused": cached,
                   "elapsed_seconds": round(time.monotonic()-started, 3),
