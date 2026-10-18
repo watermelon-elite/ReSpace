@@ -21,6 +21,10 @@ The saved design supports Product details, Find more, Swap, Remove and Undo.
 Offline conversation commands support one Move, Remove or Restore of a named
 or selected Item at a time.
 
+Some Simulator reopens still render a blank 3D surface, and accessibility
+automation can time out after edits. Saved Scene/API checks pass; full native
+visual verification remains open in [#42](https://github.com/watermelon-elite/ReSpace/issues/42).
+
 The opt-in test mode imports actual floor triangles from the supplied `room.glb`.
 Its **10 metres per source unit is an uncalibrated test assumption**; walls are
 synthesized from its simplified floor contour. It imports no Objects, doors,
