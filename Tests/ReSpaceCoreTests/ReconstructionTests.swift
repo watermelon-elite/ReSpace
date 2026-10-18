@@ -36,7 +36,7 @@ final class ReconstructionTests: XCTestCase {
         let url = try XCTUnwrap(model)
         let expectedModel = env["RESPACE_TEST_EXPECTED_MODEL"] ?? "astra.obj"
         XCTAssertEqual(url.lastPathComponent, expectedModel)
-        if expectedModel == "astra.obj" { XCTAssertTrue(job.result?.isAstraGenerated == true) }
+        if expectedModel == "astra.obj" { XCTAssertTrue(job.result?.isAIGenerated == true) }
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.path))
         let original = try XCTUnwrap(manifest.sceneMesh)
         let retainedOriginal = try await repository.artifactURL(original, captureId: manifest.captureId)
@@ -146,14 +146,18 @@ final class ReconstructionTests: XCTestCase {
         """.utf8)
         var job = try Wire.decoder().decode(ReconstructionJob.self, from: data)
         try job.validate(captureId: "capture")
-        XCTAssertTrue(job.result?.isAstraGenerated == true)
+        XCTAssertTrue(job.result?.isAIGenerated == true)
+        job.result?.generationModel = "gpt-6-sol"
+        XCTAssertTrue(job.result?.isAIGenerated == true)
+        job.stage = "astra_batch:1-4/12"
+        XCTAssertEqual(job.stageDescription, "Building objects · 1-4/12")
         XCTAssertEqual(job.result?.generatedTriangleCount, 12)
         XCTAssertFalse(job.canRetry)
         job.result?.generationModel = nil
         job.result?.generatedTriangleCount = nil
         XCTAssertTrue(job.canRetry) // Earlier completed reconstructions can generate an AI model.
         job.stage = "astra_generating_scene"
-        XCTAssertEqual(job.stageDescription, "Astra is generating your room…")
+        XCTAssertEqual(job.stageDescription, "AI is generating your room…")
         job.result?.generatedTriangleCount = -1
         XCTAssertThrowsError(try job.validate(captureId: "capture"))
     }

@@ -24,7 +24,7 @@ from .scene import SceneBundle, SceneEntity, SceneMaterial, Navigation
 from .store import atomic_json, digest
 from .walkthrough import merge_scene
 
-PROMPT_VERSION = 4
+PROMPT_VERSION = 5
 MAX_TRIANGLES = 200000
 
 
@@ -171,7 +171,7 @@ def request_body(evidence, images):
     for photo, encoded in zip(evidence["selected_photos"], images, strict=True):
         content.extend([{"type": "input_text", "text": "Photo for frame_id="+photo["frame_id"]},
                         {"type": "input_image", "image_url": "data:image/jpeg;base64,"+encoded, "detail": "high"}])
-    return {"model": astra.MODEL, "store": False, "reasoning": {"effort": "high"},
+    return {"model": astra.MODEL, "store": False, "reasoning": {"effort": "low"},
             "max_output_tokens": 48000, "instructions": INSTRUCTIONS,
             "input": [{"role": "user", "content": content}],
             "text": {"format": {"type": "json_schema", "name": "respace_complete_room",
@@ -409,13 +409,10 @@ def usage_cost(response):
     usage = response.get("usage") or {}
     if not {"input_tokens", "output_tokens"} <= usage.keys():
         return {"usage": usage, "estimated_cost_usd": None}
-    inputs, outputs = usage["input_tokens"], usage["output_tokens"]
-    cached = (usage.get("input_tokens_details") or {}).get("cached_tokens", 0)
-    writes = (usage.get("input_tokens_details") or {}).get("cache_write_tokens", 0)
-    long = inputs > 272000
-    cost = ((inputs-cached-writes)*10+writes*12.5+cached*1)*(2 if long else 1)/1e6 + outputs*50*(1.5 if long else 1)/1e6
-    return {"usage": usage, "estimated_cost_usd": round(cost, 6),
-            "pricing_basis": "2026-10-17 Standard USD; reasoning and reported cache writes included; excludes tax"}
+    from .astra_spending import actual_units
+    cost = actual_units(response, astra.MODEL)/1e6
+    return {"usage": usage, "estimated_cost_usd": cost,
+            "pricing_basis": "2026-10-18 Sol Standard USD; reasoning and reported cache writes included; excludes tax"}
 
 
 def measured_structure(evidence):
@@ -566,7 +563,7 @@ def process_astra_room(folder: Path, revision: int, detailed=True):
                     "lidar_frame_count": len(manifest.frames), "valid_depth_pixel_count": evidence["valid_depth_pixel_count"],
                     "selected_frame_ids": [p["frame_id"] for p in evidence["selected_photos"]],
                     "assumptions": plan.assumptions, "ignored_evidence": plan.ignored_evidence,
-                    "geometry": "RoomPlan shell built locally; intentional room contents, appliances and fixtures authored by Astra; random incidental junk excluded"})
+                    "geometry": "RoomPlan shell built locally; intentional room contents, appliances and fixtures authored by Sol; random incidental junk excluded"})
         report = {"ready": True, "capture_id": manifest.capture_id, "pipeline": "astra", "generation_model": astra.MODEL,
                   "triangle_count": count, "entity_count": len(entities), "response_reused": cached,
                   "elapsed_seconds": round(time.monotonic()-started, 3),

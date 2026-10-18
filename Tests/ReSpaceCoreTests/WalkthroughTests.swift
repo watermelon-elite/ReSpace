@@ -12,7 +12,7 @@ final class WalkthroughTests: XCTestCase {
         let root=URL(fileURLWithPath:path)
         let result=try Wire.decoder().decode(ReconstructionResult.self,from:Data(contentsOf:root.appendingPathComponent("completion.json")))
         try result.validate()
-        XCTAssertTrue(result.isAstraGenerated && result.isWalkthrough)
+        XCTAssertTrue(result.isAIGenerated && result.isWalkthrough)
         let bundle=try Wire.decoder().decode(WalkthroughBundle.self,from:Data(contentsOf:root.appendingPathComponent("scene.json")))
         let assets=Set(result.assets.map(\.filename))
         try bundle.validate(captureId:"analytic-room",revision:1,assets:assets)

@@ -1,5 +1,6 @@
-"""Room-contents inventory -> independent, resumable detailed-object calls."""
+"""Room inventory -> resumable batches of recognizable, photo-textured objects."""
 import base64
+import hashlib
 import io
 import json
 from pathlib import Path
@@ -16,11 +17,13 @@ from .geometry import camera_to_cv_world
 from .instances import project
 from .store import atomic_json
 
+BATCH_SIZE = 4
+OBJECT_PHOTOS = 3
 
 class DetailPart(Part):
     material_id: str
-    vertices: list[astra.Vector] = Field(max_length=384)
-    triangles: list[astra.Triangle] = Field(max_length=768)
+    vertices: list[astra.Vector] = Field(max_length=96)
+    triangles: list[astra.Triangle] = Field(max_length=192)
 
 
 class DetailMaterial(Material):
@@ -28,7 +31,7 @@ class DetailMaterial(Material):
 
 
 class DetailedFurnishing(Furnishing):
-    parts: list[DetailPart] = Field(min_length=1, max_length=64)
+    parts: list[DetailPart] = Field(min_length=1, max_length=16)
 
 
 class ImagePoint(SceneData):
@@ -43,30 +46,40 @@ class PhotoExclusion(SceneData):
 
 class DetailedObject(SceneData):
     entity: DetailedFurnishing
-    materials: list[DetailMaterial] = Field(min_length=1, max_length=16)
+    materials: list[DetailMaterial] = Field(min_length=1, max_length=8)
     photo_exclusions: list[PhotoExclusion] = Field(max_length=6)
+
+
+class DetailedBatch(SceneData):
+    objects: list[DetailedObject] = Field(min_length=1, max_length=BATCH_SIZE)
 
 
 INVENTORY = """
 This is the INVENTORY stage of a multi-call reconstruction. Identify all eligible
 intentional room contents, appliances and installed features and their placement. Return a COMPLETE coarse version of
 each item using just 1-3 parts per item, <=80 parts total and no explicit meshes.
-Do not spend output tokens detailing these objects: separate calls will add
-shape, material divisions and detail to each item independently. Include the full intentional-contents scope above; exclude random incidental junk. Return compact JSON.
+Do not spend output tokens detailing these objects: later calls process batches
+of objects, adding recognizable silhouettes and major material divisions.
+Include the full intentional-contents scope above; exclude random incidental junk. Return compact JSON.
 """
 
-DETAIL = """Generate one detailed, complete room object or installed feature from calibrated
-photos and local LiDAR evidence. This is one object in a larger reconstruction.
+DETAIL = """Generate the supplied batch of up to four complete, recognizable room objects
+or installed features from calibrated photos and local LiDAR evidence. Return
+exactly one objects entry for EACH supplied entity, with no duplicates or extras.
+Each object has its own evidence, bounds, photos, materials and exclusion masks.
+Keep object-specific photo references and crop coordinates separate even when
+two objects share a frame_id. Material IDs are scoped to each object.
 Preserve its exact id, category, kind, support_id, position and yaw from the
 inventory. Do not generate unrelated objects, duplicate the measured shell or add random junk.
 Appliances, electronics and installed features in the inventory are eligible.
 Ignore reflected objects and duplicated reflected details. Do not add objects
 seen only in reflections. Complete unseen backs, bases and undersides plausibly.
 
-Aim for the best recognizable fidelity within this object's response budget:
-curved silhouettes, cushion contours, arm/back profiles, joined legs, shelves,
-panel recesses, bevel-like edge geometry and prominent handles where visible.
-Use ellipsoids/cylinders and explicit meshes as needed, not a single generic box.
+Make each item recognizable with the FEWEST useful parts. Prioritize accurate
+size, silhouette, major curves, legs, arms, backs and prominent handles. Use a
+simple box for box-shaped appliances; use cylinders/ellipsoids for major curves.
+Do not model panel markings, seams, buttons, tiny bevels, screws or stitching:
+captured photos will supply the surface appearance. Avoid decorative geometry.
 Allocate distinct materials to upholstery, wood, metal, glass and other visible
 surfaces. Give each part a material_id from materials; metallic and roughness are
 in [0,1]. Group related pieces in ONE entity. Avoid microscopic screws/stitches.
@@ -78,8 +91,9 @@ unit size, zero-based indices, shared vertices, consistent outward winding and
 closed solids. Preserve metric dimensions; stay within the supplied object bounds
 with <=10cm tolerance. Wall decor stays on its measured support wall.
 
-Use 12-48 shaped parts normally, at most 64; explicit vertices <=384 and explicit
-triangles <=768 TOTAL across this object. Prefer efficient meshes/parts. Finish
+Use 4-12 parts for a typical object, 1-3 for simple items, at most 16 per object;
+explicit vertices <=96 and explicit triangles <=192 TOTAL per object. Prefer
+standard primitives; use explicit meshes only for essential silhouette features. Finish
 all JSON within the token budget; never keep adding detail until truncated.
 Photographs will be projected onto visible surfaces locally. Model the observed
 shape accurately so these textures align; do not invent photographic textures.
@@ -128,14 +142,14 @@ def object_evidence(entity, inventory, evidence, manifest, inputs, o3d):
                np.dot(pose[:3, 2], camera_to_cv_world(f.metadata)[:3, 2]) > .97 for f, _ in chosen):
             continue
         chosen.append((frame, crop))
-        if len(chosen) == 6:
+        if len(chosen) == OBJECT_PHOTOS:
             break
     photos, images = [], []
     for frame, crop in chosen:
         photo = next(a for a in frame.artifacts if a.type == "jpeg")
         with Image.open(inputs/photo.filename) as image:
             image = image.convert("RGB").crop(tuple(map(int, crop)))
-            image.thumbnail((1536, 1536), Image.Resampling.LANCZOS)
+            image.thumbnail((1024, 1024), Image.Resampling.LANCZOS)
             stream = io.BytesIO(); image.save(stream, format="JPEG", quality=95)
             images.append(base64.b64encode(stream.getvalue()).decode("ascii"))
             photos.append({"frame_id": frame.id, "crop_pixels_left_top_right_bottom": list(map(int, crop)),
@@ -164,16 +178,39 @@ def object_evidence(entity, inventory, evidence, manifest, inputs, o3d):
             "selected_photos": photos}, images
 
 
-def detail_body(evidence, images):
-    content = [{"type": "input_text", "text": json.dumps(evidence, separators=(",", ":"))}]
-    for photo, encoded in zip(evidence["selected_photos"], images, strict=True):
-        content.extend([{"type": "input_text", "text": "Object crop for frame_id="+photo["frame_id"]},
-                        {"type": "input_image", "image_url": "data:image/jpeg;base64,"+encoded, "detail": "high"}])
+def detail_body(items):
+    content = [{"type": "input_text", "text": json.dumps(
+        {"objects": [evidence for evidence, _ in items]}, separators=(",", ":"))}]
+    for evidence, images in items:
+        for photo, encoded in zip(evidence["selected_photos"], images, strict=True):
+            content.extend([{"type": "input_text", "text": "Object id="+evidence["entity"]["id"]+
+                             " crop for frame_id="+photo["frame_id"]},
+                            {"type": "input_image", "image_url": "data:image/jpeg;base64,"+encoded, "detail": "high"}])
     return {"model": astra.MODEL, "service_tier": "default", "store": False,
-            "reasoning": {"effort": "high"}, "max_output_tokens": 24000, "instructions": DETAIL,
+            "reasoning": {"effort": "low"}, "max_output_tokens": 24000, "instructions": DETAIL,
             "input": [{"role": "user", "content": content}],
-            "text": {"format": {"type": "json_schema", "name": "respace_detailed_object", "strict": True,
-                                "schema": DetailedObject.model_json_schema()}}}
+            "text": {"format": {"type": "json_schema", "name": "respace_object_batch", "strict": True,
+                                "schema": DetailedBatch.model_json_schema()}}}
+
+
+def parse_batch(response, expected_ids):
+    if response.get("status") != "completed":
+        raise ValueError("Object batch was incomplete; retained coarse objects")
+    texts = [c["text"] for item in response.get("output", []) if item.get("type") == "message"
+             for c in item.get("content", []) if c.get("type") == "output_text"]
+    if len(texts) != 1:
+        raise ValueError("Object batch has no single structured response")
+    data = json.loads(texts[0])
+    if not isinstance(data, dict) or set(data) != {"objects"} or not isinstance(data["objects"], list) or len(data["objects"]) > BATCH_SIZE:
+        raise ValueError("Invalid object batch")
+    objects = {}
+    for item in data["objects"]:
+        entity = item.get("entity") if isinstance(item, dict) else None
+        identity = entity.get("id") if isinstance(entity, dict) else None
+        if not isinstance(identity, str) or identity not in expected_ids or identity in objects:
+            raise ValueError("Object batch returned duplicate or unknown identities")
+        objects[identity] = item
+    return objects
 
 
 def parse_detail(response, original, evidence, o3d):
@@ -195,7 +232,7 @@ def parse_detail(response, original, evidence, o3d):
     materials = {m.id for m in detail.materials}
     if len(materials) != len(detail.materials) or entity.material_id not in materials or any(p.material_id not in materials for p in entity.parts):
         raise ValueError("Detailed object has invalid material references")
-    if sum(len(p.vertices) for p in entity.parts) > 384 or sum(len(p.triangles) for p in entity.parts) > 768:
+    if sum(len(p.vertices) for p in entity.parts) > 96 or sum(len(p.triangles) for p in entity.parts) > 192:
         raise ValueError("Detailed object exceeds its explicit mesh budget")
     lo, hi, _, _ = bounds(entity, o3d)
     if (lo < np.array(evidence["local_bounds_min"])-.1).any() or (hi > np.array(evidence["local_bounds_max"])+.1).any():
@@ -220,9 +257,9 @@ def generate_detailed(evidence, images, working, shell, manifest, inputs, progre
     import open3d as o3d
     ledger = Spending(working/"astra-budget-v3.json")
     body = request_body(evidence, images)
-    body.update(instructions=body["instructions"]+INVENTORY, max_output_tokens=32000, service_tier="default")
+    body.update(instructions=body["instructions"]+INVENTORY, max_output_tokens=24000, service_tier="default", reasoning={"effort": "low"})
     progress("astra_inventory")
-    response, reused = ledger.request(body, working/"astra-v3"/"inventory", "Room contents inventory")
+    response, reused = ledger.request(body, working/"sol-v1"/"inventory", "Room contents inventory")
     inventory = parse_response(response)
     if sum(len(e.parts) for e in inventory.entities) > 80:
         raise ValueError("Inventory exceeded its coarse-object budget; retained paid response")
@@ -244,41 +281,65 @@ def generate_detailed(evidence, images, working, shell, manifest, inputs, progre
     materials = {m.id: m for m in inventory.materials}
     statuses, reused_all = [], reused
     ordered = sorted(inventory.entities, key=importance, reverse=True)
-    for index, entity in enumerate(ordered):
-        progress(f"astra_detail:{index+1}/{len(ordered)}")
-        local_evidence, crops = object_evidence(entity, inventory, evidence, manifest, inputs, o3d)
-        if not crops:
-            statuses.append({"entity_id": entity.id, "detail": "coarse", "reason": "no_suitable_object_crops"})
+    batch_count = 0
+    for start in range(0, len(ordered), BATCH_SIZE):
+        batch = ordered[start:start+BATCH_SIZE]
+        progress(f"astra_batch:{start+1}-{start+len(batch)}/{len(ordered)}")
+        prepared = []
+        for entity in batch:
+            local_evidence, crops = object_evidence(entity, inventory, evidence, manifest, inputs, o3d)
+            if not crops:
+                statuses.append({"entity_id": entity.id, "detail": "coarse", "reason": "no_suitable_object_crops"})
+            else:
+                prepared.append((entity, local_evidence, crops))
+        if not prepared:
             continue
+        identities = [entity.id for entity, _, _ in prepared]
+        batch_id = hashlib.sha256(json.dumps(identities).encode()).hexdigest()[:24]
         try:
-            response, reused = ledger.request(detail_body(local_evidence, crops), working/"astra-v3"/entity.id, entity.label)
+            response, reused = ledger.request(detail_body([(e, c) for _, e, c in prepared]),
+                working/"sol-v1"/"batches"/batch_id, "Object batch: "+", ".join(identities))
         except BudgetExhausted:
-            statuses.append({"entity_id": entity.id, "detail": "coarse", "reason": "budget_limit"})
-            continue
+            for entity in [e for e, _, _ in prepared]+ordered[start+len(batch):]:
+                statuses.append({"entity_id": entity.id, "detail": "coarse", "reason": "budget_limit"})
+            break
+        batch_count += 1
         reused_all &= reused
         try:
-            detail = parse_detail(response, entity, local_evidence, o3d)
+            returned = parse_batch(response, set(identities))
         except ValueError as exc:
-            statuses.append({"entity_id": entity.id, "detail": "coarse", "reason": str(exc)[:200]})
+            statuses.extend({"entity_id": identity, "detail": "coarse", "reason": str(exc)[:200]} for identity in identities)
             continue
-        # Namespace object materials so independent calls cannot overwrite each other.
-        mapping = {m.id: f"detail_{index}_{i}" for i, m in enumerate(detail.materials)}
-        for material in detail.materials:
-            materials[mapping[material.id]] = material.model_copy(update={"id": mapping[material.id]})
-        parts = [p.model_copy(update={"material_id": mapping[p.material_id]}) for p in detail.entity.parts]
-        enhanced[entity.id] = detail.entity.model_copy(update={"material_id": mapping[detail.entity.material_id], "parts": parts})
-        photos = {p["frame_id"]: p for p in local_evidence["selected_photos"]}
-        exclusions = []
-        for exclusion in detail.photo_exclusions:
-            photo = photos[exclusion.frame_id]
-            left, top, right, bottom = photo["crop_pixels_left_top_right_bottom"]
-            width, height = photo["original_image_size"]
-            polygons = [[[(left+p.u*(right-left))/width, (top+p.v*(bottom-top))/height] for p in polygon]
-                        for polygon in exclusion.polygons]
-            exclusions.append({"frame_id": exclusion.frame_id, "polygons": polygons})
-        statuses.append({"entity_id": entity.id, "detail": "detailed", "photo_count": len(crops),
-                         "photo_frame_ids": list(photos), "photo_exclusions": exclusions})
+        for offset, (entity, local_evidence, crops) in enumerate(prepared):
+            if entity.id not in returned:
+                statuses.append({"entity_id": entity.id, "detail": "coarse", "reason": "missing_from_batch"})
+                continue
+            # Validate each object separately so a bad item cannot discard valid siblings.
+            single = {"status": "completed", "output": [{"type": "message", "content": [
+                {"type": "output_text", "text": json.dumps(returned[entity.id])}]}]}
+            try:
+                detail = parse_detail(single, entity, local_evidence, o3d)
+            except ValueError as exc:
+                statuses.append({"entity_id": entity.id, "detail": "coarse", "reason": str(exc)[:200]})
+                continue
+            mapping = {m.id: f"detail_{start+offset}_{i}" for i, m in enumerate(detail.materials)}
+            for material in detail.materials:
+                materials[mapping[material.id]] = material.model_copy(update={"id": mapping[material.id]})
+            parts = [p.model_copy(update={"material_id": mapping[p.material_id]}) for p in detail.entity.parts]
+            enhanced[entity.id] = detail.entity.model_copy(update={"material_id": mapping[detail.entity.material_id], "parts": parts})
+            photos = {p["frame_id"]: p for p in local_evidence["selected_photos"]}
+            exclusions = []
+            for exclusion in detail.photo_exclusions:
+                photo = photos[exclusion.frame_id]
+                left, top, right, bottom = photo["crop_pixels_left_top_right_bottom"]
+                width, height = photo["original_image_size"]
+                polygons = [[[(left+p.u*(right-left))/width, (top+p.v*(bottom-top))/height] for p in polygon]
+                            for polygon in exclusion.polygons]
+                exclusions.append({"frame_id": exclusion.frame_id, "polygons": polygons})
+            statuses.append({"entity_id": entity.id, "detail": "detailed", "photo_count": len(crops),
+                             "photo_frame_ids": list(photos), "photo_exclusions": exclusions})
     result = inventory.model_copy(update={"entities": [enhanced[e.id] for e in inventory.entities], "materials": list(materials.values())})
-    report = {"budget": ledger.report(), "objects": statuses, "response_reused": reused_all}
-    atomic_json(working/"astra-v3"/"detail-report.json", report)
+    report = {"budget": ledger.report(), "objects": statuses, "response_reused": reused_all, "batch_size": BATCH_SIZE, "batch_count": batch_count,
+              "geometry_profile": "recognizable_photo_textured"}
+    atomic_json(working/"sol-v1"/"detail-report.json", report)
     return result, report

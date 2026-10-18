@@ -47,7 +47,7 @@ struct ReconstructionResult: Codable, Sendable {
     var sceneFilename: String? = nil
     var sceneSchemaVersion: Int? = nil
 
-    var isAstraGenerated: Bool { generationModel == "gpt-6-astra" }
+    var isAIGenerated: Bool { ["gpt-6-astra", "gpt-6-sol"].contains(generationModel ?? "") }
     var isWalkthrough: Bool { status == "succeeded" && sceneSchemaVersion == 2 && sceneFilename != nil }
 
     func validate() throws {
@@ -78,18 +78,21 @@ struct ReconstructionJob: Codable, Sendable {
 
     var isRunning: Bool { ["queued", "running"].contains(state) }
     var canRetry: Bool {
-        ["failed", "partially_processed"].contains(state) || (state == "succeeded" && result?.isAstraGenerated != true && result?.isWalkthrough != true)
+        ["failed", "partially_processed"].contains(state) || (state == "succeeded" && result?.isAIGenerated != true && result?.isWalkthrough != true)
     }
     var hasFinalWalkthrough: Bool { state == "succeeded" && result?.isWalkthrough == true && result?.revision == revision }
 
     var stageDescription: String {
         switch stage {
         case "astra_selecting_evidence": return "Selecting scan photos…"
-        case "astra_generating_scene": return "Astra is generating your room…"
+        case "astra_generating_scene": return "AI is generating your room…"
         case "astra_inventory": return "Identifying room contents…"
         case "astra_baking_photos": return "Applying captured photo textures…"
         case "astra_validating_geometry": return "Building and checking the AI model…"
         default:
+            if stage.hasPrefix("astra_batch:") {
+                return "Building objects · " + stage.replacingOccurrences(of:"astra_batch:",with:"")
+            }
             if stage.hasPrefix("astra_detail:") {
                 return "Adding object detail · " + stage.replacingOccurrences(of:"astra_detail:",with:"")
             }

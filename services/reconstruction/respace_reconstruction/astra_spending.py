@@ -15,6 +15,15 @@ from . import astra
 from .store import atomic_json
 
 CEILING_UNITS = 10_000_000  # USD millionths; user-authorized $10/capture.
+# Standard USD per million tokens: ordinary input, cache hit, cache write, output.
+# Keep historical Astra rates for receipts/reservations created before migration.
+RATES = {"gpt-6-astra": (10., 1., 12.5, 50.), "gpt-6-sol": (2., .2, 2.5, 10.)}
+
+
+def rates(model):
+    if model not in RATES:
+        raise RuntimeError("No verified billing rates for the requested model; no generation was started")
+    return RATES[model]
 
 
 class BudgetExhausted(RuntimeError):
@@ -37,7 +46,7 @@ def count_input_tokens(body, key):
     return value
 
 
-def actual_units(response):
+def actual_units(response, model="gpt-6-astra"):
     usage = response.get("usage") or {}
     inputs, outputs = usage.get("input_tokens"), usage.get("output_tokens")
     details = usage.get("input_tokens_details") or {}
@@ -47,9 +56,10 @@ def actual_units(response):
         raise RuntimeError("Missing or invalid Astra billing usage; reservation retained")
     if response.get("service_tier", "default") not in (None, "default"):
         raise RuntimeError("Unexpected Astra processing tier; reservation retained")
+    ordinary, cache, write, output = rates(model)
     multiplier = 2 if inputs > 272000 else 1
-    return math.ceil(((inputs-cached-writes)*10+cached+writes*12.5)*multiplier
-                     + outputs*(75 if multiplier == 2 else 50))
+    return math.ceil(((inputs-cached-writes)*ordinary+cached*cache+writes*write)*multiplier
+                     + outputs*output*(1.5 if multiplier == 2 else 1))
 
 
 class Spending:
@@ -57,7 +67,7 @@ class Spending:
         self.path = path
         self.data = json.loads(path.read_text()) if path.exists() else {
             "ceiling_units": CEILING_UNITS, "currency": "USD", "units_per_dollar": 1000000,
-            "rate_basis": "2026-10-17 Astra Standard: input 10/cache 1/write 12.5/output 50 per million; long-context uplift",
+            "rate_basis": "2026-10-18 Standard USD per million: Sol input 2/cache .2/write 2.5/output 10; historical Astra 10/1/12.5/50; long-context uplift",
             "entries": {}}
         if self.data["ceiling_units"] != CEILING_UNITS:
             raise RuntimeError("The retained Astra budget policy differs; review it before continuing")
@@ -70,6 +80,8 @@ class Spending:
         atomic_json(self.path, self.data)
 
     def request(self, body, directory, label):
+        model = body["model"]
+        _, _, write_rate, output_rate = rates(model)
         directory.mkdir(parents=True, exist_ok=True)
         fingerprint = hashlib.sha256(json.dumps(body, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
         checkpoint = directory/"response.json"
@@ -94,10 +106,11 @@ class Spending:
         # ceiling too. Reasoning is already part of max_output_tokens.
         input_ceiling = math.ceil(inputs*1.01)+256
         long = input_ceiling > 272000
-        reserved = math.ceil(input_ceiling*(25 if long else 12.5)+body["max_output_tokens"]*(75 if long else 50))
+        reserved = math.ceil(input_ceiling*write_rate*(2 if long else 1)
+                             +body["max_output_tokens"]*output_rate*(1.5 if long else 1))
         if self.allocated+reserved > CEILING_UNITS:
             raise BudgetExhausted("The $10 room API budget cannot cover another detailed object; completed objects are retained")
-        self.data["entries"][fingerprint] = {"label": label, "state": "reserved", "reserved_units": reserved,
+        self.data["entries"][fingerprint] = {"label": label, "model": model, "state": "reserved", "reserved_units": reserved,
                                             "input_token_ceiling": input_ceiling, "max_output_tokens": body["max_output_tokens"]}
         self.save()  # Must commit before the potentially billable network action.
         response = astra.call_astra(body, key)
@@ -106,8 +119,9 @@ class Spending:
         return response, False
 
     def settle(self, fingerprint, response):
-        units = actual_units(response)
         entry = self.data["entries"][fingerprint]
+        # Entries from the old version have no model and were all Astra calls.
+        units = actual_units(response, entry.get("model", "gpt-6-astra"))
         usage = response["usage"]
         if usage["input_tokens"] > entry["input_token_ceiling"] or usage["output_tokens"] > entry["max_output_tokens"]:
             raise RuntimeError("Astra usage exceeded its counted token bounds; stop and review provider usage")

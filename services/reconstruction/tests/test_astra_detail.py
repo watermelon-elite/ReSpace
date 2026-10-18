@@ -22,17 +22,18 @@ def reply(data, inputs=1000, outputs=1000):
 
 def detailed_reply():
     entity = copy.deepcopy(room_plan()["entities"][0])
+    entity["evidence_frame_ids"] = ["frame-1"]
     entity["parts"][0]["material_id"] = "wood"
     entity["parts"][1]["material_id"] = "cloth"
-    # Exercise the >12-part detail path, beyond the old coarse-scene schema.
-    for i in range(14):
+    # Exercise shaped parts and material slots within the recognition profile.
+    for i in range(6):
         part = copy.deepcopy(entity["parts"][0])
         part["center"] = {"x": -.3+i*.04, "y": .2, "z": -.5}
         part["size"] = {"x": .02, "y": .2, "z": .02}
         entity["parts"].append(part)
-    return reply({"entity": entity, "photo_exclusions": [], "materials": [
+    return reply({"objects": [{"entity": entity, "photo_exclusions": [], "materials": [
         {"id": "wood", "color": {"r": .4, "g": .3, "b": .2}, "roughness": .45, "metallic": 0.},
-        {"id": "cloth", "color": {"r": .8, "g": .15, "b": .1}, "roughness": .9, "metallic": 0.}]})
+        {"id": "cloth", "color": {"r": .8, "g": .15, "b": .1}, "roughness": .9, "metallic": 0.}]}]})
 
 
 def configure(monkeypatch):
@@ -40,7 +41,7 @@ def configure(monkeypatch):
     monkeypatch.setattr(astra_spending, "count_input_tokens", lambda *args: 1000)
 
 
-def test_staged_default_generates_objects_independently_with_photos_materials_and_receipts(tmp_path, monkeypatch):
+def test_staged_default_generates_sol_batch_with_photos_materials_and_receipts(tmp_path, monkeypatch):
     room_capture(tmp_path)
     configure(monkeypatch)
     calls = []
@@ -55,14 +56,14 @@ def test_staged_default_generates_objects_independently_with_photos_materials_an
     quality = json.loads((output/"quality.json").read_text())
     assert len(calls) == 2
     assert "INVENTORY stage" in calls[0]["instructions"]
-    assert calls[1]["text"]["format"]["name"] == "respace_detailed_object"
-    context = json.loads(calls[1]["input"][0]["content"][0]["text"])
+    assert calls[1]["text"]["format"]["name"] == "respace_object_batch"
+    context = json.loads(calls[1]["input"][0]["content"][0]["text"])["objects"][0]
     assert "observed_mesh_region" in context and "crop_pixels_left_top_right_bottom" in context["selected_photos"][0]
     assert quality["budget"]["ceiling_usd"] == 10.
-    assert quality["budget"]["known_cost_usd"] == .12
+    assert quality["budget"]["known_cost_usd"] == .024
     assert quality["objects"][0]["detail"] == "detailed"
     saved = json.loads((output/"astra-furnishings.json").read_text())
-    assert len(saved["entities"][0]["parts"]) == 16
+    assert len(saved["entities"][0]["parts"]) == 8
     assert "material_id" in saved["entities"][0]["parts"][0]
     assert any("metallic" in material for material in saved["materials"])
     chair = next(e for e in bundle.entities if e.id == "chair")
@@ -73,19 +74,19 @@ def test_staged_default_generates_objects_independently_with_photos_materials_an
     assert "vt " in (output/"entity_chair.obj").read_text()
     for asset in result["assets"]:
         assert digest(output/asset["filename"]) == asset["sha256"]
-    assert (tmp_path/"work/astra-v3/inventory/response.json").exists()
-    assert (tmp_path/"work/astra-v3/chair/response.json").exists()
+    assert (tmp_path/"work/sol-v1/inventory/response.json").exists()
+    assert len(list((tmp_path/"work/sol-v1/batches").glob("*/response.json"))) == 1
     # A new result revision reuses paid checkpoints and the durable ledger.
     assert astra_room.process_astra_room(tmp_path, 2)["status"] == "succeeded"
     assert len(calls) == 2
     repeated = json.loads((tmp_path/"results/2/quality.json").read_text())
-    assert repeated["response_reused"] and repeated["budget"]["known_cost_usd"] == .12
+    assert repeated["response_reused"] and repeated["budget"]["known_cost_usd"] == .024
 
 
 def test_budget_limit_keeps_complete_coarse_object_instead_of_dropping_furniture(tmp_path, monkeypatch):
     room_capture(tmp_path)
     configure(monkeypatch)
-    counts = iter([1000, 1000000])
+    counts = iter([1000, 3000000])
     monkeypatch.setattr(astra_spending, "count_input_tokens", lambda *args: next(counts))
     calls = []
     monkeypatch.setattr(astra, "call_astra", lambda *args: calls.append(1) or reply(room_plan()))
@@ -102,7 +103,8 @@ def test_failed_object_does_not_discard_other_paid_work_or_repeat_it(tmp_path, m
     room_capture(tmp_path)
     configure(monkeypatch)
     response = detailed_reply()
-    data = json.loads(response["output"][0]["content"][0]["text"])
+    batch_data = json.loads(response["output"][0]["content"][0]["text"])
+    data = batch_data["objects"][0]
     if fault == "incomplete":
         response["status"] = "incomplete"
     else:
@@ -116,7 +118,7 @@ def test_failed_object_does_not_discard_other_paid_work_or_repeat_it(tmp_path, m
                 "size": {"x": 1., "y": 1., "z": 1.}, "yaw": 0.,
                 "vertices": [{"x": 0., "y": 0., "z": 0.}]*3,
                 "triangles": [{"a": 0, "b": 1, "c": 2}]}
-        response["output"][0]["content"][0]["text"] = json.dumps(data)
+        response["output"][0]["content"][0]["text"] = json.dumps(batch_data)
     calls = []
     monkeypatch.setattr(astra, "call_astra", lambda *args: calls.append(1) or (reply(room_plan()) if len(calls) == 1 else response))
     assert astra_room.process_astra_room(tmp_path, 1)["status"] == "succeeded"
@@ -141,35 +143,54 @@ def test_unknown_billing_stops_room_and_survives_a_processing_retry(tmp_path, mo
         astra_room.process_astra_room(tmp_path, 2)
     assert len(calls) == 2
     ledger = Spending(tmp_path/"work/astra-budget-v3.json")
-    assert ledger.allocated > 60000
+    assert ledger.allocated > 12000
     assert not (tmp_path/"results/1").exists()
 
 
-def test_completed_object_checkpoint_survives_an_interruption_on_another_item(tmp_path, monkeypatch):
+def inventory_with_objects(count):
+    inventory = room_plan()
+    original = inventory["entities"][0]
+    inventory["entities"] = []
+    for index in range(count):
+        entity = copy.deepcopy(original)
+        entity["id"] = f"chair-{index}"
+        entity["position"]["x"] = -.9+(index % 3)*.9
+        entity["position"]["z"] = -.6+(index // 3)*.9
+        for part in entity["parts"]:
+            for axis in ("x", "y", "z"):
+                part["center"][axis] *= .45
+                part["size"][axis] *= .45
+        inventory["entities"].append(entity)
+    return inventory
+
+
+def batch_for_request(body):
+    contexts = json.loads(body["input"][0]["content"][0]["text"])["objects"]
+    objects = []
+    for context in contexts:
+        entity = copy.deepcopy(context["entity"])
+        entity["evidence_frame_ids"] = [context["selected_photos"][0]["frame_id"]]
+        for part in entity["parts"]:
+            part["material_id"] = entity["material_id"]
+        objects.append({"entity": entity, "materials": [dict(context["materials"][0], metallic=0.)],
+                        "photo_exclusions": []})
+    return reply({"objects": objects})
+
+
+def test_completed_batch_checkpoint_survives_interruption_on_later_batch(tmp_path, monkeypatch):
     room_capture(tmp_path)
     configure(monkeypatch)
-    inventory = room_plan()
-    first = inventory["entities"][0]
-    first["position"]["x"] = -.6
-    second = copy.deepcopy(first)
-    second["id"] = "chair-second"; second["position"]["x"] = .8
-    inventory["entities"].append(second)
+    inventory = inventory_with_objects(5)
     calls = []
     def generate(body, key):
         calls.append(body)
         if len(calls) == 1: return reply(inventory)
-        if len(calls) > 2: raise RuntimeError("interrupted on second object")
-        context = json.loads(body["input"][0]["content"][0]["text"])
-        response = detailed_reply()
-        data = json.loads(response["output"][0]["content"][0]["text"])
-        for field in ("id", "position", "yaw", "kind", "category", "support_id"):
-            data["entity"][field] = context["entity"][field]
-        response["output"][0]["content"][0]["text"] = json.dumps(data)
-        return response
+        if len(calls) > 2: raise RuntimeError("interrupted on second batch")
+        return batch_for_request(body)
     monkeypatch.setattr(astra, "call_astra", generate)
     with pytest.raises(RuntimeError, match="interrupted"):
         astra_room.process_astra_room(tmp_path, 1)
-    assert len(list((tmp_path/"work/astra-v3").glob('chair*/response.json'))) == 1
+    assert len(list((tmp_path/"work/sol-v1/batches").glob("*/response.json"))) == 1
     with pytest.raises(RuntimeError, match="unknown billing"):
         astra_room.process_astra_room(tmp_path, 2)
     assert len(calls) == 3
@@ -226,10 +247,11 @@ def test_photo_exclusions_prevent_clutter_baking_without_removing_geometry(tmp_p
     room_capture(tmp_path)
     configure(monkeypatch)
     response = detailed_reply()
-    data = json.loads(response["output"][0]["content"][0]["text"])
+    batch_data = json.loads(response["output"][0]["content"][0]["text"])
+    data = batch_data["objects"][0]
     data["photo_exclusions"] = [{"frame_id": "frame-"+str(i), "polygons": [[
-        {"u": 0., "v": 0.}, {"u": 1., "v": 0.}, {"u": 1., "v": 1.}, {"u": 0., "v": 1.}]]} for i in range(5)]
-    response["output"][0]["content"][0]["text"] = json.dumps(data)
+        {"u": 0., "v": 0.}, {"u": 1., "v": 0.}, {"u": 1., "v": 1.}, {"u": 0., "v": 1.}]]} for i in (1, 2, 3)]
+    response["output"][0]["content"][0]["text"] = json.dumps(batch_data)
     calls = []
     monkeypatch.setattr(astra, "call_astra", lambda *args: calls.append(1) or (reply(room_plan()) if len(calls) == 1 else response))
     assert astra_room.process_astra_room(tmp_path, 1)["status"] == "succeeded"
@@ -237,3 +259,113 @@ def test_photo_exclusions_prevent_clutter_baking_without_removing_geometry(tmp_p
     assert report["objects"][0]["detail"] == "detailed"
     assert report["photo_textures"][0]["photo_surface_fraction"] == 0
     assert "map_Kd" not in (tmp_path/"results/1/entity_chair.mtl").read_text()
+
+
+@pytest.mark.parametrize("count", [4, 5, 8])
+def test_multiple_objects_share_calls_and_keep_separate_identity_materials_and_crops(tmp_path, monkeypatch, count):
+    room_capture(tmp_path)
+    configure(monkeypatch)
+    inventory = inventory_with_objects(count)
+    calls = []
+    def generate(body, key):
+        calls.append(body)
+        if len(calls) == 1:
+            return reply(inventory)
+        assert body["model"] == "gpt-6-sol" and body["reasoning"]["effort"] == "low"
+        context = json.loads(body["input"][0]["content"][0]["text"])["objects"]
+        assert 1 <= len(context) <= 4
+        assert all(1 <= len(item["selected_photos"]) <= 3 for item in context)
+        assert all(max(photo["supplied_image_size"]) <= 1024 for item in context for photo in item["selected_photos"])
+        response = batch_for_request(body)
+        data = json.loads(response["output"][0]["content"][0]["text"])
+        data["objects"].reverse()  # IDs, rather than array order, bind results.
+        response["output"][0]["content"][0]["text"] = json.dumps(data)
+        return response
+    monkeypatch.setattr(astra, "call_astra", generate)
+    assert astra_room.process_astra_room(tmp_path, 1)["status"] == "succeeded"
+    quality = json.loads((tmp_path/"results/1/quality.json").read_text())
+    saved = json.loads((tmp_path/"results/1/astra-furnishings.json").read_text())
+    assert len(calls) == 1+(count+3)//4
+    assert quality["batch_count"] == (count+3)//4 and quality["batch_size"] == 4
+    assert all(item["detail"] == "detailed" for item in quality["objects"])
+    assert {e["id"]: e["position"] for e in saved["entities"]} == {e["id"]: e["position"] for e in inventory["entities"]}
+    assert len({e["material_id"] for e in saved["entities"]}) == count
+    assert astra_room.process_astra_room(tmp_path, 2)["status"] == "succeeded"
+    assert len(calls) == 1+(count+3)//4
+
+
+@pytest.mark.parametrize("fault", ["invalid_material", "missing_item"])
+def test_one_bad_batch_item_keeps_valid_siblings(tmp_path, monkeypatch, fault):
+    room_capture(tmp_path)
+    configure(monkeypatch)
+    inventory = inventory_with_objects(3)
+    calls = []
+    bad_id = []
+    def generate(body, key):
+        calls.append(body)
+        if len(calls) == 1:
+            return reply(inventory)
+        response = batch_for_request(body)
+        data = json.loads(response["output"][0]["content"][0]["text"])
+        bad_id.append(data["objects"][0]["entity"]["id"])
+        if fault == "missing_item":
+            data["objects"].pop(0)
+        else:
+            data["objects"][0]["entity"]["parts"][0]["material_id"] = "missing"
+        response["output"][0]["content"][0]["text"] = json.dumps(data)
+        return response
+    monkeypatch.setattr(astra, "call_astra", generate)
+    assert astra_room.process_astra_room(tmp_path, 1)["status"] == "succeeded"
+    quality = json.loads((tmp_path/"results/1/quality.json").read_text())
+    status = {o["entity_id"]: o["detail"] for o in quality["objects"]}
+    assert status.pop(bad_id[0]) == "coarse" and set(status.values()) == {"detailed"}
+    assert astra_room.process_astra_room(tmp_path, 2)["status"] == "succeeded" and len(calls) == 2
+
+
+def test_budget_exhaustion_stops_preparing_further_batches(tmp_path, monkeypatch):
+    room_capture(tmp_path)
+    configure(monkeypatch)
+    inventory = inventory_with_objects(5)
+    counts = iter([1000, 3000000])
+    monkeypatch.setattr(astra_spending, "count_input_tokens", lambda *args: next(counts))
+    calls, prepared = [], []
+    original = astra_detail.object_evidence
+    def prepare(entity, *args):
+        prepared.append(entity.id)
+        return original(entity, *args)
+    monkeypatch.setattr(astra_detail, "object_evidence", prepare)
+    monkeypatch.setattr(astra, "call_astra", lambda *args: calls.append(1) or reply(inventory))
+    assert astra_room.process_astra_room(tmp_path, 1)["status"] == "succeeded"
+    quality = json.loads((tmp_path/"results/1/quality.json").read_text())
+    assert len(calls) == 1 and len(prepared) == 4
+    assert len(quality["objects"]) == 5
+    assert all(o["reason"] == "budget_limit" for o in quality["objects"])
+
+
+def test_sol_spending_preserves_old_astra_receipts_and_reserves_at_sol_rates(tmp_path, monkeypatch):
+    configure(monkeypatch)
+    ledger = Spending(tmp_path/"budget.json")
+    monkeypatch.setattr(astra, "call_astra", lambda *args: reply({}))
+    ledger.request(body(), tmp_path/"old-call", "Old Astra")
+    entry = next(iter(ledger.data["entries"].values()))
+    entry.pop("model")  # Simulate a pre-migration receipt.
+    ledger.save()
+    ledger = Spending(tmp_path/"budget.json")
+    ledger.request(body(), tmp_path/"old-call", "Old Astra")
+    sol = dict(body(), model="gpt-6-sol")
+    def generate(*args):
+        retained = json.loads((tmp_path/"budget.json").read_text())
+        latest = next(entry for entry in retained["entries"].values() if entry.get("model") == "gpt-6-sol")
+        assert latest["reserved_units"] == (1010+256)*2.5+24000*10
+        return reply({})
+    monkeypatch.setattr(astra, "call_astra", generate)
+    ledger.request(sol, tmp_path/"sol-call", "Sol")
+    assert ledger.report()["known_cost_usd"] == .072
+    assert ledger.report()["paid_call_count"] == 2
+
+
+@pytest.mark.parametrize("model,expected", [("gpt-6-astra", 7532000), ("gpt-6-sol", 1506400)])
+def test_model_specific_long_context_cache_and_output_rates(model, expected):
+    response = reply({}, inputs=300000, outputs=20000)
+    response["usage"]["input_tokens_details"] = {"cached_tokens": 1000, "cache_write_tokens": 10000}
+    assert astra_spending.actual_units(response, model) == expected
