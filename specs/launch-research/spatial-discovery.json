@@ -1,0 +1,1184 @@
+{
+  "research_date": "2026-10-17",
+  "timezone": "America/Los_Angeles",
+  "scope": "Spatial/home/furniture/consumer-design discovery subset",
+  "footage_analysis_complete": false,
+  "count": 52,
+  "shortlist": [
+    "S016",
+    "S041",
+    "S003",
+    "S007",
+    "S005",
+    "S001",
+    "S043",
+    "S023",
+    "S032",
+    "S020"
+  ],
+  "candidates": [
+    {
+      "id": "S001",
+      "title": "Say Hej to IKEA Place",
+      "brand": "IKEA",
+      "url": "https://www.youtube.com/watch?v=UudV1VdFtuQ",
+      "group": "Direct spatial product",
+      "platform": "YouTube",
+      "publisher": "IKEA (official)",
+      "evidence": "Indexed official YouTube metadata; direct page gave consent shell",
+      "relevance": "Closest launch reference for turning room scanning and true-to-scale furniture placement into a consumer promise.",
+      "metrics": {
+        "views": 1121523,
+        "published": "2017-09-12",
+        "kind": "Search-index snapshot, observed 2026-10-17; not live verified"
+      },
+      "sources": [
+        "https://www.youtube.com/watch?v=UudV1VdFtuQ"
+      ],
+      "source_url": "https://www.youtube.com/watch?v=UudV1VdFtuQ",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": 6,
+      "shortlist_reason": "Essential category benchmark and an original AR furniture app launch. Use it to set the minimum clarity needed when the video transitions from worldview to actual functionality."
+    },
+    {
+      "id": "S002",
+      "title": "Designing, now easier than imagining | IKEA Kreativ",
+      "brand": "IKEA",
+      "url": "https://www.youtube.com/watch?v=rTugX0knWVA",
+      "group": "Direct spatial product",
+      "platform": "YouTube",
+      "publisher": "IKEA India (verified)",
+      "evidence": "Indexed official YouTube metadata; direct fetch failed",
+      "relevance": "Direct scan-edit-design product analogue with a concise transformation proposition.",
+      "metrics": {
+        "views": 3027383,
+        "likes": 31,
+        "published": "2024-09-03",
+        "kind": "Search-index snapshot, observed 2026-10-17; paid/organic unknown"
+      },
+      "sources": [
+        "https://www.youtube.com/watch?v=rTugX0knWVA"
+      ],
+      "source_url": "https://www.youtube.com/watch?v=rTugX0knWVA",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S003",
+      "title": "IKEA Kreativ - Home Office",
+      "brand": "IKEA",
+      "url": "https://vimeo.com/926031195",
+      "group": "Direct spatial product",
+      "platform": "Vimeo",
+      "publisher": "The Heist (production company)",
+      "evidence": "Creator video page opened; production case page corroborates",
+      "relevance": "Most direct professional production reference for scanning an existing room, removing furniture and redesigning it.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/926031195",
+        "https://www.theheist.com/work/ikea-kreativ"
+      ],
+      "source_url": "https://vimeo.com/926031195",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": 3,
+      "shortlist_reason": "Closest workflow match to ReSpace: existing room, scan, virtual clearing, redesign. A production-company case confirms a composed live-action/motion treatment rather than leaving only an app-demo reference."
+    },
+    {
+      "id": "S004",
+      "title": "IKEA - Experience the power of a bookbook™",
+      "brand": "IKEA",
+      "url": "https://vimeo.com/287592749",
+      "group": "Home personality / conceptual advertising",
+      "platform": "Vimeo",
+      "publisher": "Lindy Chong (credited editor)",
+      "evidence": "Creator video page opened; credits and year confirmed",
+      "relevance": "Useful counterpoint for making an ordinary home product feel launch-worthy through a strong comic premise.",
+      "metrics": {
+        "year": 2014,
+        "kind": "Creator page"
+      },
+      "sources": [
+        "https://vimeo.com/287592749",
+        "https://mauricewee.com/ikea-bookbook"
+      ],
+      "source_url": "https://vimeo.com/287592749",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S005",
+      "title": "IKEA - Ghosts",
+      "brand": "IKEA",
+      "url": "https://vimeo.com/265153539",
+      "group": "Home personality / conceptual advertising",
+      "platform": "Vimeo",
+      "publisher": "Matt Leach (portfolio; exact role not established)",
+      "evidence": "Indexed video title; open returned page shell; secondary synopsis",
+      "relevance": "Exceptionally close theme: fear of decorating boldly and making a room reflect its owner's personality.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/265153539",
+        "https://www.popisms.com/TelevisionCommercial/203147/Ikea-Commercial-Ghosts-TV-Advert-60-WonderfulEveryday-2018"
+      ],
+      "source_url": "https://vimeo.com/265153539",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": 5,
+      "shortlist_reason": "Directly addresses choosing a room that reflects personality and fear of standing out. Excellent hypothesis for a relatable opening; the detailed premise is currently supported by archived campaign copy."
+    },
+    {
+      "id": "S006",
+      "title": "Ikea - Beds",
+      "brand": "IKEA",
+      "url": "https://vimeo.com/100492442",
+      "group": "Home personality / conceptual advertising",
+      "platform": "Vimeo",
+      "publisher": "750mph (credited sound studio)",
+      "evidence": "Creator video page opened; credits confirmed",
+      "relevance": "A candidate for an emotional, imaginative depiction of the feeling of home; investigate whether its slower tone suits the launch.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/100492442",
+        "https://vimeo.com/100702913"
+      ],
+      "source_url": "https://vimeo.com/100492442",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S007",
+      "title": "IKEA Make Room for Life 2018",
+      "brand": "IKEA",
+      "url": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+      "group": "Home personality / conceptual advertising",
+      "platform": "YouTube",
+      "publisher": "IKEA (official)",
+      "evidence": "Indexed official YouTube metadata and synopsis",
+      "relevance": "Strong big-picture wording about a living room accommodating needs, dreams and the contradictions of everyday life.",
+      "metrics": {
+        "views": 147874,
+        "published": "2017-08-27",
+        "kind": "Search-index snapshot, observed 2026-10-17"
+      },
+      "sources": [
+        "https://www.youtube.com/watch?v=SSKtiEA8qMw"
+      ],
+      "source_url": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": 4,
+      "shortlist_reason": "Best explicit big-picture source language about rooms carrying needs, dreams and daily life. Study how the abstract premise becomes particular activities and products."
+    },
+    {
+      "id": "S008",
+      "title": "IKEA - Home Is A Different World",
+      "brand": "IKEA",
+      "url": "https://vimeo.com/501343491",
+      "group": "Home personality / conceptual advertising",
+      "platform": "Vimeo",
+      "publisher": "fong (portfolio; credits identify Atypical Films)",
+      "evidence": "Video page opened with production credits; secondary script source",
+      "relevance": "Useful manifesto reference for connecting external pressures to the personal emotional refuge of home.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/501343491",
+        "https://www.manifestowriting.com/database/ikea-home-is-a-different-world/"
+      ],
+      "source_url": "https://vimeo.com/501343491",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S009",
+      "title": "IKEA - Lion Man",
+      "brand": "IKEA",
+      "url": "https://vimeo.com/225467150",
+      "group": "Home personality / conceptual advertising",
+      "platform": "Vimeo",
+      "publisher": "Chris Barrett & Luke Taylor (directors Us)",
+      "evidence": "Indexed creator video page with full credits",
+      "relevance": "Candidate for translating familiar home behavior into an entertaining visual character instead of a furniture sales pitch.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/225467150"
+      ],
+      "source_url": "https://vimeo.com/225467150",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S010",
+      "title": "City of Books",
+      "brand": "IKEA",
+      "url": "https://www.maxpilwat.com/ikea-brand-work",
+      "group": "Fast spatial transformations",
+      "platform": "Web video / portfolio",
+      "publisher": "Max Pilwat (creative director)",
+      "evidence": "Creator page opened; separately titled film; 15-second campaign format stated",
+      "relevance": "Storage and objects-as-personality reference for a compressed social transformation.",
+      "metrics": {
+        "duration_seconds": 15,
+        "year_range": "2022–2023",
+        "kind": "Creator campaign description; individual film not timed"
+      },
+      "sources": [
+        "https://www.maxpilwat.com/ikea-brand-work"
+      ],
+      "source_url": "https://www.maxpilwat.com/ikea-brand-work",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S011",
+      "title": "Textile Falls",
+      "brand": "IKEA",
+      "url": "https://www.maxpilwat.com/ikea-brand-work",
+      "group": "Fast spatial transformations",
+      "platform": "Web video / portfolio",
+      "publisher": "Max Pilwat (creative director)",
+      "evidence": "Creator page opened; separately titled film; 15-second campaign format stated",
+      "relevance": "Companion candidate for showing personal belongings and a design solution quickly.",
+      "metrics": {
+        "duration_seconds": 15,
+        "year_range": "2022–2023",
+        "kind": "Creator campaign description; individual film not timed"
+      },
+      "sources": [
+        "https://www.maxpilwat.com/ikea-brand-work"
+      ],
+      "source_url": "https://www.maxpilwat.com/ikea-brand-work",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S012",
+      "title": "Balcony",
+      "brand": "IKEA",
+      "url": "https://www.maxpilwat.com/ikea-brand-work",
+      "group": "Fast spatial transformations",
+      "platform": "Web video / portfolio",
+      "publisher": "Max Pilwat (creative director)",
+      "evidence": "Creator page opened; film-specific description and GIFs listed",
+      "relevance": "Creator describes a neglected balcony becoming a green work-from-home oasis, useful for ReSpace's emotional before/after payoff.",
+      "metrics": {
+        "year": 2021,
+        "kind": "Creator campaign page"
+      },
+      "sources": [
+        "https://www.maxpilwat.com/ikea-brand-work"
+      ],
+      "source_url": "https://www.maxpilwat.com/ikea-brand-work",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S013",
+      "title": "Second Life",
+      "brand": "IKEA",
+      "url": "https://www.maxpilwat.com/ikea-brand-work",
+      "group": "Fast spatial transformations",
+      "platform": "Web video / portfolio",
+      "publisher": "Max Pilwat (creative director)",
+      "evidence": "Creator page opened; separately titled film and synopsis",
+      "relevance": "Home-growing and circular-living story broadens inspiration beyond buying new furniture.",
+      "metrics": {
+        "year": 2021,
+        "kind": "Creator campaign page"
+      },
+      "sources": [
+        "https://www.maxpilwat.com/ikea-brand-work"
+      ],
+      "source_url": "https://www.maxpilwat.com/ikea-brand-work",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S014",
+      "title": "Forgotten Fridge",
+      "brand": "IKEA",
+      "url": "https://www.maxpilwat.com/ikea-brand-work",
+      "group": "Fast spatial transformations",
+      "platform": "Web video / portfolio",
+      "publisher": "Max Pilwat (creative director)",
+      "evidence": "Creator page opened; separately titled film under One Change, Changes Everything",
+      "relevance": "Candidate for showing that a small spatial intervention can change a familiar daily routine.",
+      "metrics": {
+        "year_range": "2020–2022",
+        "kind": "Creator campaign page"
+      },
+      "sources": [
+        "https://www.maxpilwat.com/ikea-brand-work"
+      ],
+      "source_url": "https://www.maxpilwat.com/ikea-brand-work",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S015",
+      "title": "Inner Seasons",
+      "brand": "IKEA",
+      "url": "https://www.maxpilwat.com/ikea-brand-work",
+      "group": "Fast spatial transformations",
+      "platform": "Web video / portfolio",
+      "publisher": "Max Pilwat (creative director)",
+      "evidence": "Creator page opened; separately titled film under One Change, Changes Everything",
+      "relevance": "Candidate for a room-as-mood metaphor; scene mechanics still need footage review.",
+      "metrics": {
+        "year_range": "2020–2022",
+        "kind": "Creator campaign page"
+      },
+      "sources": [
+        "https://www.maxpilwat.com/ikea-brand-work"
+      ],
+      "source_url": "https://www.maxpilwat.com/ikea-brand-work",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S016",
+      "title": "Disco Treehouse | It’s Possible | Pinterest",
+      "brand": "Pinterest",
+      "url": "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+      "group": "Identity to action",
+      "platform": "YouTube",
+      "publisher": "Pinterest (verified)",
+      "evidence": "Indexed official YouTube metadata; creator case study and first-party employee post",
+      "relevance": "Best thematic fit for reconciling personal taste with a shared room and taking visual inspiration into the real world.",
+      "metrics": {
+        "views": 79905,
+        "likes": 192,
+        "published": "2023-09-25",
+        "kind": "Search-index snapshot, observed 2026-10-17"
+      },
+      "sources": [
+        "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+        "https://www.behance.net/gallery/184282679/Pinterest-Its-Possible-Disco-Treehouse",
+        "https://www.linkedin.com/posts/sean-doyle_disco-treehouse-its-possible-pinterest-activity-7112327221880463360-l2Ul"
+      ],
+      "source_url": "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": 1,
+      "shortlist_reason": "Closest identity-to-home match: a couple combines different tastes into a shared environment. The official description and credited creator case establish the concept; inspect the actual hook and product handoff next."
+    },
+    {
+      "id": "S017",
+      "title": "Pinterest | Procrastination: Don’t Don’t Yourself",
+      "brand": "Pinterest",
+      "url": "https://vimeo.com/745758555",
+      "group": "Identity to action",
+      "platform": "Vimeo",
+      "publisher": "Uncommon Creative Studio (agency)",
+      "evidence": "Creator video page opened",
+      "relevance": "Useful for turning the psychological barrier between saving inspiration and acting on it into a character-driven story.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/745758555"
+      ],
+      "source_url": "https://vimeo.com/745758555",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S018",
+      "title": "Pinterest | Inner Critic: Don’t Don’t Yourself",
+      "brand": "Pinterest",
+      "url": "https://vimeo.com/745757551",
+      "group": "Identity to action",
+      "platform": "Vimeo",
+      "publisher": "Uncommon Creative Studio (agency)",
+      "evidence": "Indexed creator video page",
+      "relevance": "Self-doubt around taste is relevant to a redesign product that helps users express a personality.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/745757551"
+      ],
+      "source_url": "https://vimeo.com/745757551",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S019",
+      "title": "kim gehrig | pinterest - fear of failure",
+      "brand": "Pinterest",
+      "url": "https://vimeo.com/814951524",
+      "group": "Identity to action",
+      "platform": "Vimeo",
+      "publisher": "Lucy Gossage (producer)",
+      "evidence": "Indexed creator video page",
+      "relevance": "Candidate for making the fear of choosing badly an entertaining human problem before revealing a product.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/814951524"
+      ],
+      "source_url": "https://vimeo.com/814951524",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S020",
+      "title": "The Floyd Ethos",
+      "brand": "Floyd",
+      "url": "https://vimeo.com/359619840",
+      "group": "Furniture startup / design philosophy",
+      "platform": "Vimeo",
+      "publisher": "RATHAUS (production company)",
+      "evidence": "Creator video page opened with founders and full credits",
+      "relevance": "Strong startup-specific candidate for grounding a furniture brand in people, place and values.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/359619840",
+        "https://thecreativesroom.com/ref/the-floyd-ethos"
+      ],
+      "source_url": "https://vimeo.com/359619840",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": 10,
+      "shortlist_reason": "A furniture startup manifesto grounded in founders and a real city. Good source for product philosophy and credible professional brand tone."
+    },
+    {
+      "id": "S021",
+      "title": "Tylko [Type03 launch]",
+      "brand": "Tylko",
+      "url": "https://vimeo.com/569299207",
+      "group": "Furniture startup / design philosophy",
+      "platform": "Vimeo",
+      "publisher": "FRAME (production studio)",
+      "evidence": "Creator video page opened; exact display title is Tylko",
+      "relevance": "Creator explains a customized wardrobe film in a CG room, directly useful for showing real furniture adapting to a space.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/569299207"
+      ],
+      "source_url": "https://vimeo.com/569299207",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S022",
+      "title": "Tylko - type 02 in matte black",
+      "brand": "Tylko",
+      "url": "https://vimeo.com/605589322",
+      "group": "Furniture startup / design philosophy",
+      "platform": "Vimeo",
+      "publisher": "Vitaly Grossmann / VVAND (creator)",
+      "evidence": "Indexed creator video page with design explanation",
+      "relevance": "Useful reference for a restrained premium furniture sequence covering fitting, details and construction.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/605589322"
+      ],
+      "source_url": "https://vimeo.com/605589322",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S023",
+      "title": "Tylko – Spaces – Bedroom",
+      "brand": "Tylko",
+      "url": "https://vimeo.com/705647639",
+      "group": "Furniture startup / design philosophy",
+      "platform": "Vimeo",
+      "publisher": "WOUQ (studio)",
+      "evidence": "Indexed creator synopsis; direct page returned shell",
+      "relevance": "Creator explicitly says the focus was the whole personal space rather than a single object.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/705647639",
+        "https://wearewouq.com/work/spaces"
+      ],
+      "source_url": "https://vimeo.com/705647639",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": 8,
+      "shortlist_reason": "The creator states that the brief centers on a whole personal space rather than one furniture object. Good candidate for visually integrating ReSpace's furniture choices into a coherent room."
+    },
+    {
+      "id": "S024",
+      "title": "Vitra - Mariposa Family",
+      "brand": "Vitra",
+      "url": "https://vimeo.com/126497200",
+      "group": "Furniture startup / design philosophy",
+      "platform": "Vimeo",
+      "publisher": "Nexus Studios (production company)",
+      "evidence": "Creator video page opened with specific production description",
+      "relevance": "Creator describes a 360-degree sofa-centered film blending CG furniture with drawn people, useful for showing several lives in one space.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/126497200"
+      ],
+      "source_url": "https://vimeo.com/126497200",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S025",
+      "title": "108 years of Herman Miller in 108 seconds",
+      "brand": "Herman Miller",
+      "url": "https://vimeo.com/70437049",
+      "group": "Furniture startup / design philosophy",
+      "platform": "Vimeo",
+      "publisher": "Part of a Bigger Plan (creator)",
+      "evidence": "Indexed creator video page",
+      "relevance": "A concise history-to-product animation candidate for turning an abstract design philosophy into visual momentum.",
+      "metrics": {
+        "duration_seconds": 108,
+        "kind": "Title and creator description; not timed"
+      },
+      "sources": [
+        "https://vimeo.com/70437049"
+      ],
+      "source_url": "https://vimeo.com/70437049",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S026",
+      "title": "HERMAN MILLER - Chromatography",
+      "brand": "Herman Miller",
+      "url": "https://vimeo.com/208670613",
+      "group": "Furniture startup / design philosophy",
+      "platform": "Vimeo",
+      "publisher": "Juriaan Booij (director)",
+      "evidence": "Indexed creator video page with credits and year",
+      "relevance": "A useful source for language and imagery about color as a design decision rather than mere decoration.",
+      "metrics": {
+        "year": 2017,
+        "kind": "Creator video description"
+      },
+      "sources": [
+        "https://vimeo.com/208670613"
+      ],
+      "source_url": "https://vimeo.com/208670613",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S027",
+      "title": "LIFESTYLE CHAIRS / HERMAN MILLER",
+      "brand": "Herman Miller",
+      "url": "https://vimeo.com/510152518",
+      "group": "Furniture startup / design philosophy",
+      "platform": "Vimeo",
+      "publisher": "Box of Toys Audio (sound studio)",
+      "evidence": "Indexed creator video page with brief",
+      "relevance": "Reference for connecting design engineering to a lived benefit and matching sound to the lifestyle tone.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/510152518"
+      ],
+      "source_url": "https://vimeo.com/510152518",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S028",
+      "title": "MUJI無印良品: Compact Life（Acrylic/ABS storage）",
+      "brand": "MUJI",
+      "url": "https://www.youtube.com/watch?v=-97dwhyzhkE",
+      "group": "Home personality / conceptual advertising",
+      "platform": "YouTube",
+      "publisher": "MUJI 無印良品 (official)",
+      "evidence": "Indexed official YouTube metadata and brand description",
+      "relevance": "Brand premise explicitly ties necessary objects and organization to individual values and personality.",
+      "metrics": {
+        "views": 22468,
+        "likes": 290,
+        "published": "2016-05-05",
+        "kind": "Search-index snapshot, observed 2026-10-17"
+      },
+      "sources": [
+        "https://www.youtube.com/watch?v=-97dwhyzhkE"
+      ],
+      "source_url": "https://www.youtube.com/watch?v=-97dwhyzhkE",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S029",
+      "title": "ECAL x MUJI : Compact Life",
+      "brand": "MUJI / ECAL",
+      "url": "https://vimeo.com/592195628",
+      "group": "Furniture startup / design philosophy",
+      "platform": "Vimeo",
+      "publisher": "ECAL (design school and collaborator)",
+      "evidence": "Indexed primary video page and project page",
+      "relevance": "Candidate for turning observation of everyday needs into inventive household products.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/592195628",
+        "https://ecal.ch/en/feed/projects/4829/ecal-x-muji-compact-life/"
+      ],
+      "source_url": "https://vimeo.com/592195628",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S030",
+      "title": "MUJI | Compact Life HOUSE_G",
+      "brand": "MUJI",
+      "url": "https://vimeo.com/200161797",
+      "group": "Home personality / conceptual advertising",
+      "platform": "Vimeo",
+      "publisher": "Kitamura Yuji (portfolio)",
+      "evidence": "Indexed video title and uploader; no scene synopsis",
+      "relevance": "A domestic campaign candidate to inspect for relating a person's environment to a coherent lifestyle.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/200161797"
+      ],
+      "source_url": "https://vimeo.com/200161797",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S031",
+      "title": "Vitra Home Stories - Barbara Happe & Martin Fischer",
+      "brand": "Vitra",
+      "url": "https://vimeo.com/637448416",
+      "group": "Home personality / conceptual advertising",
+      "platform": "Vimeo",
+      "publisher": "Vitra (official)",
+      "evidence": "Indexed official video title",
+      "relevance": "Person-centered home-story candidate for language about the relationship between people and their surroundings; likely slower than final launch.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/637448416"
+      ],
+      "source_url": "https://vimeo.com/637448416",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S032",
+      "title": "Introducing Icons",
+      "brand": "Airbnb",
+      "url": "https://www.youtube.com/watch?v=Rz2FWiJq4Mw",
+      "group": "Space as an experience",
+      "platform": "YouTube",
+      "publisher": "Airbnb (verified)",
+      "evidence": "Indexed official YouTube metadata; official release corroborates",
+      "relevance": "Launch-film candidate for selling entry into an imagined world and then naming a concrete product category.",
+      "metrics": {
+        "views": 85251,
+        "likes": 741,
+        "published": "2024-05-01",
+        "kind": "Search-index snapshot, observed 2026-10-17"
+      },
+      "sources": [
+        "https://www.youtube.com/watch?v=Rz2FWiJq4Mw",
+        "https://news.airbnb.com/airbnb-2024-summer-release"
+      ],
+      "source_url": "https://www.youtube.com/watch?v=Rz2FWiJq4Mw",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": 9,
+      "shortlist_reason": "A genuine product-category launch that promises access to imagined worlds. Useful for a professional reveal and aspirational scale; avoid assuming its celebrity production translates to startup reach."
+    },
+    {
+      "id": "S033",
+      "title": "Get an Airbnb, and stay together for less",
+      "brand": "Airbnb",
+      "url": "https://www.youtube.com/watch?v=TAf1_23Ihmw",
+      "group": "Space as an experience",
+      "platform": "YouTube",
+      "publisher": "Airbnb (verified)",
+      "evidence": "Indexed official YouTube metadata and campaign description",
+      "relevance": "High-view indexed reference for making the benefit of room layout and togetherness immediately understandable.",
+      "metrics": {
+        "views": 18053074,
+        "likes": 4900,
+        "published": "2023-08-24",
+        "kind": "Search-index snapshot, observed 2026-10-17; paid/organic unknown"
+      },
+      "sources": [
+        "https://www.youtube.com/watch?v=TAf1_23Ihmw"
+      ],
+      "source_url": "https://www.youtube.com/watch?v=TAf1_23Ihmw",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S034",
+      "title": "First Time | Airbnb Setup",
+      "brand": "Airbnb",
+      "url": "https://video.withairbnb.com/media/t/1_5ntgvao8",
+      "group": "Space as an experience",
+      "platform": "Web video / portfolio",
+      "publisher": "Airbnb (official media portal)",
+      "evidence": "Official video page and film synopsis indexed",
+      "relevance": "Product introduction connecting a familiar home to a new possibility; campaign uses a miniature world according to Airbnb.",
+      "metrics": null,
+      "sources": [
+        "https://video.withairbnb.com/media/t/1_5ntgvao8"
+      ],
+      "source_url": "https://video.withairbnb.com/media/t/1_5ntgvao8",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S035",
+      "title": "Partner | Airbnb Co-host",
+      "brand": "Airbnb",
+      "url": "https://www.youtube.com/watch?v=CNAmCf072UM",
+      "group": "Space as an experience",
+      "platform": "YouTube",
+      "publisher": "Airbnb (verified)",
+      "evidence": "Indexed official YouTube metadata and film synopsis",
+      "relevance": "A product-as-help story that reduces the perceived work involved in changing how a home is used.",
+      "metrics": {
+        "views": 214411,
+        "likes": 349,
+        "published": "2024-10-16",
+        "kind": "Search-index snapshot, observed 2026-10-17"
+      },
+      "sources": [
+        "https://www.youtube.com/watch?v=CNAmCf072UM"
+      ],
+      "source_url": "https://www.youtube.com/watch?v=CNAmCf072UM",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S036",
+      "title": "Airbnb \"Wall and Chain\"",
+      "brand": "Airbnb",
+      "url": "https://vimeo.com/284070799",
+      "group": "Space as an experience",
+      "platform": "Vimeo",
+      "publisher": "Ian Rowe (writer, VO director, music supervisor, sound designer)",
+      "evidence": "Indexed creator video page with explicit role",
+      "relevance": "An emotional narrative candidate where place and human connection give the platform meaning.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/284070799"
+      ],
+      "source_url": "https://vimeo.com/284070799",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S037",
+      "title": "A Different Paris AirBnB Zoetrope Commercial",
+      "brand": "Airbnb",
+      "url": "https://vimeo.com/206197706",
+      "group": "Space as an experience",
+      "platform": "Vimeo",
+      "publisher": "Armchair Productions (animation contributor)",
+      "evidence": "Indexed creator video page with detailed making-of description",
+      "relevance": "Creator describes 3D printed characters and a physical zoetrope, a tactile alternative to an ordinary interface demo.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/206197706"
+      ],
+      "source_url": "https://vimeo.com/206197706",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S038",
+      "title": "airbnb 'Belong Anywhere'",
+      "brand": "Airbnb",
+      "url": "https://vimeo.com/180370705",
+      "group": "Space as an experience",
+      "platform": "Vimeo",
+      "publisher": "Benjamin Thomas (cinematographer)",
+      "evidence": "Indexed creator video page with credits",
+      "relevance": "Belonging-based brand film candidate for the emotional territory of feeling at home.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/180370705"
+      ],
+      "source_url": "https://vimeo.com/180370705",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S039",
+      "title": "Strangers Aren’t That Strange",
+      "brand": "Airbnb",
+      "url": "https://www.youtube.com/watch?v=pdcElQTd8gM",
+      "group": "Space as an experience",
+      "platform": "YouTube",
+      "publisher": "Original Airbnb URL linked by campaign research; direct fetch failed",
+      "evidence": "Secondary exact video link; primary financial report confirms Strangers campaign",
+      "relevance": "High-reach historical candidate for making a universal anxiety feel approachable through an unusual family.",
+      "metrics": {
+        "views": "53.8M",
+        "kind": "Historical Tubular Labs article claim, not current views; paid/organic unknown"
+      },
+      "sources": [
+        "https://www.youtube.com/watch?v=pdcElQTd8gM",
+        "https://tubularlabs.com/blog/airbnbs-user-generated-campaign-the-post-covid-traveler/",
+        "https://d18rn0p25nwr6d.cloudfront.net/CIK-0001559720/5bec81d7-5a71-41ba-8982-bcab28081a4f.pdf"
+      ],
+      "source_url": "https://www.youtube.com/watch?v=pdcElQTd8gM",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S040",
+      "title": "Forever Young | Made Possible by Hosts",
+      "brand": "Airbnb",
+      "url": "https://www.youtube.com/watch?v=7krmGilR0BE",
+      "group": "Space as an experience",
+      "platform": "YouTube",
+      "publisher": "Original campaign URL linked by Tubular Labs; direct fetch failed",
+      "evidence": "Secondary exact video link; first-party page confirms campaign method",
+      "relevance": "Low-complexity production reference for selling the life a space makes possible through real travel photographs.",
+      "metrics": {
+        "views": "7.5M",
+        "kind": "Historical Tubular Labs article claim, not current views; paid/organic unknown"
+      },
+      "sources": [
+        "https://www.youtube.com/watch?v=7krmGilR0BE",
+        "https://tubularlabs.com/blog/airbnbs-user-generated-campaign-the-post-covid-traveler/",
+        "https://news.airbnb.com/made-possible-by-hosts-2"
+      ],
+      "source_url": "https://www.youtube.com/watch?v=7krmGilR0BE",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S041",
+      "title": "HomePod — Welcome Home [portfolio title: apple_home pod | dir. spike jonze]",
+      "brand": "Apple",
+      "url": "https://vimeo.com/821121634",
+      "group": "Smart home / emotional transformation",
+      "platform": "Vimeo",
+      "publisher": "Beau Leon (portfolio; uploader relation not confirmed in page text)",
+      "evidence": "Video page opened; campaign identity corroborated by original coverage",
+      "relevance": "Major room-as-emotion reference: investigate how a confined apartment becomes an expressive world around its occupant.",
+      "metrics": {
+        "year": 2018,
+        "kind": "Campaign release coverage; portfolio upload date not treated as launch date"
+      },
+      "sources": [
+        "https://vimeo.com/821121634",
+        "https://www.macrumors.com/2018/03/06/apple-homepod-spike-jonze-fka-twigs/",
+        "https://time.com/5187947/fka-twigs-homepod/"
+      ],
+      "source_url": "https://vimeo.com/821121634",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": 2,
+      "shortlist_reason": "Most useful cinematic ambition reference for treating an interior as an expression of its occupant's emotional state. Preview the film before borrowing pacing; the available URL is a portfolio upload."
+    },
+    {
+      "id": "S042",
+      "title": "Bang & Olufsen \"Beosound Shape\"",
+      "brand": "Bang & Olufsen",
+      "url": "https://vimeo.com/217810166",
+      "group": "Smart home / emotional transformation",
+      "platform": "Vimeo",
+      "publisher": "Mystic Collective (production portfolio)",
+      "evidence": "Video page opened with director and production credits",
+      "relevance": "Design-tech launch candidate for integrating a functional device into a room's visual identity.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/217810166"
+      ],
+      "source_url": "https://vimeo.com/217810166",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S043",
+      "title": "SONOS: Music Makes It Home",
+      "brand": "Sonos / Apple Music",
+      "url": "https://vimeo.com/156330951",
+      "group": "Smart home / emotional transformation",
+      "platform": "Vimeo",
+      "publisher": "m ss ng p eces (production company embed)",
+      "evidence": "Primary production page opened and exact Vimeo embed followed",
+      "relevance": "Very close conceptual bridge from a general question about home relationships to a specific enabling product.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/156330951",
+        "https://mssngpeces.com/projects/commercials/sonos-music-makes-it-home/"
+      ],
+      "source_url": "https://vimeo.com/156330951",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": 7,
+      "shortlist_reason": "Production company frames the film around a general question about how home relationships change with shared music. Useful model for making the product the answer to a human question."
+    },
+    {
+      "id": "S044",
+      "title": "Samsung - The Frame",
+      "brand": "Samsung",
+      "url": "https://vimeo.com/711444864",
+      "group": "Smart home / emotional transformation",
+      "platform": "Vimeo",
+      "publisher": "Tale Studio (motion and sound contributor)",
+      "evidence": "Indexed creator video page with synopsis and credits",
+      "relevance": "Useful reference for explaining technology through its contribution to a considered room aesthetic.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/711444864"
+      ],
+      "source_url": "https://vimeo.com/711444864",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S045",
+      "title": "Samsung \"Make Your Own TV\"",
+      "brand": "Samsung",
+      "url": "https://vimeo.com/520257090",
+      "group": "Smart home / emotional transformation",
+      "platform": "Vimeo",
+      "publisher": "Young-wook Paik / WOOKIE (director)",
+      "evidence": "Indexed creator video page with product and credits",
+      "relevance": "Personalization-oriented product film for examining how a premium functional object becomes part of a home.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/520257090"
+      ],
+      "source_url": "https://vimeo.com/520257090",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S046",
+      "title": "Nanoleaf Light Panels: Modular Smart Lighting Triangles",
+      "brand": "Nanoleaf",
+      "url": "https://www.youtube.com/watch?v=Nin0NSjp8II",
+      "group": "Smart home / emotional transformation",
+      "platform": "YouTube",
+      "publisher": "Nanoleaf (official)",
+      "evidence": "Indexed official YouTube metadata and description",
+      "relevance": "Its explicit home-as-story positioning closely matches spatial personality, with a visible physical transformation product.",
+      "metrics": {
+        "views": 111228,
+        "likes": 474,
+        "published": "2017-09-01",
+        "kind": "Search-index snapshot, observed 2026-10-17"
+      },
+      "sources": [
+        "https://www.youtube.com/watch?v=Nin0NSjp8II"
+      ],
+      "source_url": "https://www.youtube.com/watch?v=Nin0NSjp8II",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S047",
+      "title": "Nanoleaf Introduction - The world's most energy efficient light bulb",
+      "brand": "Nanoleaf",
+      "url": "https://www.youtube.com/watch?v=ojdtdi-hbHQ",
+      "group": "Smart home / emotional transformation",
+      "platform": "YouTube",
+      "publisher": "Nanoleaf (official)",
+      "evidence": "Indexed official YouTube metadata",
+      "relevance": "Early startup product introduction useful as a comparison for how much technical explanation to include.",
+      "metrics": {
+        "views": 27522,
+        "likes": 167,
+        "published": "2013-03-26",
+        "kind": "Search-index snapshot, observed 2026-10-17"
+      },
+      "sources": [
+        "https://www.youtube.com/watch?v=ojdtdi-hbHQ"
+      ],
+      "source_url": "https://www.youtube.com/watch?v=ojdtdi-hbHQ",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S048",
+      "title": "Introducing Houzz View in My Room 3D with ARKit",
+      "brand": "Houzz",
+      "url": "https://www.youtube.com/watch?v=uLoSnBK9l7c",
+      "group": "Direct spatial product",
+      "platform": "YouTube",
+      "publisher": "HouzzTV, identified by cited reference; original unavailable in text fetch",
+      "evidence": "Exact YouTube link from secondary source; official press confirms feature",
+      "relevance": "Direct competitor reference for communicating furniture visualization and purchase confidence; likely supporting proof, not the main creative model.",
+      "metrics": null,
+      "sources": [
+        "https://www.youtube.com/watch?v=uLoSnBK9l7c",
+        "https://arinsider.co/2018/02/26/data-point-of-the-week-ar-boosts-purchase-intent-and-time-in-app/",
+        "https://pro.houzz.se/press"
+      ],
+      "source_url": "https://www.youtube.com/watch?v=uLoSnBK9l7c",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S049",
+      "title": "IKEA Home Smart",
+      "brand": "IKEA",
+      "url": "https://tomasstastny.co/projects/ikea-home-smart",
+      "group": "Smart home / emotional transformation",
+      "platform": "Web video / portfolio",
+      "publisher": "Tomáš Šťastný (cinematographer)",
+      "evidence": "Indexed creator page with specific embedded commercial; direct fetch unavailable",
+      "relevance": "Home-technology market introduction candidate that may help frame a technical feature as ordinary domestic life.",
+      "metrics": {
+        "year": 2020,
+        "kind": "Creator page"
+      },
+      "sources": [
+        "https://tomasstastny.co/projects/ikea-home-smart"
+      ],
+      "source_url": "https://tomasstastny.co/projects/ikea-home-smart",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S050",
+      "title": "Wayfair - Get it out of your head and into your home",
+      "brand": "Wayfair",
+      "url": "https://vimeo.com/945722057",
+      "group": "Direct spatial product",
+      "platform": "Vimeo",
+      "publisher": "Charlie Hurst (portfolio; exact role unconfirmed)",
+      "evidence": "Indexed video title and uploader",
+      "relevance": "The premise directly addresses the gap between imagined design and a finished home.",
+      "metrics": null,
+      "sources": [
+        "https://vimeo.com/945722057"
+      ],
+      "source_url": "https://vimeo.com/945722057",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S051",
+      "title": "Modsy Commercial -2018",
+      "brand": "Modsy",
+      "url": "https://vimeo.com/296714346",
+      "group": "Direct spatial product",
+      "platform": "Vimeo",
+      "publisher": "victor sabbithi (3D lead, storyboard and animation production)",
+      "evidence": "Indexed creator video page; direct fetch unavailable",
+      "relevance": "Direct online interior-design competitor and a candidate for studying a polished room visualization explanation.",
+      "metrics": {
+        "year": 2018,
+        "kind": "Creator title"
+      },
+      "sources": [
+        "https://vimeo.com/296714346"
+      ],
+      "source_url": "https://vimeo.com/296714346",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    },
+    {
+      "id": "S052",
+      "title": "IKEA - Silence the Critics (SHORT)",
+      "brand": "IKEA",
+      "url": "https://vimeopro.com/riffrafffilms/humans-the-orchard/video/732127954",
+      "group": "Home personality / conceptual advertising",
+      "platform": "Web video / portfolio",
+      "publisher": "Riff Raff Films portfolio collection",
+      "evidence": "Indexed production portfolio; explicitly a short cut, counted once",
+      "relevance": "High-fit premise about being embarrassed to host because of how a home looks; use as a campaign lead, obtain full master before deep analysis.",
+      "metrics": null,
+      "sources": [
+        "https://vimeopro.com/riffrafffilms/humans-the-orchard/video/732127954",
+        "https://downloads.ctfassets.net/ptzdhtf6t0jg/4501MliedkJAEDDV8jNUKf/b474b66950863abf6a8c09fbe568cef5/Thinkbox_A_year_in_TV_2019-2020.pdf"
+      ],
+      "source_url": "https://vimeopro.com/riffrafffilms/humans-the-orchard/video/732127954",
+      "footage_watched": false,
+      "observed_date": "2026-10-17",
+      "relevance_is_inference": true,
+      "shortlist_rank": null
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "rank": 18,
+  "duration_seconds": 200.128,
+  "analysis_source": "/private/tmp/respace-hosted/floyd.mp4",
+  "coverage_status": "full_film_sampled",
+  "analysis_attempted": true,
+  "last_error": null,
+  "research_date_local": "2026-10-17",
+  "title": "Floyd \u2014 The Floyd Ethos",
+  "source_page": "https://vimeo.com/359619840",
+  "playable_reference": "https://player.vimeo.com/video/359619840",
+  "provenance": "Same selected film, public standard Vimeo HLS video and audio.",
+  "supporting_sources": [
+    "https://floydhome.com/blogs/stories/a-note-on-the-floyd-design-ethos"
+  ],
+  "audio_stream_verified": true,
+  "model": "gemini-3.5-flash-lite",
+  "fps": 6,
+  "requested_intervals_seconds": [
+    [
+      0,
+      201
+    ]
+  ],
+  "reported_observed_interval": "00:00.000\u201303:19.834",
+  "video_tokens_reported": 84270,
+  "raw_report_private": "/private/tmp/respace-hosted/floyd-raw-full-unmodified.md",
+  "delivered_av_reports": [
+    "av-report.md"
+  ],
+  "manual_visual_crosscheck": "Full-span contact sheet plus denser founder identifiers and final frames inspected.",
+  "limits": [
+    "Sampled audiovisual observation, not a frame-accurate cut count.",
+    "Raw report misnames the reference as ReSpace, labels domestic scenes as customer testimonials and includes an impossible 03:36.667 sound timestamp; editorial report corrects these.",
+    "Specific Foley/instrument details have not been independently isolated.",
+    "No retention, conversion, or paid-versus-organic performance measured.",
+    "Specification describes intended ReSpace behavior; actual demo readiness remains unverified."
+  ]
+}

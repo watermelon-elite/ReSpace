@@ -1,0 +1,37 @@
+{
+  "rank": 13,
+  "duration_seconds": 110.740998,
+  "analysis_source": "/private/tmp/respace-hosted/daylight.mp4",
+  "coverage_status": "full_film_sampled",
+  "analysis_attempted": true,
+  "research_date_local": "2026-10-17",
+  "title": "Daylight \u2014 Not Like the Others",
+  "source_page": "https://sandwich.co/work/not-like-the-others/",
+  "playable_reference": "https://fast.wistia.net/embed/iframe/u8xn64uj9r",
+  "provenance": "Direct public Wistia asset, same film linked by studio.",
+  "supporting_sources": [
+    "https://fast.wistia.com/embed/medias/u8xn64uj9r.json"
+  ],
+  "audio_stream_verified": true,
+  "raw_report_private": "/private/tmp/respace-hosted/daylight-raw-full-unmodified.md",
+  "delivered_av_reports": [
+    "av-report.md"
+  ],
+  "report_redactions": "Quoted wording omitted; observations and timestamps otherwise retained.",
+  "analysis_method": "watch-video skill, actual video and audio",
+  "model": "gemini-3.5-flash-lite",
+  "fps": 6,
+  "requested_intervals_seconds": [
+    [
+      0,
+      111
+    ]
+  ],
+  "reported_observed_interval": "00:00.000\u201301:50.500",
+  "manual_visual_crosscheck": "Full-span contact sheet, opening and tail contact sheets inspected.",
+  "limits": [
+    "Model timing is approximate; container duration110.740998s differs from reported observed endpoint110.5s.",
+    "Audio instrumentation and synchronization are model observations, not independent measurements.",
+    "Advertising health/focus claims are not independently verified."
+  ]
+}

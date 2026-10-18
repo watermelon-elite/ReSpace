@@ -1,0 +1,4 @@
+[info] 12.6 MB - sending the file directly
+[info] analyzing with gemini-flash-latest...
+ERROR: Rate limit hit on the free tier.
+Wait a minute and retry, or analyze a shorter clip with --clip.

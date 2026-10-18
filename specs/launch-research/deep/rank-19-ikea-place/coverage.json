@@ -1,0 +1,24 @@
+{
+  "rank": 19,
+  "title": "IKEA \u2014 Say Hej to IKEA Place",
+  "source_url": "https://www.youtube.com/watch?v=UudV1VdFtuQ",
+  "duration_seconds": 59,
+  "duration_source": "youtube-full search metadata preserved in youtube-search.json",
+  "requested_clip": "0:00-1:00",
+  "fps": 6,
+  "model": "gemini-flash-latest",
+  "successful_clip_ranges": [
+    {
+      "start_seconds": 0,
+      "end_seconds": 60,
+      "note": "Requested end extends one second beyond the 59-second source, ensuring the final card is included."
+    }
+  ],
+  "completion": "full source coverage; automated audiovisual analysis returned final card",
+  "any_gaps": null,
+  "raw_report": "raw-full.md",
+  "provider_attempts": 2,
+  "provider_failure": "Initial503; next attempt succeeded",
+  "video_tokens": 24422,
+  "method_limit": "Automated sampled-frame and audio review, not frame-perfect manual cut counting or an audio-stem audit."
+}
