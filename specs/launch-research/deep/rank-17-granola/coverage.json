@@ -1,0 +1,35 @@
+{
+  "rank": 17,
+  "duration_seconds": 52.053,
+  "analysis_source": "/private/tmp/respace-hosted/granola-original.mp4",
+  "coverage_status": "full_film_sampled",
+  "analysis_attempted": true,
+  "research_date_local": "2026-10-17",
+  "title": "Granola \u2014 original launch film",
+  "source_page": "https://www.granola.ai/blog/announcement",
+  "playable_reference": "https://player.vimeo.com/video/948907406",
+  "provenance": "Parent agent recovered the original selected Vimeo film through normal public browser playback and its public video/audio stream. Founder launch-day LinkedIn version is supplementary only.",
+  "supporting_sources": [
+    "https://www.linkedin.com/posts/pedregal_after-a-year-in-the-oven-today-is-finally-activity-7199059437423050752-CDO5"
+  ],
+  "audio_stream_verified": true,
+  "model": "gemini-3.5-flash-lite",
+  "fps": 6,
+  "requested_intervals_seconds": [
+    [
+      0,
+      53
+    ]
+  ],
+  "reported_observed_interval": "00:00.000\u201300:51.583",
+  "raw_report_private": "/private/tmp/respace-hosted/granola-raw-full-unmodified.md",
+  "delivered_av_reports": [
+    "av-report.md"
+  ],
+  "manual_visual_crosscheck": "Full-span contact sheet of original Vimeo film compared with founder launch-day LinkedIn version; visual sequence matches.",
+  "limits": [
+    "Sampled observation, not an exact manual cut count.",
+    "No retention, conversion or paid-versus-organic performance measured.",
+    "Raw generated ReSpace idea includes unsupported live overlay/instant scan and must not be presented as real product behavior."
+  ]
+}

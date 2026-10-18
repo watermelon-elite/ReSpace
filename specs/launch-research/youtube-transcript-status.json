@@ -1,0 +1,21 @@
+{
+  "ok": true,
+  "request_id": "req_d67435e663934278",
+  "data": {
+    "job_id": "2bddb6c0cf9c41479ccb486270683b55",
+    "status": "done",
+    "lang": "en",
+    "format": "json",
+    "count": 15,
+    "done": 15,
+    "ready": 12,
+    "failed": 3,
+    "pending": 0,
+    "credits": {
+      "charged": 15,
+      "refunded": 0
+    },
+    "created_at": "2026-10-18T01:19:09.236427+00:00",
+    "finished_at": "2026-10-18T01:19:15.972576+00:00"
+  }
+}

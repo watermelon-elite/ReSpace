@@ -1,0 +1,31 @@
+{
+  "rank": 10,
+  "source_url": "https://www.youtube.com/watch?v=54l-1NfXnX8",
+  "duration_seconds": 60,
+  "duration_source": "Public YouTube watch-page lengthSeconds metadata retrieved 2026-10-17 America/Los_Angeles",
+  "requested_clip": "0:00-1:01",
+  "fps": 6,
+  "model": "gemini-3.5-flash-lite",
+  "successful_clip_ranges": [
+    {
+      "start_seconds": 0,
+      "end_seconds": 61,
+      "note": "Requested one second beyond60-second source; model describes final card through59s."
+    }
+  ],
+  "completion": "full source coverage; automated audiovisual report reaches final card",
+  "any_gaps": null,
+  "raw_report": "raw-full.md",
+  "provider_failure": {
+    "quota_id": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+    "quota_limit": 20,
+    "model": "gemini-3.8-flash",
+    "retry_delay_seconds": 78310
+  },
+  "title": "Notion \u2014 Meet Notion Mail",
+  "model_support_source": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite",
+  "video_tokens": 25265,
+  "method_limit": "Automated sampled-frame/audio analysis, not an independently timed edit list or UI performance benchmark.",
+  "raw_report_note": "Published AV response has minimal source-text redactions, explicitly labeled; timestamps and observations retained. Untouched response retained privately.",
+  "provider_attempts": 3
+}

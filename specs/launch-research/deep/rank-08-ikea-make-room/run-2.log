@@ -1,0 +1,3 @@
+[info] reading the YouTube link directly, no download needed
+[info] analyzing with gemini-flash-latest...
+ERROR: HTTP 503: This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.

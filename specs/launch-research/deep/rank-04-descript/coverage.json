@@ -1,0 +1,34 @@
+{
+  "rank": 4,
+  "title": "Descript \u2014 Damn, Jenny!",
+  "source_page": "https://sandwich.co/work/descript-video/",
+  "player_url": "https://fast.wistia.net/embed/iframe/2rb6egpph3",
+  "metadata_url": "https://fast.wistia.com/embed/medias/2rb6egpph3.json",
+  "metadata_duration_seconds": 166.083,
+  "file_duration_seconds": 166.100998,
+  "local_analysis_source": "/private/tmp/respace-hosted/descript.mp4",
+  "resolution": "1280x720",
+  "audio_stream_verified": true,
+  "analysis_method": "watch-video skill, gemini-flash-latest, actual audiovisual input",
+  "requested_intervals_seconds": [
+    [
+      0,
+      167
+    ]
+  ],
+  "fps": 6,
+  "reported_observed_interval": "00:00.000\u201302:46.000",
+  "coverage_status": "full_film_sampled",
+  "limits": [
+    "Sampling is not frame-exhaustive; model timestamps and audio instrument labels are not independently measured.",
+    "Raw report has an internally inconsistent power-features phase label and unsupported ReSpace feature suggestions; see editorial report."
+  ],
+  "research_date_local": "2026-10-17",
+  "manual_visual_crosscheck": "Contact sheet across the film and separate ending frame inspected; no independent audio transcription or exact cut timing.",
+  "raw_report_private": "/private/tmp/respace-hosted/descript-raw-full-unmodified.md",
+  "delivered_av_reports": [
+    "av-report.md"
+  ],
+  "report_redactions": "Quoted wording omitted; observations and timestamps otherwise retained.",
+  "model": "gemini-flash-latest"
+}

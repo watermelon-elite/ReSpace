@@ -1,0 +1,5 @@
+[info] 12.6 MB - sending the file directly
+[info] analyzing with gemini-2.5-flash...
+[provider_error] {"error": {"code": 404, "message": "This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/get-started).", "status": "NOT_FOUND"}}
+ERROR: Model not found. 
+Try: --model gemini-2.5-flash
