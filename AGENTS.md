@@ -37,6 +37,9 @@ Verified facts, each claim tagged confirmed or inferred with its source URL. Rea
 - [`docs/agents/domain.md`](docs/agents/domain.md):
   Rules for reading the glossary and architectural decisions.
 
+### Prompts
+- [`prompts/layout-reasoning.md`](prompts/layout-reasoning.md): research-backed layout principles, written as Gemini's system prompt for questions, Product choice, Anchor planning, repair and explanations. Edit it when changing how the agent reasons about layouts.
+
 ### Code
 - [`script/README.md`](script/README.md): contained temporary DS_HQ Script-screen copy, ReSpace narration and visual tracks, local autosave and run instructions. Read when changing the launch-script prototype; independent of the iPhone app.
 - [`ReSpace/`](ReSpace/), [`ReSpace.xcodeproj/`](ReSpace.xcodeproj/): the iOS capture, Room review, planning and immutable design client.
