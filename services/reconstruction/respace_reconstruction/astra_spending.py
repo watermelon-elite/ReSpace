@@ -106,12 +106,32 @@ class Spending:
         # ceiling too. Reasoning is already part of max_output_tokens.
         input_ceiling = math.ceil(inputs*1.01)+256
         long = input_ceiling > 272000
-        reserved = math.ceil(input_ceiling*write_rate*(2 if long else 1)
-                             +body["max_output_tokens"]*output_rate*(1.5 if long else 1))
-        if self.allocated+reserved > CEILING_UNITS:
-            raise BudgetExhausted("The $10 room API budget cannot cover another detailed object; completed objects are retained")
+        input_reservation = input_ceiling*write_rate*(2 if long else 1)
+        output_unit_rate = output_rate*(1.5 if long else 1)
+        remaining = CEILING_UNITS-self.allocated
+        requested_output = body["max_output_tokens"]
+        affordable_output = max(0, math.floor((remaining-input_reservation)/output_unit_rate))
+        output_limit = min(requested_output, affordable_output)
+        minimum_output = min(requested_output, 16000)
+        reserved = math.ceil(input_reservation+output_limit*output_unit_rate)
+        atomic_json(directory/"budget-preflight.json", {
+            "model": model, "stage": label, "input_tokens": inputs,
+            "allocated_usd": self.allocated/1e6, "remaining_usd": remaining/1e6,
+            "full_request_reservation_usd": math.ceil(input_reservation+requested_output*output_unit_rate)/1e6,
+            "requested_output_tokens": requested_output, "affordable_output_tokens": affordable_output,
+            "minimum_output_tokens": minimum_output})
+        if output_limit < minimum_output or self.allocated+reserved > CEILING_UNITS:
+            required = math.ceil(input_reservation+minimum_output*output_unit_rate)/1e6
+            raise BudgetExhausted(
+                f"{label} was not started: ${remaining/1e6:.2f} remains in this capture's $10 API budget "
+                f"(${self.allocated/1e6:.2f} already recorded). This request needs at least a "
+                f"${required:.2f} reservation for input and output. No generation charge was initiated for this request.")
+        # Cache identity uses the original requested profile. Retrying must reuse
+        # this response even though the affordable allowance changes after billing.
+        body = dict(body, max_output_tokens=output_limit)
         self.data["entries"][fingerprint] = {"label": label, "model": model, "state": "reserved", "reserved_units": reserved,
-                                            "input_token_ceiling": input_ceiling, "max_output_tokens": body["max_output_tokens"]}
+                                            "input_token_ceiling": input_ceiling, "max_output_tokens": output_limit,
+                                            "requested_max_output_tokens": requested_output}
         self.save()  # Must commit before the potentially billable network action.
         response = astra.call_astra(body, key)
         atomic_json(checkpoint, {"fingerprint": fingerprint, "response": response})

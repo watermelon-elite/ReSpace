@@ -369,3 +369,39 @@ def test_model_specific_long_context_cache_and_output_rates(model, expected):
     response = reply({}, inputs=300000, outputs=20000)
     response["usage"]["input_tokens_details"] = {"cached_tokens": 1000, "cache_write_tokens": 10000}
     assert astra_spending.actual_units(response, model) == expected
+
+
+def test_inventory_fits_remaining_budget_by_reducing_unused_output_allowance(tmp_path, monkeypatch):
+    configure(monkeypatch)
+    ledger = Spending(tmp_path/"budget.json")
+    # Retained Sol receipt and input count from the failed scan.
+    ledger.data["entries"]["prior-sol"] = {
+        "state": "settled", "model": "gpt-6-sol", "reserved_units": 1800000,
+        "cost_units": 1484582}
+    ledger.save()
+    monkeypatch.setattr(astra_spending, "count_input_tokens", lambda *args: 283324)
+    calls = []
+    def generate(request, key):
+        calls.append(request)
+        assert 16000 <= request["max_output_tokens"] < 24000
+        assert ledger.allocated <= 10000000
+        return reply({}, inputs=283324, outputs=4531)
+    monkeypatch.setattr(astra, "call_astra", generate)
+    ledger.request(body(), tmp_path/"inventory", "Room contents inventory")
+    assert len(calls) == 1
+    ledger.request(body(), tmp_path/"inventory", "Room contents inventory")
+    assert len(calls) == 1
+
+
+def test_unaffordable_first_request_explains_reservation_without_claiming_spend(tmp_path, monkeypatch):
+    configure(monkeypatch)
+    monkeypatch.setattr(astra_spending, "count_input_tokens", lambda *args: 500000)
+    monkeypatch.setattr(astra, "call_astra", lambda *args: pytest.fail("Unexpected paid request"))
+    ledger = Spending(tmp_path/"budget.json")
+    with pytest.raises(BudgetExhausted, match="Room contents inventory was not started") as error:
+        ledger.request(body(), tmp_path/"inventory", "Room contents inventory")
+    assert "$0.00 already recorded" in str(error.value)
+    assert "No generation charge was initiated" in str(error.value)
+    assert ledger.allocated == 0 and not ledger.data["entries"]
+    preflight = json.loads((tmp_path/"inventory/budget-preflight.json").read_text())
+    assert preflight["remaining_usd"] == 10 and preflight["input_tokens"] == 500000
