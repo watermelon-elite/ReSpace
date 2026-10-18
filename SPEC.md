@@ -979,7 +979,7 @@ The public upload response acknowledges storage and explicitly reports deferred 
 | `objects` | Object records defined below, including non-floor placement information. |
 | `wall_features` | Stable ID, type outlet/light_switch/vent, wall ID, offset and height; optional source confidence. |
 | `obstacles` | Optional. Measured things outside the category registry (a kettle, a faucet), with the Object pose fields and a `collision_class`. They block placement like an Object of that class but are not planning targets and never move. |
-| `render` | Optional, for a modelled room: `node_pivot` (`bottom_center` or `box_center`) and the USD node name for each wall, opening, Object and obstacle ID. |
+| `render` | Optional, for a modelled room: `node_pivot` (`bottom_center` or `box_center`) and the USD node name for each wall, opening, Object and obstacle ID. The model shares the RoomModel's frame: each node sits at its record's pose. |
 | `zones` | Stable ID, type `keep_clear`, reason door/opening and polygon. |
 | `style_hints` | Optional observed/derived floor and wall descriptions with appropriate uncertainty. |
 | `validity` | Usable flag and structured reasons/warnings. A false flag prevents final placement publication. |
@@ -988,7 +988,7 @@ The public upload response acknowledges storage and explicitly reports deferred 
 
 An Object record includes stable `id`, retained native/source IDs, category, source (`roomplan`, `mk1` or refined evidence), X/Z footprint `center`, explicit `base_y`, yaw, Size3, Mount, optional real wall/support Object reference, optional `against_wall`, `fixed_in_place`, observed attributes and supporting evidence/observation count. `sightings`, if retained for compatibility, is the number of 3D observations in a cluster, not the number of unique Objects.
 
-A support Object may record `surfaces`: each a usable top elevation, optional X/Z outline and optional `clearance_above` to whatever hangs over it, because a box top that includes a backsplash or upstand is not the surface Items stand on.
+A support Object may record `surfaces`: each a usable top elevation, optional X/Z outline with optional `holes` (a sink), and optional `clearance_above` to whatever hangs over it, because a box top that includes a backsplash or upstand is not the surface Items stand on.
 
 Wall-mounted Objects require their elevation/wall association; tabletop Objects require their elevation/support association. The renderer and solver do not reconstruct these from category defaults. `attrs.color` is optional `#RRGGBB`; a missing sampled color uses a default tint. No required measured-material field exists.
 

@@ -13,7 +13,7 @@ Keep this map current: when you add or move a doc, add or update its line here i
 - [`specs/BUILDER_1_SPEC.md`](specs/BUILDER_1_SPEC.md): historical client/capture/rendering specification used in the consolidation; superseded by `SPEC.md`.
 - [`specs/H2-perception-spatial.md`](specs/H2-perception-spatial.md): historical perception/geometry/solver specification used in the consolidation; its override table is no longer governing.
 - [`specs/h3spec.md`](specs/h3spec.md): historical planning/products/backend specification used in the consolidation; superseded by `SPEC.md`.
-- [`specs/room-reconstruction-json.md`](specs/room-reconstruction-json.md): proposal, not yet agreed. Problems found placing Products into the sample room reconstruction's JSON (no yaw, true size, surface heights, wall endpoints, openings; non-registry categories), and a proposed version 2 aligned with `SPEC.md` §12.5, which `backend/respace/reconstruction.py` reads. Read before changing the room export format or the Product placement pipeline that consumes it.
+- [`specs/room-reconstruction-json.md`](specs/room-reconstruction-json.md): the room reconstruction JSON, version 2, which the room exporter writes and `backend/respace/reconstruction.py` reads. Records why version 1 could not place Products (no yaw, true size, surface heights, wall endpoints, openings; non-registry categories), the version 2 fields aligned with `SPEC.md` §12.5, and what the reader and composer refuse on load. Read before changing the room export format or the Product placement pipeline that consumes it.
 - [`userflow.md`](userflow.md): historical screen-flow sketch; use the complete screen and workflow requirements in `SPEC.md`.
 
 ### Research
