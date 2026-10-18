@@ -5,40 +5,63 @@ struct ShoppingListView: View {
     @State private var showShare = false
 
     var body: some View {
-        RSPage(title: "Your shopping list", topTitle: list.roomName) {
-            Label("Saved on this iPhone · \(list.savedAt.formatted(date: .abbreviated, time: .shortened))", systemImage: "checkmark.circle")
-                .font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
-            if list.fitPending { RSNotice(message: "Product plan · room fit is still pending.") }
+        RSPage(title: "Shopping list", topTitle: list.roomName) {
+            if list.fitPending {
+                Text("Room fit not yet checked").font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+            }
             if list.lines.isEmpty {
                 RSSymbol(name: "bag")
                 Text("Nothing to buy.").font(ReSpaceStyle.font(22, weight: .semibold))
-                Text("No purchases are needed for this \(list.fitPending ? "plan" : "design").").foregroundStyle(ReSpaceStyle.secondary)
             }
-            ForEach(list.lines) { line in
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(line.title).font(ReSpaceStyle.font(18, weight: .semibold))
-                    Text(line.merchant).font(ReSpaceStyle.font(14)).foregroundStyle(ReSpaceStyle.secondary)
-                    RSKeyValue(title: line.quantity, value: "USD \(line.total)")
-                    if line.surplusCount > 0 {
-                        Text("\(line.surplusCount) unplaced paid units").font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
-                    }
+            VStack(spacing: 0) {
+                ForEach(list.lines) { line in
                     Link(destination: line.url) {
-                        Label("Open at \(line.merchant)", systemImage: "arrow.up.right")
-                            .font(ReSpaceStyle.font(14, weight: .medium)).frame(minHeight: 44)
-                    }.accessibilityHint("Opens the selected merchant offer")
+                        HStack(alignment: .top, spacing: 16) {
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text(line.title).font(ReSpaceStyle.font(17, weight: .medium))
+                                Text(line.merchant).font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+                                if line.packCount > 1 || line.suppliedCount > 1 {
+                                    Text(line.quantity).font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+                                }
+                                if line.surplusCount > 0 {
+                                    Text("Includes \(line.surplusCount) extra \(line.surplusCount == 1 ? "item" : "items")")
+                                        .font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+                                }
+                            }.frame(maxWidth: .infinity, alignment: .leading)
+                            Text("$\(line.total)").font(ReSpaceStyle.font(17, weight: .semibold)).fixedSize()
+                            Image(systemName: "arrow.up.right").font(.system(size: 13)).padding(.top, 4)
+                        }.foregroundStyle(ReSpaceStyle.ink).padding(.vertical, 20).frame(minHeight: 44)
+                    }.accessibilityHint("Opens the product at \(line.merchant)")
+                    Divider().overlay(ReSpaceStyle.line)
                 }
+                HStack {
+                    Text("Total · USD").font(ReSpaceStyle.font(14)).foregroundStyle(ReSpaceStyle.secondary)
+                    Spacer()
+                    Text("$\(list.total)").font(ReSpaceStyle.font(24, weight: .semibold))
+                }.padding(.top, 24)
+                Text("Tax & shipping extra.").font(ReSpaceStyle.font(12)).foregroundStyle(ReSpaceStyle.secondary)
+                    .frame(maxWidth: .infinity, alignment: .trailing).padding(.top, 6)
             }
-            RSKeyValue(title: "Total · USD", value: "$\(list.total)")
-            if let limit = list.approvedCeiling { RSKeyValue(title: "Approved limit", value: "$\(limit)") }
-            Text("Whole packs are included. Existing Objects, tax and shipping are excluded. Saved prices; confirm price and availability with each merchant.")
-                .font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+            DisclosureGroup {
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("Saved \(list.savedAt.formatted(date: .abbreviated, time: .shortened))")
+                    if let limit = list.approvedCeiling { Text("Budget limit · $\(limit)") }
+                    ForEach(list.lines) { line in
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(line.title).fontWeight(.medium)
+                            Text(line.quantity)
+                        }
+                    }
+                    Text("Saved prices for new purchases. Check current price and availability with the retailer.")
+                }.frame(maxWidth: .infinity, alignment: .leading).padding(.top, 12)
+            } label: {
+                Text("Details").frame(minHeight: 44)
+            }.font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
         } footer: {
             if !list.lines.isEmpty {
                 Button { showShare = true } label: {
                     Label("Share list", systemImage: "square.and.arrow.up")
                 }.buttonStyle(RSButtonStyle())
-                Text("Room image, price labels and shopping links.")
-                    .font(ReSpaceStyle.font(12)).foregroundStyle(ReSpaceStyle.secondary)
             }
         }
         .sheet(isPresented: $showShare) { ShoppingShareView(list: list) }
@@ -46,20 +69,20 @@ struct ShoppingListView: View {
 }
 
 struct SavedShoppingListsView: View {
-    let store: ShoppingListStore
+    let lists: [ShoppingList]
 
     var body: some View {
         NavigationStack {
-            RSPage(title: "Saved shopping lists") {
-                if store.lists.isEmpty {
+            RSPage(title: "Shopping lists") {
+                if lists.isEmpty {
                     RSSymbol(name: "bag")
-                    Text("Your new pieces, all together.").font(ReSpaceStyle.font(22, weight: .semibold))
-                    Text("Open a room or design and tap the shopping bag to save its links here.").foregroundStyle(ReSpaceStyle.secondary)
+                    Text("No saved lists yet.").font(ReSpaceStyle.font(22, weight: .semibold))
+                    Text("Tap the bag in a room to save its products.").foregroundStyle(ReSpaceStyle.secondary)
                 }
-                ForEach(store.lists) { list in
+                ForEach(lists) { list in
                     NavigationLink { ShoppingListView(list: list) } label: {
                         RSRow(title: list.roomName,
-                              subtitle: "\(list.lines.count) \(list.lines.count == 1 ? "purchase" : "purchases") · USD \(list.total) · \(list.savedAt.formatted(date: .abbreviated, time: .omitted))",
+                              subtitle: "\(list.lines.count) \(list.lines.count == 1 ? "product" : "products") · $\(list.total)",
                               symbol: "bag")
                     }.buttonStyle(.plain)
                 }

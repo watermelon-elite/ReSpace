@@ -14,6 +14,7 @@ struct OperationPanel: View {
     @State private var options = false
     @State private var cancelling = false
     @State private var selectedObject: String?
+    @FocusState private var typing: Bool
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     var question: JSONValue { revisionAnswer == .null ? operation["pending_question"] : revisionAnswer["question"] }
@@ -36,7 +37,8 @@ struct OperationPanel: View {
     }
     var body: some View {
         ZStack {
-        RSPage(title: title, question: question != .null || cancelling, back: { if options || cancelling { options = false; cancelling = false } else { dismiss() } },
+        RSPage(title: title, topCompanion: question != .null && !options && !cancelling ? (typing ? .listening : .operation(operation)) : nil,
+               question: question != .null || cancelling, back: { if options || cancelling { options = false; cancelling = false } else { dismiss() } },
                trailingSymbol: question != .null ? "ellipsis" : "xmark", trailingLabel: question != .null ? "Question options" : "Leave for now",
                trailing: options || cancelling ? nil : { if question != .null { options = true } else { dismiss() } }) {
             if cancelling {
@@ -100,9 +102,9 @@ struct OperationPanel: View {
                 .font(ReSpaceStyle.font(32, weight: .medium)).padding(24).background(ReSpaceStyle.wash, in: RoundedRectangle(cornerRadius: 20)).disabled(busy).accessibilityLabel(question["text"].text)
         }
         if question["kind"].text == "text" {
-            TextField("Your answer", text: $text, axis: .vertical).lineLimit(5...8).rsInput()
+            TextField("Your answer", text: $text, axis: .vertical).lineLimit(5...8).rsInput().focused($typing)
         } else if question["kind"].text != "budget" {
-            DisclosureGroup("Add details") { TextField("Optional details", text: $text, axis: .vertical).lineLimit(2...5).rsInput().padding(.top, 12) }
+            DisclosureGroup("Add details") { TextField("Optional details", text: $text, axis: .vertical).lineLimit(2...5).rsInput().padding(.top, 12).focused($typing) }
                 .font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
         }
     }
@@ -142,7 +144,8 @@ struct OperationPanel: View {
         if roomDocument != .null && !terminal {
             RoomScene(document: roomDocument, native: true, selectedID: $selectedObject, ghosts: true, resetToken: 0)
                 .frame(height: 250).clipShape(RoundedRectangle(cornerRadius: 28))
-        } else { RSSymbol(name: terminal ? (operation["state"].text == "succeeded" ? "checkmark" : "arrow.clockwise") : "sparkles") }
+        }
+        Ollo(cue: .operation(operation), size: terminal ? 96 : 72)
         if !terminal {
             HStack(spacing: 12) { ProgressView(); Text(operation["progress_message"].string ?? operation["phase"].text.replacingOccurrences(of: "_", with: " ").capitalized).font(ReSpaceStyle.font(14)).fixedSize(horizontal: false, vertical: true) }.padding(.vertical, 12)
         }

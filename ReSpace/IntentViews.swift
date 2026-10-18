@@ -12,6 +12,7 @@ struct RoomRequestBar: View {
     let onDetails: () -> Void
     @State private var submitting = false
     @State private var error: String?
+    @State private var typing = false
     private var question: JSONValue { operation["pending_question"] }
     private var active: Bool { ["queued", "running", "needs_clarification"].contains(operation["state"].text) }
     private var canReply: Bool { ["text", "single_choice", "multi_choice"].contains(question["kind"].text) }
@@ -24,27 +25,24 @@ struct RoomRequestBar: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             if let error { Text(error).font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.danger) }
-            if question != .null {
-                Button(action: onDetails) {
-                    HStack(alignment: .top, spacing: 8) {
-                        Text(question["text"].text).font(ReSpaceStyle.font(14))
-                        Spacer(minLength: 0)
-                        Image(systemName: "chevron.right").font(.caption)
-                    }
-                }.buttonStyle(.plain)
-            } else if active || operation["outcome"] != .null || operation["failure"] != .null {
-                Button(action: onDetails) {
-                    HStack(spacing: 10) {
-                        if active { ProgressView() }
-                        Text(statusText)
-                            .font(ReSpaceStyle.font(13)).fixedSize(horizontal: false, vertical: true)
-                        Spacer(minLength: 0)
-                        Image(systemName: "chevron.right").font(.caption)
-                    }
-                }.buttonStyle(.plain)
+            OlloMessage(cue: typing ? .listening : .operation(operation), compact: typing) {
+                if question != .null || active || operation["outcome"] != .null || operation["failure"] != .null {
+                    Button(action: onDetails) {
+                        HStack(spacing: 10) {
+                            if active && question == .null { ProgressView() }
+                            Text(question == .null ? statusText : question["text"].text)
+                                .font(ReSpaceStyle.font(14)).fixedSize(horizontal: false, vertical: true)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Image(systemName: "chevron.right").font(.caption)
+                        }.padding(14).background(.white, in: RoundedRectangle(cornerRadius: 20))
+                    }.buttonStyle(.plain)
+                } else {
+                    Text("What would you like to change?").font(ReSpaceStyle.font(14))
+                        .padding(14).background(.white, in: RoundedRectangle(cornerRadius: 20))
+                }
             }
             RSComposer(text: $text, placeholder: question == .null ? "Describe your new design…" : "Your answer…", selection: selection, clear: clear,
-                       disabled: submitting || (active && !canReply)) {
+                       disabled: submitting || (active && !canReply), onFocusChange: { typing = $0 }) {
                 Task { await submit() }
             }
         }.padding(.horizontal, 16).padding(.top, 10).padding(.bottom, 12)

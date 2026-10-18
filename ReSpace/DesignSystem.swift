@@ -32,6 +32,31 @@ struct RSTitle: View {
     }
 }
 
+struct RSRoomCard<Thumbnail: View>: View {
+    let title: String
+    let subtitle: String
+    var status: String? = nil
+    var hero = true
+    @ViewBuilder var thumbnail: Thumbnail
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            if hero { thumbnail.frame(height: 240).clipped().clipShape(RoundedRectangle(cornerRadius: 28)) }
+            HStack(spacing: 16) {
+                if !hero { thumbnail.frame(width: 64, height: 64).clipped().clipShape(RoundedRectangle(cornerRadius: 16)) }
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(title).font(ReSpaceStyle.font(18, weight: .semibold))
+                    Text(subtitle).font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+                    if let status, !status.isEmpty {
+                        Text(status).font(ReSpaceStyle.font(12, weight: .medium)).foregroundStyle(ReSpaceStyle.purple)
+                    }
+                }
+                Spacer(minLength: 8)
+                Image(systemName: "arrow.right").font(.system(size: 16)).accessibilityHidden(true)
+            }.padding(.vertical, 8)
+        }.foregroundStyle(ReSpaceStyle.ink)
+    }
+}
+
 struct RSIconButton: View {
     let symbol: String
     let label: String
@@ -49,6 +74,7 @@ struct RSIconButton: View {
 
 struct RSTopBar: View {
     var title = ""
+    var companion: OlloCue? = nil
     var back: (() -> Void)?
     var trailingSymbol = "ellipsis"
     var trailingLabel = "Options"
@@ -60,7 +86,8 @@ struct RSTopBar: View {
             if let back { RSIconButton(symbol: "chevron.left", label: "Back", action: back) }
             else { Color.clear.frame(width: 44, height: 44) }
             Spacer(minLength: 8)
-            Text(title).font(ReSpaceStyle.font(14, weight: .semibold)).lineLimit(1)
+            if let companion { Ollo(cue: companion, size: 44) }
+            else { Text(title).font(ReSpaceStyle.font(14, weight: .semibold)).lineLimit(1) }
             Spacer(minLength: 8)
             if let trailing { RSIconButton(symbol: trailingSymbol, label: trailingLabel, prominent: trailingProminent, action: trailing).disabled(trailingDisabled) }
             else { Color.clear.frame(width: 44, height: 44) }
@@ -71,8 +98,10 @@ struct RSTopBar: View {
 struct RSPage<Content: View, Footer: View>: View {
     var title: String
     var topTitle = ""
+    var topCompanion: OlloCue? = nil
     var question = false
     var showsBack = true
+    var inlineTitle = false
     var back: (() -> Void)?
     var trailingSymbol = "ellipsis"
     var trailingLabel = "Options"
@@ -84,11 +113,18 @@ struct RSPage<Content: View, Footer: View>: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            RSTopBar(title: topTitle, back: showsBack ? (back ?? { dismiss() }) : nil,
-                     trailingSymbol: trailingSymbol, trailingLabel: trailingLabel, trailing: trailing)
+            if inlineTitle {
+                HStack(spacing: 16) {
+                    RSTitle(text: title).accessibilityFocused($titleFocused)
+                    if let trailing { RSIconButton(symbol: trailingSymbol, label: trailingLabel, action: trailing) }
+                }.padding(.horizontal, 24).padding(.top, 16).padding(.bottom, 8)
+            } else {
+                RSTopBar(title: topTitle, companion: topCompanion, back: showsBack ? (back ?? { dismiss() }) : nil,
+                         trailingSymbol: trailingSymbol, trailingLabel: trailingLabel, trailing: trailing)
+            }
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    if !title.isEmpty { RSTitle(text: title).padding(.bottom, question ? 16 : 4).accessibilityFocused($titleFocused) }
+                    if !title.isEmpty && !inlineTitle { RSTitle(text: title).padding(.bottom, question ? 16 : 4).accessibilityFocused($titleFocused) }
                     content
                 }.frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 24).padding(.top, question ? 56 : 16).padding(.bottom, 24)
@@ -208,7 +244,9 @@ struct RSComposer: View {
     var selection: String? = nil
     var clear: (() -> Void)? = nil
     var disabled = false
+    var onFocusChange: (Bool) -> Void = { _ in }
     let send: () -> Void
+    @FocusState private var focused: Bool
     var body: some View {
         VStack(spacing: 8) {
             if let selection {
@@ -219,7 +257,7 @@ struct RSComposer: View {
                 }.padding(.leading, 16).foregroundStyle(ReSpaceStyle.purple).background(ReSpaceStyle.wash, in: RoundedRectangle(cornerRadius: 16))
             }
             HStack(alignment: .bottom, spacing: 8) {
-                TextField(placeholder, text: $text, axis: .vertical).font(ReSpaceStyle.font(14)).lineLimit(1...4).padding(.vertical, 12).padding(.leading, 16).accessibilityLabel(placeholder)
+                TextField(placeholder, text: $text, axis: .vertical).font(ReSpaceStyle.font(14)).lineLimit(1...4).padding(.vertical, 12).padding(.leading, 16).accessibilityLabel(placeholder).focused($focused)
                 Button(action: send) {
                     Image(systemName: "arrow.up").font(.system(size: 18, weight: .medium)).foregroundStyle(ReSpaceStyle.actionInk)
                         .frame(width: 44, height: 44).background(ReSpaceStyle.actionGradient, in: Circle())
@@ -228,6 +266,8 @@ struct RSComposer: View {
             }.padding(4).background(.white, in: RoundedRectangle(cornerRadius: 28))
                 .overlay { RoundedRectangle(cornerRadius: 28).stroke(ReSpaceStyle.secondary.opacity(0.5), lineWidth: 1) }
         }
+        .onChange(of: focused) { _, value in onFocusChange(value) }
+        .onDisappear { onFocusChange(false) }
     }
 }
 

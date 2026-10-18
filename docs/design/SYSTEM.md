@@ -354,6 +354,24 @@ The Swap preview is the explicit exception for temporary candidate geometry, and
 
 Nonessential interaction-triggered motion should be suppressible; this aligns with [W3C's animation-from-interactions guidance](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html). Applying this principle does not claim full WCAG conformance for the native app.
 
+### MOTION-04 — Ollo stays secondary
+
+`ReSpace/Ollo.swift` is the shared native companion in the main app and UI studio.
+The home screen has no mascot or tagline. Other screens use the existing
+transparent poses: a brief
+asking pose per operation/question/revision, still listening on focus, still
+thinking during real queued/running work, and one hop after an observed operation
+commits a complete Design. History, plan-only results, warnings, partial success,
+failure and cancellation do not celebrate. Returning to a screen or polling the
+same question cannot restart a gesture.
+
+Keep one character per visible screen. The 64-point composer character becomes
+40 points when typing and hides at accessibility text sizes. Questions use the
+existing top-bar space; terminal results use a 96-point illustration. The image
+is decorative, noninteractive and hidden from VoiceOver. Image swaps cancel on
+view/state changes or backgrounding; Reduce Motion uses the appropriate still
+pose. Preserve existing readable questions, status, controls and room gestures.
+
 ## 7. Images, room rendering and illustration
 
 ### MEDIA-01 — Match visual authority to evidence

@@ -334,7 +334,7 @@
 .format-visual-timeline[data-view="grid"][data-grid-track="overlay_2"] [data-track-key="overlay_2"],
 .format-visual-timeline[data-view="grid"][data-grid-track="subtitles"] [data-track-key="subtitles"] { display: grid; }
 .format-visual-timeline[data-view="grid"] .format-timeline-row h3 { text-align: left; }
-.format-visual-timeline[data-view="grid"] .format-timeline-track { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 9px; align-items: start; min-width: 0; }
+.format-visual-timeline[data-view="grid"] .format-timeline-track { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 9px; align-items: start; min-width: 0; }
 .format-visual-timeline[data-view="grid"] .format-timeline-item { display: grid; min-width: 0; grid-column: auto; grid-template-rows: auto auto auto; align-self: start; }
 .format-visual-timeline[data-view="grid"] .format-timeline-script { display: block; margin: 0 0 8px; padding: 0 4px; color: #62586a; font-size: 10px; font-weight: 600; line-height: 1.4; text-align: center; overflow-wrap: anywhere; }
 .format-visual-timeline[data-view="grid"] .format-timeline-card { height: auto; box-sizing: border-box; }

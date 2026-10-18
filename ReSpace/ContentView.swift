@@ -15,6 +15,19 @@ struct ContentView: View {
     @State private var recoveries: [CaptureArchive] = []
     @State private var discardArchive: CaptureArchive?
     @State private var showShoppingLists = false
+    private var savedLists: [ShoppingList]? {
+        #if DEBUG
+        if let session = app.uiDemo { return [session.shoppingList] }
+        #endif
+        return app.shoppingLists?.lists
+    }
+    private var simulatedScan: Bool {
+        #if DEBUG && targetEnvironment(simulator)
+        true
+        #else
+        app.isUIDemo
+        #endif
+    }
     private var captureSupported: Bool { app.isUIDemo || (UIDevice.current.userInterfaceIdiom == .phone && RoomCaptureSession.isSupported) }
     private var librarySupported: Bool {
         #if DEBUG && targetEnvironment(simulator)
@@ -35,8 +48,8 @@ struct ContentView: View {
                     }
                 } footer: { EmptyView() }
             } else {
-                RSPage(title: app.rooms.isEmpty && ImportedRoomView.modelURL == nil ? "Your first room" : "Your rooms", topTitle: "ReSpace", showsBack: false,
-                       trailingSymbol: "gearshape", trailingLabel: "Connection settings", trailing: { setup = true }) {
+                RSPage(title: "Your rooms", showsBack: false, inlineTitle: true,
+                       trailingSymbol: "bag", trailingLabel: "Shopping lists", trailing: { showShoppingLists = true }) {
                     if app.rooms.isEmpty && ImportedRoomView.modelURL == nil {
                         Image("RoomInspiration").resizable().scaledToFill().frame(height: 300).clipped().clipShape(RoundedRectangle(cornerRadius: 28))
                             .accessibilityLabel("Room inspiration")
@@ -46,12 +59,11 @@ struct ContentView: View {
                     }
                     if ImportedRoomView.modelURL != nil && !app.isUIDemo {
                         NavigationLink { ImportedRoomView(app: app) } label: {
-                            RSRow(title: "Kitchenette", subtitle: "Your reconstructed room", symbol: "cube.transparent")
-                        }.buttonStyle(.plain)
-                    }
-                    if app.shoppingLists != nil {
-                        Button { showShoppingLists = true } label: {
-                            RSRow(title: "Saved shopping lists", subtitle: "Your Product links, ready to share", symbol: "bag")
+                            RSRoomCard(title: "Kitchenette", subtitle: "Your reconstructed room",
+                                       hero: app.rooms.allSatisfy { $0["source_scene_sha256"] != .null }) {
+                                Image("KitchenettePreview").resizable().scaledToFill()
+                                    .accessibilityLabel("Preview of your reconstructed kitchenette")
+                            }
                         }.buttonStyle(.plain)
                     }
                     if let error = app.error {
@@ -61,7 +73,6 @@ struct ContentView: View {
                     if app.client == nil {
                         Button { setup = true } label: { RSRow(title: "Connect ReSpace", subtitle: "Set up your connection to open your rooms", symbol: "network") }.buttonStyle(.plain)
                     }
-                    if !captureSupported { Text("New scans require a LiDAR iPhone. Saved Rooms are available for local testing.").font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary) }
                     ForEach(recoveries, id: \.captureID) { archive in
                         VStack(alignment: .leading, spacing: 12) {
                             Text(archive.phase == "upload_pending" ? "Your scan is safe." : "Let’s scan again.").font(ReSpaceStyle.font(22, weight: .semibold))
@@ -81,8 +92,8 @@ struct ContentView: View {
                         }
                     }
                 } footer: {
-                    Button(app.rooms.isEmpty ? "Scan your room" : "Scan a new room") { scanSetup = true }
-                        .buttonStyle(RSButtonStyle()).disabled(!captureSupported || app.client == nil || app.busy)
+                    Button("Scan your room") { if !simulatedScan { scanSetup = true } }
+                        .buttonStyle(RSButtonStyle()).disabled(!simulatedScan && (!captureSupported || app.client == nil || app.busy))
                 }
                 .refreshable { await app.refresh(); if !app.isUIDemo { recoveries = CaptureArchive.recoverable() } }
                 .task { await app.recoverPending(); await app.refresh(); if !app.isUIDemo { recoveries = CaptureArchive.recoverable() } }
@@ -95,12 +106,19 @@ struct ContentView: View {
         }
         #endif
         .sheet(isPresented: $showShoppingLists) {
-            if let store = app.shoppingLists { SavedShoppingListsView(store: store) }
+            if let lists = savedLists { SavedShoppingListsView(lists: lists) }
+            else {
+                RSPage(title: "Shopping lists") {
+                    Text("Shopping lists are unavailable. Reopen ReSpace to try again.")
+                } footer: { EmptyView() }
+            }
         }
         .sheet(isPresented: $scanSetup) {
             RSPage(title: "Scan your room.", back: { scanSetup = false }) {
                 Image("RoomInspiration").resizable().scaledToFill().frame(height: 300).clipped().clipShape(RoundedRectangle(cornerRadius: 28)).accessibilityLabel("Example room to scan")
-                Text("Move slowly around the room. Include the walls and larger Objects.").foregroundStyle(ReSpaceStyle.secondary)
+                OlloMessage(cue: .presenting) {
+                    Text("Move slowly around the room. Include the walls and larger Objects.").foregroundStyle(ReSpaceStyle.secondary)
+                }
                 DisclosureGroup("Ready to scan") { Text("ReSpace checks camera access, the connection and space to save your scan before starting.").padding(.top, 8) }.font(ReSpaceStyle.font(13))
             } footer: {
                 Button("Start scan") { scanSetup = false; Task { await start() } }.buttonStyle(RSButtonStyle()).disabled(app.busy)
@@ -133,25 +151,10 @@ struct ContentView: View {
         }
     }
     private func roomCard(_ room: JSONValue, hero: Bool) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            if hero {
-                roomImage(room).frame(height: 240).clipShape(RoundedRectangle(cornerRadius: 28))
-            }
-            HStack(spacing: 16) {
-                if !hero { roomImage(room).frame(width: 64, height: 64).clipShape(RoundedRectangle(cornerRadius: 16)) }
-                VStack(alignment: .leading, spacing: 5) {
-                    Text(room["name"].text).font(ReSpaceStyle.font(18, weight: .semibold))
-                    Text("Scanned \(displayDate(room["scan_at"].string ?? room["created_at"].text))").font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
-                    if let state = room["current_operation_state"].string {
-                        Text(state.replacingOccurrences(of: "_", with: " ").capitalized).font(ReSpaceStyle.font(12, weight: .medium)).foregroundStyle(ReSpaceStyle.purple)
-                    } else if room["capture_state"].text != "complete" {
-                        Text(room["capture_state"].text.replacingOccurrences(of: "_", with: " ")).font(ReSpaceStyle.font(12))
-                    }
-                }
-                Spacer()
-                Image(systemName: "arrow.right").font(.system(size: 16))
-            }.padding(.vertical, 8)
-        }.foregroundStyle(ReSpaceStyle.ink)
+        RSRoomCard(title: room["name"].text,
+                   subtitle: "Scanned \(displayDate(room["scan_at"].string ?? room["created_at"].text))",
+                   status: (room["current_operation_state"].string ?? (room["capture_state"].text == "complete" ? nil : room["capture_state"].text))?.replacingOccurrences(of: "_", with: " ").capitalized,
+                   hero: hero) { roomImage(room) }
     }
     private func roomImage(_ room: JSONValue) -> some View {
         Group {

@@ -1,0 +1,1071 @@
+{
+  "source": ".lavish/respace-middle.html",
+  "start_seconds": 24,
+  "end_seconds": 162,
+  "beats": [
+    {
+      "id": "beat-1",
+      "directions": [
+        "Picture. Presenter → phone scan → walls, openings and measured room emerge. Use an editorial jump across capture; eight seconds is screen time, not a scan-speed claim.",
+        "Motif. A room miniature becomes the first node. Brief label: “RoomPlan + LiDAR.” Perceptron Mk1.5 may appear as a small-object detection inset later in processing; do not show deferred detections as scan-time results."
+      ],
+      "title": "Measure the real room",
+      "narration": "Meet ReSpace. Scan your room. LiDAR captures its shape and measurements, giving the design a real space to work with.",
+      "start_seconds": 24,
+      "end_seconds": 32,
+      "base": [
+        {
+          "id": "middle-base-01",
+          "start_seconds": 24,
+          "end_seconds": 26,
+          "visual_description": "Presenter introduces ReSpace in the dorm.",
+          "exact_action": "Address the lens, then cut from the phone gesture into the room scan.\n\nPicture. Presenter → phone scan → walls, openings and measured room emerge. Use an editorial jump across capture; eight seconds is screen time, not a scan-speed claim.\n\nMotif. A room miniature becomes the first node. Brief label: “RoomPlan + LiDAR.” Perceptron Mk1.5 may appear as a small-object detection inset later in processing; do not show deferred detections as scan-time results.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            1
+          ]
+        },
+        {
+          "id": "middle-base-02",
+          "start_seconds": 26,
+          "end_seconds": 32,
+          "visual_description": "Full-screen scan becomes a measured room.",
+          "exact_action": "Show native walls, openings and measurements. Jump across capture processing; this is not an eight-second capture claim.",
+          "visual_type": "recording",
+          "word_range": [
+            2,
+            19
+          ]
+        }
+      ],
+      "overlay_1": [
+        {
+          "id": "middle-overlay_1-01",
+          "start_seconds": 29,
+          "end_seconds": 32,
+          "visual_description": "A measured-room miniature becomes the first diagram node.",
+          "exact_action": "Collect the room miniature into “Measured room” / “RoomPlan + LiDAR · Keep”. This first node introduces the recurring motif; clear it before the next app panel.",
+          "visual_type": "general-asset",
+          "word_range": [
+            11,
+            19
+          ]
+        }
+      ],
+      "overlay_2": [
+        {
+          "id": "middle-overlay_2-01",
+          "start_seconds": 24,
+          "end_seconds": 26,
+          "visual_description": "A small ReSpace wordmark introduces the product.",
+          "exact_action": "Fade the wordmark as the scan takes over.",
+          "visual_type": "general-asset",
+          "word_range": [
+            0,
+            1
+          ]
+        },
+        {
+          "id": "middle-overlay_2-02",
+          "start_seconds": 26,
+          "end_seconds": 29,
+          "visual_description": "“RoomPlan + LiDAR” identifies the measured capture.",
+          "exact_action": "Keep the label clear of the actual walls, openings and measurements. Deferred small-object detections must not appear as already captured.",
+          "visual_type": "general-asset",
+          "word_range": [
+            5,
+            10
+          ]
+        }
+      ],
+      "emphasis": "LiDAR"
+    },
+    {
+      "id": "beat-2",
+      "directions": [
+        "Picture. Protect the bed and desk with Keep. Enter a real budget and the student’s goal. Maintain that budget throughout all later cards and totals.",
+        "Motif. A small lock and budget tag attach to the room node. Keep means protecting both presence and position."
+      ],
+      "title": "Set the boundaries",
+      "narration": "Choose what stays. Set a budget. Then tell it how you want to live here: somewhere to concentrate, with room for friends.",
+      "start_seconds": 32,
+      "end_seconds": 42,
+      "base": [
+        {
+          "id": "middle-base-03",
+          "start_seconds": 32,
+          "end_seconds": 42,
+          "visual_description": "Presenter explains Keep, budget and the room goal.",
+          "exact_action": "Keep the presenter left and allow one readable app panel at a time on the right.\n\nPicture. Protect the bed and desk with Keep. Enter a real budget and the student’s goal. Maintain that budget throughout all later cards and totals.\n\nMotif. A small lock and budget tag attach to the room node. Keep means protecting both presence and position.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            21
+          ]
+        }
+      ],
+      "overlay_1": [
+        {
+          "id": "middle-overlay_1-02",
+          "start_seconds": 32,
+          "end_seconds": 35.5,
+          "visual_description": "Keep selections protect the existing bed and desk.",
+          "exact_action": "Show the real Keep controls. Protect presence and position, leaving permanent fixtures unchanged.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            2
+          ]
+        },
+        {
+          "id": "middle-overlay_1-03",
+          "start_seconds": 35.5,
+          "end_seconds": 38,
+          "visual_description": "A budget is set in the same app panel.",
+          "exact_action": "Hold the selected amount. Use the same approved budget in later merchant cards and shopping totals.",
+          "visual_type": "recording",
+          "word_range": [
+            3,
+            5
+          ]
+        },
+        {
+          "id": "middle-overlay_1-04",
+          "start_seconds": 38,
+          "end_seconds": 42,
+          "visual_description": "The student enters the study-and-friends goal.",
+          "exact_action": "Type and hold the goal. Keep the already stated information available so the next question does not repeat it.",
+          "visual_type": "recording",
+          "word_range": [
+            6,
+            21
+          ]
+        }
+      ],
+      "overlay_2": [
+        {
+          "id": "middle-overlay_2-03",
+          "start_seconds": 32.5,
+          "end_seconds": 35,
+          "visual_description": "Keep controls receive a restrained selection outline.",
+          "exact_action": "Follow the bed and desk selections; clear the outline before the budget panel.",
+          "visual_type": "general-asset",
+          "word_range": [
+            0,
+            2
+          ]
+        },
+        {
+          "id": "middle-overlay_2-04",
+          "start_seconds": 36,
+          "end_seconds": 37.5,
+          "visual_description": "The approved budget receives a brief underline.",
+          "exact_action": "Emphasize the settled amount once, then clear it.",
+          "visual_type": "general-asset",
+          "word_range": [
+            3,
+            5
+          ]
+        },
+        {
+          "id": "middle-overlay_2-05",
+          "start_seconds": 39,
+          "end_seconds": 41.5,
+          "visual_description": "The study and friends phrases receive brief emphasis.",
+          "exact_action": "Highlight the two uses already established by the student; clear the emphasis before the practical question.",
+          "visual_type": "general-asset",
+          "word_range": [
+            15,
+            21
+          ]
+        }
+      ],
+      "emphasis": "what stays"
+    },
+    {
+      "id": "beat-3",
+      "directions": [
+        "Picture. First hold one practical question. Example answer: “We usually sit on the bed.” Then two generated style images; tap one and let it expand. This is a proposed question, not a fabricated recorded output.",
+        "Decision. The practical question must concern information the user has not already supplied. Generated images are preference references. Concrete purchase comparisons use verified listing images."
+      ],
+      "title": "Ask something useful",
+      "narration": "ReSpace asks questions that help shape the plan. When friends come over, where does everyone sit? And which of these spaces feels more like you?",
+      "start_seconds": 42,
+      "end_seconds": 55,
+      "base": [
+        {
+          "id": "middle-base-04",
+          "start_seconds": 42,
+          "end_seconds": 48,
+          "visual_description": "Full-screen practical question asks where friends sit.",
+          "exact_action": "Hold “When friends come over, where does everyone sit?” and the example answer “We usually sit on the bed.” The question must clarify information not already supplied.\n\nPicture. First hold one practical question. Example answer: “We usually sit on the bed.” Then two generated style images; tap one and let it expand. This is a proposed question, not a fabricated recorded output.\n\nDecision. The practical question must concern information the user has not already supplied. Generated images are preference references. Concrete purchase comparisons use verified listing images.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            15
+          ]
+        },
+        {
+          "id": "middle-base-05",
+          "start_seconds": 48,
+          "end_seconds": 55,
+          "visual_description": "Two generated style references invite a preference.",
+          "exact_action": "Hold both reference images, select one, then expand it. These are atmosphere references, not verified purchasable Product images.",
+          "visual_type": "recording",
+          "word_range": [
+            16,
+            24
+          ]
+        }
+      ],
+      "overlay_1": [
+        {
+          "id": "middle-overlay_1-05",
+          "start_seconds": 52,
+          "end_seconds": 55,
+          "visual_description": "The chosen generated reference expands.",
+          "exact_action": "Expand the selected atmosphere reference while retaining its identity. This choice supplies taste, not Product measurements or a buy link.",
+          "visual_type": "generative",
+          "word_range": [
+            21,
+            24
+          ]
+        }
+      ],
+      "overlay_2": [
+        {
+          "id": "middle-overlay_2-06",
+          "start_seconds": 42,
+          "end_seconds": 48,
+          "visual_description": "The practical question and answer receive one restrained emphasis.",
+          "exact_action": "Keep all question text and the selected answer readable. Clear before the visual reference choice.",
+          "visual_type": "general-asset",
+          "word_range": [
+            8,
+            15
+          ]
+        },
+        {
+          "id": "middle-overlay_2-07",
+          "start_seconds": 48,
+          "end_seconds": 52,
+          "visual_description": "“Style references” distinguishes the generated image choice.",
+          "exact_action": "Keep both options readable; the label distinguishes taste references from verified shopping images.",
+          "visual_type": "general-asset",
+          "word_range": [
+            16,
+            20
+          ]
+        },
+        {
+          "id": "middle-overlay_2-08",
+          "start_seconds": 52,
+          "end_seconds": 55,
+          "visual_description": "A selection border follows the preferred reference.",
+          "exact_action": "Follow the selected image as it expands; clear the border at the transition.",
+          "visual_type": "general-asset",
+          "word_range": [
+            21,
+            24
+          ]
+        }
+      ],
+      "emphasis": null
+    },
+    {
+      "id": "beat-4",
+      "directions": [
+        "Picture. Extract a warm swatch, a material crop and “cozy” from the chosen reference. At 01:04 show a three-second furnished preview in the same room geography.",
+        "Motif. These visual fragments gather into a taste node and connect to the Gemini agent core. Treat this as a film graphic unless the app exposes a profile screen."
+      ],
+      "title": "Make the answers visible",
+      "narration": "Your answers build a taste profile: the colors and materials you like, and how you want the room to feel.",
+      "start_seconds": 55,
+      "end_seconds": 67,
+      "base": [
+        {
+          "id": "middle-base-06",
+          "start_seconds": 55,
+          "end_seconds": 64,
+          "visual_description": "Presenter connects the selected reference to a taste profile.",
+          "exact_action": "Leave room for material fragments and the second diagram return. The profile is an editorial graphic unless the app exposes it.\n\nPicture. Extract a warm swatch, a material crop and “cozy” from the chosen reference. At 01:04 show a three-second furnished preview in the same room geography.\n\nMotif. These visual fragments gather into a taste node and connect to the Gemini agent core. Treat this as a film graphic unless the app exposes a profile screen.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            15
+          ]
+        },
+        {
+          "id": "middle-base-07",
+          "start_seconds": 64,
+          "end_seconds": 67,
+          "visual_description": "First furnished preview shows the same room.",
+          "exact_action": "Hold the early preview for three seconds. Retain the established bed, desk, window and openings; it previews the later complete proposal.",
+          "visual_type": "recording",
+          "word_range": [
+            16,
+            19
+          ]
+        }
+      ],
+      "overlay_1": [
+        {
+          "id": "middle-overlay_1-06",
+          "start_seconds": 55,
+          "end_seconds": 59.5,
+          "visual_description": "Warm color, material and “cozy” gather from the chosen reference.",
+          "exact_action": "Extract a warm swatch and a material crop, keeping their relationship to the selected image visible.",
+          "visual_type": "general-asset",
+          "word_range": [
+            0,
+            9
+          ]
+        },
+        {
+          "id": "middle-overlay_1-07",
+          "start_seconds": 59.5,
+          "end_seconds": 64,
+          "visual_description": "Taste and useful questions connect to the Gemini core.",
+          "exact_action": "Preserve the measured-room node. Collect the swatch, material crop and “cozy” into “Taste profile” with “Answers · colors · materials”; connect room and taste to “Gemini” / “agent core”. Add the returning “Useful questions” / “Practical + visual choices” loop. Keep node positions stable; this is an editorial overview, not a separate app dashboard.",
+          "visual_type": "general-asset",
+          "word_range": [
+            10,
+            15
+          ]
+        }
+      ],
+      "overlay_2": [
+        {
+          "id": "middle-overlay_2-09",
+          "start_seconds": 55,
+          "end_seconds": 59.5,
+          "visual_description": "Color, material and “cozy” identify the chosen preferences.",
+          "exact_action": "Keep the labels attached to their swatch or crop, then gather them into the taste node.",
+          "visual_type": "general-asset",
+          "word_range": [
+            6,
+            9
+          ]
+        },
+        {
+          "id": "middle-overlay_2-10",
+          "start_seconds": 64,
+          "end_seconds": 67,
+          "visual_description": "“Proposed design” identifies the early furnished preview.",
+          "exact_action": "Attach the label to the room preview and preserve the established room geography.",
+          "visual_type": "general-asset",
+          "word_range": [
+            16,
+            19
+          ]
+        }
+      ],
+      "emphasis": "taste profile"
+    },
+    {
+      "id": "beat-5",
+      "directions": [
+        "Picture. Four genuine paper screenshots rise from below in a shallow fan, staggered by roughly 100 ms. Hold readable titles, then pull one useful idea into the room: a chair approach or conversation arrangement.",
+        "Motif. The paper fan becomes the research node feeding Gemini, beside the taste input. Add “Research-informed planning.” Skip productivity percentages and brain graphics."
+      ],
+      "title": "Give the research a purpose",
+      "narration": "Research on how people use and experience spaces informs the plan, alongside your preferences. Room to work, move, and spend time together.",
+      "start_seconds": 67,
+      "end_seconds": 80,
+      "base": [
+        {
+          "id": "middle-base-08",
+          "start_seconds": 67,
+          "end_seconds": 77,
+          "visual_description": "Presenter explains research-informed planning.",
+          "exact_action": "Keep the lower half clear for four actual paper pages and their transition into the research input.\n\nPicture. Four genuine paper screenshots rise from below in a shallow fan, staggered by roughly 100 ms. Hold readable titles, then pull one useful idea into the room: a chair approach or conversation arrangement.\n\nMotif. The paper fan becomes the research node feeding Gemini, beside the taste input. Add “Research-informed planning.” Skip productivity percentages and brain graphics.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            13
+          ]
+        },
+        {
+          "id": "middle-base-09",
+          "start_seconds": 77,
+          "end_seconds": 80,
+          "visual_description": "Measured room demonstrates a practical research application.",
+          "exact_action": "Show a usable chair approach or conversation arrangement. Present only a check demonstrated by this run.",
+          "visual_type": "recording",
+          "word_range": [
+            14,
+            21
+          ]
+        }
+      ],
+      "overlay_1": [
+        {
+          "id": "middle-overlay_1-08",
+          "start_seconds": 67,
+          "end_seconds": 72,
+          "visual_description": "Four actual research-paper pages rise in a shallow fan.",
+          "exact_action": "Stagger entry by roughly 100 ms; use the lower half of frame and hold readable titles. Use the supplied article-opening PNGs: Gosling et al. (2002), A Room With a Cue, respace-middle-assets/gosling.png, label “Personal expression”; Nieuwenhuis et al. (2014), The Relative Benefits of Green Versus Lean Office Space, respace-middle-assets/green-article.png, label “Workspace experience”; Merrell et al. (2011), Interactive Furniture Layout Using Interior Design Guidelines, respace-middle-assets/merrell.png, label “Conversation + clearance”; Fisher et al. (2015), Activity-centric Scene Synthesis for Functional 3D Scene Modeling, respace-middle-assets/activity.png, label “Space for actual activities”. Images live in .lavish/ beside the approved source. Keep original pages intact; any emphasis is an editorial overlay.",
+          "visual_type": "general-asset",
+          "word_range": [
+            0,
+            7
+          ]
+        },
+        {
+          "id": "middle-overlay_1-09",
+          "start_seconds": 72,
+          "end_seconds": 76,
+          "visual_description": "The paper fan becomes the research input to Gemini.",
+          "exact_action": "Keep the room, taste and useful-question nodes in place. Collapse the pages into “Research” / “Activities · space · preferences”, feeding Gemini beside the taste input. Keep the diagram return to a few seconds, then clear it.",
+          "visual_type": "general-asset",
+          "word_range": [
+            8,
+            13
+          ]
+        }
+      ],
+      "overlay_2": [
+        {
+          "id": "middle-overlay_2-11",
+          "start_seconds": 67,
+          "end_seconds": 72,
+          "visual_description": "“Research-informed planning” introduces the paper references.",
+          "exact_action": "Use topic labels from the actual papers. No productivity percentages, brain graphics or claim of a psychologically optimal room.",
+          "visual_type": "general-asset",
+          "word_range": [
+            0,
+            7
+          ]
+        },
+        {
+          "id": "middle-overlay_2-12",
+          "start_seconds": 77,
+          "end_seconds": 80,
+          "visual_description": "A chair approach or conversation arrangement is highlighted.",
+          "exact_action": "Connect one relevant research idea to an actual usable relationship. Only show clearances or checks established in this run.",
+          "visual_type": "general-asset",
+          "word_range": [
+            14,
+            21
+          ]
+        }
+      ],
+      "emphasis": "Research"
+    },
+    {
+      "id": "beat-6",
+      "directions": [
+        "Picture. One lamp moves from merchant listing → checked dimensions, price and availability → ranked choice. Brief labels: “SerpAPI · discovery,” “Playwright · merchant evidence,” “Gemini · extraction + ranking.”",
+        "Motif. Add stored catalog + fresh search, verification and ranking. A product thumbnail settles into the database; an expired offer returns to checking. Show the next useful question returning to the user. This is the same sequential workflow, not several simultaneous agents."
+      ],
+      "title": "Find products you can buy",
+      "narration": "Gemini searches for real products and compares them against your room, preferences and budget. Product details are saved for reuse, with offer checks when needed.",
+      "start_seconds": 80,
+      "end_seconds": 97,
+      "base": [
+        {
+          "id": "middle-base-10",
+          "start_seconds": 80,
+          "end_seconds": 87,
+          "visual_description": "Presenter explains finding real products.",
+          "exact_action": "Follow the same lamp through discovery and merchant verification, with a readable listing beside the presenter.\n\nPicture. One lamp moves from merchant listing → checked dimensions, price and availability → ranked choice. Brief labels: “SerpAPI · discovery,” “Playwright · merchant evidence,” “Gemini · extraction + ranking.”\n\nMotif. Add stored catalog + fresh search, verification and ranking. A product thumbnail settles into the database; an expired offer returns to checking. Show the next useful question returning to the user. This is the same sequential workflow, not several simultaneous agents.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            4
+          ]
+        },
+        {
+          "id": "middle-base-11",
+          "start_seconds": 87,
+          "end_seconds": 93,
+          "visual_description": "Full-screen merchant listing shows the selected lamp.",
+          "exact_action": "Check the exact variant’s dimensions, price and availability; the verified listing and placed lamp must stay consistent.",
+          "visual_type": "recording",
+          "word_range": [
+            5,
+            13
+          ]
+        },
+        {
+          "id": "middle-base-12",
+          "start_seconds": 93,
+          "end_seconds": 97,
+          "visual_description": "Presenter explains product reuse beside the expanded diagram.",
+          "exact_action": "Use the fourth diagram return for stored candidates, fresh search, merchant checks, ranking and the next useful question.",
+          "visual_type": "recording",
+          "word_range": [
+            14,
+            24
+          ]
+        }
+      ],
+      "overlay_1": [
+        {
+          "id": "middle-overlay_1-10",
+          "start_seconds": 80,
+          "end_seconds": 87,
+          "visual_description": "The lamp listing appears beside the presenter.",
+          "exact_action": "Trace one actual lamp from its merchant listing toward the same checked Product used later. Keep title, variant and image consistent.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            13
+          ]
+        },
+        {
+          "id": "middle-overlay_1-11",
+          "start_seconds": 93,
+          "end_seconds": 97,
+          "visual_description": "Product search, verification, ranking and database reuse join the diagram.",
+          "exact_action": "Retain room, taste, research and question-loop inputs. Add “Catalog + fresh search” / “Stored candidates + SerpAPI”, “Check merchant evidence” / “Playwright + Gemini extraction”, and “Rank eligible products” / “Room · preferences · budget”. Animate discovery → checking → ranking → Gemini, persisting the lamp thumbnail into the stored catalog. Label the refresh path “Persist evidence · refresh stale offers”. Reuse fresh eligible evidence; refresh stale offers when needed. The next useful question returns to the user. Tools run sequentially and pause for answers; Playwright supplies product evidence, not interview questions.",
+          "visual_type": "general-asset",
+          "word_range": [
+            14,
+            24
+          ]
+        }
+      ],
+      "overlay_2": [
+        {
+          "id": "middle-overlay_2-13",
+          "start_seconds": 80,
+          "end_seconds": 87,
+          "visual_description": "Discovery, merchant evidence and ranking are identified.",
+          "exact_action": "Use these exact brief labels in sequence: “SerpAPI · discovery”, “Playwright · merchant evidence”, “Gemini · extraction + ranking”. Keep the listing readable.",
+          "visual_type": "general-asset",
+          "word_range": [
+            0,
+            4
+          ]
+        },
+        {
+          "id": "middle-overlay_2-14",
+          "start_seconds": 87,
+          "end_seconds": 93,
+          "visual_description": "Dimensions, price and availability are checked in sequence.",
+          "exact_action": "Highlight actual evidence for the exact variant, ending with a clear unobstructed merchant listing. Do not substitute package measurements.",
+          "visual_type": "general-asset",
+          "word_range": [
+            5,
+            13
+          ]
+        }
+      ],
+      "emphasis": "real products"
+    },
+    {
+      "id": "beat-7",
+      "directions": [
+        "Picture. A named relationship becomes a measured placement in the 3D room. Show only the clearance and collision checks the run actually passed. Keep the protected desk and bed visible.",
+        "Motif. Gemini → placement solver → validated 3D design. Product dimensions, not the apparent size of an AI mesh, determine scale. Do not suggest live reconstruction of every merchant product; SPAR3D is an offline asset path."
+      ],
+      "title": "Explain what makes it fit",
+      "narration": "Gemini plans the arrangement. A placement solver uses the measurements to position the furniture and check fit, collisions and clear paths.",
+      "start_seconds": 97,
+      "end_seconds": 108,
+      "base": [
+        {
+          "id": "middle-base-13",
+          "start_seconds": 97,
+          "end_seconds": 108,
+          "visual_description": "A named relationship becomes a measured 3D placement.",
+          "exact_action": "Show Gemini proposing a relationship and the solver calculating a placement. Keep the protected bed and desk visible; display only checks the run passed.\n\nPicture. A named relationship becomes a measured placement in the 3D room. Show only the clearance and collision checks the run actually passed. Keep the protected desk and bed visible.\n\nMotif. Gemini → placement solver → validated 3D design. Product dimensions, not the apparent size of an AI mesh, determine scale. Do not suggest live reconstruction of every merchant product; SPAR3D is an offline asset path.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            20
+          ]
+        }
+      ],
+      "overlay_1": [
+        {
+          "id": "middle-small-object-detection",
+          "start_seconds": 97,
+          "end_seconds": 102,
+          "visual_description": "Deferred small-object detections join the measured room.",
+          "exact_action": "Show a Perceptron Mk1.5 inset only after deferred perception has actually run. Connect its detected small Objects to the processed room; native LiDAR measurements and Product evidence remain the scale sources. Clear this inset before the solver-diagram return.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            9
+          ]
+        },
+        {
+          "id": "middle-overlay_1-12",
+          "start_seconds": 102,
+          "end_seconds": 106,
+          "visual_description": "The placement solver joins the growing diagram.",
+          "exact_action": "Retain the existing system. Connect Gemini → “Placement solver” / “Dimensions · collisions · paths” → “3D design + visualization” / “Measured layout → proposed image”. Product evidence determines physical scale; generated meshes establish appearance only. SPAR3D is an offline catalog asset path, not live reconstruction of every search result.",
+          "visual_type": "general-asset",
+          "word_range": [
+            10,
+            15
+          ]
+        }
+      ],
+      "overlay_2": [
+        {
+          "id": "middle-overlay_2-15",
+          "start_seconds": 97,
+          "end_seconds": 102,
+          "visual_description": "The proposed spatial relationship becomes a metric placement.",
+          "exact_action": "Identify Gemini’s proposed relationship, then the solver’s computed position. Keep these two responsibilities distinct.",
+          "visual_type": "general-asset",
+          "word_range": [
+            0,
+            9
+          ]
+        },
+        {
+          "id": "middle-overlay_2-16",
+          "start_seconds": 106,
+          "end_seconds": 108,
+          "visual_description": "Passed fit, collision and path checks are identified.",
+          "exact_action": "Only label checks the run actually passed. The measured model and verified dimensions supply fit evidence.",
+          "visual_type": "general-asset",
+          "word_range": [
+            16,
+            20
+          ]
+        }
+      ],
+      "emphasis": "placement solver"
+    },
+    {
+      "id": "beat-8",
+      "directions": [
+        "Picture. A stable 3D camera matches to the proposed photorealistic image. Keep doors, window and selected products consistent. Hold the beauty view without diagram overlays for at least four seconds.",
+        "Meaning. Separate navigable 3D from the photorealistic image. The latter is a visualization; measured placement is the fit evidence."
+      ],
+      "title": "Let the room breathe",
+      "narration": "Explore the layout in 3D, then see a photorealistic view of your room. Get a feel for it before buying anything.",
+      "start_seconds": 108,
+      "end_seconds": 121,
+      "base": [
+        {
+          "id": "middle-base-14",
+          "start_seconds": 108,
+          "end_seconds": 113,
+          "visual_description": "Explore the validated room layout in 3D.",
+          "exact_action": "Move gently through the navigable 3D layout, ending on the camera position used by the photorealistic view.\n\nPicture. A stable 3D camera matches to the proposed photorealistic image. Keep doors, window and selected products consistent. Hold the beauty view without diagram overlays for at least four seconds.\n\nMeaning. Separate navigable 3D from the photorealistic image. The latter is a visualization; measured placement is the fit evidence.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            4
+          ]
+        },
+        {
+          "id": "middle-base-15",
+          "start_seconds": 113,
+          "end_seconds": 121,
+          "visual_description": "The same camera resolves into the photorealistic proposal.",
+          "exact_action": "Preserve the layout, openings and selected Products. From the final four seconds onward, hold the beauty view with every overlay cleared.",
+          "visual_type": "recording",
+          "word_range": [
+            5,
+            20
+          ]
+        }
+      ],
+      "overlay_2": [
+        {
+          "id": "middle-overlay_2-17",
+          "start_seconds": 108,
+          "end_seconds": 113,
+          "visual_description": "“3D layout” identifies the navigable measured design.",
+          "exact_action": "Attach the label to the 3D view and clear it at the image transition.",
+          "visual_type": "general-asset",
+          "word_range": [
+            0,
+            4
+          ]
+        },
+        {
+          "id": "middle-overlay_2-18",
+          "start_seconds": 113,
+          "end_seconds": 117,
+          "visual_description": "“Photorealistic visualization” identifies the proposed appearance.",
+          "exact_action": "Keep the image consistent with the validated room. Clear every overlay before the final four-second beauty hold.",
+          "visual_type": "general-asset",
+          "word_range": [
+            5,
+            12
+          ]
+        }
+      ],
+      "emphasis": "photorealistic view"
+    },
+    {
+      "id": "beat-9",
+      "directions": [
+        "Picture. One specific request and one visible result: the notebook has more space. Show a quick Undo/reapply beat if readable, with the same camera and unchanged surrounding room.",
+        "Motif. The edit returns to the planning and validation path; a new saved version appears only after success. The viewer sees control, not a technical versioning lecture."
+      ],
+      "title": "Make it yours, again",
+      "narration": "Need more desk space? Ask for a smaller lamp. Compare the change. Undo it whenever you want.",
+      "start_seconds": 121,
+      "end_seconds": 131,
+      "base": [
+        {
+          "id": "middle-base-16",
+          "start_seconds": 121,
+          "end_seconds": 124,
+          "visual_description": "Presenter asks for a smaller lamp.",
+          "exact_action": "Connect the request to notebook space, then move into the actual edit operation.\n\nPicture. One specific request and one visible result: the notebook has more space. Show a quick Undo/reapply beat if readable, with the same camera and unchanged surrounding room.\n\nMotif. The edit returns to the planning and validation path; a new saved version appears only after success. The viewer sees control, not a technical versioning lecture.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            8
+          ]
+        },
+        {
+          "id": "middle-base-17",
+          "start_seconds": 124,
+          "end_seconds": 131,
+          "visual_description": "Updated design makes room for the notebook.",
+          "exact_action": "Keep the same camera for before and after. Include a readable Undo/reapply if possible; return to the chosen saved result.",
+          "visual_type": "recording",
+          "word_range": [
+            9,
+            16
+          ]
+        }
+      ],
+      "overlay_1": [
+        {
+          "id": "middle-overlay_1-13",
+          "start_seconds": 121,
+          "end_seconds": 124,
+          "visual_description": "A request asks for a smaller lamp to free notebook space.",
+          "exact_action": "Hold the actual edit request and show a clear transition across processing. Do not imply the edit bypasses product verification, approved budget or spatial validation.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            8
+          ]
+        },
+        {
+          "id": "middle-overlay_1-14",
+          "start_seconds": 124,
+          "end_seconds": 128,
+          "visual_description": "A small Before inset compares the original lamp.",
+          "exact_action": "Use the same desk viewpoint. Keep the newly available notebook space visible and remove the inset before Undo/reapply.",
+          "visual_type": "recording",
+          "word_range": [
+            9,
+            11
+          ]
+        }
+      ],
+      "overlay_2": [
+        {
+          "id": "middle-overlay_2-19",
+          "start_seconds": 121,
+          "end_seconds": 124,
+          "visual_description": "The smaller-lamp request is briefly emphasized.",
+          "exact_action": "Clear the emphasis before the updated result.",
+          "visual_type": "general-asset",
+          "word_range": [
+            4,
+            8
+          ]
+        },
+        {
+          "id": "middle-overlay_2-20",
+          "start_seconds": 124,
+          "end_seconds": 128,
+          "visual_description": "New notebook space is highlighted in the updated design.",
+          "exact_action": "Keep the Before inset visible, then clear both emphases so the result reads cleanly.",
+          "visual_type": "general-asset",
+          "word_range": [
+            9,
+            11
+          ]
+        },
+        {
+          "id": "middle-overlay_2-21",
+          "start_seconds": 128,
+          "end_seconds": 131,
+          "visual_description": "Undo and reapply identify the saved-version change.",
+          "exact_action": "Briefly return to the previous complete version, then reapply the chosen result. The edit rejoins planning and validation before saving.",
+          "visual_type": "general-asset",
+          "word_range": [
+            12,
+            16
+          ]
+        }
+      ],
+      "emphasis": "Undo"
+    },
+    {
+      "id": "beat-10",
+      "directions": [
+        "Picture. Hold a real Product card, then tap the shopping button. Show quantities and the saved total; retain the tax/shipping exclusion in the UI.",
+        "Motif. The placed lamp and merchant card remain one identifiable product. The list is the practical destination of the room design."
+      ],
+      "title": "Turn the idea into a list",
+      "narration": "Tap a piece for its size, price and where to buy it. Your shopping list keeps the products and links together.",
+      "start_seconds": 131,
+      "end_seconds": 141,
+      "base": [
+        {
+          "id": "middle-base-18",
+          "start_seconds": 131,
+          "end_seconds": 137,
+          "visual_description": "Full-screen Product card gives size, price and store link.",
+          "exact_action": "Direct attention in spoken order, then leave the complete card unobstructed.\n\nPicture. Hold a real Product card, then tap the shopping button. Show quantities and the saved total; retain the tax/shipping exclusion in the UI.\n\nMotif. The placed lamp and merchant card remain one identifiable product. The list is the practical destination of the room design.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            11
+          ]
+        },
+        {
+          "id": "middle-base-19",
+          "start_seconds": 137,
+          "end_seconds": 141,
+          "visual_description": "Shopping button opens quantities, links and the saved total.",
+          "exact_action": "Use the same selected Products, whole purchase quantities and approved budget. Keep tax and shipping exclusions readable.",
+          "visual_type": "recording",
+          "word_range": [
+            12,
+            20
+          ]
+        }
+      ],
+      "overlay_2": [
+        {
+          "id": "middle-overlay_2-22",
+          "start_seconds": 131,
+          "end_seconds": 137,
+          "visual_description": "Size, price and where to buy are emphasized in spoken order.",
+          "exact_action": "Finish on the complete Product card with no obstructing emphasis.",
+          "visual_type": "general-asset",
+          "word_range": [
+            0,
+            11
+          ]
+        },
+        {
+          "id": "middle-overlay_2-23",
+          "start_seconds": 137,
+          "end_seconds": 141,
+          "visual_description": "Quantities, saved total and exclusions remain readable.",
+          "exact_action": "Use whole purchase quantities and the real saved total. Keep tax and shipping exclusions in the shopping UI.",
+          "visual_type": "general-asset",
+          "word_range": [
+            12,
+            20
+          ]
+        }
+      ],
+      "emphasis": "shopping list"
+    },
+    {
+      "id": "beat-11",
+      "directions": [
+        "Picture. Native share sheet → staged Messages compose to Mom, with image and shopping links. Type: “Can I borrow $200? It’s for the vision.” Hold long enough to read. The actual shopping total stays unchanged.",
+        "Sound. Typing, a small pause, presenter’s look to camera. Leave the rest unvoiced. Do not send a real message to make the shot."
+      ],
+      "title": "Send it to Mom",
+      "narration": "Share the whole list. Even with Mom.",
+      "start_seconds": 141,
+      "end_seconds": 151,
+      "base": [
+        {
+          "id": "middle-base-20",
+          "start_seconds": 141,
+          "end_seconds": 143,
+          "visual_description": "Presenter introduces sharing the list with Mom.",
+          "exact_action": "Give the native share sheet room beside the presenter, then cut into Messages.\n\nPicture. Native share sheet → staged Messages compose to Mom, with image and shopping links. Type: “Can I borrow $200? It’s for the vision.” Hold long enough to read. The actual shopping total stays unchanged.\n\nSound. Typing, a small pause, presenter’s look to camera. Leave the rest unvoiced. Do not send a real message to make the shot.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "middle-base-21",
+          "start_seconds": 143,
+          "end_seconds": 151,
+          "visual_description": "Staged Messages draft addresses Mom.",
+          "exact_action": "Attach the shopping images and links. Type the joke, hold it long enough to read, then leave the pause unvoiced. Do not send a real message.",
+          "visual_type": "recording",
+          "word_range": [
+            4,
+            6
+          ]
+        }
+      ],
+      "overlay_1": [
+        {
+          "id": "middle-overlay_1-15",
+          "start_seconds": 141,
+          "end_seconds": 143,
+          "visual_description": "Native sharing prepares the shopping list for Messages.",
+          "exact_action": "Choose Messages in a staged recording, attaching the list images and complete product links. The current exporter uses labeled placeholder room images; the approved completed-product film may show the intended room-render export.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "middle-overlay_1-16",
+          "start_seconds": 146,
+          "end_seconds": 151,
+          "visual_description": "The Mom draft reads “Can I borrow $200? It’s for the vision.”",
+          "exact_action": "Type this exact message and hold it for reading. Keep the real shopping total unchanged; this is the student’s borrowing request, not a replacement total. Use typing, a small pause and the presenter’s look to camera. Leave the remainder unvoiced and do not send.",
+          "visual_type": "recording",
+          "word_range": [
+            4,
+            6
+          ]
+        }
+      ],
+      "overlay_2": [
+        {
+          "id": "middle-overlay_2-24",
+          "start_seconds": 143,
+          "end_seconds": 146,
+          "visual_description": "A staged Messages draft is identified.",
+          "exact_action": "Use a small draft identifier clear of Mom’s name, attached shopping links and typed message. No real sending action.",
+          "visual_type": "general-asset",
+          "word_range": [
+            4,
+            6
+          ]
+        }
+      ],
+      "emphasis": "Mom"
+    },
+    {
+      "id": "beat-12",
+      "directions": [
+        "Picture. Two quick business-space results, then an Instagram post draft and an employee feedback thread as staged examples. Keep them brief so the student remains the main story.",
+        "Motif. The complete diagram returns. Pull back to reveal its composition inside a room silhouette, then dissolve to that room’s visualization. Hold the final image. This resolves the middle; the flower and closing remain for a separate pass."
+      ],
+      "title": "Let the idea travel",
+      "narration": "A café for conversation. An office for focused work. Share your design, and ask the people who’ll use it what they think.",
+      "start_seconds": 151,
+      "end_seconds": 162,
+      "base": [
+        {
+          "id": "middle-base-22",
+          "start_seconds": 151,
+          "end_seconds": 157,
+          "visual_description": "Presenter introduces café and office use cases.",
+          "exact_action": "Use two brief design examples beside the same presenter so the student remains the main story.\n\nPicture. Two quick business-space results, then an Instagram post draft and an employee feedback thread as staged examples. Keep them brief so the student remains the main story.\n\nMotif. The complete diagram returns. Pull back to reveal its composition inside a room silhouette, then dissolve to that room’s visualization. Hold the final image. This resolves the middle; the flower and closing remain for a separate pass.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            8
+          ]
+        },
+        {
+          "id": "middle-base-23",
+          "start_seconds": 157,
+          "end_seconds": 159,
+          "visual_description": "Instagram draft and employee feedback show ways to share.",
+          "exact_action": "Use staged examples: a post draft followed by a feedback thread. The user controls publication; no automatic posting or fabricated engagement.",
+          "visual_type": "recording",
+          "word_range": [
+            9,
+            15
+          ]
+        },
+        {
+          "id": "middle-base-24",
+          "start_seconds": 159,
+          "end_seconds": 161,
+          "visual_description": "Full diagram pulls back inside a room silhouette.",
+          "exact_action": "Bring back the complete network, then reveal its composition inside the room outline. Keep all labels and earlier node positions consistent. Include the returning “Edit → revalidate → saved version · Undo · shop · share” path. The diagram is an editorial summary; the backend executes tools sequentially.",
+          "visual_type": "general-asset",
+          "word_range": [
+            16,
+            18
+          ]
+        },
+        {
+          "id": "middle-base-25",
+          "start_seconds": 161,
+          "end_seconds": 162,
+          "visual_description": "The complete system dissolves into the room visualization.",
+          "exact_action": "Dissolve from the silhouette into the matching room and hold. Hand off to the existing closing without altering it.",
+          "visual_type": "recording",
+          "word_range": [
+            19,
+            21
+          ]
+        }
+      ],
+      "overlay_1": [
+        {
+          "id": "middle-overlay_1-17",
+          "start_seconds": 151,
+          "end_seconds": 154,
+          "visual_description": "A café design demonstrates conversation.",
+          "exact_action": "Show a brief warm café proposal. Treat this as the approved completed-product creative use case; keep people and furniture scale coherent.",
+          "visual_type": "recording",
+          "word_range": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "middle-overlay_1-18",
+          "start_seconds": 154,
+          "end_seconds": 157,
+          "visual_description": "An office design demonstrates focused work.",
+          "exact_action": "Replace the café with the office example. Keep the use case brief and make no measured productivity promise.",
+          "visual_type": "recording",
+          "word_range": [
+            4,
+            8
+          ]
+        }
+      ],
+      "overlay_2": [
+        {
+          "id": "middle-overlay_2-25",
+          "start_seconds": 151,
+          "end_seconds": 154,
+          "visual_description": "“Café · Conversation” identifies the first use case.",
+          "exact_action": "Attach the label to the café design and replace it with the office label at the panel change.",
+          "visual_type": "general-asset",
+          "word_range": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "middle-overlay_2-26",
+          "start_seconds": 154,
+          "end_seconds": 157,
+          "visual_description": "“Office · Focus” identifies the second use case.",
+          "exact_action": "Clear with the office panel before the sharing examples.",
+          "visual_type": "general-asset",
+          "word_range": [
+            4,
+            8
+          ]
+        },
+        {
+          "id": "middle-overlay_2-27",
+          "start_seconds": 157,
+          "end_seconds": 159,
+          "visual_description": "Post draft and employee feedback remain visibly staged.",
+          "exact_action": "Instagram uses a native share flow with a separately copied caption when needed; publication stays under the user’s control. Do not imply a Meta API integration or automatic sending.",
+          "visual_type": "general-asset",
+          "word_range": [
+            9,
+            15
+          ]
+        }
+      ],
+      "emphasis": "focused work"
+    }
+  ]
+}

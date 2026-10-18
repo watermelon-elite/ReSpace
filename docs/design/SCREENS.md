@@ -85,6 +85,11 @@ The image establishes what the app is about; it is inspiration, not the user's c
 
 **Actions:** open Room → review; New Scan creates a new Room. Saved shopping lists is a separate compact destination when available. Rename/delete belong to Room options, not competing large library actions.
 
+The library header is just Your rooms and an accessible shopping-bag icon. Omit
+the wordmark, mascot, tagline and lower shopping-list row. Debug Simulator scans
+use a full-color, intentionally inert Scan your room button with no device-test
+notice; physical-device scan gating stays in place.
+
 **State rules:**
 
 - Show persisted active work such as Generating or Awaiting answer.
@@ -519,11 +524,18 @@ The bag and purchase total use the same flow. Save one local snapshot for this R
 
 Show Room name, saved time, purchase lines and overall total. Each line includes Product name, merchant/exact link, purchased pack count, supplied units and paid surplus where applicable, with authoritative saved USD line total. Show approved ceiling and tax/shipping exclusions.
 
+The default view is a compact linked Product row (name, merchant, price), total,
+tax/shipping note and Share list. Put the saved timestamp, approved ceiling and
+full pack accounting under Details. Show multi-pack quantities and paid extras
+in the row when they change what is being purchased. Use a short pending-fit note
+instead of a large status banner. Saved-list rows show Room, Product count and
+total; timestamps remain available inside each list.
+
 Room fit pending remains visible for a Product-plan list. Saved-price/availability caveats explain the snapshot; do not silently refresh saved amounts.
 
 **Empty:** “Nothing to buy” is a valid result. Existing Objects do not appear as fictional purchases. Do not force sharing of a blank purchase set.
 
-**Saved-list index task:** select a Room's locally saved list. Compact row: Room, count/total and saved date. Readable offline without fetching the Room.
+**Saved-list index task:** select a Room's locally saved list. Compact row: Room and count/total. Readable offline without fetching the Room.
 
 **Verification:** app relaunch/offline read, several lists, long purchase titles, paid surplus, zero purchases and saved vs current-version distinction. No offline design editing or sync promise.
 

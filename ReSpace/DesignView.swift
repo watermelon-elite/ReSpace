@@ -11,6 +11,7 @@ struct DesignView: View {
     @State private var selectedID: String?
     @State private var showItems = false
     @State private var text = ""
+    @State private var typing = false
     @State private var ghosts = true
     @State private var reset = 0
     @State private var error: String?
@@ -134,14 +135,22 @@ struct DesignView: View {
         VStack(spacing: 8) {
             if let feedback, !feedback.isEmpty {
                 Button { showOperation = true } label: {
-                    HStack(spacing: 10) {
-                        if activeOperation { ProgressView().controlSize(.small) }
-                        Text(feedback).font(ReSpaceStyle.font(12)).lineLimit(error == nil && !activeOperation ? 2 : nil).multilineTextAlignment(.leading).frame(maxWidth: .infinity, alignment: .leading)
-                        if operation != .null { Image(systemName: "chevron.right").font(.system(size: 12)) }
-                    }.foregroundStyle(error != nil ? ReSpaceStyle.danger : ReSpaceStyle.secondary).frame(minHeight: 44)
+                    OlloMessage(cue: typing ? .listening : .operation(operation), compact: typing) {
+                        HStack(spacing: 10) {
+                            if activeOperation { ProgressView().controlSize(.small) }
+                            Text(feedback).font(ReSpaceStyle.font(12)).lineLimit(error == nil && !activeOperation ? 2 : nil).multilineTextAlignment(.leading).frame(maxWidth: .infinity, alignment: .leading)
+                            if operation != .null { Image(systemName: "chevron.right").font(.system(size: 12)) }
+                        }.foregroundStyle(error != nil ? ReSpaceStyle.danger : ReSpaceStyle.ink).frame(minHeight: 44)
+                            .padding(.horizontal, 14).background(.white, in: RoundedRectangle(cornerRadius: 20))
+                    }
                 }.buttonStyle(.plain).disabled(operation == .null).accessibilityHint(operation == .null ? "" : "Open request details")
+            } else if swapPreview == nil && !showItems {
+                OlloMessage(cue: typing ? .listening : .idle, compact: typing) {
+                    Text("What would you like to change?").font(ReSpaceStyle.font(14))
+                        .padding(14).background(.white, in: RoundedRectangle(cornerRadius: 20))
+                }
             }
-            RSComposer(text: $text, selection: selectedID.map { selectedItem["label"].string ?? $0 }, clear: { selectedID = nil }, disabled: locked) {
+            RSComposer(text: $text, selection: selectedID.map { selectedItem["label"].string ?? $0 }, clear: { selectedID = nil }, disabled: locked, onFocusChange: { typing = $0 }) {
                 let submitted = text
                 Task {
                     let accepted = await mutate("designs/\(design["design_id"].text)/chat", body: ["text": .string(submitted), "selected_item_id": selectedID.map(JSONValue.string) ?? .null])

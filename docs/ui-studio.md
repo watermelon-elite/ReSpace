@@ -23,7 +23,9 @@ The picker disappears completely. Long-press a non-control area for 1.5 seconds
 to return to the picker. Relaunching or reopening a screen from the picker resets
 its sample session. Use Simulator's screenshot and recording controls for assets.
 
-Scan setup jumps straight to room review. Questions, navigation, selection,
+In the Debug Simulator and UI studio, Scan your room keeps its normal appearance
+and intentionally does nothing when tapped. On a supported physical iPhone, the
+main app still uses the real scan setup. Questions, navigation, selection,
 room instructions and shopping/share sheets use the actual views with simulated
 responses. Text requests receive a prepared response; no AI or placement solver
 runs. The room displays bundled placeholder artwork instead of starting the 3D
@@ -42,3 +44,19 @@ The demo bypasses the backend, Keychain identity, saved Rooms, request queue and
 draft persistence. Shopping lists are constructed in memory. Sample code is
 compiled only in Debug; the fixture is a development asset excluded from archives.
 The normal **ReSpace** scheme continues to run the real app.
+
+Both schemes use the same screen implementations and design system. There is no
+second UI to copy into production: edits to a screen update both on the next
+build. The differences are sample data and the studio's static room illustration;
+the main app keeps its interactive 3D renderer. Both use `RSRoomCard` for the home
+screen; the imported Kitchenette uses a bundled render of its actual model.
+
+`ReSpace/Ollo.swift` provides the shared companion and one-pass pose animation.
+The nine existing transparent sprites are bundled in `Assets.xcassets`. Ollo
+appears in scan guidance, questions, operation results and the room composer.
+The home screen is deliberately minimal: Your rooms, a shopping-bag button,
+room cards and Scan your room. It has no wordmark, mascot, tagline or device-test
+notice. The bag opens saved shopping lists (sample lists in the UI studio).
+Keyboard focus shrinks the composer character; accessibility text sizes hide it
+before reducing text space. Reduce Motion uses still poses. Gestures run once per
+session/event, and saved designs loaded from history do not trigger a hop.

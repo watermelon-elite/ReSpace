@@ -1,11 +1,16 @@
 import json
 import re
+from copy import deepcopy
+from html import unescape
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
 from app import ORIGINAL_ID, WORKING_ID, ROOT, create_app
 from vlog_format.script_export import build_script_export
+from vlog_format.production_validation import remap_version_word_anchors
+from vlog_format.word_anchors import anchored_text
+from seed import build_seed, replace_middle
 
 
 class ScriptScreenTest(unittest.TestCase):
@@ -35,7 +40,7 @@ class ScriptScreenTest(unittest.TestCase):
         self.assertEqual(current["script"]["narration"], (ROOT / "data/voiceover.txt").read_text())
         for blocks in current["visual_tracks"].values():
             for block in blocks:
-                text = block["visual_description"] + block["recording_requirement"]["exact_action"]
+                text = block["visual_description"] + block["recording_requirement"]["exact_action"].split("\n\n", 1)[0]
                 self.assertIsNone(re.search(r"\d{2}:\d{2}|DELIVERY:|PICTURE / ACTION:|SOUND / EDIT:|SOURCE:", text))
 
     def test_edit_reanchors_without_changing_runtime_or_original(self):
@@ -91,18 +96,21 @@ class ScriptScreenTest(unittest.TestCase):
         self.assertEqual(self.client.post(self.base + "/comments", data={"comment_text": "Untrusted"}, headers={"Origin": "https://example.com"}).status_code, 403)
         self.assertEqual(self.path.read_bytes(), before)
 
-    def test_export_retains_all_silent_shots(self):
+    def test_export_replaces_old_middle_and_retains_closing(self):
         content = self.state()["versions"][-1]["content"]
         export = build_script_export(title="ReSpace", version_id=WORKING_ID, content=content)
         retained = [shot for block in content["visual_tracks"]["base"] for shot in block["shot_ids"]]
-        self.assertEqual(retained, [f"shot-{number:02}" for number in range(1, 48)])
-        self.assertIn("A friend starts to leave.", export["plain_text"])
-        self.assertIn("Measure / Plan / Check", export["plain_text"])
+        self.assertTrue(set(retained) <= {shot["id"] for shot in content["storyboard_shots"]})
+        self.assertTrue({f"shot-{number:02}" for number in range(44, 48)} <= set(retained))
+        self.assertEqual({shot for shot in retained if shot.startswith("shot-middle-")},
+                         {f"shot-middle-{number:02}" for number in range(1, 13)})
         self.assertIn("02:42", export["plain_text"])
-        self.assertIn("A flower blooms in the right environment.", export["plain_text"])
-        self.assertIn("Or use it to design your business.", export["plain_text"])
-        self.assertIn("Café · Connection", export["plain_text"])
-        self.assertNotIn("Future vision", export["plain_text"])
+        self.assertIn("Can I borrow $200? It’s for the vision.", export["plain_text"])
+        self.assertIn("Café · Conversation", export["plain_text"])
+        self.assertIn("It's still the room you walked into.", export["plain_text"])
+        for stale in ("A friend starts to leave.", "Measure / Plan / Check",
+                      "Or use it to design your business.", "demo-community", "future-study"):
+            self.assertNotIn(stale, export["plain_text"])
 
     def test_independent_layers_and_speaker_handoff(self):
         content = self.state()["versions"][-1]["content"]
@@ -119,15 +127,21 @@ class ScriptScreenTest(unittest.TestCase):
                 previous_end = block["end_seconds"]
                 previous_word = positions[block["end_word_id"]]
                 self.assertTrue(block["recording_requirement"]["exact_action"])
-        presenter = next(block for block in tracks["base"] if block["id"] == "base-11")
-        self.assertEqual((presenter["start_seconds"], presenter["end_seconds"]), (24, 45))
-        panels = [block for block in tracks["overlay_1"] if block["id"] in {"demo-scan", "demo-budget", "demo-goal"}]
-        self.assertGreater(panels[0]["start_seconds"], presenter["start_seconds"])
+        presenter = next(block for block in tracks["base"] if block["id"] == "middle-base-03")
+        self.assertEqual((presenter["start_seconds"], presenter["end_seconds"]), (32, 42))
+        panels = [block for block in tracks["overlay_1"] if block["id"] in
+                  {"middle-overlay_1-02", "middle-overlay_1-03", "middle-overlay_1-04"}]
+        self.assertEqual(panels[0]["start_seconds"], presenter["start_seconds"])
         self.assertEqual(panels[-1]["end_seconds"], presenter["end_seconds"])
-        community = next(block for block in tracks["overlay_1"] if block["id"] == "demo-community")
-        next_beat = next(beat for beat in content["script"]["beats"] if beat["id"] == "beat-40")
-        self.assertLess(community["start_seconds"], next_beat["start_seconds"])
-        self.assertGreater(community["end_seconds"], next_beat["start_seconds"])
+        self.assertEqual([anchored_text(content, panel) for panel in panels[:2]],
+                         ["Choose what stays", "Set a budget"])
+        question = next(block for block in tracks["base"] if block["id"] == "middle-base-04")
+        references = next(block for block in tracks["base"] if block["id"] == "middle-base-05")
+        self.assertTrue(anchored_text(content, question).endswith("where does everyone sit"))
+        self.assertEqual(anchored_text(content, references), "And which of these spaces feels more like you")
+        for lane in ("overlay_1", "overlay_2"):
+            self.assertFalse(any(block["start_seconds"] < 121 and block["end_seconds"] > 117
+                                 for block in tracks[lane]))
         for beat in content["script"]["beats"]:
             self.assertEqual(beat["speaker"], "External narrator" if beat["start_seconds"] < 24 else "ReSpace team")
         export = build_script_export(title="ReSpace", version_id=WORKING_ID, content=content)
@@ -139,8 +153,48 @@ class ScriptScreenTest(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 200)
         saved = next(block for block in response.json["content"]["visual_tracks"]["overlay_1"] if block["id"] == panel["id"])
-        self.assertEqual(saved["start_seconds"], 26.5)
+        self.assertEqual(saved["start_seconds"], 32)
         self.assertEqual(saved["recording_requirement"]["exact_action"], "Enter beside the presenter after the first sentence.")
+
+    def test_middle_matches_approved_html_and_complete_directions(self):
+        definition = json.loads((ROOT / "data/middle.json").read_text())
+        source = (ROOT.parent / definition["source"]).read_text()
+        passages = [unescape(text).strip("“”") for text in re.findall(
+            r'<article class="beat".*?<blockquote>(.*?)</blockquote>', source, re.S)]
+        self.assertEqual([beat["narration"] for beat in definition["beats"]], passages)
+        content = self.state()["versions"][-1]["content"]
+        middle = [beat for beat in content["script"]["beats"] if 24 <= beat["start_seconds"] < 162]
+        self.assertEqual([anchored_text(content, beat).rstrip(".!?") for beat in middle],
+                         [text.rstrip(".!?") for text in passages])
+        for beat in definition["beats"]:
+            for direction in beat["directions"]:
+                self.assertIn(direction, beat["base"][0]["exact_action"])
+        base = [b for b in content["visual_tracks"]["base"] if 24 <= b["start_seconds"] < 162]
+        self.assertEqual(base[0]["start_seconds"], 24)
+        self.assertEqual(base[-1]["end_seconds"], 162)
+        self.assertTrue(all(a["end_seconds"] == b["start_seconds"] for a, b in zip(base, base[1:])))
+
+    def test_middle_rebuild_preserves_custom_opening_and_closing(self):
+        content = deepcopy(self.state()["versions"][-1]["content"])
+        content["script"]["narration"] = "My custom opening. " + content["script"]["narration"] + "My custom closing."
+        content = remap_version_word_anchors(content)
+        content["visual_tracks"]["base"][0]["visual_description"] = "Custom doorway shot."
+        content["visual_tracks"]["base"][-1]["visual_description"] = "Custom end card."
+        definition = json.loads((ROOT / "data/middle.json").read_text())
+        changed = deepcopy(definition)
+        changed["beats"][0]["narration"] += " A little more detail."
+        result = replace_middle(content, changed)
+        self.assertEqual(result["script"]["estimated_duration_seconds"], 180)
+        for key in ("base", "overlay_1", "overlay_2", "beats"):
+            def protected(package):
+                records = package["script"]["beats"] if key == "beats" else package["visual_tracks"][key]
+                return [{**{k: v for k, v in record.items() if k not in ("start_word_id", "end_word_id")},
+                         "text": anchored_text(package, record)}
+                        for record in records if record["end_seconds"] <= 24 or record["start_seconds"] >= 162]
+            self.assertEqual(protected(result), protected(content), key)
+        self.assertTrue(result["script"]["narration"].startswith("My custom opening. "))
+        self.assertTrue(result["script"]["narration"].endswith("My custom closing."))
+        self.assertEqual(build_seed(), json.loads((ROOT / "data/seed.json").read_text()))
 
 
 if __name__ == "__main__":

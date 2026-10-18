@@ -39,28 +39,25 @@ struct ShoppingShareView: View {
                         RSIconButton(symbol: "chevron.right", label: "Next image") { page += 1 }.disabled(page == images.count - 1)
                     }
                 }
-                Text("Placeholder room image. The price labels come from your saved shopping list; their positions are illustrative.")
+                Text("Illustrative room · saved prices")
                     .font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
                 if let error { RSNotice(message: error, isError: true) }
-                DisclosureGroup("Caption and shopping links") {
+                DisclosureGroup {
                     Text(list.postCaption).font(ReSpaceStyle.font(13)).textSelection(.enabled).padding(.top, 8)
+                    Text("For Instagram, copy the caption, then choose Instagram in the share sheet. If it isn’t listed, save the images and post them from Instagram.")
+                        .font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary).padding(.top, 12)
+                } label: {
+                    Text("Caption & sharing details").frame(minHeight: 44)
                 }.font(ReSpaceStyle.font(14))
-                Text("For Instagram, copy the caption, then choose Instagram and Post in the share sheet. If Instagram isn’t listed, save the images and add them to a post in Instagram.")
-                    .font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
             }
         } footer: {
             Button { destination = .messages } label: {
                 Label("Share images & links", systemImage: "message")
             }.buttonStyle(RSButtonStyle()).disabled(files.isEmpty)
-            Button { destination = .instagram } label: {
-                Label("Instagram post", systemImage: "photo.on.rectangle")
-            }.buttonStyle(RSButtonStyle(kind: .secondary)).disabled(files.isEmpty)
-            Button {
-                UIPasteboard.general.string = list.postCaption
-                copied = true
-            } label: {
-                Label(copied ? "Caption copied" : "Copy caption & links", systemImage: copied ? "checkmark" : "doc.on.doc")
-            }.buttonStyle(RSButtonStyle(kind: .quiet)).disabled(files.isEmpty)
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 12) { secondaryActions }
+                VStack(spacing: 8) { secondaryActions }
+            }
         }
         .task { await render() }
         .sheet(item: $destination) { target in
@@ -72,6 +69,16 @@ struct ShoppingShareView: View {
         .onDisappear {
             if destination == nil, let exportFolder { try? FileManager.default.removeItem(at: exportFolder) }
         }
+    }
+
+    @ViewBuilder private var secondaryActions: some View {
+        Button("Instagram") { destination = .instagram }
+            .buttonStyle(RSButtonStyle(kind: .secondary, compact: true)).disabled(files.isEmpty)
+        Button(copied ? "Copied" : "Copy caption") {
+            UIPasteboard.general.string = list.postCaption
+            copied = true
+        }.buttonStyle(RSButtonStyle(kind: .secondary, compact: true)).disabled(files.isEmpty)
+            .accessibilityLabel(copied ? "Caption and links copied" : "Copy caption and shopping links")
     }
 
     @MainActor private func render() async {

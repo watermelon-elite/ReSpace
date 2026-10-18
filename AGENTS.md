@@ -20,7 +20,7 @@ Keep this map current: when you add or move a doc, add or update its line here i
 - [`docs/design/SYSTEM.md`](docs/design/SYSTEM.md): read when changing colors, typography, spacing, components, motion, imagery or input/accessibility behavior; measured palette contrast and native component contracts.
 - [`docs/design/SCREENS.md`](docs/design/SCREENS.md): read the relevant screen family before changing navigation, content density, questions, room panels, recovery, Product pages or shopping/sharing; entry, actions, disclosure and persistence contracts.
 - [`docs/design/AUDIT.md`](docs/design/AUDIT.md): use for UI reviews and verification; invariant gates, evidence/severity rules, dated current-app findings and a state coverage matrix. Recheck source before treating a finding as current.
-- [`.lavish/ollo-companion.html`](.lavish/ollo-companion.html): read when adding Ollo, the penguin–ostrich mascot; nine transparent poses, image-swap previews and a proposed SwiftUI integration plan. Review artifact; not implemented in the app.
+- [`.lavish/ollo-companion.html`](.lavish/ollo-companion.html): Ollo's original design reference, nine transparent poses and image-swap previews; native integration is in `ReSpace/Ollo.swift`, with behavior recorded in `docs/design/SYSTEM.md`.
 
 ### Research
 Verified facts, each claim tagged confirmed or inferred with its source URL. Read the matching file before writing the code it covers.
@@ -61,6 +61,7 @@ Verified facts, each claim tagged confirmed or inferred with its source URL. Rea
 - [`script/README.md`](script/README.md): contained temporary DS_HQ Script-screen copy, ReSpace narration and visual tracks, local autosave and run instructions. Read when changing the launch-script prototype; independent of the iPhone app.
 - [`ReSpace/`](ReSpace/), [`ReSpace.xcodeproj/`](ReSpace.xcodeproj/): the iOS capture, Room review, planning and immutable design client.
 - [`ReSpace/DesignSystem.swift`](ReSpace/DesignSystem.swift), [`ReSpace/IntentViews.swift`](ReSpace/IntentViews.swift), [`ReSpace/OperationViews.swift`](ReSpace/OperationViews.swift), [`ReSpace/ProductViews.swift`](ReSpace/ProductViews.swift): DreamSeal presentation components, room-request composer, sequential questions and focused Product pages; bundled Inter retains its [license](ReSpace/Resources/Inter-LICENSE.txt).
+- [`ReSpace/Ollo.swift`](ReSpace/Ollo.swift): shared native companion, pose selection and one-pass animations; respects Reduce Motion, keyboard space and confirmed operation outcomes.
 - [`ReSpace/ShoppingList.swift`](ReSpace/ShoppingList.swift), [`ReSpace/ShoppingListViews.swift`](ReSpace/ShoppingListViews.swift), [`ReSpace/ShoppingShareView.swift`](ReSpace/ShoppingShareView.swift): saved per-Room purchase links, local persistence and native image/text sharing, including placeholder room posts with price labels for Messages and Instagram.
 - [`backend/`](backend/): versioned API, durable state, Product verification, perception and deterministic placement; contract and behavior tests are under `backend/tests/`.
 - [`backend/README.md`](backend/README.md): local runtime, opt-in model testing, startup instructions and test-data limits.
