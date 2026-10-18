@@ -7,6 +7,7 @@ An iPhone app that scans a room (RoomPlan + LiDAR), detects small items (Percept
 Keep this map current: when you add or move a doc, add or update its line here in the same change.
 
 ### Specs
+- [`h3spec.md`](h3spec.md): H3's MVP sub-spec. Read before implementing the sequential Gemini agent, product discovery and verification, ranking, backend persistence or cloud deployment; its cross-builder impact section records required H1/H2 changes.
 - [`SPEC.md`](SPEC.md): the governing MVP spec (architecture, user flow, contracts, API, DB, build plan). Frozen until the sub-spec merge; record changes in your own sub-spec under `specs/`.
 - [`specs/H2-perception-spatial.md`](specs/H2-perception-spatial.md): H2's sub-spec for `detect`, `normalize_room`, `lift_keyframe`, `merge`, `solve` and `categories.json`. Read its **⚠️ Changes to SPEC.md** table first whenever you touch a contract, the keyframe upload, the RoomModel, DesignPlan or Scene; it overrides SPEC.md for H2's area. Its **Glossary** section holds H2's canonical domain terms (Object, Addition, Anchor, Item, Kept vs Fixed…): use those words in code, docs and prompts.
 - [`BUILDER_1_SPEC.md`](BUILDER_1_SPEC.md): H1's sub-spec for the iOS client (capture, navigation, rendering, interactions, API integration), with its own glossary. Read it before changing anything the app sends or renders.
