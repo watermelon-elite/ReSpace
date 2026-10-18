@@ -484,7 +484,6 @@ def _apply_edit(room, scene, action, kind, selections, constraints, result):
         return "failed", "permanent_fixture" if item.get("fixed_in_place") else "kept_object", "Protected target cannot be changed.", []
     if kind != "restore" and item.get("status") == "removed":
         return "failed", "missing_target", "Target is removed from this Scene.", []
-    before = deepcopy(item)
     before_items = deepcopy(scene["items"])
     consequences = []
     if kind == "move":
@@ -588,9 +587,11 @@ def solve(room_snapshot, plan, selections, constraints, base_scene=None):
             required.update(producers[target] for target in _anchor_target_ids(retained.get("anchor", {})) if target in producers)
         if kind not in ("unlock", "add") and target_id in unlocks:
             required.add(unlocks[target_id])
-        # Explicit dependent moves/removals must finish before changing their support.
+        # Explicit dependent moves/removals precede changes to their support or Anchor target.
         if kind in ("move", "remove", "replace"):
-            dependents = {i["id"] for i in scene["items"] if i.get("status") != "removed" and i.get("placement", {}).get("support_id") == target_id}
+            dependents = {i["id"] for i in scene["items"] if i.get("status") != "removed"
+                          and (i.get("placement", {}).get("support_id") == target_id
+                               or _target_id(i.get("anchor", {}).get("target")) == target_id)}
             required.update(a["action_id"] for k, a, _ in actions if k in ("move", "remove") and _target_id(a.get("target")) in dependents)
         dependencies[action["action_id"]] = required
     rank = {"unlock": 0, "remove": 1, "move": 2, "restore": 3, "replace": 3, "add": 4}

@@ -60,6 +60,23 @@ def test_support_removal_preserves_a_protected_dependent():
     assert result['action_outcomes'][0]['code'] == 'protected_dependent'
 
 
+def test_requested_anchor_dependent_move_finishes_before_its_target_is_removed():
+    room = normalize_room(native_room(), 'capture', 'room')
+    choices = {'sel': selection(), 'chair': {**selection((.4, .4, .8), 'chair'), 'selection_id': 'chair'}}
+    request = plan({'type': 'room_center'})
+    request['adds'].append({**request['adds'][0], 'action_id': 'chair', 'add_id': 'chair', 'category': 'chair',
+        'selection_id': 'chair', 'anchor': {'type': 'next_to', 'target': {'kind': 'item', 'id': 'i_a_0'}, 'side': 'left'}})
+    base = solve(room, request, choices, {'intent': 'add'})['scene']
+    changes = removal()
+    changes['moves'] = [{'action_id': 'move-chair', 'target': {'kind': 'item', 'id': 'i_chair_0'},
+        'anchor': {'type': 'against_wall', 'wall_id': 'w_3', 'alignment': 'center'}, 'reason': 'Requested move'}]
+    result = solve(room, changes, choices, {'intent': 'redesign', 'allow_dependent_omission': True,
+        'allow_dependent_relocation': True, 'allow_adjustments': False}, base)
+    assert {o['action_id']: o['outcome'] for o in result['action_outcomes']} == {'move-chair': 'applied', 'remove': 'applied'}
+    assert next(i for i in result['scene']['items'] if i['id'] == 'i_chair_0')['status'] == 'new'
+    assert validate_scene(room, result['scene']) == []
+
+
 def test_replacement_relocates_the_complete_support_chain_to_the_new_height():
     room, choices, base = supported_scene()
     choices['replacement'] = {**selection((1.6, 1.2, .9)), 'selection_id': 'replacement'}
