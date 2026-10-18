@@ -13,16 +13,22 @@ from pxr import Gf, Usd, UsdGeom  # noqa: E402
 from respace.composition import CompositionError, compose  # noqa: E402
 
 
-def write_room(path, room):
-    """A room model whose nodes sit where its record says, pivoted at the box centre."""
+def write_room(path, room, shift=(0, 0, 0)):
+    """A room model whose nodes sit where its record says, pivoted at the box centre.
+
+    `shift` moves the root and moves every node back by the same amount, as a model
+    authored in scan coordinates under a root that applies room_from_world does.
+    """
     stage = Usd.Stage.CreateNew(str(path))
     root = UsdGeom.Xform.Define(stage, "/Room")
+    root.AddTranslateOp().Set(Gf.Vec3d(*shift))
     stage.SetDefaultPrim(root.GetPrim())
     for record in [*room["objects"], *room["obstacles"]]:
         node = room["render"]["nodes"][record["id"]]
         xform = UsdGeom.Xform.Define(stage, f"/Room/{node}")
         w, d, h = record["size"]
-        xform.AddTranslateOp().Set(Gf.Vec3d(record["center"][0], record["base_y"] + h / 2, record["center"][1]))
+        xform.AddTranslateOp().Set(Gf.Vec3d(record["center"][0] - shift[0], record["base_y"] + h / 2 - shift[1],
+                                            record["center"][1] - shift[2]))
         xform.AddRotateYOp().Set(math.degrees(record["yaw"]))
         cube = UsdGeom.Cube.Define(stage, f"/Room/{node}/Mesh")
         cube.AddScaleOp().Set(Gf.Vec3f(w / 2, h / 2, d / 2))
@@ -46,11 +52,21 @@ def world(stage, path):
     return UsdGeom.XformCache().GetLocalToWorldTransform(stage.GetPrimAtPath(path))
 
 
-@pytest.fixture
-def kitchen(tmp_path):
+@pytest.fixture(params=[(0, 0, 0), (.82, 1.54, 4.59)], ids=["room_frame_root", "shifted_root"])
+def kitchen(tmp_path, request):
     room = room_from_reconstruction(reconstruction(), "room")
     room["render"]["nodes"] = {k: v for k, v in room["render"]["nodes"].items() if not k.startswith("w_")}
-    return room, write_room(tmp_path / "room.usda", room), write_product(tmp_path / "chair.usda")
+    return room, write_room(tmp_path / "room.usda", room, request.param), write_product(tmp_path / "chair.usda")
+
+
+def test_record_node_names_match_the_names_usd_gives_them(kitchen, tmp_path):
+    room, room_file, product = kitchen
+    # USD prim names cannot hold hyphens; exporters write "scan-counter", USD stores "scan_counter".
+    room["render"]["nodes"]["o_1"] = "scan-counter"
+    scene = solve(room, {"adds": []}, {}, {"intent": "add"})["scene"]
+    next(i for i in scene["items"] if i["object_id"] == "o_1")["status"] = "removed"
+    report = compose(room_file, room, scene, tmp_path / "out.usdz", resolve=lambda render: product)
+    assert report["hidden"] == ["i_o_1"]
 
 
 def test_new_items_are_referenced_at_their_placement_facing_their_yaw(kitchen, tmp_path):

@@ -154,10 +154,10 @@ def _openings(document, room):
             wall = _wall(room, record["wall_id"])
             offset, width = float(record["offset"]), float(record["width"])
             bottom, height = float(record["bottom"]), float(record["height"])
-            if min(width, height) <= 0 or bottom < 0 or offset < -TOLERANCE or offset + width > wall["length"] + TOLERANCE:
+            if min(width, height) <= 0 or bottom < -TOLERANCE or offset < -TOLERANCE or offset + width > wall["length"] + TOLERANCE:
                 raise _Invalid("invalid_opening", "Opening must lie within its wall with positive size.", source_id=record["id"])
             opening = {"id": f"{kind}_{len(room['openings']) + 1}", "type": kind, "wall_id": wall["id"],
-                       "offset": max(0., offset), "width": width, "bottom": bottom, "height": height,
+                       "offset": max(0., offset), "width": width, "bottom": max(0., bottom), "height": height,
                        "source_ids": [record["id"]]}
             room["openings"].append(opening)
             room["identity_map"][record["id"]] = {"kind": "opening", "id": opening["id"]}
@@ -228,7 +228,7 @@ def _entities(document, room, reasons, warnings):
 
 def _support_top(support, center):
     for surface in support.get("surfaces", []):
-        if not surface.get("polygon") or Polygon(surface["polygon"]).buffer(TOLERANCE).covers(Point(center)):
+        if not surface.get("polygon") or Polygon(surface["polygon"], surface["holes"]).buffer(TOLERANCE).covers(Point(center)):
             return surface["top"]
     return support["base_y"] + support["size"][2]
 
@@ -277,9 +277,10 @@ def _entity(record, room, warnings):
         if clearance is not None and (not math.isfinite(float(clearance)) or float(clearance) <= 0):
             raise _Invalid("invalid_surface", "Clearance above a surface must be positive.", source_id=source_id)
         polygon = [_numbers(p, 2) for p in surface.get("polygon") or []]
-        if polygon and (len(polygon) < 3 or not Polygon(polygon).is_valid):
+        holes = [[_numbers(p, 2) for p in hole] for hole in surface.get("holes") or []]
+        if polygon and (len(polygon) < 3 or not Polygon(polygon, holes).is_valid):
             raise _Invalid("invalid_surface", "A surface outline must be a simple polygon.", source_id=source_id)
-        surfaces.append({"top": top, "polygon": polygon or None,
+        surfaces.append({"top": top, "polygon": polygon or None, "holes": holes if polygon else [],
                          "clearance_above": float(clearance) if clearance is not None else None,
                          "clearance_limited_by": surface.get("clearance_limited_by")})
     entity = {"source_ids": [source_id], "category": category, "label": record.get("label", category),

@@ -52,12 +52,14 @@ def surfaces(item):
     old = item.get("original_placement") or placement
     rise = placement["position"][1] - old["position"][1]
     return [{**surface, "top": surface["top"] + rise,
-             "polygon": [_carry(p, old, placement) for p in surface["polygon"]] if surface.get("polygon") else None}
+             "polygon": [_carry(p, old, placement) for p in surface["polygon"]] if surface.get("polygon") else None,
+             "holes": [[_carry(p, old, placement) for p in hole] for hole in surface.get("holes") or []]}
             for surface in item["surfaces"]]
 
 
 def _outline(surface, support):
-    return Polygon(surface["polygon"]) if surface["polygon"] else footprint(support["placement"])
+    """Where Items can stand: the surface outline less its holes (a sink), else the support's box."""
+    return Polygon(surface["polygon"], surface.get("holes") or []) if surface["polygon"] else footprint(support["placement"])
 
 
 def _protrusion(wall, along, half, bottom, top):
@@ -411,7 +413,7 @@ def _anchor(room, anchor, size, category, items):
             top = surfaces(target)[0]
             placement["position"][1] = top["top"]
             if top["polygon"]:
-                outline = Polygon(top["polygon"])
+                outline = _outline(top, target)
                 centre = outline.centroid if outline.covers(outline.centroid) else outline.representative_point()
                 p = np.array([centre.x, centre.y])
         elif kind == "next_to":

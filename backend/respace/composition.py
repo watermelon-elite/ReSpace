@@ -19,6 +19,7 @@ import numpy as np
 
 from .assets import asset_path
 from .products import ProductError
+from .reconstruction import TOLERANCE as CONTACT_TOLERANCE
 
 # How closely a USD node must match its record before its pose is trusted (proposal: 1 cm, 1 degree).
 POSITION_TOLERANCE = .01
@@ -70,6 +71,13 @@ def _nodes(stage):
     return {prim.GetName(): prim for prim in Usd.PrimRange(root) if prim != root} if root else {}
 
 
+def _node(nodes, name):
+    """A record's node by exact name, else by the name USD gives it (hyphens become underscores)."""
+    from pxr import Tf
+
+    return nodes.get(name) or nodes.get(Tf.MakeValidIdentifier(name))
+
+
 def node_disagreements(stage, room):
     """Records whose USD node is missing or posed differently from the record."""
     from pxr import UsdGeom
@@ -78,7 +86,7 @@ def node_disagreements(stage, room):
     raise_by = .5 if room["render"]["node_pivot"] == "box_center" else 0
     records = {e["id"]: e for e in [*room["objects"], *room.get("obstacles", [])]}
     for record_id, name in sorted(room["render"]["nodes"].items()):
-        prim = nodes.get(name)
+        prim = _node(nodes, name)
         if prim is None:
             problems.append({"id": record_id, "node_name": name, "code": "missing_node"})
             continue
@@ -89,7 +97,9 @@ def node_disagreements(stage, room):
         origin = np.asarray(world.ExtractTranslation())
         expected = np.array([record["center"][0], record["base_y"] + raise_by * record["size"][2], record["center"][1]])
         turn = abs(math.remainder(_yaw(world) - record["yaw"], 2 * math.pi))
-        if np.linalg.norm(origin - expected) > POSITION_TOLERANCE or turn > YAW_TOLERANCE:
+        # The reader snaps floor, ceiling and tabletop contact by up to its own tolerance.
+        if (np.linalg.norm((origin - expected)[[0, 2]]) > POSITION_TOLERANCE or turn > YAW_TOLERANCE
+                or abs(origin[1] - expected[1]) > POSITION_TOLERANCE + CONTACT_TOLERANCE):
             problems.append({"id": record_id, "node_name": name, "code": "pose_mismatch",
                              "offset_m": round(float(np.linalg.norm(origin - expected)), 4),
                              "turn_deg": round(math.degrees(turn), 2)})
@@ -121,14 +131,16 @@ def compose(room_usdz, room, scene, destination, *, resolve=catalog_asset):
         top = stage.DefinePrim(root.GetPath(), "Xform")
         top.GetReferences().AddReference(source.GetRootLayer().identifier)
         stage.SetDefaultPrim(top)
-        items_root = top.GetPath().AppendChild("ReSpace")
-        UsdGeom.Scope.Define(stage, items_root)
-        nodes = {name: stage.GetPrimAtPath(prim.GetPath()) for name, prim in _nodes(source).items()}
         cache = UsdGeom.XformCache()
+        items_root = top.GetPath().AppendChild("ReSpace")
+        # Placements are room-frame coordinates, which node_disagreements matched against
+        # world space; undo whatever transform the model's root carries.
+        UsdGeom.Xform.Define(stage, items_root).AddTransformOp().Set(cache.GetLocalToWorldTransform(top).GetInverse())
+        nodes = {name: stage.GetPrimAtPath(prim.GetPath()) for name, prim in _nodes(source).items()}
 
         def node(item):
             name = room["render"]["nodes"].get(item.get("object_id"))
-            return nodes.get(name) if name else None
+            return _node(nodes, name) if name else None
 
         for item in scene["items"]:
             placement, existing = item.get("placement"), item.get("origin") == "existing"
