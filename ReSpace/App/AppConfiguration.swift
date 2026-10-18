@@ -5,6 +5,9 @@ struct AppConfiguration {
     let serviceURL: URL?
     let appKey: String
     let storageURL: URL
+    var localCaptureEnabled = true
+    var reconstructionURL: URL? = nil
+    var reconstructionToken = ""
 
     static func load() throws -> AppConfiguration {
         let rawURL = Bundle.main.object(forInfoDictionaryKey: "ReSpaceServiceURL") as? String ?? ""
@@ -16,7 +19,13 @@ struct AppConfiguration {
         var resource = storage
         var values = URLResourceValues(); values.isExcludedFromBackup = true
         try resource.setResourceValues(values)
-        return AppConfiguration(serviceURL: URL(string: rawURL), appKey: key, storageURL: storage)
+        let mode = Bundle.main.object(forInfoDictionaryKey: "ReSpaceLocalCapture") as? String ?? "YES"
+        let reconstructionAddress = Bundle.main.object(forInfoDictionaryKey: "ReSpaceReconstructionURL") as? String ?? ""
+        let reconstructionToken = Bundle.main.object(forInfoDictionaryKey: "ReSpaceReconstructionToken") as? String ?? ""
+        return AppConfiguration(serviceURL: URL(string: rawURL), appKey: key, storageURL: storage,
+                                localCaptureEnabled: mode.uppercased() != "NO",
+                                reconstructionURL: reconstructionAddress.isEmpty || reconstructionAddress.contains("$(") ? nil : URL(string: reconstructionAddress),
+                                reconstructionToken: reconstructionToken)
     }
 }
 

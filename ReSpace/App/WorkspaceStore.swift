@@ -33,6 +33,8 @@ final class WorkspaceStore {
     let api: APIClient
     let persistence: ClientPersistence
     let captures: CaptureRepository
+    let localCaptureEnabled: Bool
+    let reconstruction: ReconstructionClient?
     var rooms: [RoomSummary] = []
     var workspaces: [String: RoomWorkspace] = [:]
     var listError: String?
@@ -42,12 +44,20 @@ final class WorkspaceStore {
     @ObservationIgnored private var bootstrapped = false
 
     init(configuration: AppConfiguration, deviceId: String) {
+        localCaptureEnabled = configuration.localCaptureEnabled
+        reconstruction = configuration.reconstructionURL.map { ReconstructionClient(baseURL: $0, token: configuration.reconstructionToken) }
+        let directory = configuration.localCaptureEnabled
+            ? configuration.storageURL.appendingPathComponent("LocalTesting", isDirectory: true)
+            : configuration.storageURL
         api = APIClient(baseURL: configuration.serviceURL, appKey: configuration.appKey, deviceId: deviceId)
-        persistence = ClientPersistence(directory: configuration.storageURL)
-        captures = CaptureRepository(directory: configuration.storageURL.appendingPathComponent("Captures"))
+        persistence = ClientPersistence(directory: directory)
+        captures = CaptureRepository(directory: directory.appendingPathComponent("Captures"),
+                                     maximumFrames: configuration.localCaptureEnabled ? SamplingPolicy.reconstructionMaximumFrames : 40)
     }
 
     init(api: APIClient, persistence: ClientPersistence, captures: CaptureRepository) {
+        localCaptureEnabled = false
+        reconstruction = nil
         self.api = api; self.persistence = persistence; self.captures = captures
     }
 
@@ -57,6 +67,7 @@ final class WorkspaceStore {
     }
 
     func bootstrap() async {
+        guard !localCaptureEnabled else { return }
         guard !bootstrapped else {
             do {
                 let local = try await persistence.load()

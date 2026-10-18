@@ -8,7 +8,7 @@ let package = Package(
     products: [.library(name: "ReSpaceCore", targets: ["ReSpaceCore"])],
     targets: [
         .target(name: "ReSpaceCore", path: "ReSpace",
-                exclude: ["App/CompatibilityView.swift", "App/ReSpaceTheme.swift", "App/NetworkRecoveryMonitor.swift", "Assets.xcassets", "ContentView.swift", "ReSpaceApp.swift", "Rooms", "Design", "Rendering", "ShoppingPresentation", "Capture/CaptureController.swift", "Capture/CaptureScreen.swift", "Capture/FrameEncoder.swift"],
+                exclude: ["App/CompatibilityView.swift", "App/ReSpaceTheme.swift", "App/NetworkRecoveryMonitor.swift", "Assets.xcassets", "ContentView.swift", "ReSpaceApp.swift", "Rooms", "Design", "Rendering", "ShoppingPresentation", "Capture/CaptureController.swift", "Capture/CaptureScreen.swift", "Capture/FrameEncoder.swift", "Capture/SceneMeshEncoder.swift"],
                 sources: ["Domain", "Networking", "Persistence", "Capture/CaptureRepository.swift", "App/AppConfiguration.swift", "App/WorkspaceStore.swift"]),
         .testTarget(name: "ReSpaceCoreTests", dependencies: ["ReSpaceCore"], path: "Tests/ReSpaceCoreTests",
                     resources: [.copy("Fixtures")])

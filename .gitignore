@@ -5,3 +5,15 @@ DerivedData/
 Configuration/Local.xcconfig
 *.xcuserstate
 xcuserdata/
+services/reconstruction/.venv/
+services/reconstruction/.tools/
+services/reconstruction/data/
+services/reconstruction/.env
+services/reconstruction/deploy/.state/
+services/reconstruction/.pytest_cache/
+__pycache__/
+*.egg-info/
+InterfaceCOLMAP-*.log
+RefineMesh-*.log
+TextureMesh-*.log
+services/reconstruction/benchmarks/

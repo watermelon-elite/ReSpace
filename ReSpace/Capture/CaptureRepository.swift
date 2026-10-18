@@ -1,9 +1,20 @@
 import Foundation
 import CryptoKit
 
+/// Device-only test capture, separate from backend RoomRecord and storage receipts.
+struct LocalSavedRoom: Codable, Identifiable, Sendable {
+    var id: String
+    var name: String
+    var createdAt: String
+    var objectCount: Int
+}
+
 actor CaptureRepository {
     private let directory: URL
-    init(directory: URL) { self.directory = directory }
+    private let maximumFrames: Int
+    init(directory: URL, maximumFrames: Int = 40) {
+        self.directory = directory; self.maximumFrames = maximumFrames
+    }
 
     private func folder(_ id: String) -> URL {
         let safe = SHA256.hash(data: Data(id.utf8)).map { String(format: "%02x", $0) }.joined()
@@ -36,6 +47,18 @@ actor CaptureRepository {
         var manifest = try load(id); manifest.roomId = roomId; manifest.state = "acquiring"; try save(manifest)
     }
     func writeArtifact(captureId: String, type: String, bytes: Data, extension suffix: String) throws -> ArtifactRecord {
+        let files = try FileManager.default.contentsOfDirectory(at: folder(captureId), includingPropertiesForKeys: [.fileSizeKey])
+        let retainedBytes = try files.reduce(0) { try $0 + ($1.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0) }
+        guard retainedBytes + bytes.count <= SamplingPolicy.reconstructionMaximumBytes else {
+            throw ClientError.storage("This scan reached its 2 GB storage limit. Start a smaller room scan.")
+        }
+        let capacity = try? folder(captureId).resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey, .volumeAvailableCapacityKey])
+        // Some macOS volumes report zero for important-usage capacity despite free space.
+        let available = max(capacity?.volumeAvailableCapacityForImportantUsage ?? -1,
+                            capacity?.volumeAvailableCapacity.map(Int64.init) ?? -1)
+        if available >= 0 && available < Int64(bytes.count + 512 * 1024 * 1024) {
+            throw ClientError.storage("Free more storage before continuing this scan.")
+        }
         let id = UUID().uuidString
         let filename = "\(id).\(suffix)"
         try bytes.write(to: folder(captureId).appendingPathComponent(filename), options: .atomic)
@@ -44,15 +67,30 @@ actor CaptureRepository {
     }
     func append(_ frame: CaptureFrame, captureId: String) throws {
         var manifest = try load(captureId)
-        guard manifest.state == "acquiring", manifest.frames.count < 40 else { throw ClientError.storage("This scan is no longer accepting frames.") }
+        guard manifest.state == "acquiring", manifest.frames.count < maximumFrames else { throw ClientError.storage("This scan is no longer accepting frames.") }
         manifest.frames.append(frame); try save(manifest)
     }
-    func complete(_ id: String, roomData: Data, thumbnailData: Data?) throws {
+
+    func hasReconstructionFrameCapacity(_ id: String) throws -> Bool {
+        let manifest = try load(id)
+        let reserve = 192 * 1024 * 1024 // Keep room for the final mesh and room export.
+        guard manifest.frames.count < maximumFrames,
+              manifest.allArtifacts.reduce(0, { $0 + $1.byteLength }) < SamplingPolicy.reconstructionMaximumBytes - reserve else { return false }
+        let capacity = try? folder(id).resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey, .volumeAvailableCapacityKey])
+        let available = max(capacity?.volumeAvailableCapacityForImportantUsage ?? -1,
+                            capacity?.volumeAvailableCapacity.map(Int64.init) ?? -1)
+        return available < 0 || available >= Int64(reserve + 512 * 1024 * 1024)
+    }
+    func complete(_ id: String, roomData: Data, thumbnailData: Data?, sceneMeshData: Data? = nil) throws {
         var manifest = try load(id)
         guard manifest.state == "acquiring" else { throw ClientError.storage("This scan was interrupted. Start again.") }
+        if let sceneMeshData { _ = try ScanMeshSnapshot.decode(sceneMeshData, captureId: id) }
         manifest.roomExport = try writeArtifact(captureId: id, type: "roomplan", bytes: roomData, extension: "json")
         let thumbnailBytes = try thumbnailData ?? manifest.frames.last?.artifacts.first(where: { $0.type == "jpeg" }).map { try bytes($0, captureId: id) }
         if let thumbnailBytes { manifest.thumbnail = try writeArtifact(captureId: id, type: "thumbnail", bytes: thumbnailBytes, extension: "jpg") }
+        if let sceneMeshData {
+            manifest.sceneMesh = try writeArtifact(captureId: id, type: "scene_mesh", bytes: sceneMeshData, extension: "mesh")
+        }
         manifest.state = "completed"
         try save(manifest)
     }
@@ -121,6 +159,54 @@ actor CaptureRepository {
     }
     func removeRoom(_ roomId: String) throws {
         for manifest in try manifests() where manifest.roomId == roomId { try removeCapture(manifest.captureId) }
+    }
+    func localPreviewURL(_ id: String) -> URL { folder(id).appendingPathComponent("preview.usdz") }
+
+    func artifactURL(_ artifact: ArtifactRecord, captureId: String) throws -> URL {
+        guard artifact.filename == URL(fileURLWithPath: artifact.filename).lastPathComponent,
+              !artifact.filename.contains("..") else { throw ClientError.invalidResponse }
+        let url = folder(captureId).appendingPathComponent(artifact.filename)
+        // Incremental hashing avoids copying a large mesh into the upload's memory.
+        let handle = try FileHandle(forReadingFrom: url); defer { try? handle.close() }
+        var hash = SHA256(), size = 0
+        while let chunk = try handle.read(upToCount: 1024 * 1024), !chunk.isEmpty { hash.update(data: chunk); size += chunk.count }
+        guard size == artifact.byteLength, hash.finalize().map({ String(format: "%02x", $0) }).joined() == artifact.sha256 else {
+            throw ClientError.storage("A scan artifact failed its integrity check.")
+        }
+        return url
+    }
+
+    func reconstructionDirectory(_ id: String) throws -> URL {
+        let url = folder(id).appendingPathComponent("Reconstruction", isDirectory: true)
+        try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+        return url
+    }
+
+    func localRoom(_ id: String) throws -> LocalSavedRoom {
+        try Wire.decoder().decode(LocalSavedRoom.self, from: Data(contentsOf: folder(id).appendingPathComponent("local-room.json")))
+    }
+    func localRooms() throws -> [LocalSavedRoom] {
+        try manifests().filter { $0.state == "local_saved" }.map { try localRoom($0.captureId) }
+            .sorted { $0.createdAt > $1.createdAt }
+    }
+    func saveLocalRoom(_ id: String, objectCount: Int) throws {
+        var manifest = try load(id)
+        guard manifest.state == "completed", manifest.roomExport != nil,
+              FileManager.default.fileExists(atPath: localPreviewURL(id).path) else {
+            throw ClientError.storage("The local room preview is not ready. Retry saving the scan.")
+        }
+        let room = LocalSavedRoom(id: id, name: "Room · \(manifest.createdAt.prefix(10)) · \(id.prefix(4))",
+                                  createdAt: manifest.createdAt, objectCount: objectCount)
+        try Wire.encoder().encode(room).write(to: folder(id).appendingPathComponent("local-room.json"), options: .atomic)
+        // Local success never claims backend acknowledgment or permits raw-file eviction.
+        manifest.state = "local_saved"
+        try save(manifest)
+    }
+    func renameLocalRoom(_ id: String, name: String) throws {
+        let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else { return }
+        var room = try localRoom(id); room.name = name
+        try Wire.encoder().encode(room).write(to: folder(id).appendingPathComponent("local-room.json"), options: .atomic)
     }
     nonisolated static func creationRequest(_ manifest: CaptureManifest) throws -> APIRequest {
         let body = DraftRoomRequest(operationId: manifest.creationId, captureId: manifest.captureId,

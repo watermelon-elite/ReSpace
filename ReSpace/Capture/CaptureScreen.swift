@@ -16,20 +16,21 @@ struct CaptureScreen: View {
     var body: some View {
         ZStack {
             ReSpaceTheme.cream.ignoresSafeArea()
-            if controller.phase == .scanning || controller.phase == .finishing {
-                CaptureSurface(view: controller.roomView).ignoresSafeArea()
+            if (controller.phase == .scanning || controller.phase == .finishing), let roomView = controller.roomView {
+                CaptureSurface(view: roomView).ignoresSafeArea()
                 VStack {
                     HStack {
                         Button("Cancel scan") { confirmDiscard = true }.buttonStyle(.bordered).tint(.white)
                         Spacer()
-                        Text("\(controller.acceptedFrames)/40 photos").font(.caption).padding(10).background(.regularMaterial, in: Capsule())
+                        Text(store.localCaptureEnabled ? "\(controller.elapsedSeconds / 60):\(String(format: "%02d", controller.elapsedSeconds % 60)) · \(controller.acceptedFrames) photos" : "\(controller.acceptedFrames)/40 photos")
+                            .font(.caption).padding(10).background(.regularMaterial, in: Capsule())
                     }
                     Spacer()
                     VStack(spacing: 10) {
                         Text(controller.guidance).font(.headline)
-                        Text(controller.detailText).font(.caption).foregroundStyle(.secondary)
+                        Text(store.localCaptureEnabled ? (controller.canFinish ? "Revisit gaps, furniture sides, and spaces underneath before finishing." : "Scan for at least 3 minutes. Walk around furniture and capture surfaces from several angles.") : controller.detailText).font(.caption).foregroundStyle(.secondary)
                         PrimaryAction(title: controller.phase == .finishing ? "Finishing scan…" : "Done", symbol: "checkmark",
-                                      disabled: controller.phase == .finishing) { controller.done() }
+                                      disabled: controller.phase == .finishing || !controller.canFinish) { controller.done() }
                     }.padding(18).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24))
                 }.padding(20)
             } else { stateView.padding(28) }
@@ -46,7 +47,7 @@ struct CaptureScreen: View {
         .alert("Discard this scan?", isPresented: $confirmDiscard) {
             Button("Keep scanning", role: .cancel) {}
             Button("Discard", role: .destructive) { Task { await controller.discard(); completion(nil) } }
-        } message: { Text("This incomplete scan and its uploaded artifacts will be deleted. Your saved rooms are kept.") }
+        } message: { Text(store.localCaptureEnabled ? "This scan’s local data will be deleted. Your other saved rooms are kept." : "This incomplete scan and its uploaded artifacts will be deleted. Your saved rooms are kept.") }
     }
     @ViewBuilder private var stateView: some View {
         switch controller.phase {
@@ -74,7 +75,7 @@ struct CaptureScreen: View {
                 Text("Your scan needs attention.").font(.system(.largeTitle, design: .serif))
                 StatusBanner(text: controller.error ?? "The scan could not finish.", isError: true)
                 if controller.hasCompletedCapture {
-                    Button("Retry finished upload") { Task { await controller.finalize() } }
+                    Button(store.localCaptureEnabled ? "Retry saving scan" : "Retry finished upload") { Task { await controller.finalize() } }
                     Button("Back to My Rooms") { completion(nil) }
                 } else {
                     Button("Restart scan") { Task { await controller.discard(); controller = CaptureController(store: store); await controller.prepare() } }
@@ -86,8 +87,8 @@ struct CaptureScreen: View {
             VStack(spacing: 20) {
                 ProgressView()
                 Text(controller.phase == .preparing ? "Preparing your scan…" : "Saving your room…").font(.system(.title2, design: .serif))
-                Text("Keep this scan’s recorded data until upload is confirmed.").font(.subheadline).foregroundStyle(.secondary)
-                if controller.phase == .recovering { Button("Back to My Rooms") { completion(nil) } }
+                Text(store.localCaptureEnabled ? "Saving the room and its recorded data on this iPhone." : "Keep this scan’s recorded data until upload is confirmed.").font(.subheadline).foregroundStyle(.secondary)
+                if controller.phase == .recovering && !store.localCaptureEnabled { Button("Back to My Rooms") { completion(nil) } }
             }
         }
     }

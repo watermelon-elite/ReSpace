@@ -8,13 +8,13 @@ import UniformTypeIdentifiers
 actor FrameEncoder {
     private let context = CIContext(options: [.cacheIntermediates: false])
 
-    func encode(_ frame: ARFrame, captureId: String, repository: CaptureRepository) async throws -> CaptureFrame {
+    func encode(_ frame: ARFrame, captureId: String, repository: CaptureRepository, highQuality: Bool = false) async throws -> CaptureFrame {
         let id = UUID().uuidString
         let image = CIImage(cvPixelBuffer: frame.capturedImage)
-        let scale = min(1, 1280 / max(image.extent.width, image.extent.height))
+        let scale = min(1, (highQuality ? 2560 : 1280) / max(image.extent.width, image.extent.height))
         let resized = image.transformed(by: CGAffineTransform(scaleX: scale, y: scale))
         guard let jpeg = context.jpegRepresentation(of: resized, colorSpace: CGColorSpaceCreateDeviceRGB(),
-                                                    options: [kCGImageDestinationLossyCompressionQuality as CIImageRepresentationOption: 0.7]) else {
+                                                    options: [kCGImageDestinationLossyCompressionQuality as CIImageRepresentationOption: highQuality ? 0.9 : 0.7]) else {
             throw ClientError.storage("The scan photo could not be encoded.")
         }
         guard let source = CGImageSourceCreateWithData(jpeg as CFData, nil),
@@ -70,4 +70,11 @@ actor FrameEncoder {
     }
 
     func export(_ room: CapturedRoom) throws -> Data { try JSONEncoder().encode(room) }
+
+    func exportLocalPreview(_ data: Data, to url: URL) throws -> Int {
+        let room = try JSONDecoder().decode(CapturedRoom.self, from: data)
+        if FileManager.default.fileExists(atPath: url.path) { try FileManager.default.removeItem(at: url) }
+        try room.export(to: url, exportOptions: .parametric)
+        return room.objects.count
+    }
 }

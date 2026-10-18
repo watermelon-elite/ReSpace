@@ -12,7 +12,8 @@ struct ContentView: View {
             if !supportedHardware {
                 CompatibilityView()
             } else if let store {
-                MyRoomsView(store: store)
+                if store.localCaptureEnabled { LocalRoomsView(store: store) }
+                else { MyRoomsView(store: store) }
             } else if let startupError {
                 ContentUnavailableView("Couldn’t open ReSpace", systemImage: "externaldrive.badge.exclamationmark",
                                        description: Text(startupError))
@@ -25,7 +26,9 @@ struct ContentView: View {
             do {
                 let workspace = WorkspaceStore(configuration: try AppConfiguration.load(), deviceId: try DeviceIdentity.load())
                 store = workspace
-                recoveryMonitor = NetworkRecoveryMonitor { [weak workspace] in await workspace?.bootstrap() }
+                if !workspace.localCaptureEnabled {
+                    recoveryMonitor = NetworkRecoveryMonitor { [weak workspace] in await workspace?.bootstrap() }
+                }
             }
             catch { startupError = error.localizedDescription }
         }

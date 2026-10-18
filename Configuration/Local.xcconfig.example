@@ -1,4 +1,10 @@
-// Copy to Local.xcconfig and pass -xcconfig Configuration/Local.xcconfig to xcodebuild.
+// Copy to Configuration/Local.xcconfig; Xcode loads it for Debug and Release.
+// Standalone scanning is enabled by default. Set NO to test the backend flow.
+RESPACE_LOCAL_CAPTURE = YES
+// Use the deployed backend origin without /v1 (the client adds /v1/).
 // The slash substitution prevents xcconfig from interpreting // as a comment.
 RESPACE_SERVICE_URL = https:/$()/your-service.example.com
 RESPACE_APP_KEY = replace-with-the-shared-app-key
+// Local Mac reconstruction service (use the Mac's Bonjour name ending in .local).
+RESPACE_RECONSTRUCTION_URL = http:/$()/your-mac.local:8008
+RESPACE_RECONSTRUCTION_TOKEN = replace-with-the-token-from-services-reconstruction-env

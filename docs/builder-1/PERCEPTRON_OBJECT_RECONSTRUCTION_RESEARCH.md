@@ -1,0 +1,41 @@
+# Recognizable, movable objects from room scans
+
+Research date: October 17, 2026. Research and architecture recommendation only; no application changes or model evaluations were performed.
+
+## Recommendation
+
+Yes: use Perceptron to help identify objects and their appearance, then combine those observations with measured RoomPlan/LiDAR geometry and a separate source of complete object models. Perceptron's documented interfaces do not directly turn a LiDAR scan into completed, movable furniture meshes. Recognizable generic assets are the most predictable first delivery; image-to-3D generation can be evaluated later for unusual objects.
+
+This matches the existing [MVP spec](/Users/kdieguez/Documents/Projects/ReSpace/SPEC.md:11): Perceptron identifies objects in RGB images, depth and camera calibration place them in 3D, and generic models replace existing furniture so it can be moved or removed. The current measured scan and editable design are separate representations; the measured preview should not become the sole source of editable furniture. See the existing [scan-detail research](/Users/kdieguez/Documents/Projects/ReSpace/docs/builder-1/SCAN_DETAIL_RESEARCH.md).
+
+The problem is incomplete observation, rather than excessive accuracy. A scanned surface records what was visible. Decimating or smoothing that surface does not reliably invent the hidden back, underside, or legs of a chair. A complete representative asset supplies that missing shape through a design prior; its dimensions and placement can still come from measurements. This is an architectural inference, not a claim of reconstruction fidelity.
+
+## What Perceptron currently documents
+
+| Source | Documented capability | Consequence for ReSpace |
+| --- | --- | --- |
+| [Mk1.5 model card](https://docs.perceptron.inc/perceptron-mk1.5/models/perceptron-mk1.5) | Text, image, video and audio inputs; text, spatial/temporal annotations, structured answers and function calls as outputs. | Suitable for semantic interpretation of scan photographs. No documented depth-map, raw LiDAR or point-cloud modality, or object-mesh output. |
+| [Coordinate system](https://docs.perceptron.inc/perceptron-mk1.5/concepts/coordinates) | Chat annotations use a normalized 0–1000 **2D** image/frame grid. The dedicated Detect endpoint has a different pixel-coordinate contract. | A box or polygon is image grounding, not a metric 3D box or reconstructed surface. Use the contract of the actual endpoint. |
+| [Official Python SDK](https://github.com/perceptron-ai-inc/perceptron) | Detection, localization, tracking, OCR and visual Q&A; boxes, points, polygons, clips, tracks and text. Current default is `perceptron-mk1.5`; older hosted Isaac IDs are retired. | Can request categories, color/style descriptions and grounded regions. Structured JSON makes output parseable; it does not establish geometric correctness. |
+| [Isaac 0.5 model card](https://huggingface.co/PerceptronAI/Isaac-0.5) | A 36B sparse model taking images/video, instructions, robot state and action history; producing language, normalized coordinates, task state or robot actions. | Its “semantic world modeling” predicts task-relevant future percepts such as motion/contact/relationships; this is not a documented 3D asset generator. |
+
+No direct LiDAR/RGB-D ingestion or mesh-completion API was found in the reviewed [documentation index](https://docs.perceptron.inc/llms.txt), model cards or SDK. This is a limit of the public evidence, not proof that custom training or a private integration is impossible. Vendor descriptions such as handling occlusion or understanding physical dynamics should not be interpreted as support for recovering hidden geometry. We did not run an inference benchmark on ReSpace scans.
+
+## Proposed pipeline
+
+1. **Keep measured structure.** Use RoomPlan walls, floor, doors and windows as the room shell. Use RoomPlan's object dimensions, transforms and identifiers where available. Keep the original RGB/depth/calibration evidence separately.
+2. **Add semantic observations.** Send selected RGB keyframes/crops to Perceptron for object class, useful attributes and grounded regions. Examples: office chair with arms, round dining table, leafy plant, fabric sofa. Treat hidden attributes as hypotheses and allow correction. A 2D polygon can aid association; it should not be assumed to be a precise instance mask without evaluation.
+3. **Associate detections with measured objects.** Convert image coordinates to pixels, sample aligned confident depth within the object region, unproject with camera intrinsics, then transform into scan coordinates. Fuse observations across views and match to RoomPlan records. A single center-point depth can hit an occluder/background; robust interior samples and multi-view checks are preferable. Retain RoomPlan dimensions for partially observed furniture rather than fitting only the visible fragment. These are proposed application steps, not Perceptron features.
+4. **Choose complete geometry.** Retrieve a category/attribute-matched low-poly asset, or make a procedural stand-in; scale to measured bounds and apply approximate sampled materials. Apple provides [CapturedRoom.ModelProvider](https://developer.apple.com/documentation/roomplan/capturedroom/modelprovider) for supplying category/attribute-matched custom models to RoomPlan export. The application still supplies the assets. An optional separate image-to-3D service could create a more specific asset, but its hidden surfaces are inferred and need scale/orientation/quality checks.
+5. **Store one editable entity per object.** Each object needs a stable ID, asset reference, dimensions, transform, approximate material, observation provenance and confidence/unknown state. Keep a complete asset in object-local coordinates; moving updates its transform. This yields movable furniture independently of how realistic its mesh looks.
+6. **Remove the original furniture from the displayed room geometry.** If rendering measured mesh too, mask/partition its original furniture surfaces so moving a substitute does not leave a ghost chair behind. Complete or parametrize the floor/wall behind removed objects; otherwise movement exposes scan holes. Keep a measured-surface inspection mode separate from the clean editable scene.
+
+For an MVP, do recognition plus asset retrieval first. It naturally fills missing geometry, is easier to edit, and can be cached and regenerated. Arbitrary neural mesh generation is a separate evaluation with variable latency and quality; it is unnecessary for the stated goal of a recognizable approximation.
+
+## Integration limits to validate
+
+The current Mk1.5 [model card](https://docs.perceptron.inc/perceptron-mk1.5/models/perceptron-mk1.5) lists a 36,864-token context and an 8,192-token maximum output. The [scaling guide](https://docs.perceptron.inc/perceptron-mk1.5/guides/scaling) documents 20 MiB JSON request bodies, a 120-second chat-completion time budget, and default organization limits of 300 chat requests/minute and 150 Multilook requests/minute; organization-specific allowances can differ. These limits support bounded, selected-frame enrichment, not an assumption of frame-rate inference. Measure actual latency and token usage on room scans.
+
+Isaac 0.5 is not a drop-in mobile alternative: its [model card](https://huggingface.co/PerceptronAI/Isaac-0.5) requires the companion runtime rather than direct Transformers/stock LeRobot use, and the [official repository](https://github.com/perceptron-ai-inc/isaac) says the clean checkout does not yet contain all runtime dependencies. For this product, begin with the hosted perception API instead of deploying a robot-action model.
+
+Evaluate on a partially hidden dining chair, office chair, table and sofa. Verify recognizable complete silhouettes, measured scale and orientation, stable identity across views, correct separation of adjacent objects, move/remove/save/reopen behavior, and absence of original furniture remnants. Compare with RoomPlan-only model selection to establish whether Perceptron adds enough useful classification detail to justify its cost and latency. No claim of production accuracy or performance is made here.

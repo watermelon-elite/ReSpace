@@ -1,0 +1,7 @@
+// Temporary standalone scanning; set NO in Local.xcconfig to use the backend.
+RESPACE_LOCAL_CAPTURE = YES
+RESPACE_RECONSTRUCTION_URL =
+RESPACE_RECONSTRUCTION_TOKEN =
+// Developer-specific service configuration is optional and ignored by Git.
+// Copy Local.xcconfig.example to Local.xcconfig and supply the deployed service values.
+#include? "Local.xcconfig"

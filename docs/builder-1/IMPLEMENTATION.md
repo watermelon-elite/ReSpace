@@ -23,12 +23,25 @@ The Xcode project uses a filesystem-synchronized `ReSpace/` group. New Swift fil
 
 ## Configure and run
 
-Copy `Configuration/Local.xcconfig.example` to the ignored `Configuration/Local.xcconfig`; enter the backend HTTPS origin and shared app key. `Configuration/AppInfo.plist` supplies these custom fields to Xcode's generated plist using `RESPACE_SERVICE_URL` and `RESPACE_APP_KEY`. The compiled plist was checked with non-secret configuration values. Use Xcode user-defined build settings or pass the local file:
+### Temporary local scan testing
+
+`RESPACE_LOCAL_CAPTURE = YES` is currently the default in `Configuration/App.xcconfig`. Rebuild and run on a LiDAR iPhone without supplying any service address or app key. New Scan runs RoomPlan, samples the same calibrated photo/depth artifacts, and saves the completed raw RoomPlan JSON plus a parametric USDZ preview on the phone. Tap a saved room to inspect it in the 3D-only viewer (orbit, pinch to zoom, two-finger pan, Reset view); long-press to rename or delete it. Completed scans survive relaunch, and failed local exports offer Retry save. Network loss does not interrupt local scanning; backgrounding or loss of AR tracking still does.
+
+Local captures live under `Application Support/ReSpace/LocalTesting/Captures`, separate from connected captures. They do not claim server acknowledgment, evict raw files, create canonical backend snapshots, or upload automatically when connected mode is restored. AI perception, generation, and chat editing are unavailable in this temporary local screen. Interrupted incomplete acquisitions are removed on relaunch; completed captures are retained until deletion.
+
+When Builders 2/3 are ready, set `RESPACE_LOCAL_CAPTURE = NO` in `Configuration/Local.xcconfig` and rebuild to restore the existing connected My Rooms and review/design flow. Local rooms remain on the device but are hidden in connected mode; setting YES again makes them visible.
+
+### Connected mode
+
+Copy `Configuration/Local.xcconfig.example` to the ignored `Configuration/Local.xcconfig`; replace the examples with the deployed backend HTTPS origin and its shared app key. Keep the URL's `https:/$()/` spelling: Xcode expands it to `https://`, while a literal `//` starts an xcconfig comment. Use the origin without `/v1`; the client adds `/v1/` itself.
+
+Both Debug and Release automatically load this file through `Configuration/App.xcconfig`, including when using Xcode's Run button. `Configuration/AppInfo.plist` supplies `RESPACE_SERVICE_URL` and `RESPACE_APP_KEY` to the app as `ReSpaceServiceURL` and `ReSpaceAppKey`. Rebuild and run the app after changing them; these values are embedded at build time, not entered in iPhone Settings. You can also override them using Xcode user-defined build settings.
+
+The exact error “The room service is not configured” is raised locally before any network request when the service URL is missing, does not use HTTPS, or the app key is empty. This checkout contains the iOS client, not a deployed backend or real credentials. Obtain the HTTPS origin and matching shared `X-App-Key` from the backend owner; the example values will not enable scanning. The service must implement the endpoints below, including room creation before RoomPlan starts.
 
 ```sh
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild \
   -project ReSpace.xcodeproj -scheme ReSpace \
-  -xcconfig Configuration/Local.xcconfig \
   -destination 'generic/platform=iOS Simulator' \
   -derivedDataPath /tmp/ReSpaceBuilder1 CODE_SIGNING_ALLOWED=NO build
 
@@ -93,3 +106,19 @@ Restart abandons an incomplete acquisition; it cannot resume. The client records
 The simulator and physical-iPhone Release builds and 22 executable core/lifecycle tests pass. Tests cover strict USD/style input, coordinate/size interpretation, sampling caps and pressure, concave floor topology, exact durable journals and recovered multipart bytes, checksum acknowledgment gates, unknown/running/lost-response reconciliation, clarification identities, atomic rejection, duplicate prevention, persisted Undo branching and deletion racing a command. The app was launched in the iOS simulator and its compatibility gate was visually inspected.
 
 Physical LiDAR capture, optional sceneDepth availability during RoomPlan, interruption/relocalization behavior, at least three real calibration projections, iOS 18 device rendering/gesture performance, actual USDZ assets and backend retention/operation semantics still need joint device/service verification. No real capture fixtures, backend deployment or cross-builder contract approval is claimed by this implementation.
+
+### Local room viewing and color
+
+Local room previews use a camera-controlled SceneKit scene instead of Quick Look, so viewing a room never offers AR mode or starts an AR session. The existing backend review/design viewer remains a virtual-camera RealityKit scene.
+
+`RoomColorizer` loads the retained parametric USDZ and estimates one diffuse color per geometry node from the saved ARKit RGB JPEGs. It projects visible model intersections through the matching saved camera pose and resized intrinsics in sensor coordinates. Model ray tests reject occluded geometry; a median limits highlights and shadows. It processes one photo at a time off the main actor, supports cancellation, and leaves existing authored textures intact. Saved local scans can use their retained photos without rescanning. Raw capture files and the USDZ on disk are unchanged; these estimated colors are applied when opening the preview.
+
+This is approximate surface color, not photo texture mapping or a photorealistic reconstructed mesh. Unobserved geometry retains the exporter’s materials. Geometry differences, unmodeled occluders, sparse photo coverage and changing lighting can affect color accuracy. Verify scan-coordinate alignment, RGB orientation, gesture behavior and color quality on a physical LiDAR iPhone. The RGB acquisition and calibration already existed before this change; the new step connects them to the local viewer. Backend assets already preserve embedded USDZ materials and stand-ins use `render.tint`; backend room color estimation remains the service’s responsibility.
+
+### Measured local surface capture
+
+New local scans now use a shared ARSession, pre-run with `.mesh` reconstruction and supported `.sceneDepth` before creating RoomCaptureView. The final current frame’s mesh anchor set is copied to a validated, hashed binary `scene_mesh` artifact. Native positions, normals, indices and anchor transforms are retained in scan meters. No furniture fitting or geometry beautification is applied to this viewer; local RoomBuilder processing uses no `.beautifyObjects`. Backend captures keep the existing wire protocol and do not emit the mesh artifact.
+
+The local viewer prefers that measured mesh, samples registered photo colors per vertex with depth/confidence visibility checks, and offers a two-point distance ruler. Old local scans remain explicitly marked as simplified; corruption of a recorded mesh produces an error rather than silently displaying simplified geometry. Mesh/color processing is bounded, cancellable and off the main actor. The final anchor snapshot avoids installing an ARSession delegate that could interfere with RoomPlan.
+
+See `MEASURED_SCAN_VALIDATION.md` for implementation details, completed synthetic/software checks and the outstanding physical-device accuracy procedure. This supersedes the preceding local-preview paragraph for new scans; the old per-node color path remains for earlier scans.
