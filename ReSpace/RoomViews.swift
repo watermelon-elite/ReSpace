@@ -15,19 +15,21 @@ struct RoomReview: View {
     @State private var intent = false
     @Environment(\.dismiss) private var dismiss
     var room: JSONValue { detail["room"] }
+    var testNotice: JSONValue? { room["warnings"].array.first { $0["code"].text == "offline_test" } }
     var locked: Bool { room["current_operation_id"].string != nil || app.pending.contains { $0.roomID == roomID } }
     var body: some View {
         List {
             if let error { Text(error).foregroundStyle(.red) }
             if detail != .null {
-                Section("Original measured room") {
+                Section(testNotice == nil ? "Original measured room" : "Imported test room") {
+                    if let testNotice { Text(testNotice["message"].text).foregroundStyle(.orange) }
                     if detail["raw_export"] != .null { RoomScene(document: detail["raw_export"], native: true, selectedID: $selected, ghosts: true, resetToken: 0).frame(height: 280).listRowInsets(EdgeInsets()) }
                     if !detail["capture_status"]["manifest"]["artifacts"].array.isEmpty {
                         ScrollView(.horizontal) { HStack { ForEach(detail["capture_status"]["manifest"]["artifacts"].array.filter { $0["kind"].text == "jpeg" }, id: \.self) { artifact in
                             PrivateCapturePhoto(app: app, path: "rooms/\(roomID)/artifacts/\(artifact["artifact_id"].text)").frame(width: 160, height: 120).clipped()
                         } } }
                     }
-                    Text("Native RoomPlan measurements. Small-object detection has not run at this stage.").font(.caption).foregroundStyle(.secondary)
+                    Text(testNotice == nil ? "Native RoomPlan measurements. Small-object detection has not run at this stage." : "Model-derived geometry for local testing. This room was imported from a 3D model.").font(.caption).foregroundStyle(.secondary)
                     let capture = detail["capture_status"]
                     Text("Capture: \(capture["state"].text) · Expected \(capture["expected_artifacts"].int) · Stored \(capture["stored_artifacts"].int) · Missing \(capture["missing_artifacts"].int)").font(.caption)
                     if let design = room["active_design_id"].string { NavigationLink("Reopen design") { DesignView(app: app, roomID: roomID, designID: design) } }
@@ -60,7 +62,7 @@ struct RoomReview: View {
         .refreshable { await load() }
         .task { text = UserDefaults.standard.string(forKey: "review_draft_\(roomID)") ?? ""; await load() }
         .onChange(of: text) { _, value in UserDefaults.standard.set(value, forKey: "review_draft_\(roomID)") }
-        .task(id: operation["operation_id"].text) { await poll() }
+        .task(id: [operation["operation_id"].text, operation["state"].text]) { await poll() }
     }
     func instruction(_ id: String) -> String { detail["planning"]["instructions"].array.first { $0["target"]["id"].text == id }?["instruction"].string ?? "decide" }
     func load() async {
@@ -75,10 +77,18 @@ struct RoomReview: View {
     }
     func poll() async {
         guard let client = app.client, let id = operation["operation_id"].string else { return }
-        for _ in 0..<10 {
-            guard !Task.isCancelled, !["succeeded", "failed", "cancelled", "rejected"].contains(operation["state"].text) else { await load(); return }
-            do { try await Task.sleep(for: .seconds(2)); operation = try await client.request("operations/\(id)")["operation"] } catch { return }
+        while !Task.isCancelled, operation["operation_id"].text == id, ["queued", "running"].contains(operation["state"].text), operation["pending_question"] == .null {
+            do {
+                try await Task.sleep(for: .seconds(2))
+                let next = try await client.request("operations/\(id)")["operation"]
+                guard !Task.isCancelled, operation["operation_id"].text == id else { return }
+                operation = next; error = nil
+            } catch {
+                guard !Task.isCancelled else { return }
+                self.error = error.localizedDescription
+            }
         }
+        if !Task.isCancelled, operation["operation_id"].text == id { await load() }
     }
     func command(_ message: String, target: String?) async {
         do {

@@ -39,6 +39,7 @@ struct RoomScene: UIViewRepresentable {
         var highlights: [String: ModelEntity] = [:]
         var assetTasks: [String: Task<Void, Never>] = [:]
         var lastManifest: JSONValue = .null
+        var framedContent = false
         var wallEntities: [(Entity, SIMD3<Float>, SIMD3<Float>)] = []
         init(_ parent: RoomScene) { self.parent = parent }
         func attach(_ view: ARView) {
@@ -65,8 +66,8 @@ struct RoomScene: UIViewRepresentable {
                     objects = [:]; colors = [:]; wallEntities = []; itemRoots = [:]; itemDocuments = [:]; highlights = [:]
                     if parent.native { buildNative(parent.document) } else { buildScene(parent.document) }
                 }
+                if parent.native, !framedContent { reset() }
                 last = parent.document; lastGhosts = parent.ghosts; lastManifest = parent.assetManifest
-                if first { reset() }
             }
             if lastReset != parent.resetToken { lastReset = parent.resetToken; reset() }
             for (id, entity) in objects { entity.model?.materials = [material(id == parent.selectedID ? .systemYellow : colors[id] ?? .systemGray, alpha: entity.name.hasPrefix("ghost:") ? 0.2 : 1)] }
@@ -114,6 +115,17 @@ struct RoomScene: UIViewRepresentable {
                 strip(cursor, length, 0, height)
             }
             reconcileItems(scene)
+            if !framedContent, polygon.count >= 3, polygon.allSatisfy({ $0.allSatisfy(\.isFinite) }), let height = room["height"].number, height.isFinite, height > 0 {
+                let points = polygon.map { SIMD3<Float>(Float($0[0]), 0, Float($0[1])) }
+                let minimum = points.reduce(points[0], simd_min), maximum = points.reduce(points[0], simd_max)
+                let size = maximum - minimum + SIMD3<Float>(0, Float(height), 0)
+                let focus = (minimum + maximum) / 2 + SIMD3<Float>(0, Float(height) / 2, 0)
+                let extent = simd_length(size)
+                if extent.isFinite, size.x > 0, size.z > 0, focus.x.isFinite, focus.y.isFinite, focus.z.isFinite {
+                    center = focus; radius = max(2, extent * 1.1)
+                    azimuth = .pi / 4; elevation = .pi / 4; framedContent = true
+                }
+            }
         }
         func reconcileItems(_ scene: JSONValue) {
             let visible = SceneItems.visible(in: scene, showGhosts: parent.ghosts)
@@ -266,8 +278,11 @@ struct RoomScene: UIViewRepresentable {
         }
         func reset() {
             let bounds = content.visualBounds(relativeTo: root)
-            if bounds.extents.x.isFinite, simd_length(bounds.extents) > 0 { center = bounds.center; radius = max(2, simd_length(bounds.extents) * 1.1) }
+            let extent = simd_length(bounds.extents)
+            guard extent.isFinite, extent > 0, bounds.center.x.isFinite, bounds.center.y.isFinite, bounds.center.z.isFinite else { return }
+            center = bounds.center; radius = max(2, extent * 1.1)
             azimuth = .pi / 4; elevation = .pi / 4; positionCamera()
+            framedContent = true
         }
         func positionCamera() {
             let position = center + SIMD3<Float>(radius * cos(elevation) * sin(azimuth), radius * sin(elevation), radius * cos(elevation) * cos(azimuth))

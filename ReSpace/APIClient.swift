@@ -13,10 +13,10 @@ struct APIClient {
     let baseURL: URL
     let deviceID: String
     func request(_ path: String, method: String = "GET", body: JSONValue? = nil, data: Data? = nil, contentType: String? = nil) async throws -> JSONValue {
-        guard var components = URLComponents(url: URL(string: path, relativeTo: baseURL.appendingPathComponent("", isDirectory: true))!.absoluteURL, resolvingAgainstBaseURL: false) else { throw ContractError.invalid("Invalid backend path.") }
+        guard let resolved = URL(string: path, relativeTo: baseURL.appendingPathComponent("", isDirectory: true))?.absoluteURL, var components = URLComponents(url: resolved, resolvingAgainstBaseURL: false) else { throw ContractError.invalid("Invalid backend path.") }
         if method == "DELETE", let id = body?["operation_id"].string { components.queryItems = (components.queryItems ?? []) + [URLQueryItem(name: "operation_id", value: id)] }
         guard let url = components.url else { throw ContractError.invalid("Invalid backend URL.") }
-        guard url.scheme == "https" else { throw ContractError.invalid("Configure an HTTPS backend URL.") }
+        guard BackendURLPolicy.sameOrigin(url, baseURL) else { throw ContractError.invalid("Request must use the configured backend origin.") }
         var request = URLRequest(url: url, timeoutInterval: 30)
         request.httpMethod = method
         request.setValue(deviceID, forHTTPHeaderField: "X-Device-Id")
@@ -35,7 +35,11 @@ struct APIClient {
 }
 
 @MainActor @Observable final class AppModel {
+    #if DEBUG
+    var backend = ProcessInfo.processInfo.environment["RESPACE_BACKEND_URL"] ?? UserDefaults.standard.string(forKey: "backendURL") ?? "http://127.0.0.1:8000"
+    #else
     var backend = UserDefaults.standard.string(forKey: "backendURL") ?? ""
+    #endif
     var rooms: [JSONValue] = []
     var error: String?
     var busy = false
@@ -53,7 +57,7 @@ struct APIClient {
         } catch { recoveryBlocked = true; self.error = "Local request recovery is unavailable: \(error.localizedDescription)" }
     }
     var client: APIClient? {
-        guard !recoveryBlocked, !deviceID.isEmpty, let url = URL(string: backend), url.scheme == "https", url.host != nil else { return nil }
+        guard !recoveryBlocked, !deviceID.isEmpty, let url = URL(string: backend), BackendURLPolicy.allows(url), url.query == nil, url.fragment == nil else { return nil }
         return APIClient(baseURL: url.appendingPathComponent("v1"), deviceID: deviceID)
     }
     func saveBackend() { UserDefaults.standard.set(backend, forKey: "backendURL") }
@@ -101,11 +105,21 @@ struct APIClient {
         } catch let error as APIError where error.code == "unknown_operation" { return try await submit(request) }
     }
     static func installationID() throws -> String {
+        #if DEBUG && targetEnvironment(simulator)
+        if let id = UserDefaults.standard.string(forKey: "simulatorInstallationID"), !id.isEmpty { return id }
+        #endif
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: "com.Somei.ReSpace.installation", kSecAttrAccount as String: "device"]
         var lookup = query; lookup[kSecReturnData as String] = true
         var result: CFTypeRef?
         let status = SecItemCopyMatching(lookup as CFDictionary, &result)
         if status == errSecSuccess, let data = result as? Data, let value = String(data: data, encoding: .utf8) { return value }
+        #if DEBUG && targetEnvironment(simulator)
+        if status == errSecMissingEntitlement {
+            let id = UUID().uuidString
+            UserDefaults.standard.set(id, forKey: "simulatorInstallationID")
+            return id
+        }
+        #endif
         guard status == errSecItemNotFound else { throw ContractError.invalid("Keychain installation identity is unavailable (\(status)).") }
         let id = UUID().uuidString
         var item = query; item[kSecValueData as String] = Data(id.utf8); item[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
@@ -116,7 +130,7 @@ struct APIClient {
 
 extension APIClient {
     func media(_ path: String) async throws -> Data {
-        guard let url = URL(string: path, relativeTo: baseURL.appendingPathComponent("", isDirectory: true))?.absoluteURL, url.scheme == "https", url.host == baseURL.host else { throw ContractError.invalid("Private media must use this backend.") }
+        guard let url = URL(string: path, relativeTo: baseURL.appendingPathComponent("", isDirectory: true))?.absoluteURL, BackendURLPolicy.sameOrigin(url, baseURL) else { throw ContractError.invalid("Private media must use this backend.") }
         var request = URLRequest(url: url, timeoutInterval: 30); request.setValue(deviceID, forHTTPHeaderField: "X-Device-Id")
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse, http.statusCode == 200 else { throw ContractError.invalid("Private capture image is unavailable.") }

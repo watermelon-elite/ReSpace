@@ -49,6 +49,30 @@ public enum ContractError: LocalizedError {
     public var errorDescription: String? { if case .invalid(let v) = self { return v }; return nil }
 }
 
+public enum BackendURLPolicy {
+    public static func allows(_ url: URL) -> Bool {
+        guard let host = url.host?.lowercased(), !host.isEmpty, url.user == nil, url.password == nil else { return false }
+        if url.scheme == "https" { return true }
+        #if DEBUG
+        guard url.scheme == "http" else { return false }
+        if ["localhost", "[::1]", "::1"].contains(host) || host.hasSuffix(".local") { return true }
+        let fields = host.split(separator: ".", omittingEmptySubsequences: false)
+        let parts = fields.compactMap { Int($0) }
+        guard fields.count == 4, parts.count == 4, parts.allSatisfy({ (0...255).contains($0) }), zip(fields, parts).allSatisfy({ $0 == String($1) }) else { return false }
+        return parts[0] == 127 || parts[0] == 10 || (parts[0] == 192 && parts[1] == 168) || (parts[0] == 172 && (16...31).contains(parts[1]))
+        #else
+        return false
+        #endif
+    }
+    public static func sameOrigin(_ url: URL, _ baseURL: URL) -> Bool {
+        allows(url) && allows(baseURL) && url.scheme == baseURL.scheme && url.host?.lowercased() == baseURL.host?.lowercased()
+            && (url.port ?? (url.scheme == "https" ? 443 : 80)) == (baseURL.port ?? (baseURL.scheme == "https" ? 443 : 80))
+    }
+    public static func allowsAsset(_ url: URL, from baseURL: URL) -> Bool {
+        allows(url) && (url.scheme == "https" || sameOrigin(url, baseURL))
+    }
+}
+
 public struct Placement: Equatable, Sendable {
     public let position: [Double]
     public let size: [Double]

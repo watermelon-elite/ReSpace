@@ -83,7 +83,7 @@ struct DesignView: View {
         }
         .task { text = UserDefaults.standard.string(forKey: "design_draft_\(roomID)") ?? ""; await load(initial: true) }
         .onChange(of: text) { _, value in UserDefaults.standard.set(value, forKey: "design_draft_\(roomID)") }
-        .task(id: operation["operation_id"].text) { await poll() }
+        .task(id: [operation["operation_id"].text, operation["state"].text]) { await poll() }
     }
     var purchaseSummary: some View {
         let purchases = scene["purchase_summary"]
@@ -186,10 +186,18 @@ struct DesignView: View {
     }
     func poll() async {
         guard let client = app.client, let id = operation["operation_id"].string else { return }
-        for _ in 0..<10 {
-            guard !Task.isCancelled, !["succeeded", "failed", "cancelled", "rejected"].contains(operation["state"].text) else { await load(); return }
-            do { try await Task.sleep(for: .seconds(2)); operation = try await client.request("operations/\(id)")["operation"] } catch { return }
+        while !Task.isCancelled, operation["operation_id"].text == id, ["queued", "running"].contains(operation["state"].text), operation["pending_question"] == .null {
+            do {
+                try await Task.sleep(for: .seconds(2))
+                let next = try await client.request("operations/\(id)")["operation"]
+                guard !Task.isCancelled, operation["operation_id"].text == id else { return }
+                operation = next; error = nil
+            } catch {
+                guard !Task.isCancelled else { return }
+                self.error = error.localizedDescription
+            }
         }
+        if !Task.isCancelled, operation["operation_id"].text == id { await load() }
     }
 }
 

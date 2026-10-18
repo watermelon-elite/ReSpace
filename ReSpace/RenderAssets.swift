@@ -9,7 +9,7 @@ actor RenderAssetCache {
     init(directory: URL = URL.cachesDirectory.appendingPathComponent("ReSpaceAssets"), session: URLSession = .shared) { self.directory = directory; self.session = session }
     func file(for asset: RenderAsset, baseURL: URL) async throws -> URL {
         let path = asset.value["asset_url"].string ?? asset.value["url"].text
-        guard let url = URL(string: path, relativeTo: baseURL.appendingPathComponent("", isDirectory: true))?.absoluteURL, url.scheme == "https", url.host != nil, !path.isEmpty else { throw ContractError.invalid("Render asset URL is unavailable.") }
+        guard let url = URL(string: path, relativeTo: baseURL.appendingPathComponent("", isDirectory: true))?.absoluteURL, BackendURLPolicy.allowsAsset(url, from: baseURL), !path.isEmpty else { throw ContractError.invalid("Render asset URL is unavailable.") }
         let identity = asset.id + "/" + asset.revision
         let key = SHA256.hash(data: Data(identity.utf8)).map { String(format: "%02x", $0) }.joined()
         let file = directory.appendingPathComponent(key).appendingPathExtension("usdz")
@@ -25,7 +25,7 @@ actor RenderAssetCache {
     }
     func texture(for descriptor: JSONValue, baseURL: URL) async throws -> URL {
         let path = descriptor["texture_url"].text
-        guard !path.isEmpty, let url = URL(string: path, relativeTo: baseURL.appendingPathComponent("", isDirectory: true))?.absoluteURL, url.scheme == "https", url.host != nil else { throw ContractError.invalid("Panel texture URL is unavailable.") }
+        guard !path.isEmpty, let url = URL(string: path, relativeTo: baseURL.appendingPathComponent("", isDirectory: true))?.absoluteURL, BackendURLPolicy.allowsAsset(url, from: baseURL) else { throw ContractError.invalid("Panel texture URL is unavailable.") }
         let identity = descriptor["asset_id"].text + "/" + descriptor["asset_revision"].text + "/" + url.absoluteString
         let key = SHA256.hash(data: Data(identity.utf8)).map { String(format: "%02x", $0) }.joined()
         let file = directory.appendingPathComponent(key).appendingPathExtension("png")

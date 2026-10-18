@@ -9,13 +9,22 @@ struct ContentView: View {
     @State private var permissionDenied = false
     @State private var recoveries: [CaptureArchive] = []
     @State private var discardArchive: CaptureArchive?
+    private var captureSupported: Bool { UIDevice.current.userInterfaceIdiom == .phone && RoomCaptureSession.isSupported }
+    private var librarySupported: Bool {
+        #if DEBUG && targetEnvironment(simulator)
+        true
+        #else
+        captureSupported
+        #endif
+    }
     var body: some View {
         Group {
-            if UIDevice.current.userInterfaceIdiom != .phone || !RoomCaptureSession.isSupported {
+            if !librarySupported {
                 ContentUnavailableView("LiDAR iPhone required", systemImage: "iphone", description: Text("ReSpace requires iOS 18 or later and an iPhone that supports RoomPlan and LiDAR room capture."))
             } else {
                 NavigationStack {
                     List {
+                        if !captureSupported { Section("Room capture unavailable") { Text("New scans require a LiDAR iPhone. Saved Rooms are available for local testing.") } }
                         if app.client == nil { Section { Text("Connect to your ReSpace backend to open your Rooms."); Button("Configure Backend") { setup = true } } }
                         if let error = app.error { Section { Text(error).foregroundStyle(.red); Button("Refresh") { Task { await app.refresh() } } } }
                         if permissionDenied { Section("Camera access is off") { Button("Open Settings") { if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) } }; Button("Return to My Rooms") { permissionDenied = false } } }
@@ -42,7 +51,7 @@ struct ContentView: View {
                         ForEach(app.pending, id: \.operationID) { request in Section("Request awaiting confirmation") { Text(request.path); Button("Reconcile") { Task { do { _ = try await app.reconcile(request); await app.refresh() } catch { app.error = error.localizedDescription } } } } }
                     }
                     .navigationTitle("My Rooms")
-                    .toolbar { ToolbarItem(placement: .topBarLeading) { Button("Backend", systemImage: "network") { setup = true } }; ToolbarItem(placement: .topBarTrailing) { Button("New Scan", systemImage: "plus") { Task { await start() } }.disabled(app.client == nil || app.busy) } }
+                    .toolbar { ToolbarItem(placement: .topBarLeading) { Button("Backend", systemImage: "network") { setup = true } }; ToolbarItem(placement: .topBarTrailing) { Button("New Scan", systemImage: "plus") { Task { await start() } }.disabled(!captureSupported || app.client == nil || app.busy) } }
                     .refreshable { await app.refresh(); recoveries = CaptureArchive.recoverable() }
                     .task { await app.recoverPending(); await app.refresh(); recoveries = CaptureArchive.recoverable() }
                 }
@@ -55,7 +64,7 @@ struct ContentView: View {
         }
     }
     private func start() async {
-        guard let client = app.client else { return }
+        guard captureSupported, let client = app.client else { return }
         let allowed = AVCaptureDevice.authorizationStatus(for: .video) == .authorized ? true : await AVCaptureDevice.requestAccess(for: .video)
         guard allowed else { permissionDenied = true; return }
         app.busy = true; defer { app.busy = false }
