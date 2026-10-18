@@ -1,3 +1,8 @@
 # Offline preparation only; never installed in the request-time API image.
 trimesh==5.1.1
 usd-core==26.8
+# trimesh treats both of these as optional and degrades quietly without them:
+# no pillow means glTF textures are dropped and models package grey, and no
+# scipy means vertex normals fall back to a slower unweighted path. Required.
+pillow==13.0.0
+scipy==1.17.1

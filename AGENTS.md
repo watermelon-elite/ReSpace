@@ -46,7 +46,7 @@ Verified facts, each claim tagged confirmed or inferred with its source URL. Rea
 - [`backend/`](backend/): versioned API, durable state, Product verification, perception and deterministic placement; contract and behavior tests are under `backend/tests/`.
 - [`backend/README.md`](backend/README.md): local runtime, opt-in model testing, startup instructions and test-data limits.
 - [`assets/`](assets/): versioned render assets and offline conversion; [`Kenney license`](assets/sources/kenney/LICENSE.txt) records the retained source license.
-- [`assets/spar3d/README.md`](assets/spar3d/README.md): offline SPAR3D image-to-mesh runtime for catalog Products, feeding `assets/prepare.py`. Records gated-weight access, the five upstream packaging workarounds, measured CPU timings, the MPS deadlock and why torch cannot be downgraded. Read before running or changing reconstruction.
+- [`assets/spar3d/README.md`](assets/spar3d/README.md): offline SPAR3D image-to-mesh runtime for catalog Products, feeding `assets/prepare.py`. Records gated-weight access, the five upstream packaging workarounds, measured CPU and MPS timings, and why torch cannot be downgraded. Also carries the graded reconstruction quality per category — lamps usable, shelf units not, tables individually — the systematic tilt that has no correction yet, and the two separate virtualenvs. Read before running or changing reconstruction, or before deciding whether a category gets a reconstruction or a stand-in.
 
 ## Agent skills
 

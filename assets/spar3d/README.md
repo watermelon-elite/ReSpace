@@ -53,6 +53,17 @@ bash assets/spar3d/setup.sh                      # ~10 min, idempotent
 python assets/spar3d/scrape_ikea.py              # test inputs only, not catalog
 export HF_TOKEN=hf_...
 ~/spar3d-lab/.venv/bin/python assets/spar3d/run_spar3d.py --device cpu
+~/spar3d-lab/.venv-prepare/bin/python assets/spar3d/grade.py   # convert and grade
+```
+
+Two environments, and they are not interchangeable. `.venv` runs SPAR3D on
+trimesh 4.4.1, which the upstream extensions require; `.venv-prepare` runs
+`assets/prepare.py` on the trimesh 5.1.1 that `assets/requirements.txt` pins.
+Build the second with:
+
+```sh
+uv venv --python 3.11 ~/spar3d-lab/.venv-prepare
+VIRTUAL_ENV=~/spar3d-lab/.venv-prepare uv pip install -r assets/requirements.txt
 ```
 
 Output lands in `~/spar3d-lab/out/<slug>/` as `mesh.glb`, `points.ply` (the
@@ -77,6 +88,65 @@ macOS 26.6.2, torch 2.14.1, CPU, 1024px textures, 2026-10-18.
 
 At SPEC's catalog scale (~60 Products) that is roughly 80 minutes of unattended
 offline work, which is acceptable for a step outside request latency.
+
+## Reconstruction quality
+
+All 15 test products were converted through `assets/prepare.py` and rendered
+from four azimuths, textured and as untextured clay, against the source
+photograph. Clay is the deciding view: a baked photo texture paints detail onto
+flat geometry and makes a slab look like a bookcase.
+
+| Category | Verdict | What happens |
+|---|---|---|
+| Lamps (6/6) | **use** | Shades, turned stems, thin twin-stalk frames and glass globes all survive. Pleating on ÅRSTID is real geometry, not texture. |
+| Tables (2 good, 2 partial, 2 fail) | **gate individually** | Open steel frames reconstruct well. Tops seen edge-on detach and float. |
+| Shelf units (0/3) | **stand-in** | BILLY comes back a solid slab with the shelves painted on. No cavity, no opening. |
+
+Per [`SPEC.md`](../../SPEC.md) §11, bookcases must use a stand-in. Lamps are
+safe. Tables need a per-Product check before promotion.
+
+What predicts success is not thickness but whether the silhouette explains the
+shape. Thin tube frames photographed whole (VITTSJÖ, SIMRISHAMN) come back
+accurate; a horizontal plane viewed edge-on has almost no silhouette, so
+tabletops detach and drift (ÖSTAVALL, ÖRTRÄSK, OLSERÖD). Repeated interior
+cavities read as surface texture and fill in solid (all three BILLYs). The
+single large cavity of the BILLY height-extension unit partly opened, but
+warped, with an open back and an invented blue patch where the photo showed
+nothing.
+
+### Every mesh leans
+
+No output is upright. Measured as the angle between vertical and the axis
+joining the top and bottom decile centroids:
+
+| | tilt from vertical |
+|---|---|
+| Lamps | 1.8°–10.8°, consistently backwards |
+| Shelf units | 3.1°–16.6° |
+| Tables | inflated by detached parts; the metric assumes a tall axial shape |
+
+The cause is that product photography shoots slightly from above and the
+reconstruction is in camera space, not world space. `prepare.py` applies `--yaw`
+about the vertical axis only, so it cannot correct this. **An upright
+correction before conversion is required and does not exist yet.** Until then a
+lamp placed on a floor will visibly lean.
+
+### Reproducing the grading
+
+```sh
+~/spar3d-lab/.venv-prepare/bin/python assets/spar3d/grade.py [slug-substring]
+```
+
+`grade.py` converts every mesh through `prepare.py`, records size, texture
+survival and tilt, and writes one comparison sheet per Product to
+`~/spar3d-lab/grade/sheets/`. `render.py` behind it is a small software
+rasterizer: no GPU, no OpenGL, no window, so it cannot disturb anyone using the
+machine and cannot repeat the MPS incident. All 15 take about 75 s on CPU.
+
+A software renderer is deliberate. `qlmanage` hangs indefinitely on USDZ on this
+machine — including on the Kenney assets already committed, so it is the tool
+that is broken, not our output — which left no way to see what was being
+packaged.
 
 ## Device support
 
@@ -219,10 +289,15 @@ teardown — and in both cases resuming cost only the item in flight.
   default. See Device support.
 - Remeshing is disabled: `gpytoolbox` and `pynanoinstantmeshes` are not installed,
   so `--remesh` options are unavailable. Meshes are raw marching-cubes output.
-- No mesh has been inspected in RealityKit yet, and the GLB→USDZ conversion of
-  SPAR3D output has not been run through `prepare.py`. Orientation and the yaw
-  needed for the `+Z` forward convention are unconfirmed.
-- Open structures (bookcase cavities, thin frames) are the expected failure mode
-  for single-image reconstruction and have not been graded.
+- **Nothing has been opened in RealityKit.** All 15 convert and validate inside
+  USD, but Apple's own loader has never seen them, because `qlmanage` hangs on
+  every USDZ on this machine. This needs a device or Xcode and is the largest
+  remaining unknown.
+- **No upright correction exists.** Every mesh leans; `prepare.py` only rotates
+  about the vertical axis. See "Every mesh leans".
+- The `+Z` forward yaw per Product has not been determined. The grading sheets
+  render 0/90/180/270 and are the input to that decision.
+- Open structures were the expected failure mode and the grading confirms it for
+  shelf units; thin frames, against expectation, reconstruct well.
 - `scrape_ikea.py` produces test inputs only. Those Products carry no verified
   dimension evidence and must not be promoted to catalog assets.

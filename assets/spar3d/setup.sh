@@ -71,4 +71,18 @@ import torch, texture_baker, uv_unwrapper, alpha_clip, trimesh  # noqa: F401
 from spar3d.system import SPAR3D  # noqa: F401
 print(f"OK  torch {torch.__version__}  mps={torch.backends.mps.is_available()}")
 EOF
+
+echo "== preparation env =="
+# A second venv, because the two halves of the pipeline disagree about trimesh:
+# the SPAR3D extensions are built against 4.4.1 and assets/requirements.txt
+# pins 5.1.1 for prepare.py. Installing either into the other's venv breaks it.
+PREP="$LAB/.venv-prepare"
+[ -x "$PREP/bin/python" ] || uv venv --python 3.11 -q "$PREP"
+VIRTUAL_ENV="$PREP" uv pip install -q -r "$(dirname "$0")/../requirements.txt"
+"$PREP/bin/python" - <<'EOF'
+import trimesh, PIL  # noqa: F401
+from pxr import Usd
+print(f"OK  trimesh {trimesh.__version__}  usd {'.'.join(map(str, Usd.GetVersion()))}")
+EOF
+
 echo "lab ready at $LAB"

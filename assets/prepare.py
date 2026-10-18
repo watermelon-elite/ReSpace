@@ -12,6 +12,10 @@ from pathlib import Path
 import tempfile
 
 import numpy as np
+# Imported for its absence, not its API: trimesh reads glTF textures only when
+# it can import PIL, and without it logs at debug level and hands back an
+# untextured mesh. That silently packages grey models, so fail at import.
+import PIL  # noqa: F401
 import trimesh
 from pxr import Gf, Sdf, Usd, UsdGeom, UsdShade, UsdUtils
 
@@ -37,7 +41,11 @@ def convert(source: Path, destination: Path, category: str, *, yaw: float = 0,
     origin = np.array([(low[0] + high[0]) / 2, low[1], (low[2] + high[2]) / 2])
     destination.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="respace-asset-") as temporary:
-        stage_path = Path(temporary) / "model.usda"
+        # .usdc, the binary crate format, not .usda: ASCII stores every vertex
+        # and index as text and roughly doubles the package. Measured over the
+        # 15 reconstruction meshes, binary saved 34-60% and brought all of them
+        # under SPEC's 3 MB ceiling, which nine of them had breached.
+        stage_path = Path(temporary) / "model.usdc"
         stage = Usd.Stage.CreateNew(str(stage_path))
         root = UsdGeom.Xform.Define(stage, "/Model")
         stage.SetDefaultPrim(root.GetPrim())
@@ -79,6 +87,11 @@ def convert(source: Path, destination: Path, category: str, *, yaw: float = 0,
                 shader.CreateInput("diffuseColor", Sdf.ValueTypeNames.Color3f).ConnectToSource(texture.ConnectableAPI(), "rgb")
             else:
                 color = getattr(visual_material, "baseColorFactor", None)
+                if color is None:
+                    # A PBRMaterial carries main_color; only ColorVisuals puts it
+                    # on the visual. Reaching past the material raised
+                    # AttributeError on every textureless glTF.
+                    color = getattr(visual_material, "main_color", None)
                 if color is None:
                     color = mesh.visual.main_color
                 rgb = np.array(color[:3], dtype=float)
