@@ -199,3 +199,77 @@ public struct NumericQuestion: Sendable {
         return isValid(result) ? result : nil
     }
 }
+
+public enum AnswerHistory {
+    public static func revisionIdentity(answerID: String, operation: JSONValue) throws -> [String: JSONValue] {
+        guard operation["answer_revision_allowed"].bool == true, let entry = operation["answer_history"].array.first(where: { $0["answer_id"].text == answerID }), !entry["question"]["question_id"].text.isEmpty else { throw ContractError.invalid("This answer cannot be revised at the current planning step. Refresh the operation.") }
+        return ["revision_of_answer_id": .string(answerID), "question_id": entry["question"]["question_id"], "expected_question_revision": entry["question"]["question_revision"], "expected_decision_revision": operation["decision_revision"]]
+    }
+    public static func summary(_ entry: JSONValue) -> String {
+        let request = entry["request"]
+        let selected = Set(request["choice_ids"].array.compactMap(\.string))
+        var parts = entry["question"]["choices"].array.filter { selected.contains($0["choice_id"].text) }.map { $0["label"].text }
+        if let number = request["number"].number { parts.append(number.formatted()) }
+        if !request["text"].text.isEmpty { parts.append(request["text"].text) }
+        if request["action"].text == "skip" { parts.append("Skipped") }
+        if request["action"].text == "delegate" { parts.append("Delegated within approved constraints") }
+        if request["budget_approval"] != .null { parts.append("Approved USD " + request["budget_approval"]["new_ceiling"].text) }
+        return parts.joined(separator: " · ")
+    }
+}
+
+public struct SwapPreview: Sendable {
+    public let itemID: String
+    public let choice: JSONValue
+    public let requestBody: [String: JSONValue]
+    public var operationID: String { requestBody["operation_id"]!.text }
+    public var designID: String { requestBody["expected_active_design_id"]!.text }
+    public init(scene: JSONValue, itemID: String, choice: JSONValue, searchID: String, activeRevision: Int) throws {
+        _ = try ProductChoice(choice)
+        guard let item = scene["items"].array.first(where: { $0["id"].text == itemID && $0["status"].text != "removed" }), !searchID.isEmpty, !scene["design_id"].text.isEmpty else { throw ContractError.invalid("The Swap target or search context is unavailable. Refresh the design.") }
+        _ = try Placement(item["placement"])
+        self.itemID = itemID; self.choice = choice
+        var body: [String: JSONValue] = ["operation_id": .string(UUID().uuidString), "item_id": .string(itemID), "variant_id": choice["variant_id"], "offer_id": choice["offer"]["offer_id"], "search_id": .string(searchID), "expected_active_design_id": scene["design_id"], "expected_active_revision": .number(Double(activeRevision))]
+        if let selectionID = choice["selection_id"].string { body["selection_id"] = .string(selectionID) }
+        requestBody = body
+    }
+    public func scene(over saved: JSONValue) -> JSONValue {
+        var scene = saved.object
+        scene["items"] = .array(saved["items"].array.map { item in
+            guard item["id"].text == itemID else { return item }
+            var changed = item.object; var placement = item["placement"].object
+            placement["size"] = choice["dimensions"]; changed["placement"] = .object(placement)
+            changed["render"] = choice["render"]; changed["preview"] = .bool(true)
+            return .object(changed)
+        })
+        return .object(scene)
+    }
+}
+
+public struct RenderAsset: Sendable {
+    public let value: JSONValue
+    public let id: String
+    public let revision: String
+    public let bounds: [Double]
+    public init(_ value: JSONValue) throws {
+        id = value["asset_id"].text; revision = value["asset_revision"].string ?? value["revision"].text
+        bounds = value["authored_bounds"].numbers
+        guard !id.isEmpty, !revision.isEmpty, bounds.count == 3, bounds.allSatisfy({ $0.isFinite && $0 > 0 }), value["units"].text == "meters", value["pivot"].text == "bottom_center", value["forward_axis"].text == "+Z", value["up_axis"].text == "+Y", ["normalized", "dimensioned"].contains(value["scaling_mode"].text) else { throw ContractError.invalid("Invalid immutable render asset contract.") }
+        self.value = value
+    }
+    public func scale(for size: [Double]) throws -> [Double] {
+        guard size.count == 3, size.allSatisfy({ $0.isFinite && $0 > 0 }) else { throw ContractError.invalid("Invalid saved model size.") }
+        if value["scaling_mode"].text == "dimensioned" {
+            guard zip(size, bounds).allSatisfy({ abs($0 - $1) <= 0.005 }) else { throw ContractError.invalid("Dimensioned model does not match the saved physical dimensions.") }
+            return [1, 1, 1]
+        }
+        return [size[0] / bounds[0], size[2] / bounds[2], size[1] / bounds[1]]
+    }
+    public func validatesLoadedBounds(minimum: [Double], maximum: [Double]) -> Bool {
+        guard minimum.count == 3, maximum.count == 3 else { return false }
+        let actual = zip(maximum, minimum).map(-)
+        let expected = [bounds[0], bounds[2], bounds[1]]
+        return zip(actual, expected).allSatisfy({ $0.isFinite && abs($0 - $1) <= max(0.005, $1 * 0.02) })
+            && abs(minimum[1]) <= 0.005 && abs((minimum[0] + maximum[0]) / 2) <= 0.005 && abs((minimum[2] + maximum[2]) / 2) <= 0.005
+    }
+}

@@ -119,4 +119,89 @@ final class ContractsTests: XCTestCase {
         XCTAssertEqual(unbounded.next(0, direction: -1), -1)
     }
 
+    func testSwapPreviewChangesOnlyTargetGeometryAndNeverSavedPurchases() throws {
+        let scene = try fixture("api/roundtrip.json")["design"]["design"]["scene"]
+        var choice = scene["selections"]["sel"].object
+        let dimensions: JSONValue = .array([.number(1.2), .number(0.6), .number(0.8)])
+        choice["dimensions"] = dimensions
+        var evidence = choice["dimension_evidence"]!.object; evidence["dimensions"] = dimensions; choice["dimension_evidence"] = .object(evidence)
+        let preview = try SwapPreview(scene: scene, itemID: "i_a_0", choice: .object(choice), searchID: "search-current", activeRevision: 3)
+        let shown = preview.scene(over: scene)
+        XCTAssertEqual(shown["items"].array[0]["placement"]["position"], scene["items"].array[0]["placement"]["position"])
+        XCTAssertEqual(shown["items"].array[0]["placement"]["yaw"], scene["items"].array[0]["placement"]["yaw"])
+        XCTAssertEqual(shown["items"].array[0]["placement"]["size"], dimensions)
+        XCTAssertEqual(shown["purchase_summary"], scene["purchase_summary"])
+        XCTAssertEqual(scene["items"].array[0]["placement"]["size"].numbers, [1, 0.5, 0.7])
+        XCTAssertEqual(preview.requestBody["expected_active_revision"]?.int, 3)
+        XCTAssertEqual(preview.requestBody["offer_id"], scene["selections"]["sel"]["offer"]["offer_id"])
+        XCTAssertEqual(preview.requestBody["search_id"]?.text, "search-current")
+    }
+
+    func testAnswerRevisionUsesOriginalQuestionAndCurrentDecisionIdentity() throws {
+        let source = try fixture("api/roundtrip.json")["operation"]["operation"]
+        let question = source["pending_question"]
+        let entry: JSONValue = .object(["answer_id": .string("answer-original"), "question": question, "request": .object(["choice_ids": .array([.string("work")]), "action": .string("answer")])])
+        var operation = source.object
+        operation["answer_history"] = .array([entry]); operation["decision_revision"] = .number(4); operation["answer_revision_allowed"] = .bool(true)
+        let fields = try AnswerHistory.revisionIdentity(answerID: "answer-original", operation: .object(operation))
+        XCTAssertEqual(fields["question_id"], question["question_id"])
+        XCTAssertEqual(fields["expected_question_revision"]?.int, 1)
+        XCTAssertEqual(fields["expected_decision_revision"]?.int, 4)
+        XCTAssertEqual(fields["revision_of_answer_id"]?.text, "answer-original")
+        XCTAssertEqual(AnswerHistory.summary(entry), "Working from home")
+        operation["answer_revision_allowed"] = .bool(false)
+        XCTAssertThrowsError(try AnswerHistory.revisionIdentity(answerID: "answer-original", operation: .object(operation)))
+    }
+
+    func testSharedSpatialRelationsDesignKeepsElevationsSupportsAndPurchases() throws {
+        let transport = try fixture("spatial-relations-v1.json")
+        let saved = try SavedDesign(envelope: transport["design_envelope"])
+        XCTAssertEqual(saved.items.count, 5)
+        let items = Dictionary(uniqueKeysWithValues: saved.items.map { ($0["id"].text, $0) })
+        XCTAssertEqual(items["i_o_light"]?["placement"]["position"].numbers[1], 2.3)
+        XCTAssertEqual(items["i_lamp_0"]?["placement"]["position"].numbers[1], 0.7)
+        XCTAssertEqual(items["i_lamp_0"]?["placement"]["support_id"].text, "i_desk_0")
+        XCTAssertEqual(items["i_art_0"]?["placement"]["position"].numbers[1], 1.2)
+        XCTAssertEqual(items["i_art_0"]?["placement"]["wall_id"].text, "w_1")
+        XCTAssertEqual(items["i_desk_0"]?["placement"]["position"].numbers[0], items["i_rug_0"]?["placement"]["position"].numbers[0])
+        XCTAssertEqual(saved.value["scene"]["purchase_summary"]["total"].text, "400.00")
+    }
+
+    func testSharedAPIAnswerRevisionPreservesHistoryAndNextRequiredQuestion() throws {
+        let transport = try fixture("api/wave2.json")
+        let before = transport["revision_before"]["operation"], after = transport["revision_after"]["operation"]
+        let expected = transport["revision_request"]
+        let identity = try AnswerHistory.revisionIdentity(answerID: expected["revision_of_answer_id"].text, operation: before)
+        for field in ["revision_of_answer_id", "question_id", "expected_question_revision", "expected_decision_revision"] { XCTAssertEqual(identity[field], expected[field]) }
+        XCTAssertEqual(after["decision_revision"].int, before["decision_revision"].int + 1)
+        XCTAssertEqual(after["answer_history"].array.count, before["answer_history"].array.count + 1)
+        XCTAssertEqual(after["answer_history"].array.first, before["answer_history"].array.first)
+        XCTAssertEqual(AnswerHistory.summary(try XCTUnwrap(after["answer_history"].array.last)), "Relaxation")
+        let question = after["pending_question"]
+        XCTAssertEqual(question["allow_skip"].bool, false); XCTAssertEqual(question["allow_delegate"].bool, false)
+        XCTAssertEqual(NumericQuestion(question).initialValue, 1)
+        XCTAssertTrue(NumericQuestion(question).isValid(1))
+    }
+    func testSharedAPISwapPreviewAdoptsOnlyValidatedChildAndRetainsParentPrice() throws {
+        let transport = try fixture("api/wave2.json")
+        let parent = try SavedDesign(envelope: transport["swap_parent"])
+        let child = try SavedDesign(envelope: transport["swap_child"])
+        let request = transport["swap_request"]
+        let targetID = request["item_id"].text
+        let original = try XCTUnwrap(parent.items.first { $0["id"].text == targetID })
+        let replacement = try XCTUnwrap(child.items.first { $0["id"].text == targetID })
+        let choice = child.value["scene"]["selections"][replacement["selection_id"].text]
+        let preview = try SwapPreview(scene: parent.value["scene"], itemID: targetID, choice: choice, searchID: request["search_id"].text, activeRevision: request["expected_active_revision"].int)
+        let shown = preview.scene(over: parent.value["scene"])
+        XCTAssertEqual(shown["purchase_summary"]["total"].text, "50.00")
+        XCTAssertEqual(parent.value["scene"]["purchase_summary"]["total"].text, "50.00")
+        XCTAssertEqual(child.value["scene"]["purchase_summary"]["total"].text, "70.00")
+        XCTAssertEqual(replacement["placement"]["position"], original["placement"]["position"])
+        XCTAssertEqual(replacement["placement"]["yaw"], original["placement"]["yaw"])
+        XCTAssertEqual(replacement["placement"]["size"].numbers, [0.8, 0.4, 0.7])
+        XCTAssertEqual(transport["swap_success"]["operation"]["outcome"]["design_id"], child.value["design_id"])
+        XCTAssertEqual(transport["swap_rejected"]["operation"]["state"].text, "rejected")
+        XCTAssertEqual(transport["swap_rejected"]["operation"]["outcome"]["action_outcomes"].array.first?["code"].text, "collision")
+    }
+
 }

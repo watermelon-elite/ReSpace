@@ -1,5 +1,6 @@
 import hashlib
 import importlib.util
+import json
 from pathlib import Path
 
 import pytest
@@ -29,6 +30,18 @@ def test_catalog_mesh_cannot_establish_purchase_dimensions():
     record = {**manifest()["assets"][0], "kind": "catalog", "variant_id": None}
     with pytest.raises(ProductError, match="dimension evidence"):
         validate_asset(record)
+
+
+def test_saved_asset_revision_remains_available_after_manifest_update(tmp_path,monkeypatch):
+    from respace import assets
+    prior=manifest();record=prior['assets'][0]
+    target=tmp_path/record['path'];target.parent.mkdir(parents=True,exist_ok=True)
+    target.write_bytes(asset_path(record['asset_id'],record['revision']).read_bytes())
+    (tmp_path/'manifests').mkdir();(tmp_path/'manifests'/f"{prior['manifest_revision']}.json").write_text(json.dumps(prior))
+    (tmp_path/'manifest.json').write_text(json.dumps({**prior,'manifest_revision':'new','assets':[]}))
+    monkeypatch.setattr(assets,'ASSET_ROOT',tmp_path)
+    assert assets.asset_path(record['asset_id'],record['revision'])==target
+    assert assets.manifest(prior['manifest_revision'])['assets'][0]['revision']==record['revision']
 
 
 def test_offline_glb_to_usdz_reopens_exact_bounds_and_keeps_asymmetry(tmp_path):

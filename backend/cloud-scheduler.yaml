@@ -1,0 +1,14 @@
+# Scheduler Job API representation; private OIDC recovery, no always-running poller.
+name: projects/PROJECT_ID/locations/REGION/jobs/respace-recover
+schedule: '* * * * *'
+timeZone: Etc/UTC
+attemptDeadline: 60s
+httpTarget:
+  uri: https://WORKER_SERVICE.run.app/internal/recover
+  httpMethod: POST
+  headers:
+    Content-Type: application/json
+  body: e30=
+  oidcToken:
+    serviceAccountEmail: respace-recovery@PROJECT_ID.iam.gserviceaccount.com
+    audience: https://WORKER_SERVICE.run.app

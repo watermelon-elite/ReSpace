@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "kind": "synthetic",
+    "description": "Stored calibrated DetectionOutcome replay; ideal optical-axis geometry, not physical-device evidence."
+  },
+  "room_id": "room-fixture",
+  "capture_id": "capture-fixture",
+  "raw_export": {
+    "identifier": "native-room",
+    "walls": [
+      {
+        "identifier": "native-wall-0",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          4.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          1.0,
+          0,
+          0.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0.0,
+          0,
+          1.0,
+          0,
+          4.0,
+          0.10000000000000009,
+          3.0,
+          1
+        ]
+      },
+      {
+        "identifier": "native-wall-1",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          3.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          0.0,
+          0,
+          1.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          -1.0,
+          0,
+          0.0,
+          0,
+          6.0,
+          0.10000000000000009,
+          4.5,
+          1
+        ]
+      },
+      {
+        "identifier": "native-wall-2",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          4.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          -1.0,
+          0,
+          0.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0.0,
+          0,
+          -1.0,
+          0,
+          4.0,
+          0.10000000000000009,
+          6.0,
+          1
+        ]
+      },
+      {
+        "identifier": "native-wall-3",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          3.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          0.0,
+          0,
+          -1.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          1.0,
+          0,
+          0.0,
+          0,
+          2.0,
+          0.10000000000000009,
+          4.5,
+          1
+        ]
+      }
+    ],
+    "objects": [],
+    "doors": [],
+    "windows": [],
+    "openings": [],
+    "floors": [],
+    "version": 1
+  },
+  "depth_hex": "000000400000004000000040000000400000004000000040000000400000004000000040000000400000004000000040000000400000004000000040000000400000004000000040000000400000004000000040000000400000004000000040000000400000004000000040000000400000004000000040000000400000004000000040000000400000004000000040000000400000004000000040000000400000004000000040000000400000004000000040000000400000004000000040",
+  "confidence_hex": "020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202",
+  "frames": [
+    {
+      "meta": {
+        "schema_version": 1,
+        "capture_id": "capture-fixture",
+        "frame_id": "edge-0",
+        "idx": 0,
+        "input_revision": 1,
+        "w": 800,
+        "h": 600,
+        "orientation": "sensor_landscape",
+        "intrinsics": {
+          "fx": 400,
+          "fy": 400,
+          "cx": 400,
+          "cy": 300
+        },
+        "transform": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          4,
+          0,
+          5.8,
+          1
+        ],
+        "timestamp": 1,
+        "depth_w": 8,
+        "depth_h": 6,
+        "depth_format": "float32_le_m",
+        "confidence_format": "uint8"
+      },
+      "outcome": {
+        "schema_version": 1,
+        "frame_id": "edge-0",
+        "state": "succeeded",
+        "attempts": [
+          {
+            "attempt": 1,
+            "outcome": "succeeded",
+            "elapsed_ms": 1,
+            "usage": {}
+          }
+        ],
+        "usage": {},
+        "detections": [
+          {
+            "category": "floor_lamp",
+            "box_px": [
+              675,
+              440,
+              725,
+              540
+            ]
+          },
+          {
+            "category": "wall_art",
+            "box_px": [
+              350,
+              250,
+              450,
+              350
+            ]
+          },
+          {
+            "category": "rug",
+            "box_px": [
+              300,
+              500,
+              500,
+              540
+            ]
+          }
+        ],
+        "failure": null,
+        "provider": "perceptron",
+        "model": "perceptron-mk1.5",
+        "mode": "chat"
+      }
+    },
+    {
+      "meta": {
+        "schema_version": 1,
+        "capture_id": "capture-fixture",
+        "frame_id": "edge-1",
+        "idx": 1,
+        "input_revision": 1,
+        "w": 800,
+        "h": 600,
+        "orientation": "sensor_landscape",
+        "intrinsics": {
+          "fx": 400,
+          "fy": 400,
+          "cx": 400,
+          "cy": 300
+        },
+        "transform": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          4.1,
+          0,
+          5.8,
+          1
+        ],
+        "timestamp": 3,
+        "depth_w": 8,
+        "depth_h": 6,
+        "depth_format": "float32_le_m",
+        "confidence_format": "uint8"
+      },
+      "outcome": {
+        "schema_version": 1,
+        "frame_id": "edge-1",
+        "state": "succeeded",
+        "attempts": [
+          {
+            "attempt": 1,
+            "outcome": "succeeded",
+            "elapsed_ms": 1,
+            "usage": {}
+          }
+        ],
+        "usage": {},
+        "detections": [
+          {
+            "category": "floor_lamp",
+            "box_px": [
+              655,
+              440,
+              705,
+              540
+            ]
+          }
+        ],
+        "failure": null,
+        "provider": "perceptron",
+        "model": "perceptron-mk1.5",
+        "mode": "chat"
+      }
+    }
+  ],
+  "expected_floor_lamp_position": [
+    3.5,
+    0,
+    0.8
+  ],
+  "expected_wall_art_position": [
+    2,
+    0.85,
+    0
+  ],
+  "expected_rug_points": [
+    [
+      1.5,
+      0.8
+    ],
+    [
+      2.5,
+      0.8
+    ],
+    [
+      2,
+      0.4
+    ]
+  ],
+  "expected_object_categories": [
+    "floor_lamp",
+    "rug",
+    "wall_art"
+  ]
+}

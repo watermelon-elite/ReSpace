@@ -1,0 +1,4122 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "kind": "controlled_api",
+    "description": "Actual HTTP envelopes with controlled Product verification and language model, real solver, purchases and publication."
+  },
+  "revision_before": {
+    "schema_version": 1,
+    "operation": {
+      "schema_version": 1,
+      "operation_id": "op",
+      "kind": "generation",
+      "room_id": "room",
+      "request": {
+        "operation_id": "op",
+        "capture_id": "capture",
+        "planning_revision": 0,
+        "expected_active_revision": 0,
+        "budget": "100.00",
+        "intent": "add"
+      },
+      "base_context": {
+        "room_id": "room",
+        "capture_id": "capture",
+        "snapshot_id": null,
+        "planning_revision": 0,
+        "active_design_id": null,
+        "active_revision": 0
+      },
+      "state": "needs_clarification",
+      "phase": "awaiting_answer",
+      "created_at": "2026-10-18T03:31:17.614636+00:00",
+      "updated_at": "2026-10-18T03:31:17.616406+00:00",
+      "decision_revision": 1,
+      "question_revision": 2,
+      "question_history": [
+        {
+          "kind": "single_choice",
+          "topic": "activity",
+          "text": "What matters most?",
+          "choices": [
+            {
+              "choice_id": "work",
+              "label": "Working"
+            },
+            {
+              "choice_id": "relax",
+              "label": "Relaxation"
+            }
+          ],
+          "question_id": "276b9cdd-180b-4412-ba55-414f0116ca9e",
+          "operation_id": "op",
+          "base_context": {
+            "room_id": "room",
+            "capture_id": "capture",
+            "snapshot_id": null,
+            "planning_revision": 0,
+            "active_design_id": null,
+            "active_revision": 0
+          },
+          "decision_revision": 0,
+          "question_revision": 1,
+          "context": "interview",
+          "allow_skip": false,
+          "allow_delegate": false,
+          "min_selections": 1,
+          "max_selections": 1
+        },
+        {
+          "kind": "numeric",
+          "topic": "occupants",
+          "text": "How many occupants?",
+          "numeric_min": 1,
+          "numeric_max": 8,
+          "numeric_step": 1,
+          "choices": [],
+          "question_id": "5650dcbf-cb57-478c-9dd4-ce1a38d7b3d1",
+          "operation_id": "op",
+          "base_context": {
+            "room_id": "room",
+            "capture_id": "capture",
+            "snapshot_id": null,
+            "planning_revision": 0,
+            "active_design_id": null,
+            "active_revision": 0
+          },
+          "decision_revision": 1,
+          "question_revision": 2,
+          "context": "interview",
+          "allow_skip": false,
+          "allow_delegate": false,
+          "min_selections": 1,
+          "max_selections": 1
+        }
+      ],
+      "answer_history": [
+        {
+          "answer_id": "3519521d-b08d-4170-97aa-3df3f38de6d7",
+          "reply_id": "first",
+          "question_id": "276b9cdd-180b-4412-ba55-414f0116ca9e",
+          "question": {
+            "kind": "single_choice",
+            "topic": "activity",
+            "text": "What matters most?",
+            "choices": [
+              {
+                "choice_id": "work",
+                "label": "Working"
+              },
+              {
+                "choice_id": "relax",
+                "label": "Relaxation"
+              }
+            ],
+            "question_id": "276b9cdd-180b-4412-ba55-414f0116ca9e",
+            "operation_id": "op",
+            "base_context": {
+              "room_id": "room",
+              "capture_id": "capture",
+              "snapshot_id": null,
+              "planning_revision": 0,
+              "active_design_id": null,
+              "active_revision": 0
+            },
+            "decision_revision": 0,
+            "question_revision": 1,
+            "context": "interview",
+            "allow_skip": false,
+            "allow_delegate": false,
+            "min_selections": 1,
+            "max_selections": 1
+          },
+          "request": {
+            "question_id": "276b9cdd-180b-4412-ba55-414f0116ca9e",
+            "reply_id": "first",
+            "expected_decision_revision": 0,
+            "expected_question_revision": 1,
+            "choice_ids": [
+              "work"
+            ],
+            "action": "answer"
+          },
+          "created_at": "2026-10-18T03:31:17.615999+00:00"
+        }
+      ],
+      "pending_question": {
+        "kind": "numeric",
+        "topic": "occupants",
+        "text": "How many occupants?",
+        "numeric_min": 1,
+        "numeric_max": 8,
+        "numeric_step": 1,
+        "choices": [],
+        "question_id": "5650dcbf-cb57-478c-9dd4-ce1a38d7b3d1",
+        "operation_id": "op",
+        "base_context": {
+          "room_id": "room",
+          "capture_id": "capture",
+          "snapshot_id": null,
+          "planning_revision": 0,
+          "active_design_id": null,
+          "active_revision": 0
+        },
+        "decision_revision": 1,
+        "question_revision": 2,
+        "context": "interview",
+        "allow_skip": false,
+        "allow_delegate": false,
+        "min_selections": 1,
+        "max_selections": 1
+      },
+      "outcome": null,
+      "failure": null,
+      "command_message_id": "9bb95b03-dfce-4133-a5b7-92db1fbec0aa",
+      "answer_revision_allowed": true
+    }
+  },
+  "revision_request": {
+    "operation_id": "op",
+    "question_id": "276b9cdd-180b-4412-ba55-414f0116ca9e",
+    "reply_id": "revision",
+    "expected_decision_revision": 1,
+    "expected_question_revision": 1,
+    "choice_ids": [
+      "relax"
+    ],
+    "revision_of_answer_id": "3519521d-b08d-4170-97aa-3df3f38de6d7"
+  },
+  "revision_after": {
+    "schema_version": 1,
+    "operation": {
+      "schema_version": 1,
+      "operation_id": "op",
+      "kind": "generation",
+      "room_id": "room",
+      "request": {
+        "operation_id": "op",
+        "capture_id": "capture",
+        "planning_revision": 0,
+        "expected_active_revision": 0,
+        "budget": "100.00",
+        "intent": "add"
+      },
+      "base_context": {
+        "room_id": "room",
+        "capture_id": "capture",
+        "snapshot_id": null,
+        "planning_revision": 0,
+        "active_design_id": null,
+        "active_revision": 0
+      },
+      "state": "needs_clarification",
+      "phase": "awaiting_answer",
+      "created_at": "2026-10-18T03:31:17.614636+00:00",
+      "updated_at": "2026-10-18T03:31:17.631915+00:00",
+      "decision_revision": 2,
+      "question_revision": 3,
+      "question_history": [
+        {
+          "kind": "single_choice",
+          "topic": "activity",
+          "text": "What matters most?",
+          "choices": [
+            {
+              "choice_id": "work",
+              "label": "Working"
+            },
+            {
+              "choice_id": "relax",
+              "label": "Relaxation"
+            }
+          ],
+          "question_id": "276b9cdd-180b-4412-ba55-414f0116ca9e",
+          "operation_id": "op",
+          "base_context": {
+            "room_id": "room",
+            "capture_id": "capture",
+            "snapshot_id": null,
+            "planning_revision": 0,
+            "active_design_id": null,
+            "active_revision": 0
+          },
+          "decision_revision": 0,
+          "question_revision": 1,
+          "context": "interview",
+          "allow_skip": false,
+          "allow_delegate": false,
+          "min_selections": 1,
+          "max_selections": 1
+        },
+        {
+          "kind": "numeric",
+          "topic": "occupants",
+          "text": "How many occupants?",
+          "numeric_min": 1,
+          "numeric_max": 8,
+          "numeric_step": 1,
+          "choices": [],
+          "question_id": "5650dcbf-cb57-478c-9dd4-ce1a38d7b3d1",
+          "operation_id": "op",
+          "base_context": {
+            "room_id": "room",
+            "capture_id": "capture",
+            "snapshot_id": null,
+            "planning_revision": 0,
+            "active_design_id": null,
+            "active_revision": 0
+          },
+          "decision_revision": 1,
+          "question_revision": 2,
+          "context": "interview",
+          "allow_skip": false,
+          "allow_delegate": false,
+          "min_selections": 1,
+          "max_selections": 1
+        },
+        {
+          "kind": "numeric",
+          "topic": "occupants",
+          "text": "How many occupants?",
+          "numeric_min": 1,
+          "numeric_max": 8,
+          "numeric_step": 1,
+          "choices": [],
+          "question_id": "2448c62a-f967-4616-bda8-7a4eeed93018",
+          "operation_id": "op",
+          "base_context": {
+            "room_id": "room",
+            "capture_id": "capture",
+            "snapshot_id": null,
+            "planning_revision": 0,
+            "active_design_id": null,
+            "active_revision": 0
+          },
+          "decision_revision": 2,
+          "question_revision": 3,
+          "context": "interview",
+          "allow_skip": false,
+          "allow_delegate": false,
+          "min_selections": 1,
+          "max_selections": 1
+        }
+      ],
+      "answer_history": [
+        {
+          "answer_id": "3519521d-b08d-4170-97aa-3df3f38de6d7",
+          "reply_id": "first",
+          "question_id": "276b9cdd-180b-4412-ba55-414f0116ca9e",
+          "question": {
+            "kind": "single_choice",
+            "topic": "activity",
+            "text": "What matters most?",
+            "choices": [
+              {
+                "choice_id": "work",
+                "label": "Working"
+              },
+              {
+                "choice_id": "relax",
+                "label": "Relaxation"
+              }
+            ],
+            "question_id": "276b9cdd-180b-4412-ba55-414f0116ca9e",
+            "operation_id": "op",
+            "base_context": {
+              "room_id": "room",
+              "capture_id": "capture",
+              "snapshot_id": null,
+              "planning_revision": 0,
+              "active_design_id": null,
+              "active_revision": 0
+            },
+            "decision_revision": 0,
+            "question_revision": 1,
+            "context": "interview",
+            "allow_skip": false,
+            "allow_delegate": false,
+            "min_selections": 1,
+            "max_selections": 1
+          },
+          "request": {
+            "question_id": "276b9cdd-180b-4412-ba55-414f0116ca9e",
+            "reply_id": "first",
+            "expected_decision_revision": 0,
+            "expected_question_revision": 1,
+            "choice_ids": [
+              "work"
+            ],
+            "action": "answer"
+          },
+          "created_at": "2026-10-18T03:31:17.615999+00:00"
+        },
+        {
+          "answer_id": "37f119a1-2462-4309-a40f-26c968b42dec",
+          "reply_id": "revision",
+          "question_id": "276b9cdd-180b-4412-ba55-414f0116ca9e",
+          "question": {
+            "kind": "single_choice",
+            "topic": "activity",
+            "text": "What matters most?",
+            "choices": [
+              {
+                "choice_id": "work",
+                "label": "Working"
+              },
+              {
+                "choice_id": "relax",
+                "label": "Relaxation"
+              }
+            ],
+            "question_id": "276b9cdd-180b-4412-ba55-414f0116ca9e",
+            "operation_id": "op",
+            "base_context": {
+              "room_id": "room",
+              "capture_id": "capture",
+              "snapshot_id": null,
+              "planning_revision": 0,
+              "active_design_id": null,
+              "active_revision": 0
+            },
+            "decision_revision": 0,
+            "question_revision": 1,
+            "context": "interview",
+            "allow_skip": false,
+            "allow_delegate": false,
+            "min_selections": 1,
+            "max_selections": 1
+          },
+          "request": {
+            "operation_id": "op",
+            "question_id": "276b9cdd-180b-4412-ba55-414f0116ca9e",
+            "reply_id": "revision",
+            "expected_decision_revision": 1,
+            "expected_question_revision": 1,
+            "choice_ids": [
+              "relax"
+            ],
+            "revision_of_answer_id": "3519521d-b08d-4170-97aa-3df3f38de6d7"
+          },
+          "created_at": "2026-10-18T03:31:17.631339+00:00",
+          "revision_of_answer_id": "3519521d-b08d-4170-97aa-3df3f38de6d7"
+        }
+      ],
+      "pending_question": {
+        "kind": "numeric",
+        "topic": "occupants",
+        "text": "How many occupants?",
+        "numeric_min": 1,
+        "numeric_max": 8,
+        "numeric_step": 1,
+        "choices": [],
+        "question_id": "2448c62a-f967-4616-bda8-7a4eeed93018",
+        "operation_id": "op",
+        "base_context": {
+          "room_id": "room",
+          "capture_id": "capture",
+          "snapshot_id": null,
+          "planning_revision": 0,
+          "active_design_id": null,
+          "active_revision": 0
+        },
+        "decision_revision": 2,
+        "question_revision": 3,
+        "context": "interview",
+        "allow_skip": false,
+        "allow_delegate": false,
+        "min_selections": 1,
+        "max_selections": 1
+      },
+      "outcome": null,
+      "failure": null,
+      "command_message_id": "9bb95b03-dfce-4133-a5b7-92db1fbec0aa",
+      "decision_history": [
+        {
+          "decision_revision": 1,
+          "controller": {},
+          "pending_question": {
+            "kind": "numeric",
+            "topic": "occupants",
+            "text": "How many occupants?",
+            "numeric_min": 1,
+            "numeric_max": 8,
+            "numeric_step": 1,
+            "choices": [],
+            "question_id": "5650dcbf-cb57-478c-9dd4-ce1a38d7b3d1",
+            "operation_id": "op",
+            "base_context": {
+              "room_id": "room",
+              "capture_id": "capture",
+              "snapshot_id": null,
+              "planning_revision": 0,
+              "active_design_id": null,
+              "active_revision": 0
+            },
+            "decision_revision": 1,
+            "question_revision": 2,
+            "context": "interview",
+            "allow_skip": false,
+            "allow_delegate": false,
+            "min_selections": 1,
+            "max_selections": 1
+          }
+        }
+      ],
+      "controller": {},
+      "answer_revision_allowed": true
+    }
+  },
+  "swap_request": {
+    "operation_id": "swap",
+    "expected_active_design_id": "parent",
+    "expected_active_revision": 1,
+    "item_id": "i_a_0",
+    "variant_id": "alternative",
+    "offer_id": "o_alternative",
+    "search_id": "more"
+  },
+  "swap_parent": {
+    "schema_version": 1,
+    "design": {
+      "schema_version": 1,
+      "design_id": "parent",
+      "parent_id": null,
+      "room_id": "room",
+      "capture_id": "capture",
+      "snapshot_id": "snapshot",
+      "planning_snapshot": {
+        "instructions": []
+      },
+      "scene": {
+        "schema_version": 1,
+        "room": {
+          "schema_version": 1,
+          "category_version": 1,
+          "room_id": "room",
+          "capture_id": "capture",
+          "height": 2.6,
+          "frame": {
+            "room_from_world": [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              -2.0,
+              1.2,
+              -3.0,
+              1.0
+            ]
+          },
+          "floor": {
+            "polygon": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                4.0,
+                0.0
+              ],
+              [
+                4.0,
+                3.0
+              ],
+              [
+                0.0,
+                3.0
+              ]
+            ],
+            "area": 12.0
+          },
+          "walls": [
+            {
+              "id": "w_1",
+              "a": [
+                0.0,
+                0.0
+              ],
+              "b": [
+                4.0,
+                0.0
+              ],
+              "length": 4.0,
+              "inward_normal": [
+                -0.0,
+                1.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-0"
+              ]
+            },
+            {
+              "id": "w_2",
+              "a": [
+                4.0,
+                0.0
+              ],
+              "b": [
+                4.0,
+                3.0
+              ],
+              "length": 3.0,
+              "inward_normal": [
+                -1.0,
+                0.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-1"
+              ]
+            },
+            {
+              "id": "w_3",
+              "a": [
+                4.0,
+                3.0
+              ],
+              "b": [
+                0.0,
+                3.0
+              ],
+              "length": 4.0,
+              "inward_normal": [
+                -0.0,
+                -1.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-2"
+              ]
+            },
+            {
+              "id": "w_4",
+              "a": [
+                0.0,
+                3.0
+              ],
+              "b": [
+                0.0,
+                0.0
+              ],
+              "length": 3.0,
+              "inward_normal": [
+                1.0,
+                0.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-3"
+              ]
+            }
+          ],
+          "corners": [
+            {
+              "id": "c_1",
+              "position": [
+                0.0,
+                0.0
+              ],
+              "wall_ids": [
+                "w_4",
+                "w_1"
+              ]
+            },
+            {
+              "id": "c_2",
+              "position": [
+                4.0,
+                0.0
+              ],
+              "wall_ids": [
+                "w_1",
+                "w_2"
+              ]
+            },
+            {
+              "id": "c_3",
+              "position": [
+                4.0,
+                3.0
+              ],
+              "wall_ids": [
+                "w_2",
+                "w_3"
+              ]
+            },
+            {
+              "id": "c_4",
+              "position": [
+                0.0,
+                3.0
+              ],
+              "wall_ids": [
+                "w_3",
+                "w_4"
+              ]
+            }
+          ],
+          "openings": [],
+          "objects": [],
+          "wall_features": [],
+          "zones": [],
+          "style_hints": {},
+          "identity_map": {
+            "native-wall-0": {
+              "kind": "wall",
+              "id": "w_1",
+              "ids": [
+                "w_1"
+              ]
+            },
+            "native-wall-1": {
+              "kind": "wall",
+              "id": "w_2",
+              "ids": [
+                "w_2"
+              ]
+            },
+            "native-wall-2": {
+              "kind": "wall",
+              "id": "w_3",
+              "ids": [
+                "w_3"
+              ]
+            },
+            "native-wall-3": {
+              "kind": "wall",
+              "id": "w_4",
+              "ids": [
+                "w_4"
+              ]
+            }
+          },
+          "processing": {
+            "expected_frames": 0,
+            "not_started": 0,
+            "pending": 0,
+            "succeeded": 0,
+            "failed": 0,
+            "lifted": 0,
+            "completed": 0
+          },
+          "validity": {
+            "usable": true,
+            "reasons": [],
+            "warnings": []
+          }
+        },
+        "room_snapshot_id": null,
+        "items": [
+          {
+            "id": "i_a_0",
+            "object_id": null,
+            "add_id": "a",
+            "origin": "new",
+            "status": "new",
+            "category": "desk",
+            "label": "Measured desk",
+            "selection_id": "sel",
+            "variant_id": "v",
+            "offer_id": "o_v",
+            "product": {
+              "selection_id": "sel",
+              "category": "desk",
+              "variant_id": "v",
+              "offer_id": "o_v",
+              "title": "Measured desk",
+              "dimensions": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimension_evidence": {
+                "outcome": "verified",
+                "variant_id": "v",
+                "size_m": [
+                  1,
+                  0.5,
+                  0.7
+                ],
+                "dimensions": [
+                  1,
+                  0.5,
+                  0.7
+                ]
+              },
+              "offer": {
+                "schema_version": 1,
+                "offer_id": "o_v",
+                "variant_id": "v",
+                "merchant": "Example",
+                "product_url": "https://example.com/chair",
+                "price": "50.00",
+                "currency": "USD",
+                "availability": "in_stock",
+                "exact_variant": true,
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "pack_contents": {
+                  "verified": true,
+                  "components": [
+                    {
+                      "variant_id": "v",
+                      "units": 1,
+                      "dimensions": [
+                        1,
+                        0.5,
+                        0.7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "render": {
+                "kind": "standin",
+                "category": "desk",
+                "scaling_mode": "normalized",
+                "authored_bounds": [
+                  1,
+                  1,
+                  1
+                ],
+                "units": "meters",
+                "pivot": "bottom_center",
+                "forward_axis": "+Z"
+              },
+              "quantity": 1,
+              "search_id": "initial",
+              "variant": {
+                "variant_id": "v",
+                "title": "Desk",
+                "category": "desk",
+                "image_references": []
+              }
+            },
+            "instruction": "decide",
+            "anchor": {
+              "type": "against_wall",
+              "wall_id": "w_1",
+              "alignment": "center"
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "reason": "Workspace",
+            "original_placement": null,
+            "fixed_in_place": false,
+            "placement": {
+              "position": [
+                2.0,
+                0,
+                0.3
+              ],
+              "yaw": -0.0,
+              "size": [
+                1,
+                0.5,
+                0.7
+              ],
+              "mount": "floor",
+              "wall_id": "w_1"
+            },
+            "last_valid_placement": {
+              "position": [
+                2.0,
+                0,
+                0.3
+              ],
+              "yaw": -0.0,
+              "size": [
+                1,
+                0.5,
+                0.7
+              ],
+              "mount": "floor",
+              "wall_id": "w_1"
+            }
+          }
+        ],
+        "products": [
+          {
+            "selection_id": "sel",
+            "category": "desk",
+            "variant_id": "v",
+            "offer_id": "o_v",
+            "title": "Measured desk",
+            "dimensions": [
+              1,
+              0.5,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "v",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                1,
+                0.5,
+                0.7
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_v",
+              "variant_id": "v",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "50.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v",
+                    "units": 1,
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "search_id": "initial",
+            "variant": {
+              "variant_id": "v",
+              "title": "Desk",
+              "category": "desk",
+              "image_references": []
+            }
+          }
+        ],
+        "purchase_summary": {
+          "schema_version": 1,
+          "currency": "USD",
+          "lines": [
+            {
+              "schema_version": 1,
+              "offer_id": "o_v",
+              "variant_id": "v",
+              "offer": {
+                "schema_version": 1,
+                "offer_id": "o_v",
+                "variant_id": "v",
+                "merchant": "Example",
+                "product_url": "https://example.com/chair",
+                "price": "50.00",
+                "currency": "USD",
+                "availability": "in_stock",
+                "exact_variant": true,
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "pack_contents": {
+                  "verified": true,
+                  "components": [
+                    {
+                      "variant_id": "v",
+                      "units": 1,
+                      "dimensions": [
+                        1,
+                        0.5,
+                        0.7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "unit_pack_price": "50.00",
+              "purchased_pack_count": 1,
+              "verified_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v",
+                    "units": 1,
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  }
+                ]
+              },
+              "supplied_unit_count": 1,
+              "placed_unit_count": 1,
+              "placed_item_ids": [
+                "i_a_0"
+              ],
+              "paid_surplus_count": 0,
+              "line_total": "50.00",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "components": [
+                {
+                  "variant_id": "v",
+                  "units": 1,
+                  "dimensions": [
+                    1,
+                    0.5,
+                    0.7
+                  ],
+                  "supplied_unit_count": 1,
+                  "placed_item_ids": [
+                    "i_a_0"
+                  ],
+                  "paid_surplus_count": 0
+                }
+              ]
+            }
+          ],
+          "total": "50.00",
+          "approved_ceiling": "200.00",
+          "within_budget": true,
+          "tax_excluded": true,
+          "shipping_excluded": true,
+          "existing_objects_excluded": true,
+          "warnings": []
+        },
+        "summary": "Add a desk",
+        "warnings": [],
+        "design_id": "parent",
+        "parent_id": null,
+        "action_outcomes": [
+          {
+            "action_id": "act",
+            "type": "add",
+            "outcome": "applied",
+            "code": "placed",
+            "reason": "Addition placed.",
+            "affected_item_ids": [
+              "i_a_0"
+            ]
+          }
+        ],
+        "selections": {
+          "sel": {
+            "selection_id": "sel",
+            "category": "desk",
+            "variant_id": "v",
+            "offer_id": "o_v",
+            "title": "Measured desk",
+            "dimensions": [
+              1,
+              0.5,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "v",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                1,
+                0.5,
+                0.7
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_v",
+              "variant_id": "v",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "50.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v",
+                    "units": 1,
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "search_id": "initial",
+            "variant": {
+              "variant_id": "v",
+              "title": "Desk",
+              "category": "desk",
+              "image_references": []
+            }
+          }
+        }
+      },
+      "selection_snapshot": {
+        "selected": [
+          {
+            "selection_id": "sel",
+            "category": "desk",
+            "variant_id": "v",
+            "offer_id": "o_v",
+            "title": "Measured desk",
+            "dimensions": [
+              1,
+              0.5,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "v",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                1,
+                0.5,
+                0.7
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_v",
+              "variant_id": "v",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "50.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v",
+                    "units": 1,
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "search_id": "initial",
+            "variant": {
+              "variant_id": "v",
+              "title": "Desk",
+              "category": "desk",
+              "image_references": []
+            }
+          }
+        ]
+      },
+      "created_at": "2026-10-18T00:00:00Z"
+    }
+  },
+  "swap_success": {
+    "schema_version": 1,
+    "operation": {
+      "schema_version": 1,
+      "operation_id": "swap",
+      "kind": "swap",
+      "room_id": "room",
+      "request": {
+        "schema_version": 1,
+        "operation_id": "swap",
+        "expected_active_design_id": "parent",
+        "expected_active_revision": 1,
+        "item_id": "i_a_0",
+        "variant_id": "alternative",
+        "offer_id": "o_alternative",
+        "search_id": "more"
+      },
+      "base_context": {
+        "room_id": "room",
+        "capture_id": "capture",
+        "snapshot_id": "snapshot",
+        "planning_revision": 0,
+        "active_design_id": "parent",
+        "active_revision": 1
+      },
+      "state": "succeeded",
+      "phase": "complete",
+      "created_at": "2026-10-18T03:31:17.565626+00:00",
+      "updated_at": "2026-10-18T03:31:17.574684+00:00",
+      "decision_revision": 0,
+      "question_revision": 0,
+      "question_history": [],
+      "answer_history": [],
+      "pending_question": null,
+      "outcome": {
+        "result_kind": "design",
+        "design_id": "b34d27d9-9b73-4ffd-b054-d77e8c794743",
+        "snapshot_id": "snapshot",
+        "active_revision": 2,
+        "message_ids": [
+          "6dc06d33-9104-45e9-9130-912b2c5b528d"
+        ],
+        "action_outcomes": [
+          {
+            "action_id": "swap",
+            "type": "replace",
+            "outcome": "applied",
+            "code": "placed",
+            "reason": "Requested change applied.",
+            "affected_item_ids": [
+              "i_a_0"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "failure": null,
+      "command_message_id": "7c4f2787-121a-4f25-9cd2-ebca13cbd3c9",
+      "edit": {
+        "selections": {
+          "sel": {
+            "selection_id": "sel",
+            "category": "desk",
+            "variant_id": "v",
+            "offer_id": "o_v",
+            "title": "Measured desk",
+            "dimensions": [
+              1,
+              0.5,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "v",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                1,
+                0.5,
+                0.7
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_v",
+              "variant_id": "v",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "50.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v",
+                    "units": 1,
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "search_id": "initial",
+            "variant": {
+              "variant_id": "v",
+              "title": "Desk",
+              "category": "desk",
+              "image_references": []
+            }
+          },
+          "swap_selection_2ae9688d11dcbfe4a0f78dff": {
+            "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+            "category": "desk",
+            "variant_id": "alternative",
+            "offer_id": "o_alternative",
+            "title": "Measured desk",
+            "dimensions": [
+              0.8,
+              0.4,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "alternative",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                0.8,
+                0.4,
+                0.7
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_alternative",
+              "variant_id": "alternative",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "70.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "alternative",
+                    "units": 1,
+                    "dimensions": [
+                      0.5,
+                      0.5,
+                      0.8
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "search_id": "more",
+            "variant": {
+              "variant_id": "alternative",
+              "title": "Desk",
+              "category": "desk",
+              "image_references": []
+            },
+            "explicit_choice": true
+          }
+        },
+        "plan": {
+          "schema_version": 1,
+          "summary": "Swapped the selected Product at its saved pose.",
+          "moves": [],
+          "removes": [],
+          "adds": [],
+          "replaces": [
+            {
+              "action_id": "swap",
+              "target_item_id": "i_a_0",
+              "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+              "reason": "Explicit Product Swap"
+            }
+          ],
+          "restores": [],
+          "unlocks": [],
+          "decision_revision": 0,
+          "base": {
+            "room_id": "room",
+            "capture_id": "capture",
+            "snapshot_id": "snapshot",
+            "planning_revision": 0,
+            "active_design_id": "parent",
+            "active_revision": 1
+          }
+        },
+        "private_candidate": {
+          "schema_version": 1,
+          "scene": {
+            "schema_version": 1,
+            "room": {
+              "schema_version": 1,
+              "category_version": 1,
+              "room_id": "room",
+              "capture_id": "capture",
+              "height": 2.6,
+              "frame": {
+                "room_from_world": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  -2.0,
+                  1.2,
+                  -3.0,
+                  1.0
+                ]
+              },
+              "floor": {
+                "polygon": [
+                  [
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    4.0,
+                    0.0
+                  ],
+                  [
+                    4.0,
+                    3.0
+                  ],
+                  [
+                    0.0,
+                    3.0
+                  ]
+                ],
+                "area": 12.0
+              },
+              "walls": [
+                {
+                  "id": "w_1",
+                  "a": [
+                    0.0,
+                    0.0
+                  ],
+                  "b": [
+                    4.0,
+                    0.0
+                  ],
+                  "length": 4.0,
+                  "inward_normal": [
+                    -0.0,
+                    1.0
+                  ],
+                  "virtual": false,
+                  "source_ids": [
+                    "native-wall-0"
+                  ]
+                },
+                {
+                  "id": "w_2",
+                  "a": [
+                    4.0,
+                    0.0
+                  ],
+                  "b": [
+                    4.0,
+                    3.0
+                  ],
+                  "length": 3.0,
+                  "inward_normal": [
+                    -1.0,
+                    0.0
+                  ],
+                  "virtual": false,
+                  "source_ids": [
+                    "native-wall-1"
+                  ]
+                },
+                {
+                  "id": "w_3",
+                  "a": [
+                    4.0,
+                    3.0
+                  ],
+                  "b": [
+                    0.0,
+                    3.0
+                  ],
+                  "length": 4.0,
+                  "inward_normal": [
+                    -0.0,
+                    -1.0
+                  ],
+                  "virtual": false,
+                  "source_ids": [
+                    "native-wall-2"
+                  ]
+                },
+                {
+                  "id": "w_4",
+                  "a": [
+                    0.0,
+                    3.0
+                  ],
+                  "b": [
+                    0.0,
+                    0.0
+                  ],
+                  "length": 3.0,
+                  "inward_normal": [
+                    1.0,
+                    0.0
+                  ],
+                  "virtual": false,
+                  "source_ids": [
+                    "native-wall-3"
+                  ]
+                }
+              ],
+              "corners": [
+                {
+                  "id": "c_1",
+                  "position": [
+                    0.0,
+                    0.0
+                  ],
+                  "wall_ids": [
+                    "w_4",
+                    "w_1"
+                  ]
+                },
+                {
+                  "id": "c_2",
+                  "position": [
+                    4.0,
+                    0.0
+                  ],
+                  "wall_ids": [
+                    "w_1",
+                    "w_2"
+                  ]
+                },
+                {
+                  "id": "c_3",
+                  "position": [
+                    4.0,
+                    3.0
+                  ],
+                  "wall_ids": [
+                    "w_2",
+                    "w_3"
+                  ]
+                },
+                {
+                  "id": "c_4",
+                  "position": [
+                    0.0,
+                    3.0
+                  ],
+                  "wall_ids": [
+                    "w_3",
+                    "w_4"
+                  ]
+                }
+              ],
+              "openings": [],
+              "objects": [],
+              "wall_features": [],
+              "zones": [],
+              "style_hints": {},
+              "identity_map": {
+                "native-wall-0": {
+                  "kind": "wall",
+                  "id": "w_1",
+                  "ids": [
+                    "w_1"
+                  ]
+                },
+                "native-wall-1": {
+                  "kind": "wall",
+                  "id": "w_2",
+                  "ids": [
+                    "w_2"
+                  ]
+                },
+                "native-wall-2": {
+                  "kind": "wall",
+                  "id": "w_3",
+                  "ids": [
+                    "w_3"
+                  ]
+                },
+                "native-wall-3": {
+                  "kind": "wall",
+                  "id": "w_4",
+                  "ids": [
+                    "w_4"
+                  ]
+                }
+              },
+              "processing": {
+                "expected_frames": 0,
+                "not_started": 0,
+                "pending": 0,
+                "succeeded": 0,
+                "failed": 0,
+                "lifted": 0,
+                "completed": 0
+              },
+              "validity": {
+                "usable": true,
+                "reasons": [],
+                "warnings": []
+              }
+            },
+            "room_snapshot_id": null,
+            "items": [
+              {
+                "id": "i_a_0",
+                "object_id": null,
+                "add_id": "a",
+                "origin": "new",
+                "status": "new",
+                "category": "desk",
+                "label": "Measured desk",
+                "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+                "variant_id": "alternative",
+                "offer_id": "o_alternative",
+                "product": {
+                  "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+                  "category": "desk",
+                  "variant_id": "alternative",
+                  "offer_id": "o_alternative",
+                  "title": "Measured desk",
+                  "dimensions": [
+                    0.8,
+                    0.4,
+                    0.7
+                  ],
+                  "dimension_evidence": {
+                    "outcome": "verified",
+                    "variant_id": "alternative",
+                    "size_m": [
+                      1,
+                      0.5,
+                      0.7
+                    ],
+                    "dimensions": [
+                      0.8,
+                      0.4,
+                      0.7
+                    ]
+                  },
+                  "offer": {
+                    "schema_version": 1,
+                    "offer_id": "o_alternative",
+                    "variant_id": "alternative",
+                    "merchant": "Example",
+                    "product_url": "https://example.com/chair",
+                    "price": "70.00",
+                    "currency": "USD",
+                    "availability": "in_stock",
+                    "exact_variant": true,
+                    "checked_at": "2026-10-18T00:00:00+00:00",
+                    "pack_contents": {
+                      "verified": true,
+                      "components": [
+                        {
+                          "variant_id": "alternative",
+                          "units": 1,
+                          "dimensions": [
+                            0.5,
+                            0.5,
+                            0.8
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "render": {
+                    "kind": "standin",
+                    "category": "desk",
+                    "scaling_mode": "normalized",
+                    "authored_bounds": [
+                      1,
+                      1,
+                      1
+                    ],
+                    "units": "meters",
+                    "pivot": "bottom_center",
+                    "forward_axis": "+Z"
+                  },
+                  "quantity": 1,
+                  "search_id": "more",
+                  "variant": {
+                    "variant_id": "alternative",
+                    "title": "Desk",
+                    "category": "desk",
+                    "image_references": []
+                  },
+                  "explicit_choice": true
+                },
+                "instruction": "decide",
+                "anchor": {
+                  "type": "against_wall",
+                  "wall_id": "w_1",
+                  "alignment": "center"
+                },
+                "render": {
+                  "kind": "standin",
+                  "category": "desk",
+                  "scaling_mode": "normalized",
+                  "authored_bounds": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "units": "meters",
+                  "pivot": "bottom_center",
+                  "forward_axis": "+Z"
+                },
+                "reason": "Explicit Product Swap",
+                "original_placement": null,
+                "fixed_in_place": false,
+                "placement": {
+                  "position": [
+                    2.0,
+                    0,
+                    0.3
+                  ],
+                  "yaw": -0.0,
+                  "size": [
+                    0.8,
+                    0.4,
+                    0.7
+                  ],
+                  "mount": "floor",
+                  "wall_id": "w_1"
+                },
+                "last_valid_placement": {
+                  "position": [
+                    2.0,
+                    0,
+                    0.3
+                  ],
+                  "yaw": -0.0,
+                  "size": [
+                    0.8,
+                    0.4,
+                    0.7
+                  ],
+                  "mount": "floor",
+                  "wall_id": "w_1"
+                }
+              }
+            ],
+            "products": [
+              {
+                "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+                "category": "desk",
+                "variant_id": "alternative",
+                "offer_id": "o_alternative",
+                "title": "Measured desk",
+                "dimensions": [
+                  0.8,
+                  0.4,
+                  0.7
+                ],
+                "dimension_evidence": {
+                  "outcome": "verified",
+                  "variant_id": "alternative",
+                  "size_m": [
+                    1,
+                    0.5,
+                    0.7
+                  ],
+                  "dimensions": [
+                    0.8,
+                    0.4,
+                    0.7
+                  ]
+                },
+                "offer": {
+                  "schema_version": 1,
+                  "offer_id": "o_alternative",
+                  "variant_id": "alternative",
+                  "merchant": "Example",
+                  "product_url": "https://example.com/chair",
+                  "price": "70.00",
+                  "currency": "USD",
+                  "availability": "in_stock",
+                  "exact_variant": true,
+                  "checked_at": "2026-10-18T00:00:00+00:00",
+                  "pack_contents": {
+                    "verified": true,
+                    "components": [
+                      {
+                        "variant_id": "alternative",
+                        "units": 1,
+                        "dimensions": [
+                          0.5,
+                          0.5,
+                          0.8
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "render": {
+                  "kind": "standin",
+                  "category": "desk",
+                  "scaling_mode": "normalized",
+                  "authored_bounds": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "units": "meters",
+                  "pivot": "bottom_center",
+                  "forward_axis": "+Z"
+                },
+                "quantity": 1,
+                "search_id": "more",
+                "variant": {
+                  "variant_id": "alternative",
+                  "title": "Desk",
+                  "category": "desk",
+                  "image_references": []
+                },
+                "explicit_choice": true
+              }
+            ],
+            "purchase_summary": {
+              "schema_version": 1,
+              "currency": "USD",
+              "lines": [
+                {
+                  "schema_version": 1,
+                  "offer_id": "o_alternative",
+                  "variant_id": "alternative",
+                  "offer": {
+                    "schema_version": 1,
+                    "offer_id": "o_alternative",
+                    "variant_id": "alternative",
+                    "merchant": "Example",
+                    "product_url": "https://example.com/chair",
+                    "price": "70.00",
+                    "currency": "USD",
+                    "availability": "in_stock",
+                    "exact_variant": true,
+                    "checked_at": "2026-10-18T00:00:00+00:00",
+                    "pack_contents": {
+                      "verified": true,
+                      "components": [
+                        {
+                          "variant_id": "alternative",
+                          "units": 1,
+                          "dimensions": [
+                            0.5,
+                            0.5,
+                            0.8
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "unit_pack_price": "70.00",
+                  "purchased_pack_count": 1,
+                  "verified_contents": {
+                    "verified": true,
+                    "components": [
+                      {
+                        "variant_id": "alternative",
+                        "units": 1,
+                        "dimensions": [
+                          0.5,
+                          0.5,
+                          0.8
+                        ]
+                      }
+                    ]
+                  },
+                  "supplied_unit_count": 1,
+                  "placed_unit_count": 1,
+                  "placed_item_ids": [
+                    "i_a_0"
+                  ],
+                  "paid_surplus_count": 0,
+                  "line_total": "70.00",
+                  "checked_at": "2026-10-18T00:00:00+00:00",
+                  "components": [
+                    {
+                      "variant_id": "alternative",
+                      "units": 1,
+                      "dimensions": [
+                        0.5,
+                        0.5,
+                        0.8
+                      ],
+                      "supplied_unit_count": 1,
+                      "placed_item_ids": [
+                        "i_a_0"
+                      ],
+                      "paid_surplus_count": 0
+                    }
+                  ]
+                }
+              ],
+              "total": "70.00",
+              "approved_ceiling": "200.00",
+              "within_budget": true,
+              "tax_excluded": true,
+              "shipping_excluded": true,
+              "existing_objects_excluded": true,
+              "warnings": []
+            },
+            "summary": "1 change(s) saved.",
+            "warnings": [],
+            "design_id": "parent",
+            "parent_id": null,
+            "action_outcomes": [
+              {
+                "action_id": "swap",
+                "type": "replace",
+                "outcome": "applied",
+                "code": "placed",
+                "reason": "Requested change applied.",
+                "affected_item_ids": [
+                  "i_a_0"
+                ]
+              }
+            ],
+            "selections": {
+              "sel": {
+                "selection_id": "sel",
+                "category": "desk",
+                "variant_id": "v",
+                "offer_id": "o_v",
+                "title": "Measured desk",
+                "dimensions": [
+                  1,
+                  0.5,
+                  0.7
+                ],
+                "dimension_evidence": {
+                  "outcome": "verified",
+                  "variant_id": "v",
+                  "size_m": [
+                    1,
+                    0.5,
+                    0.7
+                  ],
+                  "dimensions": [
+                    1,
+                    0.5,
+                    0.7
+                  ]
+                },
+                "offer": {
+                  "schema_version": 1,
+                  "offer_id": "o_v",
+                  "variant_id": "v",
+                  "merchant": "Example",
+                  "product_url": "https://example.com/chair",
+                  "price": "50.00",
+                  "currency": "USD",
+                  "availability": "in_stock",
+                  "exact_variant": true,
+                  "checked_at": "2026-10-18T00:00:00+00:00",
+                  "pack_contents": {
+                    "verified": true,
+                    "components": [
+                      {
+                        "variant_id": "v",
+                        "units": 1,
+                        "dimensions": [
+                          1,
+                          0.5,
+                          0.7
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "render": {
+                  "kind": "standin",
+                  "category": "desk",
+                  "scaling_mode": "normalized",
+                  "authored_bounds": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "units": "meters",
+                  "pivot": "bottom_center",
+                  "forward_axis": "+Z"
+                },
+                "quantity": 1,
+                "search_id": "initial",
+                "variant": {
+                  "variant_id": "v",
+                  "title": "Desk",
+                  "category": "desk",
+                  "image_references": []
+                }
+              },
+              "swap_selection_2ae9688d11dcbfe4a0f78dff": {
+                "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+                "category": "desk",
+                "variant_id": "alternative",
+                "offer_id": "o_alternative",
+                "title": "Measured desk",
+                "dimensions": [
+                  0.8,
+                  0.4,
+                  0.7
+                ],
+                "dimension_evidence": {
+                  "outcome": "verified",
+                  "variant_id": "alternative",
+                  "size_m": [
+                    1,
+                    0.5,
+                    0.7
+                  ],
+                  "dimensions": [
+                    0.8,
+                    0.4,
+                    0.7
+                  ]
+                },
+                "offer": {
+                  "schema_version": 1,
+                  "offer_id": "o_alternative",
+                  "variant_id": "alternative",
+                  "merchant": "Example",
+                  "product_url": "https://example.com/chair",
+                  "price": "70.00",
+                  "currency": "USD",
+                  "availability": "in_stock",
+                  "exact_variant": true,
+                  "checked_at": "2026-10-18T00:00:00+00:00",
+                  "pack_contents": {
+                    "verified": true,
+                    "components": [
+                      {
+                        "variant_id": "alternative",
+                        "units": 1,
+                        "dimensions": [
+                          0.5,
+                          0.5,
+                          0.8
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "render": {
+                  "kind": "standin",
+                  "category": "desk",
+                  "scaling_mode": "normalized",
+                  "authored_bounds": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "units": "meters",
+                  "pivot": "bottom_center",
+                  "forward_axis": "+Z"
+                },
+                "quantity": 1,
+                "search_id": "more",
+                "variant": {
+                  "variant_id": "alternative",
+                  "title": "Desk",
+                  "category": "desk",
+                  "image_references": []
+                },
+                "explicit_choice": true
+              }
+            }
+          },
+          "action_outcomes": [
+            {
+              "action_id": "swap",
+              "type": "replace",
+              "outcome": "applied",
+              "code": "placed",
+              "reason": "Requested change applied.",
+              "affected_item_ids": [
+                "i_a_0"
+              ]
+            }
+          ],
+          "placements": [
+            {
+              "item_id": "i_a_0",
+              "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+              "placement": {
+                "position": [
+                  2.0,
+                  0,
+                  0.3
+                ],
+                "yaw": -0.0,
+                "size": [
+                  0.8,
+                  0.4,
+                  0.7
+                ],
+                "mount": "floor",
+                "wall_id": "w_1"
+              }
+            }
+          ],
+          "omissions": [],
+          "warnings": [],
+          "conflicts": [],
+          "placed_unit_demand": {
+            "sel": 0,
+            "swap_selection_2ae9688d11dcbfe4a0f78dff": 1
+          },
+          "planning_snapshot": {
+            "instructions": []
+          }
+        }
+      },
+      "answer_revision_allowed": false
+    }
+  },
+  "swap_child": {
+    "schema_version": 1,
+    "design": {
+      "schema_version": 1,
+      "design_id": "b34d27d9-9b73-4ffd-b054-d77e8c794743",
+      "parent_id": "parent",
+      "room_id": "room",
+      "capture_id": "capture",
+      "snapshot_id": "snapshot",
+      "planning_snapshot": {
+        "instructions": []
+      },
+      "decision_snapshot": [],
+      "selection_snapshot": {
+        "schema_version": 1,
+        "selection_snapshot_id": "f4a38d69-b5fd-4145-bd6b-3945d151492a",
+        "room_id": "room",
+        "capture_id": "capture",
+        "selected": [
+          {
+            "selection_id": "sel",
+            "category": "desk",
+            "variant_id": "v",
+            "offer_id": "o_v",
+            "title": "Measured desk",
+            "dimensions": [
+              1,
+              0.5,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "v",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                1,
+                0.5,
+                0.7
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_v",
+              "variant_id": "v",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "50.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v",
+                    "units": 1,
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "search_id": "initial",
+            "variant": {
+              "variant_id": "v",
+              "title": "Desk",
+              "category": "desk",
+              "image_references": []
+            }
+          },
+          {
+            "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+            "category": "desk",
+            "variant_id": "alternative",
+            "offer_id": "o_alternative",
+            "title": "Measured desk",
+            "dimensions": [
+              0.8,
+              0.4,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "alternative",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                0.8,
+                0.4,
+                0.7
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_alternative",
+              "variant_id": "alternative",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "70.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "alternative",
+                    "units": 1,
+                    "dimensions": [
+                      0.5,
+                      0.5,
+                      0.8
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "search_id": "more",
+            "variant": {
+              "variant_id": "alternative",
+              "title": "Desk",
+              "category": "desk",
+              "image_references": []
+            },
+            "explicit_choice": true
+          }
+        ],
+        "purchases": {
+          "schema_version": 1,
+          "currency": "USD",
+          "lines": [
+            {
+              "schema_version": 1,
+              "offer_id": "o_alternative",
+              "variant_id": "alternative",
+              "offer": {
+                "schema_version": 1,
+                "offer_id": "o_alternative",
+                "variant_id": "alternative",
+                "merchant": "Example",
+                "product_url": "https://example.com/chair",
+                "price": "70.00",
+                "currency": "USD",
+                "availability": "in_stock",
+                "exact_variant": true,
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "pack_contents": {
+                  "verified": true,
+                  "components": [
+                    {
+                      "variant_id": "alternative",
+                      "units": 1,
+                      "dimensions": [
+                        0.5,
+                        0.5,
+                        0.8
+                      ]
+                    }
+                  ]
+                }
+              },
+              "unit_pack_price": "70.00",
+              "purchased_pack_count": 1,
+              "verified_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "alternative",
+                    "units": 1,
+                    "dimensions": [
+                      0.5,
+                      0.5,
+                      0.8
+                    ]
+                  }
+                ]
+              },
+              "supplied_unit_count": 1,
+              "placed_unit_count": 1,
+              "placed_item_ids": [
+                "i_a_0"
+              ],
+              "paid_surplus_count": 0,
+              "line_total": "70.00",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "components": [
+                {
+                  "variant_id": "alternative",
+                  "units": 1,
+                  "dimensions": [
+                    0.5,
+                    0.5,
+                    0.8
+                  ],
+                  "supplied_unit_count": 1,
+                  "placed_item_ids": [
+                    "i_a_0"
+                  ],
+                  "paid_surplus_count": 0
+                }
+              ]
+            }
+          ],
+          "total": "70.00",
+          "approved_ceiling": "200.00",
+          "within_budget": true,
+          "tax_excluded": true,
+          "shipping_excluded": true,
+          "existing_objects_excluded": true,
+          "warnings": []
+        },
+        "approved_ceiling": "200.00",
+        "created_at": "2026-10-18T03:31:17.571874+00:00",
+        "decision_revision": 0
+      },
+      "generation_inputs": {
+        "schema_version": 1,
+        "operation_id": "swap",
+        "expected_active_design_id": "parent",
+        "expected_active_revision": 1,
+        "item_id": "i_a_0",
+        "variant_id": "alternative",
+        "offer_id": "o_alternative",
+        "search_id": "more"
+      },
+      "plan": {
+        "schema_version": 1,
+        "summary": "Swapped the selected Product at its saved pose.",
+        "moves": [],
+        "removes": [],
+        "adds": [],
+        "replaces": [
+          {
+            "action_id": "swap",
+            "target_item_id": "i_a_0",
+            "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+            "reason": "Explicit Product Swap"
+          }
+        ],
+        "restores": [],
+        "unlocks": [],
+        "decision_revision": 0,
+        "base": {
+          "room_id": "room",
+          "capture_id": "capture",
+          "snapshot_id": "snapshot",
+          "planning_revision": 0,
+          "active_design_id": "parent",
+          "active_revision": 1
+        }
+      },
+      "scene": {
+        "schema_version": 1,
+        "room": {
+          "schema_version": 1,
+          "category_version": 1,
+          "room_id": "room",
+          "capture_id": "capture",
+          "height": 2.6,
+          "frame": {
+            "room_from_world": [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              -2.0,
+              1.2,
+              -3.0,
+              1.0
+            ]
+          },
+          "floor": {
+            "polygon": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                4.0,
+                0.0
+              ],
+              [
+                4.0,
+                3.0
+              ],
+              [
+                0.0,
+                3.0
+              ]
+            ],
+            "area": 12.0
+          },
+          "walls": [
+            {
+              "id": "w_1",
+              "a": [
+                0.0,
+                0.0
+              ],
+              "b": [
+                4.0,
+                0.0
+              ],
+              "length": 4.0,
+              "inward_normal": [
+                -0.0,
+                1.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-0"
+              ]
+            },
+            {
+              "id": "w_2",
+              "a": [
+                4.0,
+                0.0
+              ],
+              "b": [
+                4.0,
+                3.0
+              ],
+              "length": 3.0,
+              "inward_normal": [
+                -1.0,
+                0.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-1"
+              ]
+            },
+            {
+              "id": "w_3",
+              "a": [
+                4.0,
+                3.0
+              ],
+              "b": [
+                0.0,
+                3.0
+              ],
+              "length": 4.0,
+              "inward_normal": [
+                -0.0,
+                -1.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-2"
+              ]
+            },
+            {
+              "id": "w_4",
+              "a": [
+                0.0,
+                3.0
+              ],
+              "b": [
+                0.0,
+                0.0
+              ],
+              "length": 3.0,
+              "inward_normal": [
+                1.0,
+                0.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-3"
+              ]
+            }
+          ],
+          "corners": [
+            {
+              "id": "c_1",
+              "position": [
+                0.0,
+                0.0
+              ],
+              "wall_ids": [
+                "w_4",
+                "w_1"
+              ]
+            },
+            {
+              "id": "c_2",
+              "position": [
+                4.0,
+                0.0
+              ],
+              "wall_ids": [
+                "w_1",
+                "w_2"
+              ]
+            },
+            {
+              "id": "c_3",
+              "position": [
+                4.0,
+                3.0
+              ],
+              "wall_ids": [
+                "w_2",
+                "w_3"
+              ]
+            },
+            {
+              "id": "c_4",
+              "position": [
+                0.0,
+                3.0
+              ],
+              "wall_ids": [
+                "w_3",
+                "w_4"
+              ]
+            }
+          ],
+          "openings": [],
+          "objects": [],
+          "wall_features": [],
+          "zones": [],
+          "style_hints": {},
+          "identity_map": {
+            "native-wall-0": {
+              "kind": "wall",
+              "id": "w_1",
+              "ids": [
+                "w_1"
+              ]
+            },
+            "native-wall-1": {
+              "kind": "wall",
+              "id": "w_2",
+              "ids": [
+                "w_2"
+              ]
+            },
+            "native-wall-2": {
+              "kind": "wall",
+              "id": "w_3",
+              "ids": [
+                "w_3"
+              ]
+            },
+            "native-wall-3": {
+              "kind": "wall",
+              "id": "w_4",
+              "ids": [
+                "w_4"
+              ]
+            }
+          },
+          "processing": {
+            "expected_frames": 0,
+            "not_started": 0,
+            "pending": 0,
+            "succeeded": 0,
+            "failed": 0,
+            "lifted": 0,
+            "completed": 0
+          },
+          "validity": {
+            "usable": true,
+            "reasons": [],
+            "warnings": []
+          }
+        },
+        "room_snapshot_id": null,
+        "items": [
+          {
+            "id": "i_a_0",
+            "object_id": null,
+            "add_id": "a",
+            "origin": "new",
+            "status": "new",
+            "category": "desk",
+            "label": "Measured desk",
+            "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+            "variant_id": "alternative",
+            "offer_id": "o_alternative",
+            "product": {
+              "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+              "category": "desk",
+              "variant_id": "alternative",
+              "offer_id": "o_alternative",
+              "title": "Measured desk",
+              "dimensions": [
+                0.8,
+                0.4,
+                0.7
+              ],
+              "dimension_evidence": {
+                "outcome": "verified",
+                "variant_id": "alternative",
+                "size_m": [
+                  1,
+                  0.5,
+                  0.7
+                ],
+                "dimensions": [
+                  0.8,
+                  0.4,
+                  0.7
+                ]
+              },
+              "offer": {
+                "schema_version": 1,
+                "offer_id": "o_alternative",
+                "variant_id": "alternative",
+                "merchant": "Example",
+                "product_url": "https://example.com/chair",
+                "price": "70.00",
+                "currency": "USD",
+                "availability": "in_stock",
+                "exact_variant": true,
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "pack_contents": {
+                  "verified": true,
+                  "components": [
+                    {
+                      "variant_id": "alternative",
+                      "units": 1,
+                      "dimensions": [
+                        0.5,
+                        0.5,
+                        0.8
+                      ]
+                    }
+                  ]
+                }
+              },
+              "render": {
+                "kind": "standin",
+                "category": "desk",
+                "scaling_mode": "normalized",
+                "authored_bounds": [
+                  1,
+                  1,
+                  1
+                ],
+                "units": "meters",
+                "pivot": "bottom_center",
+                "forward_axis": "+Z"
+              },
+              "quantity": 1,
+              "search_id": "more",
+              "variant": {
+                "variant_id": "alternative",
+                "title": "Desk",
+                "category": "desk",
+                "image_references": []
+              },
+              "explicit_choice": true
+            },
+            "instruction": "decide",
+            "anchor": {
+              "type": "against_wall",
+              "wall_id": "w_1",
+              "alignment": "center"
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "reason": "Explicit Product Swap",
+            "original_placement": null,
+            "fixed_in_place": false,
+            "placement": {
+              "position": [
+                2.0,
+                0,
+                0.3
+              ],
+              "yaw": -0.0,
+              "size": [
+                0.8,
+                0.4,
+                0.7
+              ],
+              "mount": "floor",
+              "wall_id": "w_1"
+            },
+            "last_valid_placement": {
+              "position": [
+                2.0,
+                0,
+                0.3
+              ],
+              "yaw": -0.0,
+              "size": [
+                0.8,
+                0.4,
+                0.7
+              ],
+              "mount": "floor",
+              "wall_id": "w_1"
+            }
+          }
+        ],
+        "products": [
+          {
+            "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+            "category": "desk",
+            "variant_id": "alternative",
+            "offer_id": "o_alternative",
+            "title": "Measured desk",
+            "dimensions": [
+              0.8,
+              0.4,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "alternative",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                0.8,
+                0.4,
+                0.7
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_alternative",
+              "variant_id": "alternative",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "70.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "alternative",
+                    "units": 1,
+                    "dimensions": [
+                      0.5,
+                      0.5,
+                      0.8
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "search_id": "more",
+            "variant": {
+              "variant_id": "alternative",
+              "title": "Desk",
+              "category": "desk",
+              "image_references": []
+            },
+            "explicit_choice": true
+          }
+        ],
+        "purchase_summary": {
+          "schema_version": 1,
+          "currency": "USD",
+          "lines": [
+            {
+              "schema_version": 1,
+              "offer_id": "o_alternative",
+              "variant_id": "alternative",
+              "offer": {
+                "schema_version": 1,
+                "offer_id": "o_alternative",
+                "variant_id": "alternative",
+                "merchant": "Example",
+                "product_url": "https://example.com/chair",
+                "price": "70.00",
+                "currency": "USD",
+                "availability": "in_stock",
+                "exact_variant": true,
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "pack_contents": {
+                  "verified": true,
+                  "components": [
+                    {
+                      "variant_id": "alternative",
+                      "units": 1,
+                      "dimensions": [
+                        0.5,
+                        0.5,
+                        0.8
+                      ]
+                    }
+                  ]
+                }
+              },
+              "unit_pack_price": "70.00",
+              "purchased_pack_count": 1,
+              "verified_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "alternative",
+                    "units": 1,
+                    "dimensions": [
+                      0.5,
+                      0.5,
+                      0.8
+                    ]
+                  }
+                ]
+              },
+              "supplied_unit_count": 1,
+              "placed_unit_count": 1,
+              "placed_item_ids": [
+                "i_a_0"
+              ],
+              "paid_surplus_count": 0,
+              "line_total": "70.00",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "components": [
+                {
+                  "variant_id": "alternative",
+                  "units": 1,
+                  "dimensions": [
+                    0.5,
+                    0.5,
+                    0.8
+                  ],
+                  "supplied_unit_count": 1,
+                  "placed_item_ids": [
+                    "i_a_0"
+                  ],
+                  "paid_surplus_count": 0
+                }
+              ]
+            }
+          ],
+          "total": "70.00",
+          "approved_ceiling": "200.00",
+          "within_budget": true,
+          "tax_excluded": true,
+          "shipping_excluded": true,
+          "existing_objects_excluded": true,
+          "warnings": []
+        },
+        "summary": "1 change(s) saved.",
+        "warnings": [],
+        "design_id": "b34d27d9-9b73-4ffd-b054-d77e8c794743",
+        "parent_id": "parent",
+        "action_outcomes": [
+          {
+            "action_id": "swap",
+            "type": "replace",
+            "outcome": "applied",
+            "code": "placed",
+            "reason": "Requested change applied.",
+            "affected_item_ids": [
+              "i_a_0"
+            ]
+          }
+        ],
+        "selections": {
+          "sel": {
+            "selection_id": "sel",
+            "category": "desk",
+            "variant_id": "v",
+            "offer_id": "o_v",
+            "title": "Measured desk",
+            "dimensions": [
+              1,
+              0.5,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "v",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                1,
+                0.5,
+                0.7
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_v",
+              "variant_id": "v",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "50.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v",
+                    "units": 1,
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "search_id": "initial",
+            "variant": {
+              "variant_id": "v",
+              "title": "Desk",
+              "category": "desk",
+              "image_references": []
+            }
+          },
+          "swap_selection_2ae9688d11dcbfe4a0f78dff": {
+            "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+            "category": "desk",
+            "variant_id": "alternative",
+            "offer_id": "o_alternative",
+            "title": "Measured desk",
+            "dimensions": [
+              0.8,
+              0.4,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "alternative",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                0.8,
+                0.4,
+                0.7
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_alternative",
+              "variant_id": "alternative",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "70.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "alternative",
+                    "units": 1,
+                    "dimensions": [
+                      0.5,
+                      0.5,
+                      0.8
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "search_id": "more",
+            "variant": {
+              "variant_id": "alternative",
+              "title": "Desk",
+              "category": "desk",
+              "image_references": []
+            },
+            "explicit_choice": true
+          }
+        }
+      },
+      "created_at": "2026-10-18T03:31:17.574146+00:00"
+    }
+  },
+  "swap_rejected": {
+    "schema_version": 1,
+    "operation": {
+      "schema_version": 1,
+      "operation_id": "swap",
+      "kind": "swap",
+      "room_id": "room",
+      "request": {
+        "schema_version": 1,
+        "operation_id": "swap",
+        "expected_active_design_id": "parent",
+        "expected_active_revision": 1,
+        "item_id": "i_a_0",
+        "variant_id": "alternative",
+        "offer_id": "o_alternative",
+        "search_id": "more"
+      },
+      "base_context": {
+        "room_id": "room",
+        "capture_id": "capture",
+        "snapshot_id": "snapshot",
+        "planning_revision": 0,
+        "active_design_id": "parent",
+        "active_revision": 1
+      },
+      "state": "rejected",
+      "phase": "rejected",
+      "created_at": "2026-10-18T03:31:17.602833+00:00",
+      "updated_at": "2026-10-18T03:31:17.608296+00:00",
+      "decision_revision": 0,
+      "question_revision": 0,
+      "question_history": [],
+      "answer_history": [],
+      "pending_question": null,
+      "outcome": {
+        "result_kind": "no_effective_change",
+        "action_outcomes": [
+          {
+            "action_id": "swap",
+            "type": "replace",
+            "outcome": "failed",
+            "code": "collision",
+            "reason": "Item violates required placement clearance.",
+            "affected_item_ids": []
+          }
+        ],
+        "message_ids": [
+          "d3c05707-288e-408b-9f00-85395c27bfa1"
+        ]
+      },
+      "failure": null,
+      "command_message_id": "ad77bc60-6991-470e-8ab0-ff4822d3e92a",
+      "edit": {
+        "selections": {
+          "sel": {
+            "selection_id": "sel",
+            "category": "desk",
+            "variant_id": "v",
+            "offer_id": "o_v",
+            "title": "Measured desk",
+            "dimensions": [
+              1,
+              0.5,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "v",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                1,
+                0.5,
+                0.7
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_v",
+              "variant_id": "v",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "50.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v",
+                    "units": 1,
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "search_id": "initial",
+            "variant": {
+              "variant_id": "v",
+              "title": "Desk",
+              "category": "desk",
+              "image_references": []
+            }
+          },
+          "swap_selection_2ae9688d11dcbfe4a0f78dff": {
+            "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+            "category": "desk",
+            "variant_id": "alternative",
+            "offer_id": "o_alternative",
+            "title": "Measured desk",
+            "dimensions": [
+              10,
+              10,
+              1
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "alternative",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                10,
+                10,
+                1
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_alternative",
+              "variant_id": "alternative",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "70.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "alternative",
+                    "units": 1,
+                    "dimensions": [
+                      0.5,
+                      0.5,
+                      0.8
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "search_id": "more",
+            "variant": {
+              "variant_id": "alternative",
+              "title": "Desk",
+              "category": "desk",
+              "image_references": []
+            },
+            "explicit_choice": true
+          }
+        },
+        "plan": {
+          "schema_version": 1,
+          "summary": "Swapped the selected Product at its saved pose.",
+          "moves": [],
+          "removes": [],
+          "adds": [],
+          "replaces": [
+            {
+              "action_id": "swap",
+              "target_item_id": "i_a_0",
+              "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+              "reason": "Explicit Product Swap"
+            }
+          ],
+          "restores": [],
+          "unlocks": [],
+          "decision_revision": 0,
+          "base": {
+            "room_id": "room",
+            "capture_id": "capture",
+            "snapshot_id": "snapshot",
+            "planning_revision": 0,
+            "active_design_id": "parent",
+            "active_revision": 1
+          }
+        },
+        "private_candidate": {
+          "schema_version": 1,
+          "scene": {
+            "schema_version": 1,
+            "room": {
+              "schema_version": 1,
+              "category_version": 1,
+              "room_id": "room",
+              "capture_id": "capture",
+              "height": 2.6,
+              "frame": {
+                "room_from_world": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  -2.0,
+                  1.2,
+                  -3.0,
+                  1.0
+                ]
+              },
+              "floor": {
+                "polygon": [
+                  [
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    4.0,
+                    0.0
+                  ],
+                  [
+                    4.0,
+                    3.0
+                  ],
+                  [
+                    0.0,
+                    3.0
+                  ]
+                ],
+                "area": 12.0
+              },
+              "walls": [
+                {
+                  "id": "w_1",
+                  "a": [
+                    0.0,
+                    0.0
+                  ],
+                  "b": [
+                    4.0,
+                    0.0
+                  ],
+                  "length": 4.0,
+                  "inward_normal": [
+                    -0.0,
+                    1.0
+                  ],
+                  "virtual": false,
+                  "source_ids": [
+                    "native-wall-0"
+                  ]
+                },
+                {
+                  "id": "w_2",
+                  "a": [
+                    4.0,
+                    0.0
+                  ],
+                  "b": [
+                    4.0,
+                    3.0
+                  ],
+                  "length": 3.0,
+                  "inward_normal": [
+                    -1.0,
+                    0.0
+                  ],
+                  "virtual": false,
+                  "source_ids": [
+                    "native-wall-1"
+                  ]
+                },
+                {
+                  "id": "w_3",
+                  "a": [
+                    4.0,
+                    3.0
+                  ],
+                  "b": [
+                    0.0,
+                    3.0
+                  ],
+                  "length": 4.0,
+                  "inward_normal": [
+                    -0.0,
+                    -1.0
+                  ],
+                  "virtual": false,
+                  "source_ids": [
+                    "native-wall-2"
+                  ]
+                },
+                {
+                  "id": "w_4",
+                  "a": [
+                    0.0,
+                    3.0
+                  ],
+                  "b": [
+                    0.0,
+                    0.0
+                  ],
+                  "length": 3.0,
+                  "inward_normal": [
+                    1.0,
+                    0.0
+                  ],
+                  "virtual": false,
+                  "source_ids": [
+                    "native-wall-3"
+                  ]
+                }
+              ],
+              "corners": [
+                {
+                  "id": "c_1",
+                  "position": [
+                    0.0,
+                    0.0
+                  ],
+                  "wall_ids": [
+                    "w_4",
+                    "w_1"
+                  ]
+                },
+                {
+                  "id": "c_2",
+                  "position": [
+                    4.0,
+                    0.0
+                  ],
+                  "wall_ids": [
+                    "w_1",
+                    "w_2"
+                  ]
+                },
+                {
+                  "id": "c_3",
+                  "position": [
+                    4.0,
+                    3.0
+                  ],
+                  "wall_ids": [
+                    "w_2",
+                    "w_3"
+                  ]
+                },
+                {
+                  "id": "c_4",
+                  "position": [
+                    0.0,
+                    3.0
+                  ],
+                  "wall_ids": [
+                    "w_3",
+                    "w_4"
+                  ]
+                }
+              ],
+              "openings": [],
+              "objects": [],
+              "wall_features": [],
+              "zones": [],
+              "style_hints": {},
+              "identity_map": {
+                "native-wall-0": {
+                  "kind": "wall",
+                  "id": "w_1",
+                  "ids": [
+                    "w_1"
+                  ]
+                },
+                "native-wall-1": {
+                  "kind": "wall",
+                  "id": "w_2",
+                  "ids": [
+                    "w_2"
+                  ]
+                },
+                "native-wall-2": {
+                  "kind": "wall",
+                  "id": "w_3",
+                  "ids": [
+                    "w_3"
+                  ]
+                },
+                "native-wall-3": {
+                  "kind": "wall",
+                  "id": "w_4",
+                  "ids": [
+                    "w_4"
+                  ]
+                }
+              },
+              "processing": {
+                "expected_frames": 0,
+                "not_started": 0,
+                "pending": 0,
+                "succeeded": 0,
+                "failed": 0,
+                "lifted": 0,
+                "completed": 0
+              },
+              "validity": {
+                "usable": true,
+                "reasons": [],
+                "warnings": []
+              }
+            },
+            "room_snapshot_id": null,
+            "items": [
+              {
+                "id": "i_a_0",
+                "object_id": null,
+                "add_id": "a",
+                "origin": "new",
+                "status": "new",
+                "category": "desk",
+                "label": "Measured desk",
+                "selection_id": "sel",
+                "variant_id": "v",
+                "offer_id": "o_v",
+                "product": {
+                  "selection_id": "sel",
+                  "category": "desk",
+                  "variant_id": "v",
+                  "offer_id": "o_v",
+                  "title": "Measured desk",
+                  "dimensions": [
+                    1,
+                    0.5,
+                    0.7
+                  ],
+                  "dimension_evidence": {
+                    "outcome": "verified",
+                    "variant_id": "v",
+                    "size_m": [
+                      1,
+                      0.5,
+                      0.7
+                    ],
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  },
+                  "offer": {
+                    "schema_version": 1,
+                    "offer_id": "o_v",
+                    "variant_id": "v",
+                    "merchant": "Example",
+                    "product_url": "https://example.com/chair",
+                    "price": "50.00",
+                    "currency": "USD",
+                    "availability": "in_stock",
+                    "exact_variant": true,
+                    "checked_at": "2026-10-18T00:00:00+00:00",
+                    "pack_contents": {
+                      "verified": true,
+                      "components": [
+                        {
+                          "variant_id": "v",
+                          "units": 1,
+                          "dimensions": [
+                            1,
+                            0.5,
+                            0.7
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "render": {
+                    "kind": "standin",
+                    "category": "desk",
+                    "scaling_mode": "normalized",
+                    "authored_bounds": [
+                      1,
+                      1,
+                      1
+                    ],
+                    "units": "meters",
+                    "pivot": "bottom_center",
+                    "forward_axis": "+Z"
+                  },
+                  "quantity": 1,
+                  "search_id": "initial",
+                  "variant": {
+                    "variant_id": "v",
+                    "title": "Desk",
+                    "category": "desk",
+                    "image_references": []
+                  }
+                },
+                "instruction": "decide",
+                "anchor": {
+                  "type": "against_wall",
+                  "wall_id": "w_1",
+                  "alignment": "center"
+                },
+                "render": {
+                  "kind": "standin",
+                  "category": "desk",
+                  "scaling_mode": "normalized",
+                  "authored_bounds": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "units": "meters",
+                  "pivot": "bottom_center",
+                  "forward_axis": "+Z"
+                },
+                "reason": "Workspace",
+                "original_placement": null,
+                "fixed_in_place": false,
+                "placement": {
+                  "position": [
+                    2.0,
+                    0,
+                    0.3
+                  ],
+                  "yaw": -0.0,
+                  "size": [
+                    1,
+                    0.5,
+                    0.7
+                  ],
+                  "mount": "floor",
+                  "wall_id": "w_1"
+                },
+                "last_valid_placement": {
+                  "position": [
+                    2.0,
+                    0,
+                    0.3
+                  ],
+                  "yaw": -0.0,
+                  "size": [
+                    1,
+                    0.5,
+                    0.7
+                  ],
+                  "mount": "floor",
+                  "wall_id": "w_1"
+                }
+              }
+            ],
+            "products": [
+              {
+                "selection_id": "sel",
+                "category": "desk",
+                "variant_id": "v",
+                "offer_id": "o_v",
+                "title": "Measured desk",
+                "dimensions": [
+                  1,
+                  0.5,
+                  0.7
+                ],
+                "dimension_evidence": {
+                  "outcome": "verified",
+                  "variant_id": "v",
+                  "size_m": [
+                    1,
+                    0.5,
+                    0.7
+                  ],
+                  "dimensions": [
+                    1,
+                    0.5,
+                    0.7
+                  ]
+                },
+                "offer": {
+                  "schema_version": 1,
+                  "offer_id": "o_v",
+                  "variant_id": "v",
+                  "merchant": "Example",
+                  "product_url": "https://example.com/chair",
+                  "price": "50.00",
+                  "currency": "USD",
+                  "availability": "in_stock",
+                  "exact_variant": true,
+                  "checked_at": "2026-10-18T00:00:00+00:00",
+                  "pack_contents": {
+                    "verified": true,
+                    "components": [
+                      {
+                        "variant_id": "v",
+                        "units": 1,
+                        "dimensions": [
+                          1,
+                          0.5,
+                          0.7
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "render": {
+                  "kind": "standin",
+                  "category": "desk",
+                  "scaling_mode": "normalized",
+                  "authored_bounds": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "units": "meters",
+                  "pivot": "bottom_center",
+                  "forward_axis": "+Z"
+                },
+                "quantity": 1,
+                "search_id": "initial",
+                "variant": {
+                  "variant_id": "v",
+                  "title": "Desk",
+                  "category": "desk",
+                  "image_references": []
+                }
+              }
+            ],
+            "purchase_summary": {
+              "schema_version": 1,
+              "currency": "USD",
+              "lines": [
+                {
+                  "schema_version": 1,
+                  "offer_id": "o_v",
+                  "variant_id": "v",
+                  "offer": {
+                    "schema_version": 1,
+                    "offer_id": "o_v",
+                    "variant_id": "v",
+                    "merchant": "Example",
+                    "product_url": "https://example.com/chair",
+                    "price": "50.00",
+                    "currency": "USD",
+                    "availability": "in_stock",
+                    "exact_variant": true,
+                    "checked_at": "2026-10-18T00:00:00+00:00",
+                    "pack_contents": {
+                      "verified": true,
+                      "components": [
+                        {
+                          "variant_id": "v",
+                          "units": 1,
+                          "dimensions": [
+                            1,
+                            0.5,
+                            0.7
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "unit_pack_price": "50.00",
+                  "purchased_pack_count": 1,
+                  "verified_contents": {
+                    "verified": true,
+                    "components": [
+                      {
+                        "variant_id": "v",
+                        "units": 1,
+                        "dimensions": [
+                          1,
+                          0.5,
+                          0.7
+                        ]
+                      }
+                    ]
+                  },
+                  "supplied_unit_count": 1,
+                  "placed_unit_count": 1,
+                  "placed_item_ids": [
+                    "i_a_0"
+                  ],
+                  "paid_surplus_count": 0,
+                  "line_total": "50.00",
+                  "checked_at": "2026-10-18T00:00:00+00:00",
+                  "components": [
+                    {
+                      "variant_id": "v",
+                      "units": 1,
+                      "dimensions": [
+                        1,
+                        0.5,
+                        0.7
+                      ],
+                      "supplied_unit_count": 1,
+                      "placed_item_ids": [
+                        "i_a_0"
+                      ],
+                      "paid_surplus_count": 0
+                    }
+                  ]
+                }
+              ],
+              "total": "50.00",
+              "approved_ceiling": "200.00",
+              "within_budget": true,
+              "tax_excluded": true,
+              "shipping_excluded": true,
+              "existing_objects_excluded": true,
+              "warnings": []
+            },
+            "summary": "No changes were applied. Item violates required placement clearance.",
+            "warnings": [
+              {
+                "code": "collision",
+                "message": "Item violates required placement clearance.",
+                "action_id": "swap"
+              },
+              {
+                "code": "collision",
+                "message": "Item violates required placement clearance.",
+                "action_id": "swap"
+              }
+            ],
+            "design_id": "parent",
+            "parent_id": null,
+            "action_outcomes": [
+              {
+                "action_id": "swap",
+                "type": "replace",
+                "outcome": "failed",
+                "code": "collision",
+                "reason": "Item violates required placement clearance.",
+                "affected_item_ids": []
+              }
+            ],
+            "selections": {
+              "sel": {
+                "selection_id": "sel",
+                "category": "desk",
+                "variant_id": "v",
+                "offer_id": "o_v",
+                "title": "Measured desk",
+                "dimensions": [
+                  1,
+                  0.5,
+                  0.7
+                ],
+                "dimension_evidence": {
+                  "outcome": "verified",
+                  "variant_id": "v",
+                  "size_m": [
+                    1,
+                    0.5,
+                    0.7
+                  ],
+                  "dimensions": [
+                    1,
+                    0.5,
+                    0.7
+                  ]
+                },
+                "offer": {
+                  "schema_version": 1,
+                  "offer_id": "o_v",
+                  "variant_id": "v",
+                  "merchant": "Example",
+                  "product_url": "https://example.com/chair",
+                  "price": "50.00",
+                  "currency": "USD",
+                  "availability": "in_stock",
+                  "exact_variant": true,
+                  "checked_at": "2026-10-18T00:00:00+00:00",
+                  "pack_contents": {
+                    "verified": true,
+                    "components": [
+                      {
+                        "variant_id": "v",
+                        "units": 1,
+                        "dimensions": [
+                          1,
+                          0.5,
+                          0.7
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "render": {
+                  "kind": "standin",
+                  "category": "desk",
+                  "scaling_mode": "normalized",
+                  "authored_bounds": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "units": "meters",
+                  "pivot": "bottom_center",
+                  "forward_axis": "+Z"
+                },
+                "quantity": 1,
+                "search_id": "initial",
+                "variant": {
+                  "variant_id": "v",
+                  "title": "Desk",
+                  "category": "desk",
+                  "image_references": []
+                }
+              },
+              "swap_selection_2ae9688d11dcbfe4a0f78dff": {
+                "selection_id": "swap_selection_2ae9688d11dcbfe4a0f78dff",
+                "category": "desk",
+                "variant_id": "alternative",
+                "offer_id": "o_alternative",
+                "title": "Measured desk",
+                "dimensions": [
+                  10,
+                  10,
+                  1
+                ],
+                "dimension_evidence": {
+                  "outcome": "verified",
+                  "variant_id": "alternative",
+                  "size_m": [
+                    1,
+                    0.5,
+                    0.7
+                  ],
+                  "dimensions": [
+                    10,
+                    10,
+                    1
+                  ]
+                },
+                "offer": {
+                  "schema_version": 1,
+                  "offer_id": "o_alternative",
+                  "variant_id": "alternative",
+                  "merchant": "Example",
+                  "product_url": "https://example.com/chair",
+                  "price": "70.00",
+                  "currency": "USD",
+                  "availability": "in_stock",
+                  "exact_variant": true,
+                  "checked_at": "2026-10-18T00:00:00+00:00",
+                  "pack_contents": {
+                    "verified": true,
+                    "components": [
+                      {
+                        "variant_id": "alternative",
+                        "units": 1,
+                        "dimensions": [
+                          0.5,
+                          0.5,
+                          0.8
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "render": {
+                  "kind": "standin",
+                  "category": "desk",
+                  "scaling_mode": "normalized",
+                  "authored_bounds": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "units": "meters",
+                  "pivot": "bottom_center",
+                  "forward_axis": "+Z"
+                },
+                "quantity": 1,
+                "search_id": "more",
+                "variant": {
+                  "variant_id": "alternative",
+                  "title": "Desk",
+                  "category": "desk",
+                  "image_references": []
+                },
+                "explicit_choice": true
+              }
+            }
+          },
+          "action_outcomes": [
+            {
+              "action_id": "swap",
+              "type": "replace",
+              "outcome": "failed",
+              "code": "collision",
+              "reason": "Item violates required placement clearance.",
+              "affected_item_ids": []
+            }
+          ],
+          "placements": [],
+          "omissions": [],
+          "warnings": [
+            {
+              "code": "collision",
+              "message": "Item violates required placement clearance.",
+              "action_id": "swap"
+            },
+            {
+              "code": "collision",
+              "message": "Item violates required placement clearance.",
+              "action_id": "swap"
+            }
+          ],
+          "conflicts": [],
+          "placed_unit_demand": {
+            "sel": 1,
+            "swap_selection_2ae9688d11dcbfe4a0f78dff": 0
+          },
+          "planning_snapshot": {
+            "instructions": []
+          }
+        }
+      },
+      "answer_revision_allowed": false
+    }
+  }
+}

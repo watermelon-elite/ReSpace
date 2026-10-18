@@ -19,17 +19,33 @@ struct DesignView: View {
     @State private var selectedProduct: JSONValue?
     @State private var selectedProductItemID: String?
     @State private var productSearches: [String: String] = [:]
+    @State private var swapPreview: SwapPreview?
+    @State private var swapSubmitted = false
+    @State private var assetManifest: JSONValue = .null
     var scene: JSONValue { design["scene"] }
-    var locked: Bool { room["current_operation_id"].string != nil || app.pending.contains { $0.roomID == roomID } }
+    var locked: Bool { swapPreview != nil || room["current_operation_id"].string != nil || app.pending.contains { $0.roomID == roomID } }
     var selectedItem: JSONValue { scene["items"].array.first { ($0["id"].string ?? $0["item_id"].string) == selectedID } ?? .null }
     var body: some View {
         ZStack(alignment: .top) {
-            RoomScene(document: scene, native: false, selectedID: $selectedID, ghosts: ghosts, resetToken: reset).ignoresSafeArea(edges: .bottom)
+            RoomScene(document: swapPreview?.scene(over: scene) ?? scene, native: false, selectedID: $selectedID, ghosts: ghosts, resetToken: reset, assetBaseURL: app.client?.baseURL, assetManifest: assetManifest).ignoresSafeArea(edges: .bottom)
+            VStack(spacing: 8) {
             HStack {
                 Button("Undo", systemImage: "arrow.uturn.backward") { Task { await mutate("rooms/\(roomID)/undo", body: [:]) } }.disabled(locked || design["parent_id"] == .null)
                 Button("Reset View", systemImage: "viewfinder") { reset += 1 }
                 Toggle("Ghosts", isOn: $ghosts).toggleStyle(.button)
             }.buttonStyle(.bordered).padding(8).background(.regularMaterial)
+            if let preview = swapPreview {
+                VStack {
+                    Text("Preview: \(preview.choice["title"].text)")
+                    Text(swapSubmitted ? "Swap preview · awaiting server validation" : "Swap preview · fit is not yet validated").font(.headline)
+                    HStack {
+                        if !swapSubmitted { Button("Confirm Swap") { Task { await submitSwap() } } }
+                        else { Button("Refresh Swap") { Task { await refreshSwap() } } }
+                        Button(swapSubmitted ? "Cancel Swap" : "Cancel Preview", role: .cancel) { Task { await cancelSwap() } }
+                    }
+                }.padding().background(.regularMaterial)
+            }
+            }
         }
         .navigationTitle("Design")
         .navigationBarTitleDisplayMode(.inline)
@@ -63,7 +79,7 @@ struct DesignView: View {
             .presentationDetents([.height(170), .medium, .large], selection: $detent)
             .presentationBackgroundInteraction(.enabled(upThrough: .medium))
             .interactiveDismissDisabled()
-            .sheet(item: $selectedProduct) { ProductDetail(app: app, product: $0, searchID: selectedProductItemID.flatMap { productSearches[$0] }) }
+            .sheet(item: $selectedProduct) { ProductDetail(app: app, product: $0, searchID: selectedProductItemID.flatMap { productSearches[$0] }, canSwap: !locked, onPreview: { choice, search in beginPreview(choice, searchID: search) }) }
         }
         .task { text = UserDefaults.standard.string(forKey: "design_draft_\(roomID)") ?? ""; await load(initial: true) }
         .onChange(of: text) { _, value in UserDefaults.standard.set(value, forKey: "design_draft_\(roomID)") }
@@ -93,6 +109,7 @@ struct DesignView: View {
         guard let client = app.client else { return }
         do {
             let detail = try await client.request("rooms/\(roomID)"); room = detail["room"]
+            if assetManifest == .null { assetManifest = (try? await client.request("catalog/manifest")) ?? .null }
             let id = initial ? designID : room["active_design_id"].string ?? designID
             let envelope = try await client.request("designs/\(id)")
             design = try SavedDesign(envelope: envelope).value
@@ -104,7 +121,10 @@ struct DesignView: View {
             if let selectedID, !scene["items"].array.contains(where: { ($0["id"].string ?? $0["item_id"].string) == selectedID && $0["status"].text != "removed" }) { self.selectedID = nil }
             entries = try await client.request("rooms/\(roomID)/conversation")["entries"].array
             if detail["current_operation"] != .null { operation = detail["current_operation"] }
-            error = nil
+            if let preview = swapPreview, swapSubmitted, operation["operation_id"] == preview.requestBody["operation_id"], ["succeeded", "rejected", "failed", "cancelled"].contains(operation["state"].text) {
+                swapPreview = nil; swapSubmitted = false
+                if operation["state"].text != "succeeded" { error = operation["failure"]["message"].string ?? operation["outcome"]["message"].string ?? "Swap was not applied. Saved design restored." }
+            } else { error = nil }
         } catch { self.error = error.localizedDescription }
     }
     @discardableResult func mutate(_ path: String, body: [String: JSONValue]) async -> Bool {
@@ -113,6 +133,49 @@ struct DesignView: View {
             let result = try await app.submit(PendingRequest(path: path, roomID: roomID, body: value))
             operation = result["operation"]; await load(); return true
         } catch { self.error = error.localizedDescription; return false }
+    }
+    func beginPreview(_ choice: JSONValue, searchID: String) {
+        guard !locked, let itemID = selectedProductItemID else { return }
+        do {
+            swapPreview = try SwapPreview(scene: scene, itemID: itemID, choice: choice, searchID: searchID, activeRevision: room["active_revision"].int)
+            swapSubmitted = false; selectedProduct = nil; selectedID = itemID; detent = .height(170)
+        } catch { self.error = error.localizedDescription }
+    }
+    func submitSwap() async {
+        guard let preview = swapPreview, !swapSubmitted else { return }
+        swapSubmitted = true
+        do {
+            let request = PendingRequest(path: "designs/\(preview.designID)/swap", roomID: roomID, body: preview.requestBody)
+            operation = try await app.submit(request)["operation"]
+            await load()
+        } catch let error as APIError {
+            if !error.retryable { swapPreview = nil; swapSubmitted = false; await load() }
+            self.error = error.localizedDescription
+        } catch { self.error = "Swap outcome is unconfirmed. Refresh to reconcile: \(error.localizedDescription)" }
+    }
+    func refreshSwap() async {
+        guard let preview = swapPreview, let client = app.client else { return }
+        do {
+            if let pending = app.pending.first(where: { $0.operationID == preview.operationID }) { operation = try await app.reconcile(pending)["operation"] }
+            else { operation = try await client.request("operations/\(preview.operationID)")["operation"] }
+            await load()
+        } catch { self.error = "Swap remains unconfirmed: \(error.localizedDescription)" }
+    }
+    func cancelSwap() async {
+        guard let preview = swapPreview else { return }
+        guard swapSubmitted else { swapPreview = nil; return }
+        do {
+            if let pending = app.pending.first(where: { $0.operationID == preview.operationID }) { operation = try await app.reconcile(pending)["operation"] }
+            if ["succeeded", "rejected", "failed", "cancelled"].contains(operation["state"].text) {
+                let completed = operation["state"].text == "succeeded"
+                await load()
+                if completed { error = "Swap completed before cancellation. Its saved result is shown." }
+                return
+            }
+            let body: [String: JSONValue] = ["operation_id": preview.requestBody["operation_id"]!, "cancellation_id": .string(UUID().uuidString)]
+            operation = try await app.submit(PendingRequest(path: "operations/\(preview.operationID)/cancel", roomID: roomID, body: body))["operation"]
+            await load()
+        } catch { self.error = "Cancellation is not confirmed: \(error.localizedDescription)" }
     }
     func poll() async {
         guard let client = app.client, let id = operation["operation_id"].string else { return }
@@ -138,6 +201,8 @@ struct ProductDetail: View {
     let app: AppModel
     let product: JSONValue
     let searchID: String?
+    let canSwap: Bool
+    let onPreview: (JSONValue, String) -> Void
     @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
     @State private var search: JSONValue = .null
@@ -174,7 +239,10 @@ struct ProductDetail: View {
                 ForEach(choices, id: \.self) { choice in VStack(alignment: .leading) {
                     ProductSummary(product: choice)
                     Text(choice["variant_id"].text == product["variant_id"].text ? "Selected · saved evidence" : "Alternative · placement fit pending").font(.caption)
-                    if choice["variant_id"].text != product["variant_id"].text { NavigationLink("Inspect option evidence") { OptionEvidence(choice: choice) } }
+                    if choice["variant_id"].text != product["variant_id"].text {
+                        NavigationLink("Inspect option evidence") { OptionEvidence(choice: choice) }
+                        if let search = effectiveSearchID { Button("Preview Swap") { onPreview(choice, search) }.disabled(!canSwap) }
+                    }
                 } }
                 if let error { Text(error).foregroundStyle(.secondary) }
             }

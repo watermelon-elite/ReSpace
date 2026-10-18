@@ -62,6 +62,7 @@ class Answer(BaseModel):
     number: FiniteFloat | None=None
     action: Literal['answer','skip','delegate']='answer'
     budget_approval: dict | None=None
+    revision_of_answer_id: ID | None=None
 
 
 class Dismissal(BaseModel):
@@ -163,3 +164,21 @@ def validate_frame(meta, parts):
         from pydantic import TypeAdapter
         TypeAdapter(ID).validate_python(descriptor.get('artifact_id'))
         require(descriptor.get('frame_id')==meta['frame_id'],'invalid_artifact','Artifact frame identity differs.',422)
+
+
+class Undo(Request):
+    expected_active_design_id: ID
+    expected_active_revision: int=Field(ge=0)
+
+
+class Edit(Undo):
+    text: str=Field(min_length=1,max_length=10000)
+    selected_item_id: ID | None=None
+
+
+class Swap(Undo):
+    item_id: ID
+    variant_id: ID
+    offer_id: ID
+    search_id: ID
+    selection_id: ID | None=None

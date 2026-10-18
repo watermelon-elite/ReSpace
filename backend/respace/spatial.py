@@ -13,41 +13,16 @@ class SpatialPipeline:
         self.detector,self.planner=detector,planner
         self.products=products
 
-    async def __call__(self, operation_id, selection):
-        from .geometry import normalize_room
-        from .perception import PerceptronAdapter
+    async def __call__(self, operation_id, selection, *, bounded=False):
         from .solver import solve, validate_scene
         from .spatial_planning import GeminiSpatialPlanner, repair_candidate, validate_plan
         operation,room=self.operations.guard(operation_id)
         data=operation.get('spatial',{})
-        capture=self.store.get('captures',room['latest_capture_id'])
         if 'snapshot' not in data:
-            self.operations.checkpoint(operation_id,'processing_room')
-            measured=normalize_room(capture['raw_export'],room['latest_capture_id'],room['room_id'])
-            require(measured['validity']['usable'],'invalid_room','A usable room boundary could not be established. Rescan this Room.')
-            frames=sorted([frame for frame in self.store.list('keyframes',room['room_id']) if frame['capture_id']==room['latest_capture_id']],key=lambda frame:frame['idx'])
-            outcomes=[]
-            for frame in frames:
-                self.operations.guard(operation_id)
-                outcome=self.store.get('detection_outcomes',frame['frame_id'])
-                if outcome is None:
-                    descriptor=next(d for d in frame['artifacts'] if d['kind']=='jpeg')
-                    artifact=self.store.get('artifacts',descriptor['artifact_id'])
-                    jpeg=await asyncio.to_thread(self.storage.get,artifact['storage_key'])
-                    detector=self.detector or PerceptronAdapter()
-                    outcome=await detector.detect(jpeg,frame['w'],frame['h'],frame['frame_id'])
-                    outcome.update(room_id=room['room_id'],capture_id=room['latest_capture_id'],frame_id=frame['frame_id'])
-                    with self.store.transaction():
-                        self.operations.guard(operation_id)
-                        self.store.put('detection_outcomes',frame['frame_id'],outcome)
-                outcomes.append(outcome)
-            measured['processing']={'expected_frames':len(frames),'not_started':0,'pending':0,'succeeded':sum(o.get('state')=='succeeded' for o in outcomes),'failed':sum(o.get('state')=='failed' for o in outcomes),'outcomes':outcomes,'lifted':0}
-            snapshot={'schema_version':1,'snapshot_id':identity(),'revision':1,'room_id':room['room_id'],'capture_id':room['latest_capture_id'],'created_at':now(),'room':measured,'identity_map':measured['identity_map'],'validity':measured['validity'],'processing':measured['processing']}
-            with self.store.transaction():
-                self.operations.guard(operation_id)
-                self.store.put('snapshots',snapshot['snapshot_id'],snapshot)
-                self._save(operation_id,'snapshot',snapshot)
+            snapshot=await self.process_snapshot(operation_id,bounded=bounded)
+            if snapshot is None:return
             data['snapshot']=snapshot
+            if bounded:return
         snapshot=data['snapshot']
         selections=data.get('candidate_selections') or {record['selection_id']:record for record in selection['selected']}
         planning=self.store.get('planning',room['room_id']) or {'instructions':[]}
@@ -56,6 +31,7 @@ class SpatialPipeline:
             native_id=entry['target']['id']
             mapping=snapshot['identity_map'].get(native_id)
             require(mapping is not None,'unresolved_identity','A planning Object could not be mapped into the processed Room.')
+            require(not isinstance(mapping,dict) or mapping.get('kind')=='object','unresolved_identity','A planning Object is unresolved in this snapshot. Review the instruction before generating.')
             normalized_id=mapping.get('id') if isinstance(mapping,dict) else mapping
             require(isinstance(normalized_id,str),'unresolved_identity','A planning identity mapping is ambiguous.')
             instructions[normalized_id]=entry['instruction']
@@ -79,6 +55,7 @@ class SpatialPipeline:
                 self._save(operation_id,'planner_diagnostics',{k:v for k,v in result.items() if k!='plan'})
                 self._save(operation_id,'plan',result['plan'])
             data['plan']=result['plan']
+            if bounded:return
         plan=deepcopy(data['plan'])
         constraints.setdefault('must_have_add_ids',[a['add_id'] for a in plan.get('adds',[]) if a['selection_id'] in constraints.get('must_have_selection_ids',[])])
         if data.get('repair_question'):
@@ -95,7 +72,8 @@ class SpatialPipeline:
         if result.get('conflicts'):
             equivalents=data.get('verified_equivalents')
             if equivalents is None:
-                equivalents=await self._verified_equivalents(operation_id,selections,constraints)
+                equivalents=await self._verified_equivalents(operation_id,selections,constraints,bounded=bounded)
+                if equivalents is None:return
                 with self.store.transaction():
                     self._save(operation_id,'verified_equivalents',equivalents)
                 data['verified_equivalents']=equivalents
@@ -148,14 +126,79 @@ class SpatialPipeline:
             self._save(operation_id,'candidate_constraints',constraints)
             self._save(operation_id,'private_candidate',result)
         self.operations.checkpoint(operation_id,'saving')
-        Publisher(self.store,self.operations,validate_scene).publish(operation_id,snapshot,selection,plan,result)
+        Publisher(self.store,self.operations,lambda room,scene:validate_scene(room,scene,constraints)).publish(operation_id,snapshot,selection,plan,result)
 
-    async def _verified_equivalents(self, operation_id, selections, constraints):
+    async def process_snapshot(self,operation_id,*,bounded=False):
+        from io import BytesIO
+        import numpy as np
+        from PIL import Image
+        from .geometry import normalize_room
+        from .lifting import decode_depth,lift_keyframe
+        from .merging import merge
+        from .perception import PerceptronAdapter
+        operation,room=self.operations.guard(operation_id)
+        capture=self.store.get('captures',room['latest_capture_id'])
+        self.operations.checkpoint(operation_id,'processing_room')
+        measured=normalize_room(capture['raw_export'],room['latest_capture_id'],room['room_id'])
+        require(measured['validity']['usable'],'invalid_room','A usable room boundary could not be established. Rescan this Room.')
+        frames=sorted([frame for frame in self.store.list('keyframes',room['room_id']) if frame['capture_id']==room['latest_capture_id']],key=lambda frame:frame['idx'])
+        lifts=[];outcomes=[];references=[]
+        for frame in frames:
+            self.operations.guard(operation_id)
+            async def artifact_bytes(kind):
+                descriptor=next(d for d in frame['artifacts'] if d['kind']==kind)
+                artifact=self.store.get('artifacts',descriptor['artifact_id'])
+                return await asyncio.to_thread(self.storage.get,artifact['storage_key'])
+            outcome=self.store.get('detection_outcomes',frame['frame_id'])
+            if outcome is None:
+                jpeg=await artifact_bytes('jpeg')
+                outcome=await (self.detector or PerceptronAdapter()).detect(jpeg,frame['w'],frame['h'],frame['frame_id'])
+                outcome.update(room_id=room['room_id'],capture_id=room['latest_capture_id'],frame_id=frame['frame_id'])
+                with self.store.transaction():
+                    self.operations.guard(operation_id)
+                    self.store.put('detection_outcomes',frame['frame_id'],outcome)
+                if bounded:return None
+            input_fingerprint=stable_id('lift_input',[1,capture['raw_export'],frame,outcome])
+            lift_id=stable_id('lift',[frame['frame_id'],input_fingerprint])
+            lift=self.store.get('keyframe_lifts',lift_id)
+            if lift is None:
+                if outcome.get('state')=='succeeded':
+                    rgb=np.asarray(Image.open(BytesIO(await artifact_bytes('jpeg'))).convert('RGB'))
+                    depth=None
+                    if any(d['kind']=='depth' for d in frame['artifacts']):
+                        confidence=await artifact_bytes('confidence') if any(d['kind']=='confidence' for d in frame['artifacts']) else None
+                        depth=decode_depth(await artifact_bytes('depth'),confidence,frame['depth_w'],frame['depth_h'],depth_format=frame['depth_format'],confidence_format=frame.get('confidence_format','uint8'))
+                    lift=lift_keyframe(measured,frame,outcome.get('detections',[]),rgb,depth)
+                else:
+                    lift={'schema_version':1,'capture_id':frame['capture_id'],'frame_id':frame['frame_id'],'idx':frame['idx'],'input_revision':1,'state':'failed','detections':[],'rejected':[],'diagnostics':[{'code':'detection_failed'}]}
+                lift.update(lift_id=lift_id,room_id=room['room_id'],input_fingerprint=input_fingerprint)
+                with self.store.transaction():
+                    self.operations.guard(operation_id)
+                    self.store.put('keyframe_lifts',lift_id,lift)
+                if bounded:return None
+            lifts.append(lift);outcomes.append(outcome);references.append({'frame_id':frame['frame_id'],'lift_id':lift_id})
+        fingerprint=stable_id('snapshot_input',[1,capture['raw_export'],references])
+        previous=self.store.get('snapshots',room.get('latest_snapshot_id'))
+        if previous and previous['capture_id']==room['latest_capture_id'] and previous.get('input_fingerprint')==fingerprint:
+            snapshot=previous
+        else:
+            prior=previous['room'] if previous and previous['capture_id']==room['latest_capture_id'] else None
+            measured=merge(measured,lifts,prior)
+            measured['processing'].update(outcomes=outcomes,lift_refs=references)
+            snapshot={'schema_version':1,'snapshot_id':identity(),'revision':previous.get('revision',0)+1 if previous else 1,'room_id':room['room_id'],'capture_id':room['latest_capture_id'],'created_at':now(),'input_fingerprint':fingerprint,'room':measured,'identity_map':measured['identity_map'],'validity':measured['validity'],'processing':measured['processing']}
+        with self.store.transaction():
+            self.operations.guard(operation_id)
+            if self.store.get('snapshots',snapshot['snapshot_id']) is None:self.store.put('snapshots',snapshot['snapshot_id'],snapshot)
+            self._save(operation_id,'snapshot',snapshot)
+        return snapshot
+
+    async def _verified_equivalents(self, operation_id, selections, constraints, *, bounded=False):
         from .planning import PlanningController
 
         operation,_=self.operations.guard(operation_id)
         known=PlanningController._known_choices(operation)
-        equivalents: dict[str, list[dict[str, Any]]] = {key:[] for key in selections}
+        progress=operation.get('spatial',{}).get('equivalent_progress',{'completed':[],'equivalents':{key:[] for key in selections}})
+        equivalents: dict[str, list[dict[str, Any]]] = progress['equivalents']
         if self.products is None:
             return equivalents
         for selection_id,selected in selections.items():
@@ -165,17 +208,26 @@ class SpatialPipeline:
                 if choice.get('category')!=selected['category'] or reference in seen or reference==(selected['variant_id'],selected['offer_id']):
                     continue
                 seen.add(reference)
+                verification_id=stable_id('equivalent',[operation_id,selection_id,*reference])
+                if verification_id in progress['completed']:continue
                 self.operations.guard(operation_id)
                 request={**deepcopy(choice),'selection_id':stable_id('repair_selection',[selection_id,*reference]),'quantity':selected.get('quantity',1)}
                 try:
-                    verified=await asyncio.to_thread(self.products.verify_selection,[request],constraints['approved_ceiling'])
+                    if bounded:
+                        checked=await asyncio.to_thread(self.products.verify_selection,[request],constraints['approved_ceiling'],bounded=True,verification_id=verification_id,context={'room_id':operation['room_id'],'operation_id':operation_id})
+                        if checked['state']=='running':return None
+                        verified=checked['selected']
+                    else:verified=await asyncio.to_thread(self.products.verify_selection,[request],constraints['approved_ceiling'])
                 except ProductError:
-                    continue
+                    verified=[]
                 self.operations.guard(operation_id)
                 for record in verified:
                     if record['category']==selected['category']:
                         record.update(must_have=selected.get('must_have',False),explicit_choice=selected.get('explicit_choice',False))
                         equivalents[selection_id].append(record)
+                progress['completed'].append(verification_id)
+                with self.store.transaction():self._save(operation_id,'equivalent_progress',progress)
+                if bounded:return None
         return equivalents
 
     def _consume_repair_answer(self, operation_id, data, plan, constraints):

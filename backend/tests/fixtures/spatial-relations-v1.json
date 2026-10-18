@@ -1,0 +1,6108 @@
+{
+  "constraints": {
+    "approved_ceiling": "500.00",
+    "intent": "add"
+  },
+  "design_envelope": {
+    "design": {
+      "capture_id": "capture-fixture",
+      "created_at": "2026-10-18T00:00:00+00:00",
+      "design_id": "design-relations-v1",
+      "parent_id": null,
+      "room_id": "room-fixture",
+      "scene": {
+        "action_outcomes": [
+          {
+            "action_id": "art",
+            "affected_item_ids": [
+              "i_art_0"
+            ],
+            "code": "placed",
+            "outcome": "applied",
+            "reason": "Addition placed.",
+            "type": "add"
+          },
+          {
+            "action_id": "desk",
+            "affected_item_ids": [
+              "i_desk_0"
+            ],
+            "code": "placed",
+            "outcome": "applied",
+            "reason": "Addition placed.",
+            "type": "add"
+          },
+          {
+            "action_id": "rug",
+            "affected_item_ids": [
+              "i_rug_0"
+            ],
+            "code": "placed",
+            "outcome": "applied",
+            "reason": "Addition placed.",
+            "type": "add"
+          },
+          {
+            "action_id": "lamp",
+            "affected_item_ids": [
+              "i_lamp_0"
+            ],
+            "code": "placed",
+            "outcome": "applied",
+            "reason": "Addition placed.",
+            "type": "add"
+          }
+        ],
+        "design_id": "design-relations-v1",
+        "items": [
+          {
+            "add_id": null,
+            "category": "ceiling_light",
+            "fixed_in_place": false,
+            "id": "i_o_light",
+            "instruction": "decide",
+            "label": "ceiling_light",
+            "last_valid_placement": {
+              "mount": "ceiling",
+              "position": [
+                2,
+                2.3,
+                1.5
+              ],
+              "size": [
+                0.4,
+                0.4,
+                0.3
+              ],
+              "support_id": null,
+              "wall_id": null,
+              "yaw": 0
+            },
+            "object_id": "o_light",
+            "origin": "existing",
+            "original_placement": {
+              "mount": "ceiling",
+              "position": [
+                2,
+                2.3,
+                1.5
+              ],
+              "size": [
+                0.4,
+                0.4,
+                0.3
+              ],
+              "support_id": null,
+              "wall_id": null,
+              "yaw": 0
+            },
+            "placement": {
+              "mount": "ceiling",
+              "position": [
+                2,
+                2.3,
+                1.5
+              ],
+              "size": [
+                0.4,
+                0.4,
+                0.3
+              ],
+              "support_id": null,
+              "wall_id": null,
+              "yaw": 0
+            },
+            "reason": "Measured original Object",
+            "render": {
+              "asset_id": "ceiling_light",
+              "asset_revision": "1",
+              "asset_url": null,
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "byte_count": null,
+              "category": "ceiling_light",
+              "forward_axis": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "sha256": null,
+              "texture_url": null,
+              "tint": "#B9ADA0",
+              "units": "meters",
+              "up_axis": "+Y"
+            },
+            "status": "existing"
+          },
+          {
+            "add_id": "art",
+            "anchor": {
+              "alignment": "center",
+              "type": "on_wall",
+              "wall_id": "w_1"
+            },
+            "category": "wall_art",
+            "fixed_in_place": false,
+            "id": "i_art_0",
+            "instruction": "decide",
+            "label": "Fixture wall_art",
+            "last_valid_placement": {
+              "mount": "wall",
+              "position": [
+                2.0,
+                1.2,
+                0.07
+              ],
+              "size": [
+                0.6,
+                0.04,
+                0.5
+              ],
+              "wall_id": "w_1",
+              "yaw": -0.0
+            },
+            "object_id": null,
+            "offer_id": "offer-art",
+            "origin": "new",
+            "original_placement": null,
+            "placement": {
+              "mount": "wall",
+              "position": [
+                2.0,
+                1.2,
+                0.07
+              ],
+              "size": [
+                0.6,
+                0.04,
+                0.5
+              ],
+              "wall_id": "w_1",
+              "yaw": -0.0
+            },
+            "product": {
+              "candidate_id": "fixture_candidate_1",
+              "category": "wall_art",
+              "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+              "dimension_evidence": {
+                "classification": "item",
+                "dimensions": [
+                  0.6,
+                  0.04,
+                  0.5
+                ],
+                "evidence_id": "dim-art",
+                "expires_at": "2026-10-25T00:00:00+00:00",
+                "original_measurements": [
+                  {
+                    "axis": "width",
+                    "label": "Width",
+                    "quote": "Fixture width 0.6 m",
+                    "unit": "m",
+                    "value": "0.6"
+                  },
+                  {
+                    "axis": "depth",
+                    "label": "Depth",
+                    "quote": "Fixture depth 0.04 m",
+                    "unit": "m",
+                    "value": "0.04"
+                  },
+                  {
+                    "axis": "height",
+                    "label": "Height",
+                    "quote": "Fixture height 0.5 m",
+                    "unit": "m",
+                    "value": "0.5"
+                  }
+                ],
+                "outcome": "verified",
+                "schema_version": 1,
+                "source_url": "https://example.com/fixture/art",
+                "variant_id": "fixture-art",
+                "verified_at": "2026-10-18T00:00:00+00:00"
+              },
+              "dimensions": [
+                0.6,
+                0.04,
+                0.5
+              ],
+              "features": {},
+              "offer": {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture wall_art"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-art",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        0.6,
+                        0.04,
+                        0.5
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-art"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/art",
+                "schema_version": 1,
+                "variant_id": "fixture-art"
+              },
+              "offer_id": "offer-art",
+              "offers": [
+                {
+                  "availability": "in_stock",
+                  "checked_at": "2026-10-18T00:00:00+00:00",
+                  "currency": "USD",
+                  "evidence": {
+                    "availability_quote": "In stock",
+                    "pack_quote": "Fixture single unit",
+                    "price_quote": "USD 100.00",
+                    "variant_quote": "Fixture wall_art"
+                  },
+                  "exact_variant": true,
+                  "merchant": "Example",
+                  "offer_id": "offer-art",
+                  "pack_contents": {
+                    "components": [
+                      {
+                        "dimensions": [
+                          0.6,
+                          0.04,
+                          0.5
+                        ],
+                        "units": 1,
+                        "variant_id": "fixture-art"
+                      }
+                    ],
+                    "verified": true
+                  },
+                  "price": "100.00",
+                  "product_url": "https://example.com/fixture/art",
+                  "schema_version": 1,
+                  "variant_id": "fixture-art"
+                }
+              ],
+              "practical_reason": "Matches requested function",
+              "practical_score": 80,
+              "quantity": 1,
+              "reasons": {
+                "practical": "Matches requested function",
+                "style": "Matches requested style",
+                "value": "Price relative to the median of comparable discoveries"
+              },
+              "render": {
+                "category": "wall_art",
+                "forward": "+Z",
+                "kind": "standin",
+                "pivot": "bottom_center",
+                "scaling_mode": "normalized",
+                "tint": "#B9ADA0"
+              },
+              "rule_version": "practical60-style30-value10-v1",
+              "schema_version": 1,
+              "scores": {
+                "overall": 77.0,
+                "practical": 80,
+                "style": 80,
+                "value": 50.0
+              },
+              "search_id": "search-art",
+              "selection_id": "art",
+              "source": "stored",
+              "style_reason": "Matches requested style",
+              "style_score": 80,
+              "title": "Fixture wall_art",
+              "uncertainty": null,
+              "variant": {
+                "category": "wall_art",
+                "dimension_evidence_id": "dim-art",
+                "features": {},
+                "identity": {
+                  "gtin": null,
+                  "identity_quote": null,
+                  "identity_verified": false,
+                  "manufacturer": null,
+                  "mpn": null
+                },
+                "image_references": [],
+                "options": {
+                  "color": "1"
+                },
+                "schema_version": 1,
+                "title": "Fixture wall_art",
+                "variant_id": "fixture-art"
+              },
+              "variant_id": "fixture-art"
+            },
+            "reason": "Fixture relationship",
+            "render": {
+              "category": "wall_art",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "selection_id": "art",
+            "status": "new",
+            "variant_id": "fixture-art"
+          },
+          {
+            "add_id": "desk",
+            "anchor": {
+              "type": "room_center"
+            },
+            "category": "desk",
+            "fixed_in_place": false,
+            "id": "i_desk_0",
+            "instruction": "decide",
+            "label": "Fixture desk",
+            "last_valid_placement": {
+              "mount": "floor",
+              "position": [
+                2.0,
+                0,
+                1.5
+              ],
+              "size": [
+                1.2,
+                0.8,
+                0.7
+              ],
+              "yaw": -3.141592653589793
+            },
+            "object_id": null,
+            "offer_id": "offer-desk",
+            "origin": "new",
+            "original_placement": null,
+            "placement": {
+              "mount": "floor",
+              "position": [
+                2.0,
+                0,
+                1.5
+              ],
+              "size": [
+                1.2,
+                0.8,
+                0.7
+              ],
+              "yaw": -3.141592653589793
+            },
+            "product": {
+              "candidate_id": "fixture_candidate_1",
+              "category": "desk",
+              "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+              "dimension_evidence": {
+                "classification": "item",
+                "dimensions": [
+                  1.2,
+                  0.8,
+                  0.7
+                ],
+                "evidence_id": "dim-desk",
+                "expires_at": "2026-10-25T00:00:00+00:00",
+                "original_measurements": [
+                  {
+                    "axis": "width",
+                    "label": "Width",
+                    "quote": "Fixture width 1.2 m",
+                    "unit": "m",
+                    "value": "1.2"
+                  },
+                  {
+                    "axis": "depth",
+                    "label": "Depth",
+                    "quote": "Fixture depth 0.8 m",
+                    "unit": "m",
+                    "value": "0.8"
+                  },
+                  {
+                    "axis": "height",
+                    "label": "Height",
+                    "quote": "Fixture height 0.7 m",
+                    "unit": "m",
+                    "value": "0.7"
+                  }
+                ],
+                "outcome": "verified",
+                "schema_version": 1,
+                "source_url": "https://example.com/fixture/desk",
+                "variant_id": "fixture-desk",
+                "verified_at": "2026-10-18T00:00:00+00:00"
+              },
+              "dimensions": [
+                1.2,
+                0.8,
+                0.7
+              ],
+              "features": {},
+              "offer": {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture desk"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-desk",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        1.2,
+                        0.8,
+                        0.7
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-desk"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/desk",
+                "schema_version": 1,
+                "variant_id": "fixture-desk"
+              },
+              "offer_id": "offer-desk",
+              "offers": [
+                {
+                  "availability": "in_stock",
+                  "checked_at": "2026-10-18T00:00:00+00:00",
+                  "currency": "USD",
+                  "evidence": {
+                    "availability_quote": "In stock",
+                    "pack_quote": "Fixture single unit",
+                    "price_quote": "USD 100.00",
+                    "variant_quote": "Fixture desk"
+                  },
+                  "exact_variant": true,
+                  "merchant": "Example",
+                  "offer_id": "offer-desk",
+                  "pack_contents": {
+                    "components": [
+                      {
+                        "dimensions": [
+                          1.2,
+                          0.8,
+                          0.7
+                        ],
+                        "units": 1,
+                        "variant_id": "fixture-desk"
+                      }
+                    ],
+                    "verified": true
+                  },
+                  "price": "100.00",
+                  "product_url": "https://example.com/fixture/desk",
+                  "schema_version": 1,
+                  "variant_id": "fixture-desk"
+                }
+              ],
+              "practical_reason": "Matches requested function",
+              "practical_score": 80,
+              "quantity": 1,
+              "reasons": {
+                "practical": "Matches requested function",
+                "style": "Matches requested style",
+                "value": "Price relative to the median of comparable discoveries"
+              },
+              "render": {
+                "category": "desk",
+                "forward": "+Z",
+                "kind": "standin",
+                "pivot": "bottom_center",
+                "scaling_mode": "normalized",
+                "tint": "#B9ADA0"
+              },
+              "rule_version": "practical60-style30-value10-v1",
+              "schema_version": 1,
+              "scores": {
+                "overall": 77.0,
+                "practical": 80,
+                "style": 80,
+                "value": 50.0
+              },
+              "search_id": "search-desk",
+              "selection_id": "desk",
+              "source": "stored",
+              "style_reason": "Matches requested style",
+              "style_score": 80,
+              "title": "Fixture desk",
+              "uncertainty": null,
+              "variant": {
+                "category": "desk",
+                "dimension_evidence_id": "dim-desk",
+                "features": {},
+                "identity": {
+                  "gtin": null,
+                  "identity_quote": null,
+                  "identity_verified": false,
+                  "manufacturer": null,
+                  "mpn": null
+                },
+                "image_references": [],
+                "options": {
+                  "color": "1"
+                },
+                "schema_version": 1,
+                "title": "Fixture desk",
+                "variant_id": "fixture-desk"
+              },
+              "variant_id": "fixture-desk"
+            },
+            "reason": "Fixture relationship",
+            "render": {
+              "category": "desk",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "selection_id": "desk",
+            "status": "new",
+            "variant_id": "fixture-desk"
+          },
+          {
+            "add_id": "rug",
+            "anchor": {
+              "target": {
+                "add_id": "desk",
+                "id": "desk",
+                "kind": "addition_unit",
+                "unit_index": 0
+              },
+              "type": "under"
+            },
+            "category": "rug",
+            "fixed_in_place": false,
+            "id": "i_rug_0",
+            "instruction": "decide",
+            "label": "Fixture rug",
+            "last_valid_placement": {
+              "mount": "floor",
+              "position": [
+                2.0,
+                0,
+                1.5
+              ],
+              "size": [
+                1.8,
+                1.2,
+                0.02
+              ],
+              "yaw": -3.141592653589793
+            },
+            "object_id": null,
+            "offer_id": "offer-rug",
+            "origin": "new",
+            "original_placement": null,
+            "placement": {
+              "mount": "floor",
+              "position": [
+                2.0,
+                0,
+                1.5
+              ],
+              "size": [
+                1.8,
+                1.2,
+                0.02
+              ],
+              "yaw": -3.141592653589793
+            },
+            "product": {
+              "candidate_id": "fixture_candidate_1",
+              "category": "rug",
+              "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+              "dimension_evidence": {
+                "classification": "item",
+                "dimensions": [
+                  1.8,
+                  1.2,
+                  0.02
+                ],
+                "evidence_id": "dim-rug",
+                "expires_at": "2026-10-25T00:00:00+00:00",
+                "original_measurements": [
+                  {
+                    "axis": "width",
+                    "label": "Width",
+                    "quote": "Fixture width 1.8 m",
+                    "unit": "m",
+                    "value": "1.8"
+                  },
+                  {
+                    "axis": "depth",
+                    "label": "Depth",
+                    "quote": "Fixture depth 1.2 m",
+                    "unit": "m",
+                    "value": "1.2"
+                  },
+                  {
+                    "axis": "height",
+                    "label": "Height",
+                    "quote": "Fixture height 0.02 m",
+                    "unit": "m",
+                    "value": "0.02"
+                  }
+                ],
+                "outcome": "verified",
+                "schema_version": 1,
+                "source_url": "https://example.com/fixture/rug",
+                "variant_id": "fixture-rug",
+                "verified_at": "2026-10-18T00:00:00+00:00"
+              },
+              "dimensions": [
+                1.8,
+                1.2,
+                0.02
+              ],
+              "features": {},
+              "offer": {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture rug"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-rug",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        1.8,
+                        1.2,
+                        0.02
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-rug"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/rug",
+                "schema_version": 1,
+                "variant_id": "fixture-rug"
+              },
+              "offer_id": "offer-rug",
+              "offers": [
+                {
+                  "availability": "in_stock",
+                  "checked_at": "2026-10-18T00:00:00+00:00",
+                  "currency": "USD",
+                  "evidence": {
+                    "availability_quote": "In stock",
+                    "pack_quote": "Fixture single unit",
+                    "price_quote": "USD 100.00",
+                    "variant_quote": "Fixture rug"
+                  },
+                  "exact_variant": true,
+                  "merchant": "Example",
+                  "offer_id": "offer-rug",
+                  "pack_contents": {
+                    "components": [
+                      {
+                        "dimensions": [
+                          1.8,
+                          1.2,
+                          0.02
+                        ],
+                        "units": 1,
+                        "variant_id": "fixture-rug"
+                      }
+                    ],
+                    "verified": true
+                  },
+                  "price": "100.00",
+                  "product_url": "https://example.com/fixture/rug",
+                  "schema_version": 1,
+                  "variant_id": "fixture-rug"
+                }
+              ],
+              "practical_reason": "Matches requested function",
+              "practical_score": 80,
+              "quantity": 1,
+              "reasons": {
+                "practical": "Matches requested function",
+                "style": "Matches requested style",
+                "value": "Price relative to the median of comparable discoveries"
+              },
+              "render": {
+                "category": "rug",
+                "forward": "+Z",
+                "kind": "standin",
+                "pivot": "bottom_center",
+                "scaling_mode": "normalized",
+                "tint": "#B9ADA0"
+              },
+              "rule_version": "practical60-style30-value10-v1",
+              "schema_version": 1,
+              "scores": {
+                "overall": 77.0,
+                "practical": 80,
+                "style": 80,
+                "value": 50.0
+              },
+              "search_id": "search-rug",
+              "selection_id": "rug",
+              "source": "stored",
+              "style_reason": "Matches requested style",
+              "style_score": 80,
+              "title": "Fixture rug",
+              "uncertainty": null,
+              "variant": {
+                "category": "rug",
+                "dimension_evidence_id": "dim-rug",
+                "features": {},
+                "identity": {
+                  "gtin": null,
+                  "identity_quote": null,
+                  "identity_verified": false,
+                  "manufacturer": null,
+                  "mpn": null
+                },
+                "image_references": [],
+                "options": {
+                  "color": "1"
+                },
+                "schema_version": 1,
+                "title": "Fixture rug",
+                "variant_id": "fixture-rug"
+              },
+              "variant_id": "fixture-rug"
+            },
+            "reason": "Fixture relationship",
+            "render": {
+              "category": "rug",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "selection_id": "rug",
+            "status": "new",
+            "variant_id": "fixture-rug"
+          },
+          {
+            "add_id": "lamp",
+            "anchor": {
+              "target": {
+                "add_id": "desk",
+                "id": "desk",
+                "kind": "addition_unit",
+                "unit_index": 0
+              },
+              "type": "on_top_of"
+            },
+            "category": "table_lamp",
+            "fixed_in_place": false,
+            "id": "i_lamp_0",
+            "instruction": "decide",
+            "label": "Fixture table_lamp",
+            "last_valid_placement": {
+              "mount": "tabletop",
+              "position": [
+                2.0,
+                0.7,
+                1.5
+              ],
+              "size": [
+                0.2,
+                0.2,
+                0.4
+              ],
+              "support_id": "i_desk_0",
+              "yaw": -3.141592653589793
+            },
+            "object_id": null,
+            "offer_id": "offer-lamp",
+            "origin": "new",
+            "original_placement": null,
+            "placement": {
+              "mount": "tabletop",
+              "position": [
+                2.0,
+                0.7,
+                1.5
+              ],
+              "size": [
+                0.2,
+                0.2,
+                0.4
+              ],
+              "support_id": "i_desk_0",
+              "yaw": -3.141592653589793
+            },
+            "product": {
+              "candidate_id": "fixture_candidate_1",
+              "category": "table_lamp",
+              "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+              "dimension_evidence": {
+                "classification": "item",
+                "dimensions": [
+                  0.2,
+                  0.2,
+                  0.4
+                ],
+                "evidence_id": "dim-lamp",
+                "expires_at": "2026-10-25T00:00:00+00:00",
+                "original_measurements": [
+                  {
+                    "axis": "width",
+                    "label": "Width",
+                    "quote": "Fixture width 0.2 m",
+                    "unit": "m",
+                    "value": "0.2"
+                  },
+                  {
+                    "axis": "depth",
+                    "label": "Depth",
+                    "quote": "Fixture depth 0.2 m",
+                    "unit": "m",
+                    "value": "0.2"
+                  },
+                  {
+                    "axis": "height",
+                    "label": "Height",
+                    "quote": "Fixture height 0.4 m",
+                    "unit": "m",
+                    "value": "0.4"
+                  }
+                ],
+                "outcome": "verified",
+                "schema_version": 1,
+                "source_url": "https://example.com/fixture/lamp",
+                "variant_id": "fixture-lamp",
+                "verified_at": "2026-10-18T00:00:00+00:00"
+              },
+              "dimensions": [
+                0.2,
+                0.2,
+                0.4
+              ],
+              "features": {},
+              "offer": {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture table_lamp"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-lamp",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        0.2,
+                        0.2,
+                        0.4
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-lamp"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/lamp",
+                "schema_version": 1,
+                "variant_id": "fixture-lamp"
+              },
+              "offer_id": "offer-lamp",
+              "offers": [
+                {
+                  "availability": "in_stock",
+                  "checked_at": "2026-10-18T00:00:00+00:00",
+                  "currency": "USD",
+                  "evidence": {
+                    "availability_quote": "In stock",
+                    "pack_quote": "Fixture single unit",
+                    "price_quote": "USD 100.00",
+                    "variant_quote": "Fixture table_lamp"
+                  },
+                  "exact_variant": true,
+                  "merchant": "Example",
+                  "offer_id": "offer-lamp",
+                  "pack_contents": {
+                    "components": [
+                      {
+                        "dimensions": [
+                          0.2,
+                          0.2,
+                          0.4
+                        ],
+                        "units": 1,
+                        "variant_id": "fixture-lamp"
+                      }
+                    ],
+                    "verified": true
+                  },
+                  "price": "100.00",
+                  "product_url": "https://example.com/fixture/lamp",
+                  "schema_version": 1,
+                  "variant_id": "fixture-lamp"
+                }
+              ],
+              "practical_reason": "Matches requested function",
+              "practical_score": 80,
+              "quantity": 1,
+              "reasons": {
+                "practical": "Matches requested function",
+                "style": "Matches requested style",
+                "value": "Price relative to the median of comparable discoveries"
+              },
+              "render": {
+                "category": "table_lamp",
+                "forward": "+Z",
+                "kind": "standin",
+                "pivot": "bottom_center",
+                "scaling_mode": "normalized",
+                "tint": "#B9ADA0"
+              },
+              "rule_version": "practical60-style30-value10-v1",
+              "schema_version": 1,
+              "scores": {
+                "overall": 77.0,
+                "practical": 80,
+                "style": 80,
+                "value": 50.0
+              },
+              "search_id": "search-lamp",
+              "selection_id": "lamp",
+              "source": "stored",
+              "style_reason": "Matches requested style",
+              "style_score": 80,
+              "title": "Fixture table_lamp",
+              "uncertainty": null,
+              "variant": {
+                "category": "table_lamp",
+                "dimension_evidence_id": "dim-lamp",
+                "features": {},
+                "identity": {
+                  "gtin": null,
+                  "identity_quote": null,
+                  "identity_verified": false,
+                  "manufacturer": null,
+                  "mpn": null
+                },
+                "image_references": [],
+                "options": {
+                  "color": "1"
+                },
+                "schema_version": 1,
+                "title": "Fixture table_lamp",
+                "variant_id": "fixture-lamp"
+              },
+              "variant_id": "fixture-lamp"
+            },
+            "reason": "Fixture relationship",
+            "render": {
+              "category": "table_lamp",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "selection_id": "lamp",
+            "status": "new",
+            "variant_id": "fixture-lamp"
+          }
+        ],
+        "parent_id": null,
+        "products": [
+          {
+            "candidate_id": "fixture_candidate_1",
+            "category": "wall_art",
+            "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+            "dimension_evidence": {
+              "classification": "item",
+              "dimensions": [
+                0.6,
+                0.04,
+                0.5
+              ],
+              "evidence_id": "dim-art",
+              "expires_at": "2026-10-25T00:00:00+00:00",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "quote": "Fixture width 0.6 m",
+                  "unit": "m",
+                  "value": "0.6"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "quote": "Fixture depth 0.04 m",
+                  "unit": "m",
+                  "value": "0.04"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "quote": "Fixture height 0.5 m",
+                  "unit": "m",
+                  "value": "0.5"
+                }
+              ],
+              "outcome": "verified",
+              "schema_version": 1,
+              "source_url": "https://example.com/fixture/art",
+              "variant_id": "fixture-art",
+              "verified_at": "2026-10-18T00:00:00+00:00"
+            },
+            "dimensions": [
+              0.6,
+              0.04,
+              0.5
+            ],
+            "features": {},
+            "offer": {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture wall_art"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-art",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      0.6,
+                      0.04,
+                      0.5
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-art"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/art",
+              "schema_version": 1,
+              "variant_id": "fixture-art"
+            },
+            "offer_id": "offer-art",
+            "offers": [
+              {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture wall_art"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-art",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        0.6,
+                        0.04,
+                        0.5
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-art"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/art",
+                "schema_version": 1,
+                "variant_id": "fixture-art"
+              }
+            ],
+            "practical_reason": "Matches requested function",
+            "practical_score": 80,
+            "quantity": 1,
+            "reasons": {
+              "practical": "Matches requested function",
+              "style": "Matches requested style",
+              "value": "Price relative to the median of comparable discoveries"
+            },
+            "render": {
+              "category": "wall_art",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "rule_version": "practical60-style30-value10-v1",
+            "schema_version": 1,
+            "scores": {
+              "overall": 77.0,
+              "practical": 80,
+              "style": 80,
+              "value": 50.0
+            },
+            "search_id": "search-art",
+            "selection_id": "art",
+            "source": "stored",
+            "style_reason": "Matches requested style",
+            "style_score": 80,
+            "title": "Fixture wall_art",
+            "uncertainty": null,
+            "variant": {
+              "category": "wall_art",
+              "dimension_evidence_id": "dim-art",
+              "features": {},
+              "identity": {
+                "gtin": null,
+                "identity_quote": null,
+                "identity_verified": false,
+                "manufacturer": null,
+                "mpn": null
+              },
+              "image_references": [],
+              "options": {
+                "color": "1"
+              },
+              "schema_version": 1,
+              "title": "Fixture wall_art",
+              "variant_id": "fixture-art"
+            },
+            "variant_id": "fixture-art"
+          },
+          {
+            "candidate_id": "fixture_candidate_1",
+            "category": "desk",
+            "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+            "dimension_evidence": {
+              "classification": "item",
+              "dimensions": [
+                1.2,
+                0.8,
+                0.7
+              ],
+              "evidence_id": "dim-desk",
+              "expires_at": "2026-10-25T00:00:00+00:00",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "quote": "Fixture width 1.2 m",
+                  "unit": "m",
+                  "value": "1.2"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "quote": "Fixture depth 0.8 m",
+                  "unit": "m",
+                  "value": "0.8"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "quote": "Fixture height 0.7 m",
+                  "unit": "m",
+                  "value": "0.7"
+                }
+              ],
+              "outcome": "verified",
+              "schema_version": 1,
+              "source_url": "https://example.com/fixture/desk",
+              "variant_id": "fixture-desk",
+              "verified_at": "2026-10-18T00:00:00+00:00"
+            },
+            "dimensions": [
+              1.2,
+              0.8,
+              0.7
+            ],
+            "features": {},
+            "offer": {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture desk"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-desk",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      1.2,
+                      0.8,
+                      0.7
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-desk"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/desk",
+              "schema_version": 1,
+              "variant_id": "fixture-desk"
+            },
+            "offer_id": "offer-desk",
+            "offers": [
+              {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture desk"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-desk",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        1.2,
+                        0.8,
+                        0.7
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-desk"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/desk",
+                "schema_version": 1,
+                "variant_id": "fixture-desk"
+              }
+            ],
+            "practical_reason": "Matches requested function",
+            "practical_score": 80,
+            "quantity": 1,
+            "reasons": {
+              "practical": "Matches requested function",
+              "style": "Matches requested style",
+              "value": "Price relative to the median of comparable discoveries"
+            },
+            "render": {
+              "category": "desk",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "rule_version": "practical60-style30-value10-v1",
+            "schema_version": 1,
+            "scores": {
+              "overall": 77.0,
+              "practical": 80,
+              "style": 80,
+              "value": 50.0
+            },
+            "search_id": "search-desk",
+            "selection_id": "desk",
+            "source": "stored",
+            "style_reason": "Matches requested style",
+            "style_score": 80,
+            "title": "Fixture desk",
+            "uncertainty": null,
+            "variant": {
+              "category": "desk",
+              "dimension_evidence_id": "dim-desk",
+              "features": {},
+              "identity": {
+                "gtin": null,
+                "identity_quote": null,
+                "identity_verified": false,
+                "manufacturer": null,
+                "mpn": null
+              },
+              "image_references": [],
+              "options": {
+                "color": "1"
+              },
+              "schema_version": 1,
+              "title": "Fixture desk",
+              "variant_id": "fixture-desk"
+            },
+            "variant_id": "fixture-desk"
+          },
+          {
+            "candidate_id": "fixture_candidate_1",
+            "category": "table_lamp",
+            "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+            "dimension_evidence": {
+              "classification": "item",
+              "dimensions": [
+                0.2,
+                0.2,
+                0.4
+              ],
+              "evidence_id": "dim-lamp",
+              "expires_at": "2026-10-25T00:00:00+00:00",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "quote": "Fixture width 0.2 m",
+                  "unit": "m",
+                  "value": "0.2"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "quote": "Fixture depth 0.2 m",
+                  "unit": "m",
+                  "value": "0.2"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "quote": "Fixture height 0.4 m",
+                  "unit": "m",
+                  "value": "0.4"
+                }
+              ],
+              "outcome": "verified",
+              "schema_version": 1,
+              "source_url": "https://example.com/fixture/lamp",
+              "variant_id": "fixture-lamp",
+              "verified_at": "2026-10-18T00:00:00+00:00"
+            },
+            "dimensions": [
+              0.2,
+              0.2,
+              0.4
+            ],
+            "features": {},
+            "offer": {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture table_lamp"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-lamp",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      0.2,
+                      0.2,
+                      0.4
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-lamp"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/lamp",
+              "schema_version": 1,
+              "variant_id": "fixture-lamp"
+            },
+            "offer_id": "offer-lamp",
+            "offers": [
+              {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture table_lamp"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-lamp",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        0.2,
+                        0.2,
+                        0.4
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-lamp"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/lamp",
+                "schema_version": 1,
+                "variant_id": "fixture-lamp"
+              }
+            ],
+            "practical_reason": "Matches requested function",
+            "practical_score": 80,
+            "quantity": 1,
+            "reasons": {
+              "practical": "Matches requested function",
+              "style": "Matches requested style",
+              "value": "Price relative to the median of comparable discoveries"
+            },
+            "render": {
+              "category": "table_lamp",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "rule_version": "practical60-style30-value10-v1",
+            "schema_version": 1,
+            "scores": {
+              "overall": 77.0,
+              "practical": 80,
+              "style": 80,
+              "value": 50.0
+            },
+            "search_id": "search-lamp",
+            "selection_id": "lamp",
+            "source": "stored",
+            "style_reason": "Matches requested style",
+            "style_score": 80,
+            "title": "Fixture table_lamp",
+            "uncertainty": null,
+            "variant": {
+              "category": "table_lamp",
+              "dimension_evidence_id": "dim-lamp",
+              "features": {},
+              "identity": {
+                "gtin": null,
+                "identity_quote": null,
+                "identity_verified": false,
+                "manufacturer": null,
+                "mpn": null
+              },
+              "image_references": [],
+              "options": {
+                "color": "1"
+              },
+              "schema_version": 1,
+              "title": "Fixture table_lamp",
+              "variant_id": "fixture-lamp"
+            },
+            "variant_id": "fixture-lamp"
+          },
+          {
+            "candidate_id": "fixture_candidate_1",
+            "category": "rug",
+            "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+            "dimension_evidence": {
+              "classification": "item",
+              "dimensions": [
+                1.8,
+                1.2,
+                0.02
+              ],
+              "evidence_id": "dim-rug",
+              "expires_at": "2026-10-25T00:00:00+00:00",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "quote": "Fixture width 1.8 m",
+                  "unit": "m",
+                  "value": "1.8"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "quote": "Fixture depth 1.2 m",
+                  "unit": "m",
+                  "value": "1.2"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "quote": "Fixture height 0.02 m",
+                  "unit": "m",
+                  "value": "0.02"
+                }
+              ],
+              "outcome": "verified",
+              "schema_version": 1,
+              "source_url": "https://example.com/fixture/rug",
+              "variant_id": "fixture-rug",
+              "verified_at": "2026-10-18T00:00:00+00:00"
+            },
+            "dimensions": [
+              1.8,
+              1.2,
+              0.02
+            ],
+            "features": {},
+            "offer": {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture rug"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-rug",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      1.8,
+                      1.2,
+                      0.02
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-rug"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/rug",
+              "schema_version": 1,
+              "variant_id": "fixture-rug"
+            },
+            "offer_id": "offer-rug",
+            "offers": [
+              {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture rug"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-rug",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        1.8,
+                        1.2,
+                        0.02
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-rug"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/rug",
+                "schema_version": 1,
+                "variant_id": "fixture-rug"
+              }
+            ],
+            "practical_reason": "Matches requested function",
+            "practical_score": 80,
+            "quantity": 1,
+            "reasons": {
+              "practical": "Matches requested function",
+              "style": "Matches requested style",
+              "value": "Price relative to the median of comparable discoveries"
+            },
+            "render": {
+              "category": "rug",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "rule_version": "practical60-style30-value10-v1",
+            "schema_version": 1,
+            "scores": {
+              "overall": 77.0,
+              "practical": 80,
+              "style": 80,
+              "value": 50.0
+            },
+            "search_id": "search-rug",
+            "selection_id": "rug",
+            "source": "stored",
+            "style_reason": "Matches requested style",
+            "style_score": 80,
+            "title": "Fixture rug",
+            "uncertainty": null,
+            "variant": {
+              "category": "rug",
+              "dimension_evidence_id": "dim-rug",
+              "features": {},
+              "identity": {
+                "gtin": null,
+                "identity_quote": null,
+                "identity_verified": false,
+                "manufacturer": null,
+                "mpn": null
+              },
+              "image_references": [],
+              "options": {
+                "color": "1"
+              },
+              "schema_version": 1,
+              "title": "Fixture rug",
+              "variant_id": "fixture-rug"
+            },
+            "variant_id": "fixture-rug"
+          }
+        ],
+        "purchase_summary": {
+          "approved_ceiling": "500.00",
+          "currency": "USD",
+          "existing_objects_excluded": true,
+          "lines": [
+            {
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "components": [
+                {
+                  "dimensions": [
+                    0.6,
+                    0.04,
+                    0.5
+                  ],
+                  "paid_surplus_count": 0,
+                  "placed_item_ids": [
+                    "i_art_0"
+                  ],
+                  "supplied_unit_count": 1,
+                  "units": 1,
+                  "variant_id": "fixture-art"
+                }
+              ],
+              "line_total": "100.00",
+              "offer": {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture wall_art"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-art",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        0.6,
+                        0.04,
+                        0.5
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-art"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/art",
+                "schema_version": 1,
+                "variant_id": "fixture-art"
+              },
+              "offer_id": "offer-art",
+              "paid_surplus_count": 0,
+              "placed_item_ids": [
+                "i_art_0"
+              ],
+              "placed_unit_count": 1,
+              "purchased_pack_count": 1,
+              "schema_version": 1,
+              "supplied_unit_count": 1,
+              "unit_pack_price": "100.00",
+              "variant_id": "fixture-art",
+              "verified_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      0.6,
+                      0.04,
+                      0.5
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-art"
+                  }
+                ],
+                "verified": true
+              }
+            },
+            {
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "components": [
+                {
+                  "dimensions": [
+                    1.2,
+                    0.8,
+                    0.7
+                  ],
+                  "paid_surplus_count": 0,
+                  "placed_item_ids": [
+                    "i_desk_0"
+                  ],
+                  "supplied_unit_count": 1,
+                  "units": 1,
+                  "variant_id": "fixture-desk"
+                }
+              ],
+              "line_total": "100.00",
+              "offer": {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture desk"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-desk",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        1.2,
+                        0.8,
+                        0.7
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-desk"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/desk",
+                "schema_version": 1,
+                "variant_id": "fixture-desk"
+              },
+              "offer_id": "offer-desk",
+              "paid_surplus_count": 0,
+              "placed_item_ids": [
+                "i_desk_0"
+              ],
+              "placed_unit_count": 1,
+              "purchased_pack_count": 1,
+              "schema_version": 1,
+              "supplied_unit_count": 1,
+              "unit_pack_price": "100.00",
+              "variant_id": "fixture-desk",
+              "verified_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      1.2,
+                      0.8,
+                      0.7
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-desk"
+                  }
+                ],
+                "verified": true
+              }
+            },
+            {
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "components": [
+                {
+                  "dimensions": [
+                    0.2,
+                    0.2,
+                    0.4
+                  ],
+                  "paid_surplus_count": 0,
+                  "placed_item_ids": [
+                    "i_lamp_0"
+                  ],
+                  "supplied_unit_count": 1,
+                  "units": 1,
+                  "variant_id": "fixture-lamp"
+                }
+              ],
+              "line_total": "100.00",
+              "offer": {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture table_lamp"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-lamp",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        0.2,
+                        0.2,
+                        0.4
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-lamp"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/lamp",
+                "schema_version": 1,
+                "variant_id": "fixture-lamp"
+              },
+              "offer_id": "offer-lamp",
+              "paid_surplus_count": 0,
+              "placed_item_ids": [
+                "i_lamp_0"
+              ],
+              "placed_unit_count": 1,
+              "purchased_pack_count": 1,
+              "schema_version": 1,
+              "supplied_unit_count": 1,
+              "unit_pack_price": "100.00",
+              "variant_id": "fixture-lamp",
+              "verified_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      0.2,
+                      0.2,
+                      0.4
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-lamp"
+                  }
+                ],
+                "verified": true
+              }
+            },
+            {
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "components": [
+                {
+                  "dimensions": [
+                    1.8,
+                    1.2,
+                    0.02
+                  ],
+                  "paid_surplus_count": 0,
+                  "placed_item_ids": [
+                    "i_rug_0"
+                  ],
+                  "supplied_unit_count": 1,
+                  "units": 1,
+                  "variant_id": "fixture-rug"
+                }
+              ],
+              "line_total": "100.00",
+              "offer": {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture rug"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-rug",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        1.8,
+                        1.2,
+                        0.02
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-rug"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/rug",
+                "schema_version": 1,
+                "variant_id": "fixture-rug"
+              },
+              "offer_id": "offer-rug",
+              "paid_surplus_count": 0,
+              "placed_item_ids": [
+                "i_rug_0"
+              ],
+              "placed_unit_count": 1,
+              "purchased_pack_count": 1,
+              "schema_version": 1,
+              "supplied_unit_count": 1,
+              "unit_pack_price": "100.00",
+              "variant_id": "fixture-rug",
+              "verified_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      1.8,
+                      1.2,
+                      0.02
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-rug"
+                  }
+                ],
+                "verified": true
+              }
+            }
+          ],
+          "schema_version": 1,
+          "shipping_excluded": true,
+          "tax_excluded": true,
+          "total": "400.00",
+          "warnings": [],
+          "within_budget": true
+        },
+        "room": {
+          "capture_id": "capture-fixture",
+          "category_version": 1,
+          "corners": [
+            {
+              "id": "c_1",
+              "position": [
+                0.0,
+                0.0
+              ],
+              "wall_ids": [
+                "w_4",
+                "w_1"
+              ]
+            },
+            {
+              "id": "c_2",
+              "position": [
+                4.0,
+                0.0
+              ],
+              "wall_ids": [
+                "w_1",
+                "w_2"
+              ]
+            },
+            {
+              "id": "c_3",
+              "position": [
+                4.0,
+                3.0
+              ],
+              "wall_ids": [
+                "w_2",
+                "w_3"
+              ]
+            },
+            {
+              "id": "c_4",
+              "position": [
+                0.0,
+                3.0
+              ],
+              "wall_ids": [
+                "w_3",
+                "w_4"
+              ]
+            }
+          ],
+          "floor": {
+            "area": 12.0,
+            "polygon": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                4.0,
+                0.0
+              ],
+              [
+                4.0,
+                3.0
+              ],
+              [
+                0.0,
+                3.0
+              ]
+            ]
+          },
+          "frame": {
+            "room_from_world": [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              -2.0,
+              1.2,
+              -3.0,
+              1.0
+            ]
+          },
+          "height": 2.6,
+          "identity_map": {
+            "native-wall-0": {
+              "id": "w_1",
+              "ids": [
+                "w_1"
+              ],
+              "kind": "wall"
+            },
+            "native-wall-1": {
+              "id": "w_2",
+              "ids": [
+                "w_2"
+              ],
+              "kind": "wall"
+            },
+            "native-wall-2": {
+              "id": "w_3",
+              "ids": [
+                "w_3"
+              ],
+              "kind": "wall"
+            },
+            "native-wall-3": {
+              "id": "w_4",
+              "ids": [
+                "w_4"
+              ],
+              "kind": "wall"
+            }
+          },
+          "objects": [
+            {
+              "attrs": {},
+              "base_y": 2.3,
+              "category": "ceiling_light",
+              "center": [
+                2,
+                1.5
+              ],
+              "fixed_in_place": false,
+              "id": "o_light",
+              "mount": "ceiling",
+              "observation_count": 2,
+              "size": [
+                0.4,
+                0.4,
+                0.3
+              ],
+              "source": "perceptron",
+              "source_ids": [
+                "fixture-light"
+              ],
+              "support_id": null,
+              "wall_id": null,
+              "yaw": 0
+            }
+          ],
+          "openings": [],
+          "processing": {
+            "completed": 0,
+            "expected_frames": 0,
+            "failed": 0,
+            "lifted": 0,
+            "not_started": 0,
+            "pending": 0,
+            "succeeded": 0
+          },
+          "room_id": "room-fixture",
+          "schema_version": 1,
+          "style_hints": {},
+          "validity": {
+            "reasons": [],
+            "usable": true,
+            "warnings": []
+          },
+          "wall_features": [],
+          "walls": [
+            {
+              "a": [
+                0.0,
+                0.0
+              ],
+              "b": [
+                4.0,
+                0.0
+              ],
+              "id": "w_1",
+              "inward_normal": [
+                -0.0,
+                1.0
+              ],
+              "length": 4.0,
+              "source_ids": [
+                "native-wall-0"
+              ],
+              "virtual": false
+            },
+            {
+              "a": [
+                4.0,
+                0.0
+              ],
+              "b": [
+                4.0,
+                3.0
+              ],
+              "id": "w_2",
+              "inward_normal": [
+                -1.0,
+                0.0
+              ],
+              "length": 3.0,
+              "source_ids": [
+                "native-wall-1"
+              ],
+              "virtual": false
+            },
+            {
+              "a": [
+                4.0,
+                3.0
+              ],
+              "b": [
+                0.0,
+                3.0
+              ],
+              "id": "w_3",
+              "inward_normal": [
+                -0.0,
+                -1.0
+              ],
+              "length": 4.0,
+              "source_ids": [
+                "native-wall-2"
+              ],
+              "virtual": false
+            },
+            {
+              "a": [
+                0.0,
+                3.0
+              ],
+              "b": [
+                0.0,
+                0.0
+              ],
+              "id": "w_4",
+              "inward_normal": [
+                1.0,
+                0.0
+              ],
+              "length": 3.0,
+              "source_ids": [
+                "native-wall-3"
+              ],
+              "virtual": false
+            }
+          ],
+          "zones": []
+        },
+        "room_snapshot_id": "snapshot-relations-v1",
+        "schema_version": 1,
+        "selections": {
+          "art": {
+            "candidate_id": "fixture_candidate_1",
+            "category": "wall_art",
+            "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+            "dimension_evidence": {
+              "classification": "item",
+              "dimensions": [
+                0.6,
+                0.04,
+                0.5
+              ],
+              "evidence_id": "dim-art",
+              "expires_at": "2026-10-25T00:00:00+00:00",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "quote": "Fixture width 0.6 m",
+                  "unit": "m",
+                  "value": "0.6"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "quote": "Fixture depth 0.04 m",
+                  "unit": "m",
+                  "value": "0.04"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "quote": "Fixture height 0.5 m",
+                  "unit": "m",
+                  "value": "0.5"
+                }
+              ],
+              "outcome": "verified",
+              "schema_version": 1,
+              "source_url": "https://example.com/fixture/art",
+              "variant_id": "fixture-art",
+              "verified_at": "2026-10-18T00:00:00+00:00"
+            },
+            "dimensions": [
+              0.6,
+              0.04,
+              0.5
+            ],
+            "features": {},
+            "offer": {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture wall_art"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-art",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      0.6,
+                      0.04,
+                      0.5
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-art"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/art",
+              "schema_version": 1,
+              "variant_id": "fixture-art"
+            },
+            "offer_id": "offer-art",
+            "offers": [
+              {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture wall_art"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-art",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        0.6,
+                        0.04,
+                        0.5
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-art"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/art",
+                "schema_version": 1,
+                "variant_id": "fixture-art"
+              }
+            ],
+            "practical_reason": "Matches requested function",
+            "practical_score": 80,
+            "quantity": 1,
+            "reasons": {
+              "practical": "Matches requested function",
+              "style": "Matches requested style",
+              "value": "Price relative to the median of comparable discoveries"
+            },
+            "render": {
+              "category": "wall_art",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "rule_version": "practical60-style30-value10-v1",
+            "schema_version": 1,
+            "scores": {
+              "overall": 77.0,
+              "practical": 80,
+              "style": 80,
+              "value": 50.0
+            },
+            "search_id": "search-art",
+            "selection_id": "art",
+            "source": "stored",
+            "style_reason": "Matches requested style",
+            "style_score": 80,
+            "title": "Fixture wall_art",
+            "uncertainty": null,
+            "variant": {
+              "category": "wall_art",
+              "dimension_evidence_id": "dim-art",
+              "features": {},
+              "identity": {
+                "gtin": null,
+                "identity_quote": null,
+                "identity_verified": false,
+                "manufacturer": null,
+                "mpn": null
+              },
+              "image_references": [],
+              "options": {
+                "color": "1"
+              },
+              "schema_version": 1,
+              "title": "Fixture wall_art",
+              "variant_id": "fixture-art"
+            },
+            "variant_id": "fixture-art"
+          },
+          "desk": {
+            "candidate_id": "fixture_candidate_1",
+            "category": "desk",
+            "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+            "dimension_evidence": {
+              "classification": "item",
+              "dimensions": [
+                1.2,
+                0.8,
+                0.7
+              ],
+              "evidence_id": "dim-desk",
+              "expires_at": "2026-10-25T00:00:00+00:00",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "quote": "Fixture width 1.2 m",
+                  "unit": "m",
+                  "value": "1.2"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "quote": "Fixture depth 0.8 m",
+                  "unit": "m",
+                  "value": "0.8"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "quote": "Fixture height 0.7 m",
+                  "unit": "m",
+                  "value": "0.7"
+                }
+              ],
+              "outcome": "verified",
+              "schema_version": 1,
+              "source_url": "https://example.com/fixture/desk",
+              "variant_id": "fixture-desk",
+              "verified_at": "2026-10-18T00:00:00+00:00"
+            },
+            "dimensions": [
+              1.2,
+              0.8,
+              0.7
+            ],
+            "features": {},
+            "offer": {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture desk"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-desk",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      1.2,
+                      0.8,
+                      0.7
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-desk"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/desk",
+              "schema_version": 1,
+              "variant_id": "fixture-desk"
+            },
+            "offer_id": "offer-desk",
+            "offers": [
+              {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture desk"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-desk",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        1.2,
+                        0.8,
+                        0.7
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-desk"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/desk",
+                "schema_version": 1,
+                "variant_id": "fixture-desk"
+              }
+            ],
+            "practical_reason": "Matches requested function",
+            "practical_score": 80,
+            "quantity": 1,
+            "reasons": {
+              "practical": "Matches requested function",
+              "style": "Matches requested style",
+              "value": "Price relative to the median of comparable discoveries"
+            },
+            "render": {
+              "category": "desk",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "rule_version": "practical60-style30-value10-v1",
+            "schema_version": 1,
+            "scores": {
+              "overall": 77.0,
+              "practical": 80,
+              "style": 80,
+              "value": 50.0
+            },
+            "search_id": "search-desk",
+            "selection_id": "desk",
+            "source": "stored",
+            "style_reason": "Matches requested style",
+            "style_score": 80,
+            "title": "Fixture desk",
+            "uncertainty": null,
+            "variant": {
+              "category": "desk",
+              "dimension_evidence_id": "dim-desk",
+              "features": {},
+              "identity": {
+                "gtin": null,
+                "identity_quote": null,
+                "identity_verified": false,
+                "manufacturer": null,
+                "mpn": null
+              },
+              "image_references": [],
+              "options": {
+                "color": "1"
+              },
+              "schema_version": 1,
+              "title": "Fixture desk",
+              "variant_id": "fixture-desk"
+            },
+            "variant_id": "fixture-desk"
+          },
+          "lamp": {
+            "candidate_id": "fixture_candidate_1",
+            "category": "table_lamp",
+            "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+            "dimension_evidence": {
+              "classification": "item",
+              "dimensions": [
+                0.2,
+                0.2,
+                0.4
+              ],
+              "evidence_id": "dim-lamp",
+              "expires_at": "2026-10-25T00:00:00+00:00",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "quote": "Fixture width 0.2 m",
+                  "unit": "m",
+                  "value": "0.2"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "quote": "Fixture depth 0.2 m",
+                  "unit": "m",
+                  "value": "0.2"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "quote": "Fixture height 0.4 m",
+                  "unit": "m",
+                  "value": "0.4"
+                }
+              ],
+              "outcome": "verified",
+              "schema_version": 1,
+              "source_url": "https://example.com/fixture/lamp",
+              "variant_id": "fixture-lamp",
+              "verified_at": "2026-10-18T00:00:00+00:00"
+            },
+            "dimensions": [
+              0.2,
+              0.2,
+              0.4
+            ],
+            "features": {},
+            "offer": {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture table_lamp"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-lamp",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      0.2,
+                      0.2,
+                      0.4
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-lamp"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/lamp",
+              "schema_version": 1,
+              "variant_id": "fixture-lamp"
+            },
+            "offer_id": "offer-lamp",
+            "offers": [
+              {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture table_lamp"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-lamp",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        0.2,
+                        0.2,
+                        0.4
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-lamp"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/lamp",
+                "schema_version": 1,
+                "variant_id": "fixture-lamp"
+              }
+            ],
+            "practical_reason": "Matches requested function",
+            "practical_score": 80,
+            "quantity": 1,
+            "reasons": {
+              "practical": "Matches requested function",
+              "style": "Matches requested style",
+              "value": "Price relative to the median of comparable discoveries"
+            },
+            "render": {
+              "category": "table_lamp",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "rule_version": "practical60-style30-value10-v1",
+            "schema_version": 1,
+            "scores": {
+              "overall": 77.0,
+              "practical": 80,
+              "style": 80,
+              "value": 50.0
+            },
+            "search_id": "search-lamp",
+            "selection_id": "lamp",
+            "source": "stored",
+            "style_reason": "Matches requested style",
+            "style_score": 80,
+            "title": "Fixture table_lamp",
+            "uncertainty": null,
+            "variant": {
+              "category": "table_lamp",
+              "dimension_evidence_id": "dim-lamp",
+              "features": {},
+              "identity": {
+                "gtin": null,
+                "identity_quote": null,
+                "identity_verified": false,
+                "manufacturer": null,
+                "mpn": null
+              },
+              "image_references": [],
+              "options": {
+                "color": "1"
+              },
+              "schema_version": 1,
+              "title": "Fixture table_lamp",
+              "variant_id": "fixture-lamp"
+            },
+            "variant_id": "fixture-lamp"
+          },
+          "rug": {
+            "candidate_id": "fixture_candidate_1",
+            "category": "rug",
+            "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+            "dimension_evidence": {
+              "classification": "item",
+              "dimensions": [
+                1.8,
+                1.2,
+                0.02
+              ],
+              "evidence_id": "dim-rug",
+              "expires_at": "2026-10-25T00:00:00+00:00",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "quote": "Fixture width 1.8 m",
+                  "unit": "m",
+                  "value": "1.8"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "quote": "Fixture depth 1.2 m",
+                  "unit": "m",
+                  "value": "1.2"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "quote": "Fixture height 0.02 m",
+                  "unit": "m",
+                  "value": "0.02"
+                }
+              ],
+              "outcome": "verified",
+              "schema_version": 1,
+              "source_url": "https://example.com/fixture/rug",
+              "variant_id": "fixture-rug",
+              "verified_at": "2026-10-18T00:00:00+00:00"
+            },
+            "dimensions": [
+              1.8,
+              1.2,
+              0.02
+            ],
+            "features": {},
+            "offer": {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture rug"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-rug",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      1.8,
+                      1.2,
+                      0.02
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-rug"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/rug",
+              "schema_version": 1,
+              "variant_id": "fixture-rug"
+            },
+            "offer_id": "offer-rug",
+            "offers": [
+              {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture rug"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-rug",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        1.8,
+                        1.2,
+                        0.02
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-rug"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/rug",
+                "schema_version": 1,
+                "variant_id": "fixture-rug"
+              }
+            ],
+            "practical_reason": "Matches requested function",
+            "practical_score": 80,
+            "quantity": 1,
+            "reasons": {
+              "practical": "Matches requested function",
+              "style": "Matches requested style",
+              "value": "Price relative to the median of comparable discoveries"
+            },
+            "render": {
+              "category": "rug",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "rule_version": "practical60-style30-value10-v1",
+            "schema_version": 1,
+            "scores": {
+              "overall": 77.0,
+              "practical": 80,
+              "style": 80,
+              "value": 50.0
+            },
+            "search_id": "search-rug",
+            "selection_id": "rug",
+            "source": "stored",
+            "style_reason": "Matches requested style",
+            "style_score": 80,
+            "title": "Fixture rug",
+            "uncertainty": null,
+            "variant": {
+              "category": "rug",
+              "dimension_evidence_id": "dim-rug",
+              "features": {},
+              "identity": {
+                "gtin": null,
+                "identity_quote": null,
+                "identity_verified": false,
+                "manufacturer": null,
+                "mpn": null
+              },
+              "image_references": [],
+              "options": {
+                "color": "1"
+              },
+              "schema_version": 1,
+              "title": "Fixture rug",
+              "variant_id": "fixture-rug"
+            },
+            "variant_id": "fixture-rug"
+          }
+        },
+        "summary": "Measured support, wall, ceiling and rug relationships",
+        "warnings": []
+      },
+      "schema_version": 1,
+      "snapshot_id": "snapshot-relations-v1"
+    },
+    "schema_version": 1
+  },
+  "plan": {
+    "adds": [
+      {
+        "action_id": "lamp",
+        "add_id": "lamp",
+        "anchor": {
+          "target": {
+            "add_id": "desk",
+            "id": "desk",
+            "kind": "addition_unit",
+            "unit_index": 0
+          },
+          "type": "on_top_of"
+        },
+        "category": "table_lamp",
+        "priority": 1,
+        "quantity": 1,
+        "reason": "Fixture relationship",
+        "selection_id": "lamp"
+      },
+      {
+        "action_id": "rug",
+        "add_id": "rug",
+        "anchor": {
+          "target": {
+            "add_id": "desk",
+            "id": "desk",
+            "kind": "addition_unit",
+            "unit_index": 0
+          },
+          "type": "under"
+        },
+        "category": "rug",
+        "priority": 1,
+        "quantity": 1,
+        "reason": "Fixture relationship",
+        "selection_id": "rug"
+      },
+      {
+        "action_id": "art",
+        "add_id": "art",
+        "anchor": {
+          "alignment": "center",
+          "type": "on_wall",
+          "wall_id": "w_1"
+        },
+        "category": "wall_art",
+        "priority": 1,
+        "quantity": 1,
+        "reason": "Fixture relationship",
+        "selection_id": "art"
+      },
+      {
+        "action_id": "desk",
+        "add_id": "desk",
+        "anchor": {
+          "type": "room_center"
+        },
+        "category": "desk",
+        "priority": 99,
+        "quantity": 1,
+        "reason": "Fixture relationship",
+        "selection_id": "desk"
+      }
+    ],
+    "moves": [],
+    "removes": [],
+    "replaces": [],
+    "restores": [],
+    "schema_version": 1,
+    "summary": "Measured support, wall, ceiling and rug relationships",
+    "unlocks": []
+  },
+  "provenance": "Synthetic test-only processed detection and Product evidence; real solver and purchase calculator output.",
+  "schema_version": 1,
+  "selections": {
+    "art": {
+      "candidate_id": "fixture_candidate_1",
+      "category": "wall_art",
+      "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+      "dimension_evidence": {
+        "classification": "item",
+        "dimensions": [
+          0.6,
+          0.04,
+          0.5
+        ],
+        "evidence_id": "dim-art",
+        "expires_at": "2026-10-25T00:00:00+00:00",
+        "original_measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "quote": "Fixture width 0.6 m",
+            "unit": "m",
+            "value": "0.6"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "quote": "Fixture depth 0.04 m",
+            "unit": "m",
+            "value": "0.04"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "quote": "Fixture height 0.5 m",
+            "unit": "m",
+            "value": "0.5"
+          }
+        ],
+        "outcome": "verified",
+        "schema_version": 1,
+        "source_url": "https://example.com/fixture/art",
+        "variant_id": "fixture-art",
+        "verified_at": "2026-10-18T00:00:00+00:00"
+      },
+      "dimensions": [
+        0.6,
+        0.04,
+        0.5
+      ],
+      "features": {},
+      "offer": {
+        "availability": "in_stock",
+        "checked_at": "2026-10-18T00:00:00+00:00",
+        "currency": "USD",
+        "evidence": {
+          "availability_quote": "In stock",
+          "pack_quote": "Fixture single unit",
+          "price_quote": "USD 100.00",
+          "variant_quote": "Fixture wall_art"
+        },
+        "exact_variant": true,
+        "merchant": "Example",
+        "offer_id": "offer-art",
+        "pack_contents": {
+          "components": [
+            {
+              "dimensions": [
+                0.6,
+                0.04,
+                0.5
+              ],
+              "units": 1,
+              "variant_id": "fixture-art"
+            }
+          ],
+          "verified": true
+        },
+        "price": "100.00",
+        "product_url": "https://example.com/fixture/art",
+        "schema_version": 1,
+        "variant_id": "fixture-art"
+      },
+      "offer_id": "offer-art",
+      "offers": [
+        {
+          "availability": "in_stock",
+          "checked_at": "2026-10-18T00:00:00+00:00",
+          "currency": "USD",
+          "evidence": {
+            "availability_quote": "In stock",
+            "pack_quote": "Fixture single unit",
+            "price_quote": "USD 100.00",
+            "variant_quote": "Fixture wall_art"
+          },
+          "exact_variant": true,
+          "merchant": "Example",
+          "offer_id": "offer-art",
+          "pack_contents": {
+            "components": [
+              {
+                "dimensions": [
+                  0.6,
+                  0.04,
+                  0.5
+                ],
+                "units": 1,
+                "variant_id": "fixture-art"
+              }
+            ],
+            "verified": true
+          },
+          "price": "100.00",
+          "product_url": "https://example.com/fixture/art",
+          "schema_version": 1,
+          "variant_id": "fixture-art"
+        }
+      ],
+      "practical_reason": "Matches requested function",
+      "practical_score": 80,
+      "quantity": 1,
+      "reasons": {
+        "practical": "Matches requested function",
+        "style": "Matches requested style",
+        "value": "Price relative to the median of comparable discoveries"
+      },
+      "render": {
+        "category": "wall_art",
+        "forward": "+Z",
+        "kind": "standin",
+        "pivot": "bottom_center",
+        "scaling_mode": "normalized",
+        "tint": "#B9ADA0"
+      },
+      "rule_version": "practical60-style30-value10-v1",
+      "schema_version": 1,
+      "scores": {
+        "overall": 77.0,
+        "practical": 80,
+        "style": 80,
+        "value": 50.0
+      },
+      "search_id": "search-art",
+      "selection_id": "art",
+      "source": "stored",
+      "style_reason": "Matches requested style",
+      "style_score": 80,
+      "title": "Fixture wall_art",
+      "uncertainty": null,
+      "variant": {
+        "category": "wall_art",
+        "dimension_evidence_id": "dim-art",
+        "features": {},
+        "identity": {
+          "gtin": null,
+          "identity_quote": null,
+          "identity_verified": false,
+          "manufacturer": null,
+          "mpn": null
+        },
+        "image_references": [],
+        "options": {
+          "color": "1"
+        },
+        "schema_version": 1,
+        "title": "Fixture wall_art",
+        "variant_id": "fixture-art"
+      },
+      "variant_id": "fixture-art"
+    },
+    "desk": {
+      "candidate_id": "fixture_candidate_1",
+      "category": "desk",
+      "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+      "dimension_evidence": {
+        "classification": "item",
+        "dimensions": [
+          1.2,
+          0.8,
+          0.7
+        ],
+        "evidence_id": "dim-desk",
+        "expires_at": "2026-10-25T00:00:00+00:00",
+        "original_measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "quote": "Fixture width 1.2 m",
+            "unit": "m",
+            "value": "1.2"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "quote": "Fixture depth 0.8 m",
+            "unit": "m",
+            "value": "0.8"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "quote": "Fixture height 0.7 m",
+            "unit": "m",
+            "value": "0.7"
+          }
+        ],
+        "outcome": "verified",
+        "schema_version": 1,
+        "source_url": "https://example.com/fixture/desk",
+        "variant_id": "fixture-desk",
+        "verified_at": "2026-10-18T00:00:00+00:00"
+      },
+      "dimensions": [
+        1.2,
+        0.8,
+        0.7
+      ],
+      "features": {},
+      "offer": {
+        "availability": "in_stock",
+        "checked_at": "2026-10-18T00:00:00+00:00",
+        "currency": "USD",
+        "evidence": {
+          "availability_quote": "In stock",
+          "pack_quote": "Fixture single unit",
+          "price_quote": "USD 100.00",
+          "variant_quote": "Fixture desk"
+        },
+        "exact_variant": true,
+        "merchant": "Example",
+        "offer_id": "offer-desk",
+        "pack_contents": {
+          "components": [
+            {
+              "dimensions": [
+                1.2,
+                0.8,
+                0.7
+              ],
+              "units": 1,
+              "variant_id": "fixture-desk"
+            }
+          ],
+          "verified": true
+        },
+        "price": "100.00",
+        "product_url": "https://example.com/fixture/desk",
+        "schema_version": 1,
+        "variant_id": "fixture-desk"
+      },
+      "offer_id": "offer-desk",
+      "offers": [
+        {
+          "availability": "in_stock",
+          "checked_at": "2026-10-18T00:00:00+00:00",
+          "currency": "USD",
+          "evidence": {
+            "availability_quote": "In stock",
+            "pack_quote": "Fixture single unit",
+            "price_quote": "USD 100.00",
+            "variant_quote": "Fixture desk"
+          },
+          "exact_variant": true,
+          "merchant": "Example",
+          "offer_id": "offer-desk",
+          "pack_contents": {
+            "components": [
+              {
+                "dimensions": [
+                  1.2,
+                  0.8,
+                  0.7
+                ],
+                "units": 1,
+                "variant_id": "fixture-desk"
+              }
+            ],
+            "verified": true
+          },
+          "price": "100.00",
+          "product_url": "https://example.com/fixture/desk",
+          "schema_version": 1,
+          "variant_id": "fixture-desk"
+        }
+      ],
+      "practical_reason": "Matches requested function",
+      "practical_score": 80,
+      "quantity": 1,
+      "reasons": {
+        "practical": "Matches requested function",
+        "style": "Matches requested style",
+        "value": "Price relative to the median of comparable discoveries"
+      },
+      "render": {
+        "category": "desk",
+        "forward": "+Z",
+        "kind": "standin",
+        "pivot": "bottom_center",
+        "scaling_mode": "normalized",
+        "tint": "#B9ADA0"
+      },
+      "rule_version": "practical60-style30-value10-v1",
+      "schema_version": 1,
+      "scores": {
+        "overall": 77.0,
+        "practical": 80,
+        "style": 80,
+        "value": 50.0
+      },
+      "search_id": "search-desk",
+      "selection_id": "desk",
+      "source": "stored",
+      "style_reason": "Matches requested style",
+      "style_score": 80,
+      "title": "Fixture desk",
+      "uncertainty": null,
+      "variant": {
+        "category": "desk",
+        "dimension_evidence_id": "dim-desk",
+        "features": {},
+        "identity": {
+          "gtin": null,
+          "identity_quote": null,
+          "identity_verified": false,
+          "manufacturer": null,
+          "mpn": null
+        },
+        "image_references": [],
+        "options": {
+          "color": "1"
+        },
+        "schema_version": 1,
+        "title": "Fixture desk",
+        "variant_id": "fixture-desk"
+      },
+      "variant_id": "fixture-desk"
+    },
+    "lamp": {
+      "candidate_id": "fixture_candidate_1",
+      "category": "table_lamp",
+      "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+      "dimension_evidence": {
+        "classification": "item",
+        "dimensions": [
+          0.2,
+          0.2,
+          0.4
+        ],
+        "evidence_id": "dim-lamp",
+        "expires_at": "2026-10-25T00:00:00+00:00",
+        "original_measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "quote": "Fixture width 0.2 m",
+            "unit": "m",
+            "value": "0.2"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "quote": "Fixture depth 0.2 m",
+            "unit": "m",
+            "value": "0.2"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "quote": "Fixture height 0.4 m",
+            "unit": "m",
+            "value": "0.4"
+          }
+        ],
+        "outcome": "verified",
+        "schema_version": 1,
+        "source_url": "https://example.com/fixture/lamp",
+        "variant_id": "fixture-lamp",
+        "verified_at": "2026-10-18T00:00:00+00:00"
+      },
+      "dimensions": [
+        0.2,
+        0.2,
+        0.4
+      ],
+      "features": {},
+      "offer": {
+        "availability": "in_stock",
+        "checked_at": "2026-10-18T00:00:00+00:00",
+        "currency": "USD",
+        "evidence": {
+          "availability_quote": "In stock",
+          "pack_quote": "Fixture single unit",
+          "price_quote": "USD 100.00",
+          "variant_quote": "Fixture table_lamp"
+        },
+        "exact_variant": true,
+        "merchant": "Example",
+        "offer_id": "offer-lamp",
+        "pack_contents": {
+          "components": [
+            {
+              "dimensions": [
+                0.2,
+                0.2,
+                0.4
+              ],
+              "units": 1,
+              "variant_id": "fixture-lamp"
+            }
+          ],
+          "verified": true
+        },
+        "price": "100.00",
+        "product_url": "https://example.com/fixture/lamp",
+        "schema_version": 1,
+        "variant_id": "fixture-lamp"
+      },
+      "offer_id": "offer-lamp",
+      "offers": [
+        {
+          "availability": "in_stock",
+          "checked_at": "2026-10-18T00:00:00+00:00",
+          "currency": "USD",
+          "evidence": {
+            "availability_quote": "In stock",
+            "pack_quote": "Fixture single unit",
+            "price_quote": "USD 100.00",
+            "variant_quote": "Fixture table_lamp"
+          },
+          "exact_variant": true,
+          "merchant": "Example",
+          "offer_id": "offer-lamp",
+          "pack_contents": {
+            "components": [
+              {
+                "dimensions": [
+                  0.2,
+                  0.2,
+                  0.4
+                ],
+                "units": 1,
+                "variant_id": "fixture-lamp"
+              }
+            ],
+            "verified": true
+          },
+          "price": "100.00",
+          "product_url": "https://example.com/fixture/lamp",
+          "schema_version": 1,
+          "variant_id": "fixture-lamp"
+        }
+      ],
+      "practical_reason": "Matches requested function",
+      "practical_score": 80,
+      "quantity": 1,
+      "reasons": {
+        "practical": "Matches requested function",
+        "style": "Matches requested style",
+        "value": "Price relative to the median of comparable discoveries"
+      },
+      "render": {
+        "category": "table_lamp",
+        "forward": "+Z",
+        "kind": "standin",
+        "pivot": "bottom_center",
+        "scaling_mode": "normalized",
+        "tint": "#B9ADA0"
+      },
+      "rule_version": "practical60-style30-value10-v1",
+      "schema_version": 1,
+      "scores": {
+        "overall": 77.0,
+        "practical": 80,
+        "style": 80,
+        "value": 50.0
+      },
+      "search_id": "search-lamp",
+      "selection_id": "lamp",
+      "source": "stored",
+      "style_reason": "Matches requested style",
+      "style_score": 80,
+      "title": "Fixture table_lamp",
+      "uncertainty": null,
+      "variant": {
+        "category": "table_lamp",
+        "dimension_evidence_id": "dim-lamp",
+        "features": {},
+        "identity": {
+          "gtin": null,
+          "identity_quote": null,
+          "identity_verified": false,
+          "manufacturer": null,
+          "mpn": null
+        },
+        "image_references": [],
+        "options": {
+          "color": "1"
+        },
+        "schema_version": 1,
+        "title": "Fixture table_lamp",
+        "variant_id": "fixture-lamp"
+      },
+      "variant_id": "fixture-lamp"
+    },
+    "rug": {
+      "candidate_id": "fixture_candidate_1",
+      "category": "rug",
+      "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+      "dimension_evidence": {
+        "classification": "item",
+        "dimensions": [
+          1.8,
+          1.2,
+          0.02
+        ],
+        "evidence_id": "dim-rug",
+        "expires_at": "2026-10-25T00:00:00+00:00",
+        "original_measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "quote": "Fixture width 1.8 m",
+            "unit": "m",
+            "value": "1.8"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "quote": "Fixture depth 1.2 m",
+            "unit": "m",
+            "value": "1.2"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "quote": "Fixture height 0.02 m",
+            "unit": "m",
+            "value": "0.02"
+          }
+        ],
+        "outcome": "verified",
+        "schema_version": 1,
+        "source_url": "https://example.com/fixture/rug",
+        "variant_id": "fixture-rug",
+        "verified_at": "2026-10-18T00:00:00+00:00"
+      },
+      "dimensions": [
+        1.8,
+        1.2,
+        0.02
+      ],
+      "features": {},
+      "offer": {
+        "availability": "in_stock",
+        "checked_at": "2026-10-18T00:00:00+00:00",
+        "currency": "USD",
+        "evidence": {
+          "availability_quote": "In stock",
+          "pack_quote": "Fixture single unit",
+          "price_quote": "USD 100.00",
+          "variant_quote": "Fixture rug"
+        },
+        "exact_variant": true,
+        "merchant": "Example",
+        "offer_id": "offer-rug",
+        "pack_contents": {
+          "components": [
+            {
+              "dimensions": [
+                1.8,
+                1.2,
+                0.02
+              ],
+              "units": 1,
+              "variant_id": "fixture-rug"
+            }
+          ],
+          "verified": true
+        },
+        "price": "100.00",
+        "product_url": "https://example.com/fixture/rug",
+        "schema_version": 1,
+        "variant_id": "fixture-rug"
+      },
+      "offer_id": "offer-rug",
+      "offers": [
+        {
+          "availability": "in_stock",
+          "checked_at": "2026-10-18T00:00:00+00:00",
+          "currency": "USD",
+          "evidence": {
+            "availability_quote": "In stock",
+            "pack_quote": "Fixture single unit",
+            "price_quote": "USD 100.00",
+            "variant_quote": "Fixture rug"
+          },
+          "exact_variant": true,
+          "merchant": "Example",
+          "offer_id": "offer-rug",
+          "pack_contents": {
+            "components": [
+              {
+                "dimensions": [
+                  1.8,
+                  1.2,
+                  0.02
+                ],
+                "units": 1,
+                "variant_id": "fixture-rug"
+              }
+            ],
+            "verified": true
+          },
+          "price": "100.00",
+          "product_url": "https://example.com/fixture/rug",
+          "schema_version": 1,
+          "variant_id": "fixture-rug"
+        }
+      ],
+      "practical_reason": "Matches requested function",
+      "practical_score": 80,
+      "quantity": 1,
+      "reasons": {
+        "practical": "Matches requested function",
+        "style": "Matches requested style",
+        "value": "Price relative to the median of comparable discoveries"
+      },
+      "render": {
+        "category": "rug",
+        "forward": "+Z",
+        "kind": "standin",
+        "pivot": "bottom_center",
+        "scaling_mode": "normalized",
+        "tint": "#B9ADA0"
+      },
+      "rule_version": "practical60-style30-value10-v1",
+      "schema_version": 1,
+      "scores": {
+        "overall": 77.0,
+        "practical": 80,
+        "style": 80,
+        "value": 50.0
+      },
+      "search_id": "search-rug",
+      "selection_id": "rug",
+      "source": "stored",
+      "style_reason": "Matches requested style",
+      "style_score": 80,
+      "title": "Fixture rug",
+      "uncertainty": null,
+      "variant": {
+        "category": "rug",
+        "dimension_evidence_id": "dim-rug",
+        "features": {},
+        "identity": {
+          "gtin": null,
+          "identity_quote": null,
+          "identity_verified": false,
+          "manufacturer": null,
+          "mpn": null
+        },
+        "image_references": [],
+        "options": {
+          "color": "1"
+        },
+        "schema_version": 1,
+        "title": "Fixture rug",
+        "variant_id": "fixture-rug"
+      },
+      "variant_id": "fixture-rug"
+    }
+  },
+  "snapshot": {
+    "capture_id": "capture-fixture",
+    "created_at": "2026-10-18T00:00:00Z",
+    "identity_map": {
+      "native-wall-0": {
+        "id": "w_1",
+        "ids": [
+          "w_1"
+        ],
+        "kind": "wall"
+      },
+      "native-wall-1": {
+        "id": "w_2",
+        "ids": [
+          "w_2"
+        ],
+        "kind": "wall"
+      },
+      "native-wall-2": {
+        "id": "w_3",
+        "ids": [
+          "w_3"
+        ],
+        "kind": "wall"
+      },
+      "native-wall-3": {
+        "id": "w_4",
+        "ids": [
+          "w_4"
+        ],
+        "kind": "wall"
+      }
+    },
+    "processing": {
+      "completed": 0,
+      "expected_frames": 0,
+      "failed": 0,
+      "lifted": 0,
+      "not_started": 0,
+      "pending": 0,
+      "succeeded": 0
+    },
+    "revision": 1,
+    "room": {
+      "capture_id": "capture-fixture",
+      "category_version": 1,
+      "corners": [
+        {
+          "id": "c_1",
+          "position": [
+            0.0,
+            0.0
+          ],
+          "wall_ids": [
+            "w_4",
+            "w_1"
+          ]
+        },
+        {
+          "id": "c_2",
+          "position": [
+            4.0,
+            0.0
+          ],
+          "wall_ids": [
+            "w_1",
+            "w_2"
+          ]
+        },
+        {
+          "id": "c_3",
+          "position": [
+            4.0,
+            3.0
+          ],
+          "wall_ids": [
+            "w_2",
+            "w_3"
+          ]
+        },
+        {
+          "id": "c_4",
+          "position": [
+            0.0,
+            3.0
+          ],
+          "wall_ids": [
+            "w_3",
+            "w_4"
+          ]
+        }
+      ],
+      "floor": {
+        "area": 12.0,
+        "polygon": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            4.0,
+            0.0
+          ],
+          [
+            4.0,
+            3.0
+          ],
+          [
+            0.0,
+            3.0
+          ]
+        ]
+      },
+      "frame": {
+        "room_from_world": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          -2.0,
+          1.2,
+          -3.0,
+          1.0
+        ]
+      },
+      "height": 2.6,
+      "identity_map": {
+        "native-wall-0": {
+          "id": "w_1",
+          "ids": [
+            "w_1"
+          ],
+          "kind": "wall"
+        },
+        "native-wall-1": {
+          "id": "w_2",
+          "ids": [
+            "w_2"
+          ],
+          "kind": "wall"
+        },
+        "native-wall-2": {
+          "id": "w_3",
+          "ids": [
+            "w_3"
+          ],
+          "kind": "wall"
+        },
+        "native-wall-3": {
+          "id": "w_4",
+          "ids": [
+            "w_4"
+          ],
+          "kind": "wall"
+        }
+      },
+      "objects": [
+        {
+          "attrs": {},
+          "base_y": 2.3,
+          "category": "ceiling_light",
+          "center": [
+            2,
+            1.5
+          ],
+          "fixed_in_place": false,
+          "id": "o_light",
+          "mount": "ceiling",
+          "observation_count": 2,
+          "size": [
+            0.4,
+            0.4,
+            0.3
+          ],
+          "source": "perceptron",
+          "source_ids": [
+            "fixture-light"
+          ],
+          "support_id": null,
+          "wall_id": null,
+          "yaw": 0
+        }
+      ],
+      "openings": [],
+      "processing": {
+        "completed": 0,
+        "expected_frames": 0,
+        "failed": 0,
+        "lifted": 0,
+        "not_started": 0,
+        "pending": 0,
+        "succeeded": 0
+      },
+      "room_id": "room-fixture",
+      "schema_version": 1,
+      "style_hints": {},
+      "validity": {
+        "reasons": [],
+        "usable": true,
+        "warnings": []
+      },
+      "wall_features": [],
+      "walls": [
+        {
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            4.0,
+            0.0
+          ],
+          "id": "w_1",
+          "inward_normal": [
+            -0.0,
+            1.0
+          ],
+          "length": 4.0,
+          "source_ids": [
+            "native-wall-0"
+          ],
+          "virtual": false
+        },
+        {
+          "a": [
+            4.0,
+            0.0
+          ],
+          "b": [
+            4.0,
+            3.0
+          ],
+          "id": "w_2",
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "length": 3.0,
+          "source_ids": [
+            "native-wall-1"
+          ],
+          "virtual": false
+        },
+        {
+          "a": [
+            4.0,
+            3.0
+          ],
+          "b": [
+            0.0,
+            3.0
+          ],
+          "id": "w_3",
+          "inward_normal": [
+            -0.0,
+            -1.0
+          ],
+          "length": 4.0,
+          "source_ids": [
+            "native-wall-2"
+          ],
+          "virtual": false
+        },
+        {
+          "a": [
+            0.0,
+            3.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "id": "w_4",
+          "inward_normal": [
+            1.0,
+            0.0
+          ],
+          "length": 3.0,
+          "source_ids": [
+            "native-wall-3"
+          ],
+          "virtual": false
+        }
+      ],
+      "zones": []
+    },
+    "room_id": "room-fixture",
+    "schema_version": 1,
+    "snapshot_id": "snapshot-relations-v1",
+    "validity": {
+      "reasons": [],
+      "usable": true,
+      "warnings": []
+    }
+  },
+  "solve_result": {
+    "action_outcomes": [
+      {
+        "action_id": "art",
+        "affected_item_ids": [
+          "i_art_0"
+        ],
+        "code": "placed",
+        "outcome": "applied",
+        "reason": "Addition placed.",
+        "type": "add"
+      },
+      {
+        "action_id": "desk",
+        "affected_item_ids": [
+          "i_desk_0"
+        ],
+        "code": "placed",
+        "outcome": "applied",
+        "reason": "Addition placed.",
+        "type": "add"
+      },
+      {
+        "action_id": "rug",
+        "affected_item_ids": [
+          "i_rug_0"
+        ],
+        "code": "placed",
+        "outcome": "applied",
+        "reason": "Addition placed.",
+        "type": "add"
+      },
+      {
+        "action_id": "lamp",
+        "affected_item_ids": [
+          "i_lamp_0"
+        ],
+        "code": "placed",
+        "outcome": "applied",
+        "reason": "Addition placed.",
+        "type": "add"
+      }
+    ],
+    "conflicts": [],
+    "omissions": [],
+    "placed_unit_demand": {
+      "art": 1,
+      "desk": 1,
+      "lamp": 1,
+      "rug": 1
+    },
+    "placements": [
+      {
+        "item_id": "i_art_0",
+        "placement": {
+          "mount": "wall",
+          "position": [
+            2.0,
+            1.2,
+            0.07
+          ],
+          "size": [
+            0.6,
+            0.04,
+            0.5
+          ],
+          "wall_id": "w_1",
+          "yaw": -0.0
+        },
+        "selection_id": "art"
+      },
+      {
+        "item_id": "i_desk_0",
+        "placement": {
+          "mount": "floor",
+          "position": [
+            2.0,
+            0,
+            1.5
+          ],
+          "size": [
+            1.2,
+            0.8,
+            0.7
+          ],
+          "yaw": -3.141592653589793
+        },
+        "selection_id": "desk"
+      },
+      {
+        "item_id": "i_rug_0",
+        "placement": {
+          "mount": "floor",
+          "position": [
+            2.0,
+            0,
+            1.5
+          ],
+          "size": [
+            1.8,
+            1.2,
+            0.02
+          ],
+          "yaw": -3.141592653589793
+        },
+        "selection_id": "rug"
+      },
+      {
+        "item_id": "i_lamp_0",
+        "placement": {
+          "mount": "tabletop",
+          "position": [
+            2.0,
+            0.7,
+            1.5
+          ],
+          "size": [
+            0.2,
+            0.2,
+            0.4
+          ],
+          "support_id": "i_desk_0",
+          "yaw": -3.141592653589793
+        },
+        "selection_id": "lamp"
+      }
+    ],
+    "scene": {
+      "action_outcomes": [
+        {
+          "action_id": "art",
+          "affected_item_ids": [
+            "i_art_0"
+          ],
+          "code": "placed",
+          "outcome": "applied",
+          "reason": "Addition placed.",
+          "type": "add"
+        },
+        {
+          "action_id": "desk",
+          "affected_item_ids": [
+            "i_desk_0"
+          ],
+          "code": "placed",
+          "outcome": "applied",
+          "reason": "Addition placed.",
+          "type": "add"
+        },
+        {
+          "action_id": "rug",
+          "affected_item_ids": [
+            "i_rug_0"
+          ],
+          "code": "placed",
+          "outcome": "applied",
+          "reason": "Addition placed.",
+          "type": "add"
+        },
+        {
+          "action_id": "lamp",
+          "affected_item_ids": [
+            "i_lamp_0"
+          ],
+          "code": "placed",
+          "outcome": "applied",
+          "reason": "Addition placed.",
+          "type": "add"
+        }
+      ],
+      "design_id": null,
+      "items": [
+        {
+          "add_id": null,
+          "category": "ceiling_light",
+          "fixed_in_place": false,
+          "id": "i_o_light",
+          "instruction": "decide",
+          "label": "ceiling_light",
+          "last_valid_placement": {
+            "mount": "ceiling",
+            "position": [
+              2,
+              2.3,
+              1.5
+            ],
+            "size": [
+              0.4,
+              0.4,
+              0.3
+            ],
+            "support_id": null,
+            "wall_id": null,
+            "yaw": 0
+          },
+          "object_id": "o_light",
+          "origin": "existing",
+          "original_placement": {
+            "mount": "ceiling",
+            "position": [
+              2,
+              2.3,
+              1.5
+            ],
+            "size": [
+              0.4,
+              0.4,
+              0.3
+            ],
+            "support_id": null,
+            "wall_id": null,
+            "yaw": 0
+          },
+          "placement": {
+            "mount": "ceiling",
+            "position": [
+              2,
+              2.3,
+              1.5
+            ],
+            "size": [
+              0.4,
+              0.4,
+              0.3
+            ],
+            "support_id": null,
+            "wall_id": null,
+            "yaw": 0
+          },
+          "reason": "Measured original Object",
+          "render": {
+            "asset_id": "ceiling_light",
+            "asset_revision": "1",
+            "asset_url": null,
+            "authored_bounds": [
+              1,
+              1,
+              1
+            ],
+            "byte_count": null,
+            "category": "ceiling_light",
+            "forward_axis": "+Z",
+            "kind": "standin",
+            "pivot": "bottom_center",
+            "scaling_mode": "normalized",
+            "sha256": null,
+            "texture_url": null,
+            "tint": "#B9ADA0",
+            "units": "meters",
+            "up_axis": "+Y"
+          },
+          "status": "existing"
+        },
+        {
+          "add_id": "art",
+          "anchor": {
+            "alignment": "center",
+            "type": "on_wall",
+            "wall_id": "w_1"
+          },
+          "category": "wall_art",
+          "fixed_in_place": false,
+          "id": "i_art_0",
+          "instruction": "decide",
+          "label": "Fixture wall_art",
+          "last_valid_placement": {
+            "mount": "wall",
+            "position": [
+              2.0,
+              1.2,
+              0.07
+            ],
+            "size": [
+              0.6,
+              0.04,
+              0.5
+            ],
+            "wall_id": "w_1",
+            "yaw": -0.0
+          },
+          "object_id": null,
+          "offer_id": "offer-art",
+          "origin": "new",
+          "original_placement": null,
+          "placement": {
+            "mount": "wall",
+            "position": [
+              2.0,
+              1.2,
+              0.07
+            ],
+            "size": [
+              0.6,
+              0.04,
+              0.5
+            ],
+            "wall_id": "w_1",
+            "yaw": -0.0
+          },
+          "product": {
+            "candidate_id": "fixture_candidate_1",
+            "category": "wall_art",
+            "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+            "dimension_evidence": {
+              "classification": "item",
+              "dimensions": [
+                0.6,
+                0.04,
+                0.5
+              ],
+              "evidence_id": "dim-art",
+              "expires_at": "2026-10-25T00:00:00+00:00",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "quote": "Fixture width 0.6 m",
+                  "unit": "m",
+                  "value": "0.6"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "quote": "Fixture depth 0.04 m",
+                  "unit": "m",
+                  "value": "0.04"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "quote": "Fixture height 0.5 m",
+                  "unit": "m",
+                  "value": "0.5"
+                }
+              ],
+              "outcome": "verified",
+              "schema_version": 1,
+              "source_url": "https://example.com/fixture/art",
+              "variant_id": "fixture-art",
+              "verified_at": "2026-10-18T00:00:00+00:00"
+            },
+            "dimensions": [
+              0.6,
+              0.04,
+              0.5
+            ],
+            "features": {},
+            "offer": {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture wall_art"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-art",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      0.6,
+                      0.04,
+                      0.5
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-art"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/art",
+              "schema_version": 1,
+              "variant_id": "fixture-art"
+            },
+            "offer_id": "offer-art",
+            "offers": [
+              {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture wall_art"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-art",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        0.6,
+                        0.04,
+                        0.5
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-art"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/art",
+                "schema_version": 1,
+                "variant_id": "fixture-art"
+              }
+            ],
+            "practical_reason": "Matches requested function",
+            "practical_score": 80,
+            "quantity": 1,
+            "reasons": {
+              "practical": "Matches requested function",
+              "style": "Matches requested style",
+              "value": "Price relative to the median of comparable discoveries"
+            },
+            "render": {
+              "category": "wall_art",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "rule_version": "practical60-style30-value10-v1",
+            "schema_version": 1,
+            "scores": {
+              "overall": 77.0,
+              "practical": 80,
+              "style": 80,
+              "value": 50.0
+            },
+            "search_id": "search-art",
+            "selection_id": "art",
+            "source": "stored",
+            "style_reason": "Matches requested style",
+            "style_score": 80,
+            "title": "Fixture wall_art",
+            "uncertainty": null,
+            "variant": {
+              "category": "wall_art",
+              "dimension_evidence_id": "dim-art",
+              "features": {},
+              "identity": {
+                "gtin": null,
+                "identity_quote": null,
+                "identity_verified": false,
+                "manufacturer": null,
+                "mpn": null
+              },
+              "image_references": [],
+              "options": {
+                "color": "1"
+              },
+              "schema_version": 1,
+              "title": "Fixture wall_art",
+              "variant_id": "fixture-art"
+            },
+            "variant_id": "fixture-art"
+          },
+          "reason": "Fixture relationship",
+          "render": {
+            "category": "wall_art",
+            "forward": "+Z",
+            "kind": "standin",
+            "pivot": "bottom_center",
+            "scaling_mode": "normalized",
+            "tint": "#B9ADA0"
+          },
+          "selection_id": "art",
+          "status": "new",
+          "variant_id": "fixture-art"
+        },
+        {
+          "add_id": "desk",
+          "anchor": {
+            "type": "room_center"
+          },
+          "category": "desk",
+          "fixed_in_place": false,
+          "id": "i_desk_0",
+          "instruction": "decide",
+          "label": "Fixture desk",
+          "last_valid_placement": {
+            "mount": "floor",
+            "position": [
+              2.0,
+              0,
+              1.5
+            ],
+            "size": [
+              1.2,
+              0.8,
+              0.7
+            ],
+            "yaw": -3.141592653589793
+          },
+          "object_id": null,
+          "offer_id": "offer-desk",
+          "origin": "new",
+          "original_placement": null,
+          "placement": {
+            "mount": "floor",
+            "position": [
+              2.0,
+              0,
+              1.5
+            ],
+            "size": [
+              1.2,
+              0.8,
+              0.7
+            ],
+            "yaw": -3.141592653589793
+          },
+          "product": {
+            "candidate_id": "fixture_candidate_1",
+            "category": "desk",
+            "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+            "dimension_evidence": {
+              "classification": "item",
+              "dimensions": [
+                1.2,
+                0.8,
+                0.7
+              ],
+              "evidence_id": "dim-desk",
+              "expires_at": "2026-10-25T00:00:00+00:00",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "quote": "Fixture width 1.2 m",
+                  "unit": "m",
+                  "value": "1.2"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "quote": "Fixture depth 0.8 m",
+                  "unit": "m",
+                  "value": "0.8"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "quote": "Fixture height 0.7 m",
+                  "unit": "m",
+                  "value": "0.7"
+                }
+              ],
+              "outcome": "verified",
+              "schema_version": 1,
+              "source_url": "https://example.com/fixture/desk",
+              "variant_id": "fixture-desk",
+              "verified_at": "2026-10-18T00:00:00+00:00"
+            },
+            "dimensions": [
+              1.2,
+              0.8,
+              0.7
+            ],
+            "features": {},
+            "offer": {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture desk"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-desk",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      1.2,
+                      0.8,
+                      0.7
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-desk"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/desk",
+              "schema_version": 1,
+              "variant_id": "fixture-desk"
+            },
+            "offer_id": "offer-desk",
+            "offers": [
+              {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture desk"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-desk",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        1.2,
+                        0.8,
+                        0.7
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-desk"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/desk",
+                "schema_version": 1,
+                "variant_id": "fixture-desk"
+              }
+            ],
+            "practical_reason": "Matches requested function",
+            "practical_score": 80,
+            "quantity": 1,
+            "reasons": {
+              "practical": "Matches requested function",
+              "style": "Matches requested style",
+              "value": "Price relative to the median of comparable discoveries"
+            },
+            "render": {
+              "category": "desk",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "rule_version": "practical60-style30-value10-v1",
+            "schema_version": 1,
+            "scores": {
+              "overall": 77.0,
+              "practical": 80,
+              "style": 80,
+              "value": 50.0
+            },
+            "search_id": "search-desk",
+            "selection_id": "desk",
+            "source": "stored",
+            "style_reason": "Matches requested style",
+            "style_score": 80,
+            "title": "Fixture desk",
+            "uncertainty": null,
+            "variant": {
+              "category": "desk",
+              "dimension_evidence_id": "dim-desk",
+              "features": {},
+              "identity": {
+                "gtin": null,
+                "identity_quote": null,
+                "identity_verified": false,
+                "manufacturer": null,
+                "mpn": null
+              },
+              "image_references": [],
+              "options": {
+                "color": "1"
+              },
+              "schema_version": 1,
+              "title": "Fixture desk",
+              "variant_id": "fixture-desk"
+            },
+            "variant_id": "fixture-desk"
+          },
+          "reason": "Fixture relationship",
+          "render": {
+            "category": "desk",
+            "forward": "+Z",
+            "kind": "standin",
+            "pivot": "bottom_center",
+            "scaling_mode": "normalized",
+            "tint": "#B9ADA0"
+          },
+          "selection_id": "desk",
+          "status": "new",
+          "variant_id": "fixture-desk"
+        },
+        {
+          "add_id": "rug",
+          "anchor": {
+            "target": {
+              "add_id": "desk",
+              "id": "desk",
+              "kind": "addition_unit",
+              "unit_index": 0
+            },
+            "type": "under"
+          },
+          "category": "rug",
+          "fixed_in_place": false,
+          "id": "i_rug_0",
+          "instruction": "decide",
+          "label": "Fixture rug",
+          "last_valid_placement": {
+            "mount": "floor",
+            "position": [
+              2.0,
+              0,
+              1.5
+            ],
+            "size": [
+              1.8,
+              1.2,
+              0.02
+            ],
+            "yaw": -3.141592653589793
+          },
+          "object_id": null,
+          "offer_id": "offer-rug",
+          "origin": "new",
+          "original_placement": null,
+          "placement": {
+            "mount": "floor",
+            "position": [
+              2.0,
+              0,
+              1.5
+            ],
+            "size": [
+              1.8,
+              1.2,
+              0.02
+            ],
+            "yaw": -3.141592653589793
+          },
+          "product": {
+            "candidate_id": "fixture_candidate_1",
+            "category": "rug",
+            "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+            "dimension_evidence": {
+              "classification": "item",
+              "dimensions": [
+                1.8,
+                1.2,
+                0.02
+              ],
+              "evidence_id": "dim-rug",
+              "expires_at": "2026-10-25T00:00:00+00:00",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "quote": "Fixture width 1.8 m",
+                  "unit": "m",
+                  "value": "1.8"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "quote": "Fixture depth 1.2 m",
+                  "unit": "m",
+                  "value": "1.2"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "quote": "Fixture height 0.02 m",
+                  "unit": "m",
+                  "value": "0.02"
+                }
+              ],
+              "outcome": "verified",
+              "schema_version": 1,
+              "source_url": "https://example.com/fixture/rug",
+              "variant_id": "fixture-rug",
+              "verified_at": "2026-10-18T00:00:00+00:00"
+            },
+            "dimensions": [
+              1.8,
+              1.2,
+              0.02
+            ],
+            "features": {},
+            "offer": {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture rug"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-rug",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      1.8,
+                      1.2,
+                      0.02
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-rug"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/rug",
+              "schema_version": 1,
+              "variant_id": "fixture-rug"
+            },
+            "offer_id": "offer-rug",
+            "offers": [
+              {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture rug"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-rug",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        1.8,
+                        1.2,
+                        0.02
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-rug"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/rug",
+                "schema_version": 1,
+                "variant_id": "fixture-rug"
+              }
+            ],
+            "practical_reason": "Matches requested function",
+            "practical_score": 80,
+            "quantity": 1,
+            "reasons": {
+              "practical": "Matches requested function",
+              "style": "Matches requested style",
+              "value": "Price relative to the median of comparable discoveries"
+            },
+            "render": {
+              "category": "rug",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "rule_version": "practical60-style30-value10-v1",
+            "schema_version": 1,
+            "scores": {
+              "overall": 77.0,
+              "practical": 80,
+              "style": 80,
+              "value": 50.0
+            },
+            "search_id": "search-rug",
+            "selection_id": "rug",
+            "source": "stored",
+            "style_reason": "Matches requested style",
+            "style_score": 80,
+            "title": "Fixture rug",
+            "uncertainty": null,
+            "variant": {
+              "category": "rug",
+              "dimension_evidence_id": "dim-rug",
+              "features": {},
+              "identity": {
+                "gtin": null,
+                "identity_quote": null,
+                "identity_verified": false,
+                "manufacturer": null,
+                "mpn": null
+              },
+              "image_references": [],
+              "options": {
+                "color": "1"
+              },
+              "schema_version": 1,
+              "title": "Fixture rug",
+              "variant_id": "fixture-rug"
+            },
+            "variant_id": "fixture-rug"
+          },
+          "reason": "Fixture relationship",
+          "render": {
+            "category": "rug",
+            "forward": "+Z",
+            "kind": "standin",
+            "pivot": "bottom_center",
+            "scaling_mode": "normalized",
+            "tint": "#B9ADA0"
+          },
+          "selection_id": "rug",
+          "status": "new",
+          "variant_id": "fixture-rug"
+        },
+        {
+          "add_id": "lamp",
+          "anchor": {
+            "target": {
+              "add_id": "desk",
+              "id": "desk",
+              "kind": "addition_unit",
+              "unit_index": 0
+            },
+            "type": "on_top_of"
+          },
+          "category": "table_lamp",
+          "fixed_in_place": false,
+          "id": "i_lamp_0",
+          "instruction": "decide",
+          "label": "Fixture table_lamp",
+          "last_valid_placement": {
+            "mount": "tabletop",
+            "position": [
+              2.0,
+              0.7,
+              1.5
+            ],
+            "size": [
+              0.2,
+              0.2,
+              0.4
+            ],
+            "support_id": "i_desk_0",
+            "yaw": -3.141592653589793
+          },
+          "object_id": null,
+          "offer_id": "offer-lamp",
+          "origin": "new",
+          "original_placement": null,
+          "placement": {
+            "mount": "tabletop",
+            "position": [
+              2.0,
+              0.7,
+              1.5
+            ],
+            "size": [
+              0.2,
+              0.2,
+              0.4
+            ],
+            "support_id": "i_desk_0",
+            "yaw": -3.141592653589793
+          },
+          "product": {
+            "candidate_id": "fixture_candidate_1",
+            "category": "table_lamp",
+            "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+            "dimension_evidence": {
+              "classification": "item",
+              "dimensions": [
+                0.2,
+                0.2,
+                0.4
+              ],
+              "evidence_id": "dim-lamp",
+              "expires_at": "2026-10-25T00:00:00+00:00",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "quote": "Fixture width 0.2 m",
+                  "unit": "m",
+                  "value": "0.2"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "quote": "Fixture depth 0.2 m",
+                  "unit": "m",
+                  "value": "0.2"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "quote": "Fixture height 0.4 m",
+                  "unit": "m",
+                  "value": "0.4"
+                }
+              ],
+              "outcome": "verified",
+              "schema_version": 1,
+              "source_url": "https://example.com/fixture/lamp",
+              "variant_id": "fixture-lamp",
+              "verified_at": "2026-10-18T00:00:00+00:00"
+            },
+            "dimensions": [
+              0.2,
+              0.2,
+              0.4
+            ],
+            "features": {},
+            "offer": {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture table_lamp"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-lamp",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      0.2,
+                      0.2,
+                      0.4
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-lamp"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/lamp",
+              "schema_version": 1,
+              "variant_id": "fixture-lamp"
+            },
+            "offer_id": "offer-lamp",
+            "offers": [
+              {
+                "availability": "in_stock",
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "currency": "USD",
+                "evidence": {
+                  "availability_quote": "In stock",
+                  "pack_quote": "Fixture single unit",
+                  "price_quote": "USD 100.00",
+                  "variant_quote": "Fixture table_lamp"
+                },
+                "exact_variant": true,
+                "merchant": "Example",
+                "offer_id": "offer-lamp",
+                "pack_contents": {
+                  "components": [
+                    {
+                      "dimensions": [
+                        0.2,
+                        0.2,
+                        0.4
+                      ],
+                      "units": 1,
+                      "variant_id": "fixture-lamp"
+                    }
+                  ],
+                  "verified": true
+                },
+                "price": "100.00",
+                "product_url": "https://example.com/fixture/lamp",
+                "schema_version": 1,
+                "variant_id": "fixture-lamp"
+              }
+            ],
+            "practical_reason": "Matches requested function",
+            "practical_score": 80,
+            "quantity": 1,
+            "reasons": {
+              "practical": "Matches requested function",
+              "style": "Matches requested style",
+              "value": "Price relative to the median of comparable discoveries"
+            },
+            "render": {
+              "category": "table_lamp",
+              "forward": "+Z",
+              "kind": "standin",
+              "pivot": "bottom_center",
+              "scaling_mode": "normalized",
+              "tint": "#B9ADA0"
+            },
+            "rule_version": "practical60-style30-value10-v1",
+            "schema_version": 1,
+            "scores": {
+              "overall": 77.0,
+              "practical": 80,
+              "style": 80,
+              "value": 50.0
+            },
+            "search_id": "search-lamp",
+            "selection_id": "lamp",
+            "source": "stored",
+            "style_reason": "Matches requested style",
+            "style_score": 80,
+            "title": "Fixture table_lamp",
+            "uncertainty": null,
+            "variant": {
+              "category": "table_lamp",
+              "dimension_evidence_id": "dim-lamp",
+              "features": {},
+              "identity": {
+                "gtin": null,
+                "identity_quote": null,
+                "identity_verified": false,
+                "manufacturer": null,
+                "mpn": null
+              },
+              "image_references": [],
+              "options": {
+                "color": "1"
+              },
+              "schema_version": 1,
+              "title": "Fixture table_lamp",
+              "variant_id": "fixture-lamp"
+            },
+            "variant_id": "fixture-lamp"
+          },
+          "reason": "Fixture relationship",
+          "render": {
+            "category": "table_lamp",
+            "forward": "+Z",
+            "kind": "standin",
+            "pivot": "bottom_center",
+            "scaling_mode": "normalized",
+            "tint": "#B9ADA0"
+          },
+          "selection_id": "lamp",
+          "status": "new",
+          "variant_id": "fixture-lamp"
+        }
+      ],
+      "parent_id": null,
+      "products": [
+        {
+          "candidate_id": "fixture_candidate_1",
+          "category": "wall_art",
+          "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+          "dimension_evidence": {
+            "classification": "item",
+            "dimensions": [
+              0.6,
+              0.04,
+              0.5
+            ],
+            "evidence_id": "dim-art",
+            "expires_at": "2026-10-25T00:00:00+00:00",
+            "original_measurements": [
+              {
+                "axis": "width",
+                "label": "Width",
+                "quote": "Fixture width 0.6 m",
+                "unit": "m",
+                "value": "0.6"
+              },
+              {
+                "axis": "depth",
+                "label": "Depth",
+                "quote": "Fixture depth 0.04 m",
+                "unit": "m",
+                "value": "0.04"
+              },
+              {
+                "axis": "height",
+                "label": "Height",
+                "quote": "Fixture height 0.5 m",
+                "unit": "m",
+                "value": "0.5"
+              }
+            ],
+            "outcome": "verified",
+            "schema_version": 1,
+            "source_url": "https://example.com/fixture/art",
+            "variant_id": "fixture-art",
+            "verified_at": "2026-10-18T00:00:00+00:00"
+          },
+          "dimensions": [
+            0.6,
+            0.04,
+            0.5
+          ],
+          "features": {},
+          "offer": {
+            "availability": "in_stock",
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "currency": "USD",
+            "evidence": {
+              "availability_quote": "In stock",
+              "pack_quote": "Fixture single unit",
+              "price_quote": "USD 100.00",
+              "variant_quote": "Fixture wall_art"
+            },
+            "exact_variant": true,
+            "merchant": "Example",
+            "offer_id": "offer-art",
+            "pack_contents": {
+              "components": [
+                {
+                  "dimensions": [
+                    0.6,
+                    0.04,
+                    0.5
+                  ],
+                  "units": 1,
+                  "variant_id": "fixture-art"
+                }
+              ],
+              "verified": true
+            },
+            "price": "100.00",
+            "product_url": "https://example.com/fixture/art",
+            "schema_version": 1,
+            "variant_id": "fixture-art"
+          },
+          "offer_id": "offer-art",
+          "offers": [
+            {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture wall_art"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-art",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      0.6,
+                      0.04,
+                      0.5
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-art"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/art",
+              "schema_version": 1,
+              "variant_id": "fixture-art"
+            }
+          ],
+          "practical_reason": "Matches requested function",
+          "practical_score": 80,
+          "quantity": 1,
+          "reasons": {
+            "practical": "Matches requested function",
+            "style": "Matches requested style",
+            "value": "Price relative to the median of comparable discoveries"
+          },
+          "render": {
+            "category": "wall_art",
+            "forward": "+Z",
+            "kind": "standin",
+            "pivot": "bottom_center",
+            "scaling_mode": "normalized",
+            "tint": "#B9ADA0"
+          },
+          "rule_version": "practical60-style30-value10-v1",
+          "schema_version": 1,
+          "scores": {
+            "overall": 77.0,
+            "practical": 80,
+            "style": 80,
+            "value": 50.0
+          },
+          "search_id": "search-art",
+          "selection_id": "art",
+          "source": "stored",
+          "style_reason": "Matches requested style",
+          "style_score": 80,
+          "title": "Fixture wall_art",
+          "uncertainty": null,
+          "variant": {
+            "category": "wall_art",
+            "dimension_evidence_id": "dim-art",
+            "features": {},
+            "identity": {
+              "gtin": null,
+              "identity_quote": null,
+              "identity_verified": false,
+              "manufacturer": null,
+              "mpn": null
+            },
+            "image_references": [],
+            "options": {
+              "color": "1"
+            },
+            "schema_version": 1,
+            "title": "Fixture wall_art",
+            "variant_id": "fixture-art"
+          },
+          "variant_id": "fixture-art"
+        },
+        {
+          "candidate_id": "fixture_candidate_1",
+          "category": "desk",
+          "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+          "dimension_evidence": {
+            "classification": "item",
+            "dimensions": [
+              1.2,
+              0.8,
+              0.7
+            ],
+            "evidence_id": "dim-desk",
+            "expires_at": "2026-10-25T00:00:00+00:00",
+            "original_measurements": [
+              {
+                "axis": "width",
+                "label": "Width",
+                "quote": "Fixture width 1.2 m",
+                "unit": "m",
+                "value": "1.2"
+              },
+              {
+                "axis": "depth",
+                "label": "Depth",
+                "quote": "Fixture depth 0.8 m",
+                "unit": "m",
+                "value": "0.8"
+              },
+              {
+                "axis": "height",
+                "label": "Height",
+                "quote": "Fixture height 0.7 m",
+                "unit": "m",
+                "value": "0.7"
+              }
+            ],
+            "outcome": "verified",
+            "schema_version": 1,
+            "source_url": "https://example.com/fixture/desk",
+            "variant_id": "fixture-desk",
+            "verified_at": "2026-10-18T00:00:00+00:00"
+          },
+          "dimensions": [
+            1.2,
+            0.8,
+            0.7
+          ],
+          "features": {},
+          "offer": {
+            "availability": "in_stock",
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "currency": "USD",
+            "evidence": {
+              "availability_quote": "In stock",
+              "pack_quote": "Fixture single unit",
+              "price_quote": "USD 100.00",
+              "variant_quote": "Fixture desk"
+            },
+            "exact_variant": true,
+            "merchant": "Example",
+            "offer_id": "offer-desk",
+            "pack_contents": {
+              "components": [
+                {
+                  "dimensions": [
+                    1.2,
+                    0.8,
+                    0.7
+                  ],
+                  "units": 1,
+                  "variant_id": "fixture-desk"
+                }
+              ],
+              "verified": true
+            },
+            "price": "100.00",
+            "product_url": "https://example.com/fixture/desk",
+            "schema_version": 1,
+            "variant_id": "fixture-desk"
+          },
+          "offer_id": "offer-desk",
+          "offers": [
+            {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture desk"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-desk",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      1.2,
+                      0.8,
+                      0.7
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-desk"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/desk",
+              "schema_version": 1,
+              "variant_id": "fixture-desk"
+            }
+          ],
+          "practical_reason": "Matches requested function",
+          "practical_score": 80,
+          "quantity": 1,
+          "reasons": {
+            "practical": "Matches requested function",
+            "style": "Matches requested style",
+            "value": "Price relative to the median of comparable discoveries"
+          },
+          "render": {
+            "category": "desk",
+            "forward": "+Z",
+            "kind": "standin",
+            "pivot": "bottom_center",
+            "scaling_mode": "normalized",
+            "tint": "#B9ADA0"
+          },
+          "rule_version": "practical60-style30-value10-v1",
+          "schema_version": 1,
+          "scores": {
+            "overall": 77.0,
+            "practical": 80,
+            "style": 80,
+            "value": 50.0
+          },
+          "search_id": "search-desk",
+          "selection_id": "desk",
+          "source": "stored",
+          "style_reason": "Matches requested style",
+          "style_score": 80,
+          "title": "Fixture desk",
+          "uncertainty": null,
+          "variant": {
+            "category": "desk",
+            "dimension_evidence_id": "dim-desk",
+            "features": {},
+            "identity": {
+              "gtin": null,
+              "identity_quote": null,
+              "identity_verified": false,
+              "manufacturer": null,
+              "mpn": null
+            },
+            "image_references": [],
+            "options": {
+              "color": "1"
+            },
+            "schema_version": 1,
+            "title": "Fixture desk",
+            "variant_id": "fixture-desk"
+          },
+          "variant_id": "fixture-desk"
+        },
+        {
+          "candidate_id": "fixture_candidate_1",
+          "category": "table_lamp",
+          "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+          "dimension_evidence": {
+            "classification": "item",
+            "dimensions": [
+              0.2,
+              0.2,
+              0.4
+            ],
+            "evidence_id": "dim-lamp",
+            "expires_at": "2026-10-25T00:00:00+00:00",
+            "original_measurements": [
+              {
+                "axis": "width",
+                "label": "Width",
+                "quote": "Fixture width 0.2 m",
+                "unit": "m",
+                "value": "0.2"
+              },
+              {
+                "axis": "depth",
+                "label": "Depth",
+                "quote": "Fixture depth 0.2 m",
+                "unit": "m",
+                "value": "0.2"
+              },
+              {
+                "axis": "height",
+                "label": "Height",
+                "quote": "Fixture height 0.4 m",
+                "unit": "m",
+                "value": "0.4"
+              }
+            ],
+            "outcome": "verified",
+            "schema_version": 1,
+            "source_url": "https://example.com/fixture/lamp",
+            "variant_id": "fixture-lamp",
+            "verified_at": "2026-10-18T00:00:00+00:00"
+          },
+          "dimensions": [
+            0.2,
+            0.2,
+            0.4
+          ],
+          "features": {},
+          "offer": {
+            "availability": "in_stock",
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "currency": "USD",
+            "evidence": {
+              "availability_quote": "In stock",
+              "pack_quote": "Fixture single unit",
+              "price_quote": "USD 100.00",
+              "variant_quote": "Fixture table_lamp"
+            },
+            "exact_variant": true,
+            "merchant": "Example",
+            "offer_id": "offer-lamp",
+            "pack_contents": {
+              "components": [
+                {
+                  "dimensions": [
+                    0.2,
+                    0.2,
+                    0.4
+                  ],
+                  "units": 1,
+                  "variant_id": "fixture-lamp"
+                }
+              ],
+              "verified": true
+            },
+            "price": "100.00",
+            "product_url": "https://example.com/fixture/lamp",
+            "schema_version": 1,
+            "variant_id": "fixture-lamp"
+          },
+          "offer_id": "offer-lamp",
+          "offers": [
+            {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture table_lamp"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-lamp",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      0.2,
+                      0.2,
+                      0.4
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-lamp"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/lamp",
+              "schema_version": 1,
+              "variant_id": "fixture-lamp"
+            }
+          ],
+          "practical_reason": "Matches requested function",
+          "practical_score": 80,
+          "quantity": 1,
+          "reasons": {
+            "practical": "Matches requested function",
+            "style": "Matches requested style",
+            "value": "Price relative to the median of comparable discoveries"
+          },
+          "render": {
+            "category": "table_lamp",
+            "forward": "+Z",
+            "kind": "standin",
+            "pivot": "bottom_center",
+            "scaling_mode": "normalized",
+            "tint": "#B9ADA0"
+          },
+          "rule_version": "practical60-style30-value10-v1",
+          "schema_version": 1,
+          "scores": {
+            "overall": 77.0,
+            "practical": 80,
+            "style": 80,
+            "value": 50.0
+          },
+          "search_id": "search-lamp",
+          "selection_id": "lamp",
+          "source": "stored",
+          "style_reason": "Matches requested style",
+          "style_score": 80,
+          "title": "Fixture table_lamp",
+          "uncertainty": null,
+          "variant": {
+            "category": "table_lamp",
+            "dimension_evidence_id": "dim-lamp",
+            "features": {},
+            "identity": {
+              "gtin": null,
+              "identity_quote": null,
+              "identity_verified": false,
+              "manufacturer": null,
+              "mpn": null
+            },
+            "image_references": [],
+            "options": {
+              "color": "1"
+            },
+            "schema_version": 1,
+            "title": "Fixture table_lamp",
+            "variant_id": "fixture-lamp"
+          },
+          "variant_id": "fixture-lamp"
+        },
+        {
+          "candidate_id": "fixture_candidate_1",
+          "category": "rug",
+          "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+          "dimension_evidence": {
+            "classification": "item",
+            "dimensions": [
+              1.8,
+              1.2,
+              0.02
+            ],
+            "evidence_id": "dim-rug",
+            "expires_at": "2026-10-25T00:00:00+00:00",
+            "original_measurements": [
+              {
+                "axis": "width",
+                "label": "Width",
+                "quote": "Fixture width 1.8 m",
+                "unit": "m",
+                "value": "1.8"
+              },
+              {
+                "axis": "depth",
+                "label": "Depth",
+                "quote": "Fixture depth 1.2 m",
+                "unit": "m",
+                "value": "1.2"
+              },
+              {
+                "axis": "height",
+                "label": "Height",
+                "quote": "Fixture height 0.02 m",
+                "unit": "m",
+                "value": "0.02"
+              }
+            ],
+            "outcome": "verified",
+            "schema_version": 1,
+            "source_url": "https://example.com/fixture/rug",
+            "variant_id": "fixture-rug",
+            "verified_at": "2026-10-18T00:00:00+00:00"
+          },
+          "dimensions": [
+            1.8,
+            1.2,
+            0.02
+          ],
+          "features": {},
+          "offer": {
+            "availability": "in_stock",
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "currency": "USD",
+            "evidence": {
+              "availability_quote": "In stock",
+              "pack_quote": "Fixture single unit",
+              "price_quote": "USD 100.00",
+              "variant_quote": "Fixture rug"
+            },
+            "exact_variant": true,
+            "merchant": "Example",
+            "offer_id": "offer-rug",
+            "pack_contents": {
+              "components": [
+                {
+                  "dimensions": [
+                    1.8,
+                    1.2,
+                    0.02
+                  ],
+                  "units": 1,
+                  "variant_id": "fixture-rug"
+                }
+              ],
+              "verified": true
+            },
+            "price": "100.00",
+            "product_url": "https://example.com/fixture/rug",
+            "schema_version": 1,
+            "variant_id": "fixture-rug"
+          },
+          "offer_id": "offer-rug",
+          "offers": [
+            {
+              "availability": "in_stock",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "currency": "USD",
+              "evidence": {
+                "availability_quote": "In stock",
+                "pack_quote": "Fixture single unit",
+                "price_quote": "USD 100.00",
+                "variant_quote": "Fixture rug"
+              },
+              "exact_variant": true,
+              "merchant": "Example",
+              "offer_id": "offer-rug",
+              "pack_contents": {
+                "components": [
+                  {
+                    "dimensions": [
+                      1.8,
+                      1.2,
+                      0.02
+                    ],
+                    "units": 1,
+                    "variant_id": "fixture-rug"
+                  }
+                ],
+                "verified": true
+              },
+              "price": "100.00",
+              "product_url": "https://example.com/fixture/rug",
+              "schema_version": 1,
+              "variant_id": "fixture-rug"
+            }
+          ],
+          "practical_reason": "Matches requested function",
+          "practical_score": 80,
+          "quantity": 1,
+          "reasons": {
+            "practical": "Matches requested function",
+            "style": "Matches requested style",
+            "value": "Price relative to the median of comparable discoveries"
+          },
+          "render": {
+            "category": "rug",
+            "forward": "+Z",
+            "kind": "standin",
+            "pivot": "bottom_center",
+            "scaling_mode": "normalized",
+            "tint": "#B9ADA0"
+          },
+          "rule_version": "practical60-style30-value10-v1",
+          "schema_version": 1,
+          "scores": {
+            "overall": 77.0,
+            "practical": 80,
+            "style": 80,
+            "value": 50.0
+          },
+          "search_id": "search-rug",
+          "selection_id": "rug",
+          "source": "stored",
+          "style_reason": "Matches requested style",
+          "style_score": 80,
+          "title": "Fixture rug",
+          "uncertainty": null,
+          "variant": {
+            "category": "rug",
+            "dimension_evidence_id": "dim-rug",
+            "features": {},
+            "identity": {
+              "gtin": null,
+              "identity_quote": null,
+              "identity_verified": false,
+              "manufacturer": null,
+              "mpn": null
+            },
+            "image_references": [],
+            "options": {
+              "color": "1"
+            },
+            "schema_version": 1,
+            "title": "Fixture rug",
+            "variant_id": "fixture-rug"
+          },
+          "variant_id": "fixture-rug"
+        }
+      ],
+      "purchase_summary": null,
+      "room": {
+        "capture_id": "capture-fixture",
+        "category_version": 1,
+        "corners": [
+          {
+            "id": "c_1",
+            "position": [
+              0.0,
+              0.0
+            ],
+            "wall_ids": [
+              "w_4",
+              "w_1"
+            ]
+          },
+          {
+            "id": "c_2",
+            "position": [
+              4.0,
+              0.0
+            ],
+            "wall_ids": [
+              "w_1",
+              "w_2"
+            ]
+          },
+          {
+            "id": "c_3",
+            "position": [
+              4.0,
+              3.0
+            ],
+            "wall_ids": [
+              "w_2",
+              "w_3"
+            ]
+          },
+          {
+            "id": "c_4",
+            "position": [
+              0.0,
+              3.0
+            ],
+            "wall_ids": [
+              "w_3",
+              "w_4"
+            ]
+          }
+        ],
+        "floor": {
+          "area": 12.0,
+          "polygon": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              4.0,
+              0.0
+            ],
+            [
+              4.0,
+              3.0
+            ],
+            [
+              0.0,
+              3.0
+            ]
+          ]
+        },
+        "frame": {
+          "room_from_world": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            -2.0,
+            1.2,
+            -3.0,
+            1.0
+          ]
+        },
+        "height": 2.6,
+        "identity_map": {
+          "native-wall-0": {
+            "id": "w_1",
+            "ids": [
+              "w_1"
+            ],
+            "kind": "wall"
+          },
+          "native-wall-1": {
+            "id": "w_2",
+            "ids": [
+              "w_2"
+            ],
+            "kind": "wall"
+          },
+          "native-wall-2": {
+            "id": "w_3",
+            "ids": [
+              "w_3"
+            ],
+            "kind": "wall"
+          },
+          "native-wall-3": {
+            "id": "w_4",
+            "ids": [
+              "w_4"
+            ],
+            "kind": "wall"
+          }
+        },
+        "objects": [
+          {
+            "attrs": {},
+            "base_y": 2.3,
+            "category": "ceiling_light",
+            "center": [
+              2,
+              1.5
+            ],
+            "fixed_in_place": false,
+            "id": "o_light",
+            "mount": "ceiling",
+            "observation_count": 2,
+            "size": [
+              0.4,
+              0.4,
+              0.3
+            ],
+            "source": "perceptron",
+            "source_ids": [
+              "fixture-light"
+            ],
+            "support_id": null,
+            "wall_id": null,
+            "yaw": 0
+          }
+        ],
+        "openings": [],
+        "processing": {
+          "completed": 0,
+          "expected_frames": 0,
+          "failed": 0,
+          "lifted": 0,
+          "not_started": 0,
+          "pending": 0,
+          "succeeded": 0
+        },
+        "room_id": "room-fixture",
+        "schema_version": 1,
+        "style_hints": {},
+        "validity": {
+          "reasons": [],
+          "usable": true,
+          "warnings": []
+        },
+        "wall_features": [],
+        "walls": [
+          {
+            "a": [
+              0.0,
+              0.0
+            ],
+            "b": [
+              4.0,
+              0.0
+            ],
+            "id": "w_1",
+            "inward_normal": [
+              -0.0,
+              1.0
+            ],
+            "length": 4.0,
+            "source_ids": [
+              "native-wall-0"
+            ],
+            "virtual": false
+          },
+          {
+            "a": [
+              4.0,
+              0.0
+            ],
+            "b": [
+              4.0,
+              3.0
+            ],
+            "id": "w_2",
+            "inward_normal": [
+              -1.0,
+              0.0
+            ],
+            "length": 3.0,
+            "source_ids": [
+              "native-wall-1"
+            ],
+            "virtual": false
+          },
+          {
+            "a": [
+              4.0,
+              3.0
+            ],
+            "b": [
+              0.0,
+              3.0
+            ],
+            "id": "w_3",
+            "inward_normal": [
+              -0.0,
+              -1.0
+            ],
+            "length": 4.0,
+            "source_ids": [
+              "native-wall-2"
+            ],
+            "virtual": false
+          },
+          {
+            "a": [
+              0.0,
+              3.0
+            ],
+            "b": [
+              0.0,
+              0.0
+            ],
+            "id": "w_4",
+            "inward_normal": [
+              1.0,
+              0.0
+            ],
+            "length": 3.0,
+            "source_ids": [
+              "native-wall-3"
+            ],
+            "virtual": false
+          }
+        ],
+        "zones": []
+      },
+      "room_snapshot_id": "snapshot-relations-v1",
+      "schema_version": 1,
+      "summary": "Measured support, wall, ceiling and rug relationships",
+      "warnings": []
+    },
+    "schema_version": 1,
+    "warnings": []
+  }
+}

@@ -284,13 +284,17 @@ def optional_refresh_required(provisional_score: float, weakest_score: float, el
     return mandatory or eligible_count < 3 or provisional_score > weakest_score + 5
 
 
+def is_product_item(item: dict) -> bool:
+    return item.get('origin')=='new' or bool(item.get('replacement_of_object_id'))
+
+
 def calculate_purchases(items: list[dict], offers: dict[str, dict] | list[dict], approved_ceiling: str) -> dict:
     ceiling = money(approved_ceiling, positive=True)
     by_id = {offer["offer_id"]: offer for offer in offers} if isinstance(offers, list) else offers
     demands: dict[str, dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
     all_ids = set()
     for item in items:
-        if item.get("origin") != "new" or item.get("status") == "removed":
+        if not is_product_item(item) or item.get("status") == "removed":
             continue
         item_id = item.get("item_id", item.get("id"))
         if not item_id or item_id in all_ids or not item.get("offer_id") or not item.get("variant_id"):

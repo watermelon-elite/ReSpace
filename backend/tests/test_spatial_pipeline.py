@@ -1,6 +1,8 @@
 from copy import deepcopy
+from io import BytesIO
 
 import pytest
+from PIL import Image
 
 from respace.operations import OperationService
 from respace.spatial import SpatialPipeline
@@ -33,10 +35,11 @@ def setup_pipeline(store, *, known_equivalent=True, explicit=True):
         store.put('operations', 'op', operation)
         for i in range(2):
             store.put('keyframes', f'f{i}', {'room_id': 'room', 'capture_id': 'capture', 'frame_id': f'f{i}',
-                      'idx': i, 'w': 100, 'h': 100, 'artifacts': [{'kind': 'jpeg', 'artifact_id': f'jpeg{i}'}]})
+                      'idx': i, 'w': 100, 'h': 100,'orientation':'sensor_landscape','intrinsics':{'fx':100,'fy':100,'cx':50,'cy':50},'transform':[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1], 'artifacts': [{'kind': 'jpeg', 'artifact_id': f'jpeg{i}'}]})
             store.put('artifacts', f'jpeg{i}', {'storage_key': f'jpeg{i}'})
     class Storage:
-        def get(self, key): return key.encode()
+        def get(self, key):
+            buffer=BytesIO();Image.new('RGB',(100,100)).save(buffer,'JPEG');return buffer.getvalue()
     class Detector:
         calls = 0
         async def detect(self, jpeg, w, h, frame_id):

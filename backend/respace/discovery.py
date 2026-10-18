@@ -312,7 +312,7 @@ class ProductService:
             room_id = record.get("room_id")
             if room_id and (not self.store.get("rooms", room_id) or self.store.get("deletions", room_id)):
                 raise ProductError("room_deleted", "Room was deleted while product discovery was running")
-            if self.guard and kind in ("searches", "budget_proposals"):
+            if self.guard and kind in ("searches", "budget_proposals", "selection_verifications"):
                 self.guard(record)
             self.store.put(kind, record_id, record)
 
@@ -366,57 +366,68 @@ class ProductService:
                 "offer": deepcopy(offer), "features": variant.get("features", {}), "source": candidate["source"],
                 "candidate_id": candidate["candidate_id"], "render": render_descriptor(variant["category"], variant["variant_id"])}
 
-    def _verify(self, candidate: dict, search: dict, *, persist_search: bool = True) -> list[dict]:
-        candidate_id = candidate["candidate_id"]
-        if candidate_id in search["attempted_candidates"]:
-            return self._reuse(candidate)
-        search["attempted_candidates"].append(candidate_id)
-        choices = []
-        try:
-            listings = ([{"product_url": candidate["product_url"], "merchant": candidate.get("merchant", ""), "title": candidate["title"]}]
-                        if candidate.get("product_url") else self.shopping.listings(candidate))
-        except ProductError as error:
-            listings = []
-            candidate["rejection_reasons"].append(error.code)
-        if not listings:
-            candidate["rejection_reasons"].append("missing_merchant_listing")
-        for listing in listings:
-            for attempt in range(2):
-                try:
-                    result = self.verifier.verify({**candidate, **listing})
-                    break
-                except TransientProductError as error:
-                    if attempt == 0:
-                        continue
+    def _verification_step(self, candidate: dict, search: dict, *, persist_search: bool = True,
+                           selection_record: dict | None = None) -> bool:
+        work = search.setdefault("verification_work", {"candidate": deepcopy(candidate), "listings": None,
+            "listing_index": 0, "attempt": 0, "choices": [], "complete": False})
+        candidate = work["candidate"]
+        if work["complete"]:
+            return True
+        result = None
+        if work["listings"] is None:
+            try:
+                work["listings"] = ([{"product_url": candidate["product_url"], "merchant": candidate.get("merchant", ""),
+                    "title": candidate["title"]}] if candidate.get("product_url") else self.shopping.listings(candidate))
+            except ProductError as error:
+                work["listings"] = []
+                candidate["rejection_reasons"].append(error.code)
+            if not work["listings"]:
+                candidate["rejection_reasons"].append("missing_merchant_listing")
+        elif work["listing_index"] < len(work["listings"]):
+            listing = work["listings"][work["listing_index"]]
+            retry = False
+            try:
+                result = self.verifier.verify({**candidate, **listing})
+            except TransientProductError as error:
+                retry = work["attempt"] == 0
+                if not retry:
                     candidate["rejection_reasons"].append(error.code)
-                    result = None
-                except ProductError as error:
-                    candidate["rejection_reasons"].append(error.code)
-                    result = None
-                    break
-            if result is None:
-                continue
-            variant, evidence = result["variant"], result["dimension_evidence"]
-            self._put("variants", variant["variant_id"], variant)
-            self._put("dimensions", evidence["evidence_id"], evidence)
-            if variant["variant_id"] not in candidate["variant_ids"]:
-                candidate["variant_ids"].append(variant["variant_id"])
-            if evidence["outcome"] != "verified":
-                candidate["rejection_reasons"].append(evidence["outcome"])
-            for offer in result["offers"]:
-                self._put("offers", offer["offer_id"], offer)
-                choices.append(self._choice(candidate, variant, evidence, offer))
-                if not offer_eligible(offer):
-                    candidate["rejection_reasons"].append("unverified_offer" if offer.get("availability") != "out_of_stock" else "out_of_stock")
-        candidate["missing_fields"] = ([] if any(choice_eligible(c, {}) for c in choices) else ["eligible_exact_variant_evidence"])
-        candidate["eligibility"] = "eligible" if not candidate["missing_fields"] else "rejected"
-        candidate["rejection_reasons"] = list(dict.fromkeys(candidate["rejection_reasons"]))
-        self._put("candidates", candidate_id, candidate)
-        if persist_search:
-            self._put("searches", search["search_id"], search)
-        return choices
+            except ProductError as error:
+                candidate["rejection_reasons"].append(error.code)
+            if retry:
+                work["attempt"] += 1
+            else:
+                work["listing_index"] += 1
+                work["attempt"] = 0
+        else:
+            candidate["missing_fields"] = ([] if any(choice_eligible(c, {}) for c in work["choices"]) else ["eligible_exact_variant_evidence"])
+            candidate["eligibility"] = "eligible" if not candidate["missing_fields"] else "rejected"
+            candidate["rejection_reasons"] = list(dict.fromkeys(candidate["rejection_reasons"]))
+            search["attempted_candidates"].append(candidate["candidate_id"])
+            work["complete"] = True
+        # Commit each external result and its cursor together before the delivery returns.
+        with self.store.transaction():
+            if result is not None:
+                variant, evidence = result["variant"], result["dimension_evidence"]
+                self._put("variants", variant["variant_id"], variant)
+                self._put("dimensions", evidence["evidence_id"], evidence)
+                if variant["variant_id"] not in candidate["variant_ids"]:
+                    candidate["variant_ids"].append(variant["variant_id"])
+                if evidence["outcome"] != "verified":
+                    candidate["rejection_reasons"].append(evidence["outcome"])
+                for offer in result["offers"]:
+                    self._put("offers", offer["offer_id"], offer)
+                    work["choices"].append(self._choice(candidate, variant, evidence, offer))
+                    if not offer_eligible(offer):
+                        candidate["rejection_reasons"].append("out_of_stock" if offer.get("availability") == "out_of_stock" else "unverified_offer")
+            self._put("candidates", candidate["candidate_id"], candidate)
+            if persist_search:
+                self._put("searches", search["search_id"], search)
+            elif selection_record is not None:
+                self._put("selection_verifications", selection_record["verification_id"], selection_record)
+        return work["complete"]
 
-    def search(self, request: dict, operation_id: str) -> dict:
+    def search(self, request: dict, operation_id: str, *, bounded: bool = False) -> dict:
         request = deepcopy(request)
         if request.get("category") not in CATEGORIES:
             raise ProductError("invalid_category", "Product category is not in the shared category registry")
@@ -438,73 +449,107 @@ class ProductService:
             "source_candidate_pools": {"stored": [], "live": []}, "source_shortlists": {"stored": [], "live": []},
             "queries": [], "comparison_snapshots": [], "displayed_choices": [], "attempted_candidates": [],
             "previously_seen_identities": request.get("previously_seen_identities", []),
-            "selected_variant_id": request.get("selected_variant_id"), "source_failures": []}
-        self._put("searches", search_id, search)
-        candidates = []
-        for stored in self.store.list("candidates"):
-            if stored.get("category") == request["category"]:
-                candidate = deepcopy(stored)
-                candidate["source"] = "stored"
-                candidates.append(candidate)
-                search["source_candidate_pools"]["stored"].append(candidate["candidate_id"])
-                if len(candidates) == 50:
-                    break
-        for query in self.queries(request):
+            "selected_variant_id": request.get("selected_variant_id"), "source_failures": [],
+            "continuation": {"query_index": 0, "query_attempt": 0, "candidate_index": 0,
+                             "ranking_index": 0, "choices": [], "pending": {}}}
+        if previous is None:
+            search["source_candidate_pools"]["stored"] = [c["candidate_id"] for c in self.store.list("candidates")
+                                                          if c.get("category") == request["category"]][:50]
+            self._put("searches", search_id, search)
+        while search["state"] == "running":
+            self._search_step(search, request)
+            self._put("searches", search_id, search)
+            if bounded:
+                break
+        return search
+
+    def _search_candidate(self, search: dict, candidate_id: str) -> dict:
+        candidate = self.store.get("candidates", candidate_id)
+        candidate["source"] = "live" if candidate_id in search["source_candidate_pools"]["live"] else "stored"
+        return candidate
+
+    def _search_step(self, search: dict, request: dict):
+        cursor = search["continuation"]
+        if search["phase"] == "discovery":
+            queries = self.queries(request)
+            if cursor["query_index"] == len(queries):
+                cursor["candidate_ids"] = list(dict.fromkeys(search["source_candidate_pools"]["stored"] + search["source_candidate_pools"]["live"]))
+                search["phase"] = "verification"
+                return
+            query = queries[cursor["query_index"]]
+            batch, retry = None, False
             try:
-                for attempt in range(2):
-                    try:
-                        batch = self.shopping.search(query)
-                        break
-                    except TransientProductError:
-                        if attempt:
-                            raise
-                search["queries"].append({"query": query, **{key: batch.get(key) for key in ("provider_search_id", "fresh_requested", "market", "currency", "source_exhausted")}})
-                for raw in batch["results"]:
-                    candidate = self._candidate(raw, request, search_id)
-                    self._put("candidates", candidate["candidate_id"], candidate)
-                    search["source_candidate_pools"]["live"].append(candidate["candidate_id"])
-                    candidates.append(candidate)
+                batch = self.shopping.search(query)
+            except TransientProductError as error:
+                retry = cursor["query_attempt"] == 0
+                if not retry:
+                    search["source_failures"].append({"source": "live", "query": query, "code": error.code})
             except ProductError as error:
                 search["source_failures"].append({"source": "live", "query": query, "code": error.code})
-            self._put("searches", search_id, search)
-        # Complete both pools before any evidence or ranking narrows the results.
-        search["phase"] = "verification"
-        unique = {c["candidate_id"]: c for c in candidates}
-        choices, pending = [], {}
-        for candidate in unique.values():
+            if batch is not None:
+                search["queries"].append({"query": query, **{key: batch.get(key) for key in ("provider_search_id", "fresh_requested", "market", "currency", "source_exhausted")}})
+                for raw in batch["results"]:
+                    candidate = self._candidate(raw, request, search["search_id"])
+                    self._put("candidates", candidate["candidate_id"], candidate)
+                    if candidate["candidate_id"] not in search["source_candidate_pools"]["live"]:
+                        search["source_candidate_pools"]["live"].append(candidate["candidate_id"])
+            with self.store.transaction():
+                cursor["query_attempt"] = cursor["query_attempt"] + 1 if retry else 0
+                cursor["query_index"] += 0 if retry else 1
+                self._put("searches", search["search_id"], search)
+            return
+        if search["phase"] == "verification":
+            if cursor["candidate_index"] == len(cursor["candidate_ids"]):
+                search["phase"] = "ranking"
+                return
+            candidate = self._search_candidate(search, cursor["candidate_ids"][cursor["candidate_index"]])
             reused = self._reuse(candidate)
-            if reused and all(choice_eligible(c, request) for c in reused):
-                choices.extend(reused)
-            elif reused and any(choice_eligible(c, request, allow_stale_offers=True) for c in reused):
-                pending[candidate["candidate_id"]] = reused
+            if "verification_work" not in search and reused and all(choice_eligible(c, request) for c in reused):
+                cursor["choices"].extend(reused)
+            elif "verification_work" not in search and reused and any(choice_eligible(c, request, allow_stale_offers=True) for c in reused):
+                cursor["pending"][candidate["candidate_id"]] = reused
+            elif self._verification_step(candidate, search):
+                cursor["choices"].extend(search.pop("verification_work")["choices"])
             else:
-                choices.extend(self._verify(candidate, search))
-        search["phase"] = "ranking"
-        for choice in choices + [c for group in pending.values() for c in group]:
-            if choice_eligible(choice, request, allow_stale_offers=True):
-                choice.update(self.ranker.score(choice, request))
-        while pending:
-            provisional, comparison = rank_choices(choices + [c for group in pending.values() for c in group], request, allow_stale_offers=True)
+                return
+            cursor["candidate_index"] += 1
+            return
+        if search["phase"] == "ranking":
+            choices = cursor["choices"] + [c for group in cursor["pending"].values() for c in group]
+            unscored = next((c for c in choices if choice_eligible(c, request, allow_stale_offers=True)
+                             and "practical_score" not in c), None)
+            if unscored is not None:
+                unscored.update(self.ranker.score(unscored, request))
+                cursor["ranking_index"] += 1
+                return
+            search["phase"] = "refresh"
+            return
+        if search["phase"] == "refresh_verification":
+            candidate = self._search_candidate(search, cursor["refresh_candidate"])
+            if self._verification_step(candidate, search):
+                cursor["pending"].pop(cursor.pop("refresh_candidate"))
+                cursor["choices"].extend(search.pop("verification_work")["choices"])
+                search["phase"] = "ranking"
+            return
+        if cursor["pending"]:
+            provisional, comparison = rank_choices(cursor["choices"] + [c for group in cursor["pending"].values() for c in group], request, allow_stale_offers=True)
             comparison["room_id"] = search.get("room_id")
             self._put("comparisons", comparison["snapshot_id"], comparison)
             search["comparison_snapshots"].append(comparison["snapshot_id"])
             eligible = [c for c in provisional if choice_eligible(c, request)]
-            next_choice = next((c for c in provisional if c["candidate_id"] in pending), None)
-            if next_choice is None:
-                break
+            next_choice = next((c for c in provisional if c["candidate_id"] in cursor["pending"]), None)
             weakest = min((c["scores"]["overall"] for c in eligible[:3]), default=0)
-            if not optional_refresh_required(next_choice["scores"]["overall"], weakest, len(eligible)):
-                break
-            candidate_id = next_choice["candidate_id"]
-            pending.pop(candidate_id)
-            updated = self._verify(unique[candidate_id], search)
-            for choice in updated:
-                if choice_eligible(choice, request):
-                    choice.update(self.ranker.score(choice, request))
-            choices.extend(updated)
+            if next_choice and optional_refresh_required(next_choice["scores"]["overall"], weakest, len(eligible)):
+                cursor["refresh_candidate"] = next_choice["candidate_id"]
+                search["phase"] = "refresh_verification"
+                return
+        self._finish_search(search, request)
+
+    def _finish_search(self, search: dict, request: dict):
+        choices = search["continuation"]["choices"]
         ranked, comparison = rank_choices(choices, request)
         for choice in ranked:
-            choice["search_id"] = search_id
+            choice["search_id"] = search["search_id"]
         comparison["room_id"] = search.get("room_id")
         self._put("comparisons", comparison["snapshot_id"], comparison)
         search["comparison_snapshots"].append(comparison["snapshot_id"])
@@ -516,19 +561,22 @@ class ProductService:
         failed = not displayed and len(search["source_failures"]) == 3 and not choices
         search.update(state="completed" if displayed else "failed" if failed else "no_match", phase="completed", displayed_choices=displayed,
                       completed_at=timestamp(), no_match_reason=None if displayed else "No unseen exact variant has verified dimensions and an eligible checked offer")
-        self._put("searches", search_id, search)
-        return search
+        search.pop("continuation")
 
-    def find_more(self, design: dict, item_id: str, refinements: dict, operation_id: str, expected_context: dict) -> dict:
+    def find_more(self, design: dict, item_id: str, refinements: dict, operation_id: str, expected_context: dict,
+                  *, bounded: bool = False) -> dict:
         fingerprint = stable_id("find_more", [design.get("design_id", design.get("id")), item_id, refinements, expected_context])
         existing = self.store.get("searches", stable_id("search", operation_id))
         if existing and existing.get("find_more_fingerprint"):
             if existing["find_more_fingerprint"] != fingerprint:
                 raise ProductError("idempotency_conflict", "Find more identity was reused with a different request")
-            return existing
+            if existing["state"] != "running":
+                return existing
+            return self.search(existing["find_more_request"], operation_id, bounded=bounded)
         scene = design["scene"]
         item = next((i for i in scene["items"] if i.get("item_id", i.get("id")) == item_id), None)
-        if item is None or item.get("origin") != "new" or item.get("status") == "removed":
+        from .products import is_product_item
+        if item is None or not is_product_item(item) or item.get("status") == "removed":
             raise ProductError("invalid_target", "Find more requires an active selected Product Item")
         design_id = design.get("design_id", design.get("id"))
         prior = [s for s in self.store.list("searches", room_id=design["room_id"])
@@ -551,30 +599,60 @@ class ProductService:
                    "previously_seen_identities": sorted(v for v in seen if v),
                    "approved_ceiling": scene["purchase_summary"]["approved_ceiling"],
                    "intended_context": {"design_id": design_id, "item_id": item_id, **deepcopy(expected_context)}}
-        result = self.search(request, operation_id)
+        # Freeze Find more context before allowing the search to reach a terminal batch.
+        result = self.search(request, operation_id, bounded=True)
         result["prior_displayed_choices"] = previous_choices
         result["selection_unchanged"] = True
         result["requires_current_context_validation_for_swap"] = True
         result["find_more_fingerprint"] = fingerprint
+        result["find_more_request"] = request
         self._put("searches", result["search_id"], result)
-        return result
+        return self.search(request, operation_id) if not bounded and result["state"] == "running" else result
 
-    def verify_selection(self, choices: list[dict], approved_ceiling: str, *, enforce_budget: bool = True) -> list[dict]:
-        verified = []
-        for selected in choices:
+    def verify_selection(self, choices: list[dict], approved_ceiling: str, *, enforce_budget: bool = True,
+                         bounded: bool = False, verification_id: str | None = None, context: dict | None = None):
+        if bounded and (not verification_id or not context or not context.get("room_id") or not context.get("operation_id")):
+            raise ProductError("invalid_verification", "Bounded selection checks require stable identity and Room/operation context")
+        fingerprint = stable_id("selection_check", [choices, approved_ceiling, enforce_budget, context])
+        record = self.store.get("selection_verifications", verification_id) if bounded else None
+        if record and record["request_fingerprint"] != fingerprint:
+            raise ProductError("idempotency_conflict", "Selection verification identity was reused with different inputs")
+        record = record or {"schema_version": 1, "verification_id": verification_id, "room_id": (context or {}).get("room_id"),
+            "operation_id": (context or {}).get("operation_id"), "intended_context": context or {},
+            "request_fingerprint": fingerprint, "state": "running", "selected": [], "cursor": {"index": 0}}
+        while record["state"] == "running":
+            self._selection_step(record, choices, approved_ceiling, enforce_budget, persist=bounded)
+            if bounded:
+                assert verification_id is not None
+                self._put("selection_verifications", verification_id, record)
+                break
+        return record if bounded else record["selected"]
+
+    def _selection_step(self, record: dict, choices: list[dict], approved_ceiling: str, enforce_budget: bool,
+                        *, persist: bool = False):
+        cursor = record["cursor"]
+        if cursor["index"] == len(choices):
+            record["state"] = "completed"
+            record.pop("cursor")
+            return
+        selected = choices[cursor["index"]]
+        if "chosen" not in cursor:
             variant = self.store.get("variants", selected["variant_id"])
             if not variant:
                 raise ProductError("unverified_selection", "Selected Product is not retained")
             candidate = self.store.get("candidates", selected["candidate_id"])
             if candidate is None:
                 raise ProductError("unverified_selection", "Selected Product candidate is not retained")
-            search: dict = {"attempted_candidates": []}
             current = self._reuse(candidate)
-            constraints = {"quantity": selected.get("quantity", 1)}
+            constraints = {"quantity": selected.get("quantity", 1), "must_have": selected.get("requirements", {}),
+                           "avoid": selected.get("avoid", {})}
             if enforce_budget:
                 constraints["approved_ceiling"] = approved_ceiling
-            if not any(c["offer_id"] == selected["offer_id"] and choice_eligible(c, constraints) for c in current):
-                current = self._verify(candidate, search, persist_search=False)
+            if "evidence_search" in cursor or not any(c["offer_id"] == selected["offer_id"] and choice_eligible(c, constraints) for c in current):
+                search = cursor.setdefault("evidence_search", {"attempted_candidates": []})
+                if not self._verification_step(candidate, search, persist_search=False, selection_record=record if persist else None):
+                    return
+                current = cursor.pop("evidence_search")["verification_work"]["choices"]
             eligible = [c for c in current if c["variant_id"] == selected["variant_id"] and c["offer_id"] == selected["offer_id"]
                         and choice_eligible(c, constraints)]
             if not eligible:
@@ -584,55 +662,69 @@ class ProductService:
             chosen["offers"] = sorted([deepcopy(c["offer"]) for c in current
                 if c["variant_id"] == selected["variant_id"] and offer_eligible(c["offer"])],
                 key=lambda offer: (money(offer["price"]), offer["offer_id"]))
-            for field in ("search_id", "must_have", "explicit_choice", "requirements_text"):
+            for field in ("search_id", "must_have", "explicit_choice", "requirements_text", "requirements", "avoid"):
                 if field in selected:
                     chosen[field] = deepcopy(selected[field])
             ranking_ceiling = approved_ceiling if enforce_budget else amount(max(money(approved_ceiling), money(chosen["offer"]["price"]) * chosen["quantity"]))
-            self._selection_ranking(selected, chosen, ranking_ceiling)
-            verified.append(chosen)
-        return verified
+            cursor.update(chosen=chosen, ranking_ceiling=ranking_ceiling)
+            return
+        work = cursor.setdefault("ranking_work", {})
+        if not self._selection_ranking_step(selected, cursor["chosen"], cursor["ranking_ceiling"], work):
+            return
+        record["selected"].append(cursor.pop("chosen"))
+        cursor.pop("ranking_work")
+        cursor.pop("ranking_ceiling")
+        cursor["index"] += 1
 
-    def _selection_ranking(self, selected: dict, chosen: dict, approved_ceiling: str):
+    def _selection_ranking_step(self, selected: dict, chosen: dict, approved_ceiling: str, work: dict) -> bool:
         ranking_fields = ("scores", "reasons", "comparison_snapshot_id", "rule_version", "uncertainty",
                           "practical_score", "style_score", "practical_reason", "style_reason")
-        basis = {key: deepcopy(selected[key]) for key in ranking_fields if key in selected}
-        chosen.update(basis)
-        changed = (any(selected.get("offer", {}).get(key) != chosen["offer"].get(key)
+        if not work:
+            basis = {key: deepcopy(selected[key]) for key in ranking_fields if key in selected}
+            chosen.update(basis)
+            changed = (any(selected.get("offer", {}).get(key) != chosen["offer"].get(key)
                        for key in ("price", "currency", "pack_contents"))
                    or any(selected.get(key) != chosen.get(key) for key in ("dimensions", "features")))
-        if not changed or not basis:
-            return
-        chosen["historical_ranking"] = {**basis, "evidence_status": "historical"}
-        chosen["scoring_evidence_status"] = "historical"
-        chosen["uncertainty"] = "Historical ranking; purchase evidence changed and its comparison requires refresh"
-        source = self.store.get("searches", selected.get("search_id"))
-        benchmark = self.store.get("comparisons", selected.get("comparison_snapshot_id"))
-        if not source or not benchmark:
-            return
-        request = {**benchmark["context"], "approved_ceiling": approved_ceiling, "quantity": selected.get("quantity", 1)}
-        current = []
-        for prior in [c for group in source["source_shortlists"].values() for c in group]:
-            if prior["variant_id"] == selected["variant_id"]:
-                continue
-            candidate = self.store.get("candidates", prior["candidate_id"])
-            if candidate is None:
-                continue
-            for choice in self._reuse(candidate):
-                if choice["variant_id"] == prior["variant_id"]:
-                    choice.update({key: deepcopy(prior[key]) for key in ranking_fields if key in prior})
-                    if any(choice.get(key) != prior.get(key) for key in ("dimensions", "features")):
-                        choice.update(self.ranker.score(choice, request))
-                    current.append(choice)
-        if any(chosen.get(key) != selected.get(key) for key in ("dimensions", "features")):
-            chosen.update(self.ranker.score(chosen, request))
-        ranked, comparison = rank_choices([*current, chosen], request)
+            if not changed or not basis:
+                return True
+            chosen["historical_ranking"] = {**basis, "evidence_status": "historical"}
+            chosen["scoring_evidence_status"] = "historical"
+            chosen["uncertainty"] = "Historical ranking; purchase evidence changed and its comparison requires refresh"
+            source = self.store.get("searches", selected.get("search_id"))
+            benchmark = self.store.get("comparisons", selected.get("comparison_snapshot_id"))
+            if not source or not benchmark:
+                return True
+            work.update(request={**benchmark["context"], "approved_ceiling": approved_ceiling, "quantity": selected.get("quantity", 1)},
+                        choices=[], score_indices=[], score_index=0, room_id=source.get("room_id"))
+            for prior in [c for group in source["source_shortlists"].values() for c in group]:
+                if prior["variant_id"] == selected["variant_id"]:
+                    continue
+                candidate = self.store.get("candidates", prior["candidate_id"])
+                if candidate is None:
+                    continue
+                for choice in self._reuse(candidate):
+                    if choice["variant_id"] == prior["variant_id"]:
+                        choice.update({key: deepcopy(prior[key]) for key in ranking_fields if key in prior})
+                        if any(choice.get(key) != prior.get(key) for key in ("dimensions", "features")):
+                            work["score_indices"].append(len(work["choices"]))
+                        work["choices"].append(choice)
+            if any(chosen.get(key) != selected.get(key) for key in ("dimensions", "features")):
+                work["score_indices"].append(len(work["choices"]))
+            work["choices"].append(deepcopy(chosen))
+        if work["score_index"] < len(work["score_indices"]):
+            choice = work["choices"][work["score_indices"][work["score_index"]]]
+            choice.update(self.ranker.score(choice, work["request"]))
+            work["score_index"] += 1
+            return False
+        ranked, comparison = rank_choices(work["choices"], work["request"])
         refreshed = next((choice for choice in ranked if choice["variant_id"] == chosen["variant_id"]), None)
         if refreshed is None:
             raise ProductError("no_verified_match", "Refreshed Product evidence no longer meets the selection requirements")
-        comparison["room_id"] = source.get("room_id")
+        comparison["room_id"] = work["room_id"]
         self._put("comparisons", comparison["snapshot_id"], comparison)
         chosen.update({key: deepcopy(refreshed[key]) for key in ranking_fields if key in refreshed})
         chosen["scoring_evidence_status"] = "current"
+        return True
 
     def propose_budget(self, old_ceiling: str, items: list[dict], offers: dict[str, dict],
                        alternatives: list[dict], reason: str, context: dict,

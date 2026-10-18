@@ -140,16 +140,34 @@ struct OperationPanel: View {
     @State private var choices: Set<String> = []
     @State private var text = ""
     @State private var number: Double?
+    @State private var revisionAnswer: JSONValue = .null
     @State private var error: String?
     @State private var busy = false
-    var question: JSONValue { operation["pending_question"] }
+    var question: JSONValue { revisionAnswer == .null ? operation["pending_question"] : revisionAnswer["question"] }
+    var revising: Bool { revisionAnswer != .null }
+    var formIdentity: String { revising ? revisionAnswer["answer_id"].text : question["question_id"].text }
     var numeric: NumericQuestion { NumericQuestion(question) }
     var displayedNumber: Double { number ?? numeric.initialValue }
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(operation["state"].text.replacingOccurrences(of: "_", with: " ").capitalized).font(.headline)
             Text(operation["phase"].text.replacingOccurrences(of: "_", with: " ")).font(.caption)
+            if !operation["answer_history"].array.isEmpty {
+                DisclosureGroup("Earlier questions and answers") {
+                    ForEach(operation["answer_history"].array, id: \.self) { entry in
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text(entry["question"]["text"].text).font(.subheadline)
+                            Text(AnswerHistory.summary(entry)).font(.caption)
+                            if entry["request"]["revision_of_answer_id"].string != nil { Text("Revised answer · earlier response retained").font(.caption).foregroundStyle(.secondary) }
+                            Button("Revise this answer") { revisionAnswer = entry }
+                                .disabled(busy || operation["answer_revision_allowed"].bool != true)
+                        }
+                    }
+                    if operation["answer_revision_allowed"].bool != true { Text("Answers can be revised when planning pauses at an interview question.").font(.caption) }
+                }
+            }
             if question != .null {
+                if revising { HStack { Text("Revising an earlier answer").font(.headline); Button("Keep current answer") { revisionAnswer = .null } } }
                 Text(question["text"].text)
                 ForEach(question["choices"].array, id: \.self) { choice in
                     Button {
@@ -166,18 +184,29 @@ struct OperationPanel: View {
                 }
                 if question["kind"].text != "budget" { TextField("Optional details", text: $text) }
                 if question["kind"].text == "budget" { Text("Current ceiling: USD \(question["budget_proposal"]["old_ceiling"].text) → Proposed: USD \(question["budget_proposal"]["new_ceiling"].text)"); Text("Resulting total: USD \(question["budget_proposal"]["resulting_total"].text)"); Button("Approve this budget increase") { Task { await answer("answer", approve: true) } }.disabled(busy) }
-                else { Button("Answer") { Task { await answer("answer") } }.disabled(busy || !validAnswer) }
+                else { Button(revising ? "Save revised answer" : "Answer") { Task { await answer("answer") } }.disabled(busy || !validAnswer) }
                 HStack {
                     if question["allow_skip"].bool == true { Button("Skip") { Task { await answer("skip") } }.disabled(busy) }
                     if question["allow_delegate"].bool == true { Button("Decide for me") { Task { await answer("delegate") } }.disabled(busy) }
                     if question["context"].text == "command" { Button("Dismiss clarification") { Task { await control("dismiss-clarification", extra: ["question_id": question["question_id"], "dismissal_id": .string(UUID().uuidString)]) } }.disabled(busy) }
                 }
             }
+            ForEach(operation["outcome"]["action_outcomes"].array, id: \.self) { action in
+                Text("\(action["type"].text.capitalized): \(action["outcome"].text.replacingOccurrences(of: "_", with: " ")) · \(action["reason"].text)")
+                    .foregroundStyle(action["outcome"].text == "failed" ? Color.orange : Color.primary)
+            }
+            if let message = operation["outcome"]["message"].string { Text(message) }
+            ForEach(operation["outcome"]["warnings"].array, id: \.self) { Text($0["message"].text).foregroundStyle(.orange) }
             if let failure = operation["failure"]["message"].string { Text(failure).foregroundStyle(.red) }
             if let error { Text(error).foregroundStyle(.red) }
             HStack { Button("Refresh") { Task { await refresh() } }; if !["succeeded", "failed", "cancelled", "rejected"].contains(operation["state"].text) { Button("Cancel", role: .destructive) { Task { await control("cancel", extra: ["cancellation_id": .string(UUID().uuidString)]) } }.disabled(busy) } }
         }
-        .onChange(of: question["question_id"].text) { _, _ in choices = []; text = ""; number = nil }
+        .onChange(of: formIdentity) { _, _ in
+            choices = Set(revisionAnswer["request"]["choice_ids"].array.compactMap(\.string))
+            text = revisionAnswer["request"]["text"].text
+            number = revisionAnswer["request"]["number"].number
+        }
+        .onChange(of: operation["answer_revision_allowed"].bool) { _, allowed in if allowed != true { revisionAnswer = .null } }
     }
     var validAnswer: Bool {
         if question["kind"].text == "numeric" { return numeric.isValid(displayedNumber) }
@@ -186,7 +215,11 @@ struct OperationPanel: View {
     }
     func refresh() async { guard let client = app.client else { return }; do { operation = try await client.request("operations/\(operation["operation_id"].text)")["operation"]; await onUpdate() } catch { self.error = error.localizedDescription } }
     func answer(_ action: String, approve: Bool = false) async {
-        var body: [String: JSONValue] = ["question_id": question["question_id"], "reply_id": .string(UUID().uuidString), "expected_decision_revision": question["decision_revision"], "expected_question_revision": question["question_revision"], "choice_ids": .array(choices.sorted().map(JSONValue.string)), "text": .string(text), "action": .string(action)]
+        var body: [String: JSONValue] = ["question_id": question["question_id"], "reply_id": .string(UUID().uuidString), "expected_decision_revision": operation["decision_revision"], "expected_question_revision": question["question_revision"], "choice_ids": .array(choices.sorted().map(JSONValue.string)), "text": .string(text), "action": .string(action)]
+        if revising {
+            do { body.merge(try AnswerHistory.revisionIdentity(answerID: revisionAnswer["answer_id"].text, operation: operation)) { _, current in current } }
+            catch { self.error = error.localizedDescription; return }
+        }
         if question["kind"].text == "numeric", action == "answer" { body["number"] = .number(displayedNumber) }
         if approve { body["budget_approval"] = .object(["old_ceiling": question["budget_proposal"]["old_ceiling"], "new_ceiling": question["budget_proposal"]["new_ceiling"], "resulting_total": question["budget_proposal"]["resulting_total"]]) }
         await control("answers", extra: body)
@@ -196,7 +229,7 @@ struct OperationPanel: View {
         do {
             var body = extra; body["operation_id"] = operation["operation_id"]
             let request = PendingRequest(path: "operations/\(operation["operation_id"].text)/\(action)", roomID: operation["room_id"].text, body: body)
-            operation = try await app.submit(request)["operation"]; await onUpdate()
+            operation = try await app.submit(request)["operation"]; if action == "answers" { revisionAnswer = .null }; await onUpdate()
         } catch { self.error = error.localizedDescription }
     }
 }

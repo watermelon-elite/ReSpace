@@ -33,7 +33,7 @@ class LazyPlanningModel:
         finally: await model.client.aio.aclose()
 
 
-def create_app(store=None, storage=None, products=None, model=None, spatial=None):
+def create_app(store=None, storage=None, products=None, model=None, spatial=None, *, edit_model=None):
     if store is None:
         from .store import PostgresStore
         store=PostgresStore(os.environ['DATABASE_URL'])
@@ -53,8 +53,33 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         from .spatial import SpatialPipeline
         spatial=SpatialPipeline(store,operations,storage,products=products)
     controller=PlanningController(store,operations,products,model or LazyPlanningModel(),spatial)
+    from .edits import EditController
+    editor=EditController(store,operations,products,edit_model)
     app=FastAPI(title='ReSpace',version='1')
     app.state.store,app.state.operations,app.state.controller=store,operations,controller
+    role=os.environ.get('RESPACE_SERVICE_ROLE','api')
+    require(role in {'api','worker'},'invalid_configuration','Configure RESPACE_SERVICE_ROLE as api or worker.',500)
+    workers=None
+    if os.environ.get('CLOUD_TASKS_QUEUE') or role=='worker':
+        from .workers import GoogleCloudTasksDispatcher,WorkerService
+        async def step(kind,operation_id):
+            if kind in {'generation','find_more'}:await controller.run(operation_id,bounded=True)
+            elif kind in {'edit','swap'}:await editor.run(operation_id,bounded=True)
+            elif kind=='planning_command':
+                from .review import review_command
+                try:await review_command(store,operations,operation_id)
+                except DomainError as error:
+                    operations.finish(operation_id,'failed' if error.retryable else 'rejected',failure={'code':error.code,'message':error.message,'retryable':error.retryable})
+            else:raise DomainError('unavailable_capability','This operation cannot be continued by a worker.',422)
+        workers=WorkerService(store,GoogleCloudTasksDispatcher.from_env(),step)
+    app.state.workers=workers
+
+    def schedule(background,operation):
+        if workers is not None:workers.enqueue(operation['operation_id'])
+        elif operation['kind']=='planning_command':
+            from .review import review_command
+            background.add_task(review_command,store,operations,operation['operation_id'])
+        else:background.add_task(editor.run if operation['kind'] in {'edit','swap'} else controller.run,operation['operation_id'])
 
     @app.middleware('http')
     async def bound_body(request, call_next):
@@ -82,7 +107,23 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         return TypeAdapter(contracts.ID).validate_python(value)
 
     def operation_response(operation):
-        return {'schema_version':1,'operation':{k:v for k,v in operation.items() if k!='device_id'}}
+        return {'schema_version':1,'operation':{**{k:v for k,v in operation.items() if k!='device_id'},'answer_revision_allowed':operations.can_revise(operation)}}
+
+    if role=='worker':
+        from pydantic import BaseModel,Field
+        class Delivery(BaseModel):
+            operation_id: contracts.ID
+            generation: int=Field(ge=1)
+        @app.post('/internal/work')
+        async def work(body:Delivery):
+            assert workers is not None
+            result=await workers.deliver(body.operation_id,body.generation)
+            return JSONResponse(result,status_code=503 if result['state']=='busy' else 200)
+        @app.post('/internal/recover')
+        def recover():
+            assert workers is not None
+            return workers.recover()
+        return app
 
     @app.get('/v1/health')
     def health(): return {'schema_version':1,'status':'ok'}
@@ -146,16 +187,29 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         operations.room(device(x_device_id),room_id)
         return {'schema_version':1,'entries':sorted(store.list('messages',room_id),key=lambda entry:entry['created_at']),'next_cursor':None}
 
+    @app.get('/v1/rooms/{room_id}/snapshots/{snapshot_id}/overlays/{frame_id}')
+    def overlay(room_id:contracts.ID,snapshot_id:contracts.ID,frame_id:contracts.ID,x_device_id:str=Header()):
+        from .lifting import calibrated_overlay_svg
+        operations.room(device(x_device_id),room_id)
+        saved=store.get('snapshots',snapshot_id)
+        require(saved and saved['room_id']==room_id,'unknown_snapshot','Processed snapshot was not found.',404)
+        ref=next((ref for ref in saved.get('processing',{}).get('lift_refs',[]) if ref['frame_id']==frame_id),None)
+        if ref is None:raise DomainError('unknown_frame','This frame is not part of the saved snapshot.',404)
+        lift=store.get('keyframe_lifts',ref['lift_id']);frame=store.get('keyframes',frame_id)
+        return Response(calibrated_overlay_svg(saved['room'],frame,lift),media_type='image/svg+xml')
+
     @app.post('/v1/rooms/{room_id}/planning-commands')
-    async def planning_command(room_id:contracts.ID,body:contracts.PlanningCommand,x_device_id:str=Header()):
+    async def planning_command(room_id:contracts.ID,body:contracts.PlanningCommand,background:BackgroundTasks,x_device_id:str=Header()):
         from .review import review_command
         require(bool(body.text.strip()),'invalid_command','Enter a planning instruction.',422)
         operation=operations.submit(device(x_device_id),room_id,'planning_command',body.model_dump())
         if operation['state'] not in {'succeeded','rejected','failed','cancelled','needs_clarification'}:
-            try:
-                await review_command(store,operations,operation['operation_id'])
-            except DomainError as error:
-                operations.finish(operation['operation_id'],'rejected',{'result_kind':error.code,'message':error.message,'message_ids':[]})
+            if workers is not None:schedule(background,operation)
+            else:
+                try:
+                    await review_command(store,operations,operation['operation_id'])
+                except DomainError as error:
+                    operations.finish(operation['operation_id'],'rejected',{'result_kind':error.code,'message':error.message,'message_ids':[]})
         return operation_response(operations.get(device(x_device_id),body.operation_id))
 
     @app.post('/v1/rooms/{room_id}/designs')
@@ -164,24 +218,21 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         room=operations.room(device(x_device_id),room_id)
         require(room['capture_state']=='complete','capture_incomplete','Complete this capture before generating.')
         operation=operations.submit(device(x_device_id),room_id,'generation',body.model_dump())
-        background.add_task(controller.run,body.operation_id)
+        schedule(background,operation)
         return JSONResponse(operation_response(operation),status_code=202 if operation['state'] not in {'succeeded','rejected','failed','cancelled'} else 200)
 
     @app.get('/v1/operations/{operation_id}')
     def operation_status(operation_id:contracts.ID,background:BackgroundTasks,x_device_id:str=Header()):
         operation=operations.get(device(x_device_id),operation_id)
-        if operation['kind'] in {'generation','find_more'} and operation['state'] in {'queued','running'} and not operation.get('pending_question'):
-            background.add_task(controller.run,operation_id)
+        if operation['kind'] in {'generation','find_more','edit','swap','planning_command'} and operation['state'] in {'queued','running'} and not operation.get('pending_question'):
+            schedule(background,operation)
         return operation_response(operation)
 
     @app.post('/v1/operations/{operation_id}/answers')
     def answer(operation_id:contracts.ID,body:contracts.Answer,background:BackgroundTasks,x_device_id:str=Header()):
         require(body.operation_id==operation_id,'wrong_operation','Answer operation identity differs.',422)
         result=operations.answer(device(x_device_id),operation_id,body.model_dump(exclude_none=True))
-        if result['kind']=='planning_command':
-            from .review import review_command
-            background.add_task(review_command,store,operations,operation_id)
-        else: background.add_task(controller.run,operation_id)
+        schedule(background,result)
         return operation_response(result)
 
     @app.post('/v1/operations/{operation_id}/dismiss-clarification')
@@ -193,6 +244,11 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
     def cancel(operation_id:contracts.ID,body:contracts.Cancellation,x_device_id:str=Header()):
         require(body.operation_id==operation_id,'wrong_operation','Cancellation identity differs.',422)
         return operation_response(operations.cancel(device(x_device_id),operation_id,body.cancellation_id))
+
+    @app.post('/v1/rooms/{room_id}/undo')
+    def undo(room_id:contracts.ID,body:contracts.Undo,x_device_id:str=Header()):
+        from .history import HistoryService
+        return operation_response(HistoryService(store,operations).undo(device(x_device_id),room_id,body.model_dump()))
 
     @app.get('/v1/designs/{design_id}')
     def design(design_id:contracts.ID,x_device_id:str=Header()):
@@ -206,8 +262,24 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         saved=store.get('designs',design_id)
         require(saved is not None and body.expected_active_design_id==design_id,'unknown_design','Design was not found.',404)
         operation=operations.submit(device(x_device_id),saved['room_id'],'find_more',body.model_dump())
-        background.add_task(controller.run,body.operation_id)
+        schedule(background,operation)
         return JSONResponse(operation_response(operation),status_code=202)
+
+    def submit_edit(design_id,body,kind,background,current_device):
+        saved=store.get('designs',design_id)
+        require(saved is not None and body.expected_active_design_id==design_id,'unknown_design','Design was not found.',404)
+        operation=operations.submit(current_device,saved['room_id'],kind,body.model_dump(exclude_none=True))
+        schedule(background,operation)
+        return JSONResponse(operation_response(operation),status_code=202 if operation['state'] not in {'succeeded','rejected','failed','cancelled'} else 200)
+
+    @app.post('/v1/designs/{design_id}/chat')
+    def edit(design_id:contracts.ID,body:contracts.Edit,background:BackgroundTasks,x_device_id:str=Header()):
+        require(bool(body.text.strip()),'invalid_command','Enter a design instruction.',422)
+        return submit_edit(design_id,body,'edit',background,device(x_device_id))
+
+    @app.post('/v1/designs/{design_id}/swap')
+    def swap(design_id:contracts.ID,body:contracts.Swap,background:BackgroundTasks,x_device_id:str=Header()):
+        return submit_edit(design_id,body,'swap',background,device(x_device_id))
 
     @app.get('/v1/searches/{search_id}')
     def search(search_id:contracts.ID,x_device_id:str=Header()):
@@ -216,9 +288,9 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         return {'schema_version':1,'search':saved}
 
     @app.get('/v1/catalog/manifest')
-    def manifest():
+    def manifest(revision:str|None=None):
         from .assets import manifest
-        return manifest()
+        return manifest(revision)
 
     @app.get('/v1/catalog/assets/{asset_id}/{revision}')
     def asset(asset_id:contracts.ID,revision:contracts.ID):

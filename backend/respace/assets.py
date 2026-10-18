@@ -39,6 +39,10 @@ def manifest(revision: str | None = None) -> dict:
 
 def asset_path(asset_id: str, revision: str) -> Path:
     record = next((a for a in manifest()["assets"] if a["asset_id"] == asset_id and a["revision"] == revision), None)
+    if record is None:
+        for saved in sorted((ASSET_ROOT / 'manifests').glob('*.json')):
+            record=next((a for a in manifest(saved.stem)['assets'] if a['asset_id']==asset_id and a['revision']==revision),None)
+            if record is not None:break
     if not record:
         raise ProductError("unknown_asset", "Immutable render asset was not found")
     path = (ASSET_ROOT / record["path"]).resolve()
@@ -75,7 +79,7 @@ def render_descriptor(category: str, variant_id: str | None = None) -> dict:
     return {"kind": asset["kind"] if asset else "standin", "category": category,
             "asset_id": asset["asset_id"] if asset else registry["standin"],
             "asset_revision": asset["revision"] if asset else str(CATEGORY_VERSION),
-            "asset_url": asset["url"] if asset else None, "tint": registry["default_tint"], "texture_url": None,
+            "asset_url": asset["url"] if asset else None, "sha256":asset.get('sha256') if asset else None,"byte_count":asset.get('byte_count') if asset else None,"tint": registry["default_tint"], "texture_url": None,
             "authored_bounds": asset["authored_bounds"] if asset else [1, 1, 1], "units": "meters",
             "scaling_mode": asset["scaling_mode"] if asset else "normalized", "pivot": "bottom_center",
             "forward_axis": "+Z", "up_axis": "+Y"}

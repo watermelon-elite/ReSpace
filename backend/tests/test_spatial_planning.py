@@ -103,3 +103,68 @@ def test_verified_equivalent_question_preserves_private_candidate_and_resumes_sa
     assert resumed["solve_result"]["scene"]["purchase_summary"]["total"] == "100.00"
     assert resumed["solve_result"]["scene"]["items"][0]["id"] == "i_a_0"
     assert resumed["solve_result"]["scene"]["room"] == room
+
+
+def test_explicit_unlock_allows_same_command_move_and_cross_action_cycles_are_rejected():
+    room = normalize_room(native_room(), 'capture', 'room')
+    room['objects'] = [{'id': 'obj', 'category': 'desk', 'fixed_in_place': False}]
+    raw = {'summary': 'Unlock and move', 'unlocks': [{'action_id': 'u', 'target': {'kind': 'object', 'id': 'obj'},
+        'explicit_user_unlock_context': 'unlock and move the desk', 'reason': 'user'}],
+        'moves': [{'action_id': 'm', 'target': {'kind': 'object', 'id': 'obj'},
+        'anchor': {'type': 'room_center'}, 'reason': 'move'}]}
+    result = validate_plan(raw, room, {}, {'intent': 'redesign', 'instructions': {'obj': 'keep'}, 'explicit_unlock_ids': ['obj']})
+    assert result['invalid_count'] == 0
+    assert len(result['plan']['moves']) == 1
+    raw['adds'] = plan()['adds']
+    raw['adds'][0]['anchor'] = {'type': 'next_to', 'target': {'kind': 'object', 'id': 'obj'}, 'side': 'left'}
+    raw['moves'][0]['anchor'] = {'type': 'next_to', 'target': {'kind': 'addition_unit', 'id': 'a', 'add_id': 'a', 'unit_index': 0}, 'side': 'right'}
+    result = validate_plan(raw, room, {'sel': selection()}, {'intent': 'redesign', 'explicit_unlock_ids': ['obj']})
+    assert result['plan']['moves'] == []
+    assert result['plan']['adds'] == []
+    assert sum(d['code'] == 'invalid_dependency' for d in result['diagnostics']) == 2
+
+
+def test_typed_alternative_anchors_are_validated_and_respect_repair_permissions():
+    from respace.solver import solve
+
+    room = normalize_room(native_room(), 'capture', 'room')
+    room['zones'] = [{'id':'z', 'opening_id':'door', 'polygon':[[1,0],[3,0],[3,1],[1,1]]}]
+    request = plan({'type':'against_wall','wall_id':'w_1','alignment':'center',
+        'alternatives':[{'type':'against_wall','wall_id':'w_3','alignment':'center'}]})
+    validation = validate_plan(request, room, {'sel':selection()}, {'intent':'add'})
+    assert not validation['invalid_count']
+    allowed = solve(room, validation['plan'], {'sel':selection()}, {'intent':'add','allow_rotation':False})
+    assert allowed['scene']['items'][0]['placement']['position'] == [2,0,2.7]
+    denied = solve(room, validation['plan'], {'sel':selection()}, {'intent':'add','allow_rotation':False,'allow_alternative_anchors':False})
+    assert denied['scene']['items'] == []
+
+
+def test_alternative_window_anchor_cannot_bypass_sill_clearance():
+    from respace.solver import solve
+
+    room = normalize_room(native_room(), 'capture', 'room')
+    room['zones'] = [{'id':'z', 'opening_id':'door', 'polygon':[[0,0],[4,0],[4,1],[0,1]]}]
+    room['openings'] = [{'id':'window','type':'window','wall_id':'w_3','offset':0,'width':4,'bottom':.4,'height':1}]
+    request = plan({'type':'against_wall','wall_id':'w_1','alignment':'center',
+        'alternatives':[{'type':'in_front_of_window','opening_id':'window'}]})
+    result = solve(room, request, {'sel':selection()}, {'intent':'add','allow_rotation':False})
+    assert result['scene']['items'] == []
+
+
+def test_addition_can_depend_on_accepted_restore_but_cannot_target_an_unrestored_ghost():
+    from respace.solver import solve
+
+    room = normalize_room(native_room(), 'capture', 'room')
+    base = solve(room, plan(), {'sel':selection()}, {'intent':'add'})['scene']
+    base['items'][0]['status'] = 'removed'
+    lamp = {**selection((.2,.2,.4), 'table_lamp'), 'selection_id':'lamp'}
+    request = {'summary':'Bring back desk and lamp', 'restores':[{'action_id':'restore','removed_item_id':'i_a_0','reason':'restore'}],
+        'adds':[{**plan()['adds'][0], 'action_id':'lamp','add_id':'lamp','category':'table_lamp','selection_id':'lamp',
+        'anchor':{'type':'on_top_of','target':{'kind':'item','id':'i_a_0'}}}]}
+    validation = validate_plan(request, room, {'lamp':lamp}, {'intent':'redesign'}, base)
+    assert not validation['diagnostics']
+    result = solve(room, validation['plan'], {'lamp':lamp}, {'intent':'redesign'}, base)
+    assert [o['outcome'] for o in result['action_outcomes']] == ['applied','applied']
+    request['restores'] = []
+    rejected = validate_plan(request, room, {'lamp':lamp}, {'intent':'redesign'}, base)
+    assert rejected['plan']['adds'] == []

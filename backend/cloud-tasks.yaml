@@ -1,0 +1,11 @@
+# Queue API representation; create/update this queue in REGION before enabling API.
+name: projects/PROJECT_ID/locations/REGION/queues/respace-continuations
+rateLimits:
+  maxDispatchesPerSecond: 5
+  maxConcurrentDispatches: 5
+retryConfig:
+  maxAttempts: -1
+  maxRetryDuration: 0s
+  minBackoff: 5s
+  maxBackoff: 300s
+  maxDoublings: 5

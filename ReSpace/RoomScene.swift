@@ -9,6 +9,8 @@ struct RoomScene: UIViewRepresentable {
     @Binding var selectedID: String?
     let ghosts: Bool
     let resetToken: Int
+    var assetBaseURL: URL? = nil
+    var assetManifest: JSONValue = .null
     func makeCoordinator() -> Coordinator { Coordinator(self) }
     func makeUIView(context: Context) -> ARView {
         let view = ARView(frame: .zero, cameraMode: .nonAR, automaticallyConfigureSession: false)
@@ -32,6 +34,11 @@ struct RoomScene: UIViewRepresentable {
         var elevation: Float = .pi / 4
         var objects: [String: ModelEntity] = [:]
         var colors: [String: UIColor] = [:]
+        var itemRoots: [String: Entity] = [:]
+        var itemDocuments: [String: JSONValue] = [:]
+        var highlights: [String: ModelEntity] = [:]
+        var assetTasks: [String: Task<Void, Never>] = [:]
+        var lastManifest: JSONValue = .null
         var wallEntities: [(Entity, SIMD3<Float>, SIMD3<Float>)] = []
         init(_ parent: RoomScene) { self.parent = parent }
         func attach(_ view: ARView) {
@@ -46,15 +53,24 @@ struct RoomScene: UIViewRepresentable {
             update()
         }
         func update() {
-            if last != parent.document || lastGhosts != parent.ghosts {
+            let changed = last != parent.document || lastGhosts != parent.ghosts || lastManifest != parent.assetManifest
+            if changed {
                 let first = last == .null
-                last = parent.document; lastGhosts = parent.ghosts
-                content.removeFromParent(); content = Entity(); root.addChild(content); objects = [:]; colors = [:]; wallEntities = []
-                if parent.native { buildNative(parent.document) } else { buildScene(parent.document) }
+                if !parent.native, !first, last["room"] == parent.document["room"] {
+                    if lastManifest != parent.assetManifest { itemDocuments.removeAll() }
+                    reconcileItems(parent.document)
+                } else {
+                    assetTasks.values.forEach { $0.cancel() }; assetTasks.removeAll()
+                    content.removeFromParent(); content = Entity(); root.addChild(content)
+                    objects = [:]; colors = [:]; wallEntities = []; itemRoots = [:]; itemDocuments = [:]; highlights = [:]
+                    if parent.native { buildNative(parent.document) } else { buildScene(parent.document) }
+                }
+                last = parent.document; lastGhosts = parent.ghosts; lastManifest = parent.assetManifest
                 if first { reset() }
             }
             if lastReset != parent.resetToken { lastReset = parent.resetToken; reset() }
             for (id, entity) in objects { entity.model?.materials = [material(id == parent.selectedID ? .systemYellow : colors[id] ?? .systemGray, alpha: entity.name.hasPrefix("ghost:") ? 0.2 : 1)] }
+            for (id, highlight) in highlights { highlight.isEnabled = id == parent.selectedID }
             positionCamera()
         }
         func material(_ color: UIColor, alpha: Float = 1) -> SimpleMaterial { SimpleMaterial(color: color.withAlphaComponent(CGFloat(alpha)), roughness: 0.8, isMetallic: false) }
@@ -97,12 +113,74 @@ struct RoomScene: UIViewRepresentable {
                 }
                 strip(cursor, length, 0, height)
             }
-            for item in SceneItems.visible(in: scene, showGhosts: parent.ghosts) {
+            reconcileItems(scene)
+        }
+        func reconcileItems(_ scene: JSONValue) {
+            let visible = SceneItems.visible(in: scene, showGhosts: parent.ghosts)
+            let ids = Set(visible.map { $0["id"].text })
+            for id in Array(itemRoots.keys) where !ids.contains(id) {
+                assetTasks.removeValue(forKey: id)?.cancel(); itemRoots.removeValue(forKey: id)?.removeFromParent()
+                itemDocuments.removeValue(forKey: id); highlights.removeValue(forKey: id)
+            }
+            for item in visible {
+                let id = item["id"].text
+                guard itemDocuments[id] != item else { continue }
+                assetTasks.removeValue(forKey: id)?.cancel(); itemRoots.removeValue(forKey: id)?.removeFromParent()
                 let removed = item["status"].text == "removed"
-                let p = removed ? item["last_valid_placement"] : item["placement"]
-                guard let placement = try? Placement(p) else { continue }
-                let size = placement.size.map(Float.init); let pos = placement.position.map(Float.init)
-                _ = box(size: [size[0], size[2], size[1]], at: [pos[0], pos[1] + size[2] / 2, pos[2]], yaw: Float(placement.yaw), color: tint(item["render"]["tint"].string), id: item["id"].string ?? item["item_id"].string, alpha: removed ? 0.2 : 1)
+                guard let placement = try? Placement(removed ? item["last_valid_placement"] : item["placement"]) else { continue }
+                let size = SIMD3<Float>(Float(placement.size[0]), Float(placement.size[2]), Float(placement.size[1]))
+                let container = Entity(); container.name = id
+                container.position = SIMD3<Float>(Float(placement.position[0]), Float(placement.position[1]), Float(placement.position[2]))
+                container.orientation = simd_quatf(angle: Float(placement.yaw), axis: [0, 1, 0])
+                if removed { container.components.set(OpacityComponent(opacity: 0.2)) }
+                content.addChild(container); itemRoots[id] = container; itemDocuments[id] = item
+                let fallback = ModelEntity(mesh: .generateBox(size: size), materials: [material(tint(item["render"]["tint"].string))])
+                fallback.position.y = size.y / 2; fallback.generateCollisionShapes(recursive: false); container.addChild(fallback)
+                let label = ModelEntity(mesh: .generateText(item["label"].string ?? item["category"].text, extrusionDepth: 0.001, font: .systemFont(ofSize: 0.12)), materials: [UnlitMaterial(color: .darkGray)])
+                label.position = [-size.x / 2, size.y + 0.03, 0]; container.addChild(label)
+                let highlight = ModelEntity(mesh: .generateBox(size: size + SIMD3(repeating: 0.01)), materials: [material(.systemYellow, alpha: 0.16)])
+                highlight.position.y = size.y / 2; highlight.isEnabled = id == parent.selectedID; container.addChild(highlight); highlights[id] = highlight
+                assetTasks[id] = Task { [weak self, weak container] in
+                    guard let self, let container else { return }
+                    await self.upgrade(item, placement: placement, container: container, fallback: fallback, label: label)
+                }
+            }
+        }
+        func upgrade(_ item: JSONValue, placement: Placement, container: Entity, fallback: ModelEntity, label: ModelEntity) async {
+            guard let baseURL = parent.assetBaseURL else { return }
+            let descriptor = item["render"]
+            let id = item["id"].text
+            if descriptor["kind"].text == "panel" || ["rug", "wall_art", "mirror"].contains(item["category"].text) {
+                if descriptor["texture_url"].string != nil {
+                    do {
+                        let url = try await RenderAssetCache.shared.texture(for: descriptor, baseURL: baseURL)
+                        guard let texture = await RealityAssetLoader.texture(from: url) else { return }
+                        guard !Task.isCancelled, itemRoots[id] === container else { return }
+                        var surface = SimpleMaterial(color: .white, roughness: 0.8, isMetallic: false)
+                        surface.color = .init(tint: .white, texture: .init(texture))
+                        fallback.model?.materials = [surface]; label.removeFromParent()
+                    } catch { /* Neutral correctly sized panel remains visible. */ }
+                }
+                return
+            }
+            var requested = descriptor.object
+            let assets = parent.assetManifest["assets"].array
+            if let exact = assets.first(where: { $0["asset_id"] == descriptor["asset_id"] && $0["revision"] == descriptor["asset_revision"] }) {
+                requested["sha256"] = exact["sha256"]; requested["byte_count"] = exact["byte_count"]
+                if requested["asset_url"] == nil || requested["asset_url"] == .null { requested["asset_url"] = exact["url"] }
+            }
+            var candidates: [JSONValue] = [.object(requested)]
+            if let standin = assets.first(where: { $0["kind"].text == "standin" && $0["category"].text == item["category"].text && $0["asset_id"] != descriptor["asset_id"] }) { candidates.append(standin) }
+            for candidate in candidates {
+                do {
+                    let asset = try RenderAsset(candidate)
+                    let url = try await RenderAssetCache.shared.file(for: asset, baseURL: baseURL)
+                    let model = try await RealityAssetLoader.load(asset, from: url, savedSize: placement.size)
+                    guard !Task.isCancelled, itemRoots[id] === container else { return }
+                    model.generateCollisionShapes(recursive: true)
+                    RealityAssetLoader.install(model, in: container, replacing: [fallback, label])
+                    return
+                } catch { if Task.isCancelled { return } }
             }
         }
         func buildNative(_ room: JSONValue) {
@@ -190,6 +268,14 @@ struct RoomScene: UIViewRepresentable {
         @objc func orbit(_ gesture: UIPanGestureRecognizer) { let delta = gesture.translation(in: view); gesture.setTranslation(.zero, in: view); azimuth -= Float(delta.x) * 0.007; elevation = min(1.45, max(0.08, elevation + Float(delta.y) * 0.007)); positionCamera() }
         @objc func pan(_ gesture: UIPanGestureRecognizer) { let d = gesture.translation(in: view); gesture.setTranslation(.zero, in: view); let right = SIMD3<Float>(cos(azimuth), 0, -sin(azimuth)); let forward = SIMD3<Float>(sin(azimuth), 0, cos(azimuth)); center -= right * Float(d.x) * radius * 0.0015; center -= forward * Float(d.y) * radius * 0.0015; positionCamera() }
         @objc func zoom(_ gesture: UIPinchGestureRecognizer) { radius = min(40, max(0.8, radius / Float(gesture.scale))); gesture.scale = 1; positionCamera() }
-        @objc func select(_ gesture: UITapGestureRecognizer) { guard let entity = view?.entity(at: gesture.location(in: view)) else { parent.selectedID = nil; return }; let id = entity.name.replacingOccurrences(of: "ghost:", with: ""); if objects[id] != nil { parent.selectedID = id } }
+        @objc func select(_ gesture: UITapGestureRecognizer) {
+            var candidate = view?.entity(at: gesture.location(in: view))
+            while let entity = candidate {
+                let id = entity.name.replacingOccurrences(of: "ghost:", with: "")
+                if objects[id] != nil || itemRoots[id] != nil { parent.selectedID = id; return }
+                candidate = entity.parent
+            }
+            parent.selectedID = nil
+        }
     }
 }

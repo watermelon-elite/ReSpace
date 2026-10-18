@@ -45,6 +45,13 @@ def test_whole_packs_surplus_removal_and_decimal_cents():
     assert calculate_purchases(items, {selected["offer_id"]: selected}, "300.00")["total"] == "100.00"
 
 
+def test_replacement_product_on_original_object_is_purchased_without_losing_original_identity():
+    selected=offer()
+    item={'id':'i_original','object_id':'original','origin':'existing','status':'existing','replacement_of_object_id':'original','variant_id':'v_chair','offer_id':selected['offer_id']}
+    assert calculate_purchases([item],{selected['offer_id']:selected},'300.00')['total']=='100.00'
+    assert calculate_purchases([{**item,'status':'removed'}],{selected['offer_id']:selected},'300.00')['total']=='0.00'
+
+
 def test_dimensions_convert_all_axes_and_reject_package_missing_axis():
     raw = {"exact_variant": True, "classification": "item", "measurements": [
         {"axis": axis, "label": axis.title(), "value": value, "unit": "in"}

@@ -69,6 +69,8 @@ class OperationService:
             return operation
 
     def guard(self, operation_id, allow_question=False):
+        from .workers import assert_worker_lease
+        assert_worker_lease(self.store,operation_id)
         operation=self.store.get('operations',operation_id)
         require(operation is not None,'unknown_operation','Operation no longer exists.',404)
         room=self.room(operation['device_id'],operation['room_id'])
@@ -104,12 +106,24 @@ class OperationService:
             question.setdefault('min_selections',1)
             question.setdefault('max_selections',len(choices) if question['kind']=='multi_choice' else 1)
             require(question['kind'] not in {'single_choice','multi_choice','listing_choice'} or bool(choices),'invalid_question','Choice questions need options.',422)
-            require(not any(old.get('topic') and old.get('topic')==question.get('topic') for old in operation['question_history']),'known_answer','This topic was already asked.')
+            require(not any(answer['question'].get('topic') and answer['question'].get('topic')==question.get('topic') for answer in self.effective_answers(operation)),'known_answer','This topic was already asked.')
             operation.update(state='needs_clarification',phase='awaiting_answer',pending_question=question,question_revision=question['question_revision'],updated_at=now())
             operation['question_history'].append(question)
             self.store.put('messages',question['question_id'],{'message_id':question['question_id'],'room_id':operation['room_id'],'context':'review' if operation['kind']=='planning_command' else 'design','role':'assistant','event_kind':'question','text':question['text'],'question':question,'created_at':now(),'operation_id':operation_id,'base_context':operation['base_context']})
             self.store.put('operations',operation_id,operation)
             return question
+
+    @staticmethod
+    def effective_answers(operation):
+        latest={answer['question_id']:answer for answer in operation['answer_history']}
+        return sorted(latest.values(),key=lambda answer:answer['question']['question_revision'])
+
+    @staticmethod
+    def can_revise(operation):
+        question=operation.get('pending_question') or {}
+        lease=operation.get('worker_lease') or {}
+        active_lease=lease.get('expires_at') and lease['expires_at']>now()
+        return bool(operation['kind']=='generation' and operation['state']=='needs_clarification' and question.get('context')=='interview' and not operation.get('controller',{}).get('selection') and not active_lease)
 
     def answer(self, device_id, operation_id, request):
         with self.store.transaction():
@@ -119,7 +133,15 @@ class OperationService:
                 require(existing['request']==request,'identity_conflict','Reply identity already has a different payload.')
                 return operation
             operation,_=self.guard(operation_id,allow_question=True)
-            question=operation.get('pending_question')
+            revision_of=request.get('revision_of_answer_id')
+            if revision_of:
+                require(self.can_revise(operation),'revision_boundary_required','Revise answers only while the interview is waiting at a sequential boundary.')
+                original=next((answer for answer in self.effective_answers(operation) if answer['answer_id']==revision_of),None)
+                if original is None:
+                    raise DomainError('stale_answer_revision','Choose the latest saved answer revision.')
+                question=original['question']
+            else:
+                question=operation.get('pending_question')
             require(question is not None,'stale_question','There is no pending question.')
             require(request.get('operation_id',operation_id)==operation_id and request['question_id']==question['question_id'] and request['expected_decision_revision']==operation['decision_revision'] and request['expected_question_revision']==question['question_revision'],'stale_question','The question or decision revision changed.')
             action=request.get('action','answer')
@@ -150,7 +172,13 @@ class OperationService:
             labels=[choice['label'] for choice in question.get('choices',[]) if choice['choice_id'] in request.get('choice_ids',[])]
             answer_text=request.get('text') or ', '.join(labels) or str(request.get('number') if request.get('number') is not None else action)
             self.store.put('messages',answer_id,{'message_id':answer_id,'room_id':operation['room_id'],'context':'review' if operation['kind']=='planning_command' else 'design','role':'user','event_kind':'answer','text':answer_text,'created_at':now(),'operation_id':operation_id,'base_context':question['base_context']})
-            operation['answer_history'].append({'answer_id':answer_id,'reply_id':request['reply_id'],'question_id':question['question_id'],'question':question,'request':request,'created_at':now()})
+            answer={'answer_id':answer_id,'reply_id':request['reply_id'],'question_id':question['question_id'],'question':question,'request':request,'created_at':now()}
+            if revision_of:
+                answer['revision_of_answer_id']=revision_of
+                operation.setdefault('decision_history',[]).append({'decision_revision':operation['decision_revision'],'controller':operation.get('controller',{}),'pending_question':operation['pending_question']})
+                operation['controller']={}
+                operation.pop('spatial',None)
+            operation['answer_history'].append(answer)
             operation.update(decision_revision=operation['decision_revision']+1,pending_question=None,state='queued',phase='answer_saved',updated_at=now())
             self.store.put('operations',operation_id,operation)
             return operation

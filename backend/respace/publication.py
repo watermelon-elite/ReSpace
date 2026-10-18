@@ -28,7 +28,7 @@ class Publisher:
             require(self.store.get('snapshots',snapshot_id)==snapshot,'stale_snapshot','The immutable snapshot is unavailable.')
             design_id,message_id=identity(),identity()
             scene.update(design_id=design_id,parent_id=room.get('active_design_id'),room=deepcopy(measured),action_outcomes=candidate.get('action_outcomes',[]))
-            design={'schema_version':1,'design_id':design_id,'parent_id':room.get('active_design_id'),'room_id':room['room_id'],'capture_id':room['latest_capture_id'],'snapshot_id':snapshot_id,'planning_snapshot':deepcopy(self.store.get('planning',room['room_id'])),'decision_snapshot':deepcopy(operation['answer_history']),'selection_snapshot':deepcopy(selection),'generation_inputs':deepcopy(operation['request']),'plan':deepcopy(plan),'scene':scene,'created_at':now()}
+            design={'schema_version':1,'design_id':design_id,'parent_id':room.get('active_design_id'),'room_id':room['room_id'],'capture_id':snapshot['capture_id'],'snapshot_id':snapshot_id,'planning_snapshot':deepcopy(candidate.get('planning_snapshot',self.store.get('planning',room['room_id']))),'decision_snapshot':deepcopy(operation['answer_history']),'selection_snapshot':deepcopy(selection),'generation_inputs':deepcopy(operation['request']),'plan':deepcopy(plan),'scene':scene,'created_at':now()}
             entry={'message_id':message_id,'room_id':room['room_id'],'context':'design','role':'assistant','event_kind':'outcome','text':scene.get('summary','Design saved.'),'created_at':now(),'operation_id':operation_id,'base_context':operation['base_context'],'result_version_id':design_id}
             self.store.put('designs',design_id,design)
             self.store.put('messages',message_id,entry)

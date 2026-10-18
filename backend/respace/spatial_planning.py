@@ -10,7 +10,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from .categories import CATEGORIES, SUPPORT_CATEGORIES
-from .solver import _room, _target_id, solve
+from .solver import _room, _target_id, _anchor_target_ids, solve
 
 
 class PlanningFailure(Exception):
@@ -41,6 +41,7 @@ class Anchor(Record):
     distance: float | None = Field(default=None, gt=0)
     opening_id: str | None = None
     height: float | None = Field(default=None, gt=0)
+    alternatives: list["Anchor"] = Field(default_factory=list)
 
 
 class PlanMove(Record):
@@ -99,13 +100,17 @@ class DesignPlan(Record):
     unlocks: list[PlanUnlock] = Field(default_factory=list)
 
 
-_ACTIONS = {"moves": PlanMove, "removes": PlanRemove, "adds": Addition,
+_ACTIONS: dict[str, type[Record]] = {"moves": PlanMove, "removes": PlanRemove, "adds": Addition,
             "replaces": PlanReplace, "restores": PlanRestore, "unlocks": PlanUnlock}
 
 
 def _anchor_valid(anchor, category, room, targets):
     kind = anchor["type"]
-    allowed = {"type"}
+    allowed = {"type", "alternatives"}
+    for alternative in anchor.get("alternatives", []):
+        if alternative.get("alternatives"):
+            raise ValueError("Alternative Anchors cannot contain more alternatives.")
+        _anchor_valid(alternative, category, room, targets)
     if kind in ("against_wall", "on_wall"):
         allowed |= {"wall_id", "alignment", "offset"}
         wall = next((w for w in room["walls"] if w["id"] == anchor.get("wall_id")), None)
@@ -157,7 +162,7 @@ def validate_plan(raw, room_snapshot, selections, constraints, base_scene=None):
         raise PlanningFailure("malformed_plan", "Spatial plan contains unsupported top-level fields.")
     objects = {obj["id"]: obj for obj in room["objects"]}
     base_items = {i["id"]: i for i in (base_scene or {}).get("items", [])}
-    targets = {f"i_{key}": obj for key, obj in objects.items()}
+    targets = {f"i_{key}": obj for key, obj in objects.items()} if base_scene is None else {}
     targets.update({key: value for key,value in base_items.items() if value.get("status") != "removed"})
     parsed: dict[str, list[dict[str, Any]]] = {}
     total = 0
@@ -191,6 +196,10 @@ def validate_plan(raw, room_snapshot, selections, constraints, base_scene=None):
                 diagnostics.append({"code": "invalid_plan_entry", "group": group,
                     "action_id": entry.get("action_id") if isinstance(entry, dict) else None,
                     "reason": str(exc) if not isinstance(exc, ValidationError) else "Entry does not match its typed action contract."})
+    targets.update({e["removed_item_id"]: base_items[e["removed_item_id"]] for e in parsed["restores"]
+                    if e["removed_item_id"] in base_items and base_items[e["removed_item_id"]].get("status") == "removed"})
+    explicit_unlock_targets = {_target_id(e["target"]) for e in parsed["unlocks"]
+        if e["explicit_user_unlock_context"] and (e["target"]["id"] in constraints.get("explicit_unlock_ids", []) or _target_id(e["target"]) in constraints.get("explicit_unlock_ids", []))}
     for group, entries in parsed.items():
         for entry in entries:
             try:
@@ -214,7 +223,7 @@ def validate_plan(raw, room_snapshot, selections, constraints, base_scene=None):
                     category = target["category"]
                     if selections[selection_id]["category"] != category:
                         raise ValueError("Replacement category is incompatible with its target.")
-                    if target.get("fixed_in_place") or target.get("instruction") == "keep" or constraints.get("instructions", {}).get(target.get("object_id")) == "keep":
+                    if target.get("fixed_in_place") or ((target.get("instruction") == "keep" or constraints.get("instructions", {}).get(target.get("object_id") or target["id"]) == "keep") and target["id"] not in explicit_unlock_targets):
                         raise ValueError("Protected target cannot be replaced.")
                 elif group == "restores":
                     target = base_items.get(entry["removed_item_id"])
@@ -227,13 +236,13 @@ def validate_plan(raw, room_snapshot, selections, constraints, base_scene=None):
                     if not target:
                         raise ValueError("Unknown target identity.")
                     category = target["category"]
-                    instruction = constraints.get("instructions", {}).get(ref["id"], target.get("instruction", "decide"))
+                    instruction = constraints.get("instructions", {}).get(target.get("object_id") or ref["id"], target.get("instruction", "decide"))
                     if target.get("fixed_in_place"):
                         raise ValueError("Permanent fixture cannot be changed or unlocked.")
                     if group == "unlocks":
-                        if ref["id"] not in constraints.get("explicit_unlock_ids", []) or not entry["explicit_user_unlock_context"]:
+                        if _target_id(ref) not in explicit_unlock_targets:
                             raise ValueError("Unlock requires the explicit user context.")
-                    elif instruction == "keep":
+                    elif instruction == "keep" and _target_id(ref) not in explicit_unlock_targets:
                         raise ValueError("Kept target requires an explicit unlock.")
                 if "anchor" in entry:
                     _anchor_valid(entry["anchor"], category, room, targets)
@@ -246,20 +255,23 @@ def validate_plan(raw, room_snapshot, selections, constraints, base_scene=None):
     removed = {_target_id(e["target"]) for e in accepted["removes"]}
     addition_targets = {f"i_{e['add_id']}_{unit}": e["action_id"] for e in accepted["adds"] for unit in range(e["quantity"])}
     anchor_entries = accepted["adds"] + accepted["moves"]
-    graph = {e["action_id"]: addition_targets.get(_target_id(e["anchor"].get("target"))) for e in anchor_entries}
-    for start in graph:
-        seen, current = set(), start
-        while current in graph and current not in seen:
-            seen.add(current)
-            current = graph[current]
-        if current in seen:
-            rejected.update(seen)
+    changed_targets = {**addition_targets, **{_target_id(e["target"]): e["action_id"] for e in accepted["moves"]}, **{e["removed_item_id"]: e["action_id"] for e in accepted["restores"]}}
+    graph = {e["action_id"]: {changed_targets[target] for target in _anchor_target_ids(e["anchor"]) if target in changed_targets} for e in anchor_entries}
+    for move in accepted["moves"]:
+        creation = addition_targets.get(_target_id(move["target"]))
+        if creation:
+            graph[move["action_id"]].add(creation)
+    remaining = set(graph)
+    while remaining:
+        ready = {key for key in remaining if not (graph[key] & remaining)}
+        if not ready:
+            rejected.update(remaining)
+            break
+        remaining -= ready
     for _ in range(len(anchor_entries) + 1):
         for entry in anchor_entries:
-            target = _target_id(entry["anchor"].get("target"))
-            if target in removed or graph[entry["action_id"]] in rejected or (target and target not in targets):
-                rejected.add(entry["action_id"])
-            if target and target.startswith("i_") and target not in addition_targets and target not in {f"i_{key}" for key in objects} and target not in base_items:
+            references = _anchor_target_ids(entry["anchor"])
+            if references & removed or graph[entry["action_id"]] & rejected or any(target not in targets and target not in changed_targets for target in references):
                 rejected.add(entry["action_id"])
     for group in ("adds", "moves"):
         for entry in list(accepted[group]):
@@ -269,6 +281,7 @@ def validate_plan(raw, room_snapshot, selections, constraints, base_scene=None):
     hard_errors = []
     for key, field in (("must_have_add_ids", "add_id"), ("must_have_selection_ids", "selection_id"), ("must_have_categories", "category")):
         actual = {e[field] for e in accepted["adds"]}
+        actual.update(item[field] for item in base_items.values() if item.get('status')!='removed' and item.get(field))
         for missing in set(constraints.get(key, [])) - actual:
             hard_errors.append({"code": "missing_must_have", "field": key, "id": missing, "reason": "A hard requirement cannot be filtered from the plan."})
     plan = {"schema_version": 1, "summary": raw["summary"], **accepted,

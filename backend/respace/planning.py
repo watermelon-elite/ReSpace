@@ -6,7 +6,7 @@ from copy import deepcopy
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
-from .operations import DomainError, identity, now, require
+from .operations import DomainError, OperationService, identity, now, require
 from .products import ProductError, calculate_purchases, money
 
 
@@ -61,11 +61,11 @@ class PlanningController:
             operation.update(phase=phase,state='running',updated_at=now())
             self.store.put('operations',operation_id,operation)
 
-    async def run(self, operation_id):
+    async def run(self, operation_id, *, bounded=False):
         if operation_id in self._running: return
         self._running.add(operation_id)
         try:
-            await self._run(operation_id)
+            await self._run(operation_id, bounded=bounded)
         except (DomainError,ProductError) as error:
             try:
                 failed=getattr(error,'retryable',False) or error.code in {'planning_provider_failure','shopping_provider_failure','extraction_failure','provider_error'}
@@ -80,7 +80,7 @@ class PlanningController:
         finally:
             self._running.discard(operation_id)
 
-    async def _run(self, operation_id):
+    async def _run(self, operation_id, *, bounded=False):
         operation=self.store.get('operations',operation_id)
         if not operation or operation['state'] in {'succeeded','failed','rejected','cancelled'} or operation.get('pending_question'): return
         operation,room=self.operations.guard(operation_id)
@@ -88,7 +88,10 @@ class PlanningController:
         if operation['kind']=='find_more':
             self.operations.checkpoint(operation_id,'searching_products')
             design=self.store.get('designs',request['expected_active_design_id'])
-            result=await asyncio.to_thread(self.products.find_more,design,request['item_id'],{'function':request.get('refinements','')},operation_id,{**operation['base_context'],'operation_id':operation_id})
+            result=await asyncio.to_thread(self.products.find_more,design,request['item_id'],{'function':request.get('refinements','')},operation_id,{**operation['base_context'],'operation_id':operation_id},**({'bounded':True} if bounded else {}))
+            if result['state']=='running':
+                self._save(operation_id,'search_progress',{'search_id':result['search_id'],'phase':result['phase']},'searching_products')
+                return
             self.operations.finish(operation_id,'succeeded',{'result_kind':'search','search_id':result['search_id'],'message_ids':[]})
             return
         require(operation['kind']=='generation','unavailable_capability','This operation kind is unavailable.',422)
@@ -109,32 +112,59 @@ class PlanningController:
             from .categories import CATEGORIES
             mentioned=[category for category in CATEGORIES if category.replace('_',' ') in request.get('text','').lower()]
             if mentioned:
-                initial=await asyncio.to_thread(self.products.search,self._search_request(operation,{'category':mentioned[0],'function':request.get('text','')}),operation_id+':initial')
+                initial=await asyncio.to_thread(self.products.search,self._search_request(operation,{'category':mentioned[0],'function':request.get('text','')}),operation_id+f':decision:{len(operation.get("decision_history",[]))}:initial',**({'bounded':True} if bounded else {}))
             else:
                 initial={'state':'empty','displayed_choices':[],'reasons':['No furnishing category has been requested yet; clarify room-use priorities before a category-specific discovery.']}
+            if initial['state']=='running':
+                self._save(operation_id,'initial_search_progress',{'search_id':initial['search_id'],'phase':initial['phase']},'preparing_context')
+                return
             self._save(operation_id,'initial_products',initial,'preparing_context')
+            if bounded: return
         while True:
             operation,_=self.operations.guard(operation_id)
             data=operation['controller']
             if data.get('selection'):
                 require(self.spatial is not None,'unavailable_capability','Spatial processing is not configured.',503)
-                await self.spatial(operation_id,data['selection'])
+                if bounded:await self.spatial(operation_id,data['selection'],bounded=True)
+                else:await self.spatial(operation_id,data['selection'])
                 return
             actions=data.get('actions',[])
             # Every completed external action is durable before asking for another.
             index=len(actions)
             pending=data.get('pending_action')
             if pending is None:
-                context={'measured_context':capture.get('measured_context',{}),'planning':self.store.get('planning',room['room_id']),'request':{**request,'intent':self.effective_intent(operation)},'answers':operation['answer_history'],'initial_products':data['initial_products'],'actions':actions,'approved_budget':self.approved_budget(operation),'categories':list(__import__('respace.categories',fromlist=['CATEGORIES']).CATEGORIES)}
+                context={'measured_context':capture.get('measured_context',{}),'planning':self.store.get('planning',room['room_id']),'request':{**request,'intent':self.effective_intent(operation)},'answers':self.operations.effective_answers(operation),'initial_products':data['initial_products'],'actions':actions,'approved_budget':self.approved_budget(operation),'categories':list(__import__('respace.categories',fromlist=['CATEGORIES']).CATEGORIES)}
                 self.operations.checkpoint(operation_id,'interview')
                 pending=ModelAction.model_validate(await self.model.act(context)).model_dump()
                 self._save(operation_id,'pending_action',pending,'interview')
+                if bounded: return
             action,payload=pending['action'],pending['payload']
             if action=='ask_user':
-                question=await asyncio.to_thread(self._verified_question,operation,payload)
+                prepared_budget=None
+                if bounded and payload.get('kind')=='budget' and not payload.get('proposal_id'):
+                    budget_check=data.get('budget_verification')
+                    if budget_check is None or budget_check['action_index']!=index:
+                        sets=[payload.get('proposed_selected',[]),*payload.get('alternative_sets',[])]
+                        budget_check={'sets':[self._resolve_selected(operation,{'selected':records}) for records in sets],
+                                      'index':0,'verified':[],'action_index':index}
+                        self._save(operation_id,'budget_verification',budget_check,'verifying_budget')
+                        return
+                    if budget_check['index']<len(budget_check['sets']):
+                        set_index=budget_check['index']
+                        checked=await asyncio.to_thread(self.products.verify_selection,budget_check['sets'][set_index],self.approved_budget(operation),
+                            enforce_budget=False,bounded=True,verification_id=f'{operation_id}:decision:{len(operation.get("decision_history",[]))}:question:{index}:budget:{set_index}',
+                            context={'room_id':room['room_id'],'operation_id':operation_id})
+                        if checked['state']=='completed':
+                            budget_check['verified'].append(checked['selected'])
+                            budget_check['index']+=1
+                        self._save(operation_id,'budget_verification',budget_check,'verifying_budget')
+                        return
+                    prepared_budget=budget_check['verified']
+                question=None if bounded else await asyncio.to_thread(self._verified_question,operation,payload)
                 # Question and consumed action commit together so response loss cannot ask twice.
                 with self.store.transaction():
                     current,_=self.operations.guard(operation_id)
+                    if bounded:question=self._verified_question(operation,payload,prepared_budget)
                     current['controller']['pending_action']=None
                     current['controller'].setdefault('actions',[]).append({'action':action,'payload':payload,'reason':pending['reason']})
                     self.store.put('operations',operation_id,current)
@@ -142,10 +172,25 @@ class PlanningController:
                 return
             if action=='search_products':
                 self.operations.checkpoint(operation_id,'searching_products')
-                result=await asyncio.to_thread(self.products.search,self._search_request(operation,payload),f'{operation_id}:search:{index}')
+                result=await asyncio.to_thread(self.products.search,self._search_request(operation,payload),f'{operation_id}:decision:{len(operation.get("decision_history",[]))}:search:{index}',**({'bounded':True} if bounded else {}))
+                if result['state']=='running':
+                    self._save(operation_id,'search_progress',{'search_id':result['search_id'],'phase':result['phase']},'searching_products')
+                    return
             else:
-                selected=self._resolve_selected(operation,payload)
-                verified=await asyncio.to_thread(self.products.verify_selection,selected,self.approved_budget(operation))
+                if bounded:
+                    check=data.get('selection_verification')
+                    if check is None:
+                        check={'choices':self._resolve_selected(operation,payload),'verification_id':f'{operation_id}:decision:{len(operation.get("decision_history",[]))}:selection:{index}'}
+                        self._save(operation_id,'selection_verification',check,'verifying_selection')
+                        return
+                    checked=await asyncio.to_thread(self.products.verify_selection,check['choices'],self.approved_budget(operation),bounded=True,verification_id=check['verification_id'],context={'room_id':room['room_id'],'operation_id':operation_id})
+                    if checked['state']=='running':
+                        self._save(operation_id,'selection_verification_progress',{'verification_id':check['verification_id'],'verified_count':len(checked['selected'])},'verifying_selection')
+                        return
+                    verified=checked['selected']
+                else:
+                    selected=self._resolve_selected(operation,payload)
+                    verified=await asyncio.to_thread(self.products.verify_selection,selected,self.approved_budget(operation))
                 proposed: list[dict]=[]
                 for record in verified:
                     require(isinstance(record['quantity'],int) and not isinstance(record['quantity'],bool) and 1<=record['quantity']<=20,'invalid_quantity','Select a bounded physical quantity.',422)
@@ -158,12 +203,14 @@ class PlanningController:
                     self.operations.guard(operation_id)
                     self.store.put('selections',selection['selection_snapshot_id'],selection)
                     self._save(operation_id,'selection',selection,'selection_finalized')
+                if bounded: return
                 continue
             with self.store.transaction():
                 current,_=self.operations.guard(operation_id)
                 current['controller'].setdefault('actions',[]).append({'action':action,'payload':payload,'result':result,'reason':pending['reason']})
                 current['controller']['pending_action']=None
                 self.store.put('operations',operation_id,current)
+            if bounded: return
 
     def _search_request(self, operation, payload):
         allowed={k:payload[k] for k in ('category','function','quantity','must_have','avoid') if k in payload}
@@ -172,7 +219,7 @@ class PlanningController:
     @staticmethod
     def effective_intent(operation):
         intent=operation['request'].get('intent','add')
-        for answer in operation['answer_history']:
+        for answer in OperationService.effective_answers(operation):
             if answer['question'].get('topic')=='intent_conflict':
                 choices=answer['request'].get('choice_ids',[])
                 if choices==['redesign']: intent='redesign'
@@ -182,7 +229,7 @@ class PlanningController:
     @staticmethod
     def approved_budget(operation):
         budget=operation['request']['budget']
-        for answer in operation['answer_history']:
+        for answer in OperationService.effective_answers(operation):
             approval=answer['request'].get('budget_approval')
             if approval and answer['question']['kind']=='budget' and answer['request'].get('action','answer')=='answer': budget=approval['new_ceiling']
         return budget
@@ -194,7 +241,7 @@ class PlanningController:
         for action in controller.get('actions',[]): choices.extend(action.get('result',{}).get('displayed_choices',[]))
         return choices
 
-    def _verified_question(self, operation, payload):
+    def _verified_question(self, operation, payload, verified_budget_sets=None):
         question=deepcopy(payload)
         if question.get('topic')=='intent_conflict':
             question.update(kind='single_choice',text='Should this design use Full redesign or preserve existing Objects with Add?',choices=[{'choice_id':'redesign','label':'Full redesign — allow changes to unprotected Objects'},{'choice_id':'keep_add','label':'Keep Add — preserve existing Objects'}],allow_skip=False,allow_delegate=False)
@@ -206,9 +253,13 @@ class PlanningController:
                 choice['listing']=record
                 choice['image_url']=next(iter(record.get('variant',{}).get('image_references',[])),None)
         if question.get('kind')=='budget':
+            prepared=iter(verified_budget_sets) if verified_budget_sets is not None else None
             def purchase_inputs(selected):
-                resolved=self._resolve_selected(operation,{'selected':selected})
-                verified=self.products.verify_selection(resolved,self.approved_budget(operation),enforce_budget=False)
+                if prepared is not None:
+                    verified=next(prepared)
+                else:
+                    resolved=self._resolve_selected(operation,{'selected':selected})
+                    verified=self.products.verify_selection(resolved,self.approved_budget(operation),enforce_budget=False)
                 items=[{'id':f"i_{record['selection_id']}_{unit}",'origin':'new','status':'new','variant_id':record['variant_id'],'offer_id':record['offer_id']} for record in verified for unit in range(record['quantity'])]
                 return {'items':items,'offers':{record['offer_id']:record['offer'] for record in verified}}
             if question.get('proposal_id'):
@@ -235,12 +286,20 @@ class PlanningController:
             selection_id=selected.get('selection_id') or identity()
             require(selection_id not in ids,'duplicate_selection','Selection IDs must be unique.',422)
             ids.add(selection_id)
-            explicit=any(choice.get('variant_id')==record['variant_id'] and choice['choice_id'] in answer['request'].get('choice_ids',[]) for answer in operation['answer_history'] for choice in answer['question'].get('choices',[]))
+            explicit=any(choice.get('variant_id')==record['variant_id'] and choice['choice_id'] in answer['request'].get('choice_ids',[]) for answer in self.operations.effective_answers(operation) for choice in answer['question'].get('choices',[]))
             hard=any(action.get('action')=='search_products' and action.get('payload',{}).get('category')==record['category'] and action.get('payload',{}).get('must_have') for action in operation.get('controller',{}).get('actions',[]))
+            filters={'requirements':deepcopy(record.get('requirements',{})),'avoid':deepcopy(record.get('avoid',{}))}
+            for action in operation.get('controller',{}).get('actions',[]):
+                criteria=action.get('payload',{})
+                if action.get('action')!='search_products' or criteria.get('category')!=record['category']:continue
+                for source,target in (('must_have','requirements'),('avoid','avoid')):
+                    for key,value in criteria.get(source,{}).items():
+                        require(key not in filters[target] or filters[target][key]==value,'constraint_conflict','Resolve conflicting Product requirements before selection.')
+                        filters[target][key]=value
             import re
             user_text=operation['request'].get('text','').lower()
             hard=hard or (bool(re.search(r'\b(must|need|required)\b',user_text)) and record['category'].replace('_',' ') in user_text)
-            record.update(selection_id=selection_id,quantity=selected.get('quantity',1),explicit_choice=explicit,must_have=bool(hard),requirements_text=user_text)
+            record.update(selection_id=selection_id,quantity=selected.get('quantity',1),explicit_choice=explicit,must_have=bool(hard),requirements_text=user_text,**filters)
             result.append(record)
         require(bool(result),'no_verified_match','No verified Products were selected.')
         return result
