@@ -72,7 +72,7 @@ def test_all_lidar_frames_contribute_even_when_only_one_photo_is_selected(tmp_pa
     assert evidence["valid_depth_pixel_count"] == sum(f["valid_depth_pixels"] for f in evidence["frames"])
     assert len(evidence["lidar_voxels"]) <= 6000
     body = astra_room.request_body(evidence, images)
-    assert body["model"] == "gpt-6-astra" and body["store"] is False
+    assert body["model"] == "gpt-6-sol" and body["store"] is False
     assert "tools" not in body and "mirror" in body["instructions"].lower()
     assert body["text"]["format"]["schema"]["additionalProperties"] is False
 
@@ -90,7 +90,7 @@ def test_full_generation_is_default_and_assets_are_atomic_reusable_and_navigable
     output = tmp_path/"results/1"
     bundle = SceneBundle.model_validate_json((output/"scene.json").read_text())
     bundle.validate_files(output, {a["filename"] for a in result["assets"]})
-    assert bundle.ready and result["generation_model"] == "gpt-6-astra"
+    assert bundle.ready and result["generation_model"] == "gpt-6-sol"
     assert {e.kind for e in bundle.entities} >= {"floor", "ceiling", "wall", "furniture"}
     assert all(digest(output/a["filename"]) == a["sha256"] for a in result["assets"])
     assert not (tmp_path/"results/1.building").exists()
@@ -98,7 +98,7 @@ def test_full_generation_is_default_and_assets_are_atomic_reusable_and_navigable
     assert pipeline.process(tmp_path, 2)["scene_schema_version"] == 2
     assert len(calls) == 1
     report = json.loads((output/"quality.json").read_text())
-    assert report["estimated_cost_usd"] == 2.
+    assert report["estimated_cost_usd"] == .4
     provenance = json.loads((output/"provenance.json").read_text())
     assert provenance["assumptions"] and provenance["ignored_evidence"]
     position = bundle.navigation.spawn_position
@@ -184,14 +184,14 @@ def test_explicit_retry_replaces_rejected_response_but_preserves_good_paid_check
 
 
 def test_pricing_includes_reasoning_and_long_context_rates():
-    assert astra_room.usage_cost(response())["estimated_cost_usd"] == 2.
+    assert astra_room.usage_cost(response())["estimated_cost_usd"] == .4
     result = response()
     result["usage"]["input_tokens"] = 300000
-    assert astra_room.usage_cost(result)["estimated_cost_usd"] == 7.5
+    assert astra_room.usage_cost(result)["estimated_cost_usd"] == 1.5
     assert astra_room.usage_cost({})["estimated_cost_usd"] is None
     result["usage"] = {"input_tokens": 218518, "output_tokens": 48000,
                        "input_tokens_details": {"cache_write_tokens": 218515, "cached_tokens": 0}}
-    assert astra_room.usage_cost(result)["estimated_cost_usd"] == pytest.approx(5.131468, abs=.000001)
+    assert astra_room.usage_cost(result)["estimated_cost_usd"] == pytest.approx(1.026294, abs=.000001)
 
 
 def test_empty_room_does_not_require_invented_furniture(tmp_path, monkeypatch):

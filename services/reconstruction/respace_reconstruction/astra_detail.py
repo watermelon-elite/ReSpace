@@ -187,7 +187,7 @@ def detail_body(items):
                              " crop for frame_id="+photo["frame_id"]},
                             {"type": "input_image", "image_url": "data:image/jpeg;base64,"+encoded, "detail": "high"}])
     return {"model": astra.MODEL, "service_tier": "default", "store": False,
-            "reasoning": {"effort": "low"}, "max_output_tokens": 24000, "instructions": DETAIL,
+            "reasoning": {"effort": "high"}, "max_output_tokens": 24000, "instructions": DETAIL,
             "input": [{"role": "user", "content": content}],
             "text": {"format": {"type": "json_schema", "name": "respace_object_batch", "strict": True,
                                 "schema": DetailedBatch.model_json_schema()}}}
@@ -257,7 +257,7 @@ def generate_detailed(evidence, images, working, shell, manifest, inputs, progre
     import open3d as o3d
     ledger = Spending(working/"astra-budget-v3.json")
     body = request_body(evidence, images)
-    body.update(instructions=body["instructions"]+INVENTORY, max_output_tokens=24000, service_tier="default", reasoning={"effort": "low"})
+    body.update(instructions=body["instructions"]+INVENTORY, max_output_tokens=24000, service_tier="default", reasoning={"effort": "high"})
     progress("astra_inventory")
     response, reused = ledger.request(body, working/"sol-v1"/"inventory", "Room contents inventory")
     inventory = parse_response(response)

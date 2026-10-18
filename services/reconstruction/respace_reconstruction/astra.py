@@ -22,7 +22,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from .geometry import camera_to_cv_world, depth_frame
 from .store import atomic_json
 
-MODEL = "gpt-6-astra"
+MODEL = "gpt-6-sol"
 PROMPT_VERSION = 1
 MAX_RESPONSE_BYTES = 8 * 1024**2
 MAX_REQUEST_BYTES = 32 * 1024**2
