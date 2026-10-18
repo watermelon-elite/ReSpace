@@ -455,7 +455,7 @@
       ) || 200;
 
       visualTimeline
-        .querySelectorAll('[data-track-key="base"] [data-start-index][data-end-index]')
+        .querySelectorAll('[data-track-key] [data-start-index][data-end-index]')
         .forEach((item) => {
           const start = Number.parseInt(item.dataset.startIndex, 10);
           const end = Number.parseInt(item.dataset.endIndex, 10);

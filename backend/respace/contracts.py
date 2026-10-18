@@ -1,6 +1,6 @@
 """Version-one mutation inputs shared by the native HTTP client."""
 from typing import Annotated, Literal
-from pydantic import BaseModel, ConfigDict, Field, FiniteFloat, field_validator
+from pydantic import BaseModel, ConfigDict, Field, FiniteFloat, field_validator, model_validator
 
 ID = Annotated[str, Field(min_length=1,max_length=160,pattern=r'^[A-Za-z0-9][A-Za-z0-9_.:-]*$')]
 
@@ -20,17 +20,52 @@ class RenameRoom(Request):
     expected_metadata_revision: int=Field(ge=0)
 
 
+class ImportedObject(BaseModel):
+    model_config=ConfigDict(extra='forbid')
+    id: ID
+    label: str=Field(min_length=1,max_length=200)
+    kind: Literal['wall','floor','ceiling','fixed','furniture']
+    category: str=Field(max_length=100)
+    bounds_min: list[FiniteFloat]=Field(min_length=3,max_length=3)
+    bounds_max: list[FiniteFloat]=Field(min_length=3,max_length=3)
+
+    @model_validator(mode='after')
+    def bounds(self):
+        if any(a>b for a,b in zip(self.bounds_min,self.bounds_max)): raise ValueError('Invalid object bounds')
+        return self
+
+
+class ImportedRoom(CreateRoom):
+    source_capture_id: ID
+    source_scene_sha256: str=Field(pattern=r'^[a-f0-9]{64}$')
+    entities: list[ImportedObject]=Field(min_length=1,max_length=500)
+
+    @model_validator(mode='after')
+    def distinct_objects(self):
+        if len({entity.id for entity in self.entities})!=len(self.entities): raise ValueError('Object identities must be distinct')
+        return self
+
+
 class Generation(Request):
     capture_id: ID
     snapshot_id: ID | None=None
     planning_revision: int=Field(ge=0)
     expected_active_design_id: ID | None=None
     expected_active_revision: int=Field(ge=0)
-    intent: Literal['add','redesign']='add'
+    intent: Literal['auto','add','redesign']='add'
     styles: list[str]=Field(default_factory=lambda:['Match what I have'],max_length=6)
-    budget: str
+    budget: str | None=None
     currency: Literal['USD']='USD'
     text: str=Field(default='',max_length=10000)
+    selected_object_id: ID | None=None
+
+    @model_validator(mode='after')
+    def request_details(self):
+        if self.intent=='auto':
+            if not self.text.strip(): raise ValueError('Describe what you want to change')
+        elif self.budget is None:
+            raise ValueError('An explicit intent requires a budget')
+        return self
 
     @field_validator('styles')
     @classmethod

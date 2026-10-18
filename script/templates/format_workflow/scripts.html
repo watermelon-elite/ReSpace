@@ -208,7 +208,7 @@
       </form>
       {% endif %}
 
-      <p class="format-timeline-note">Word-based timeline · Shot timecodes, pauses, music and sound cues are included in the blocks.</p>
+      <p class="format-timeline-note">{{ content.timeline_note|default('Word-based timeline · Shot timecodes, pauses, music and sound cues are included in the blocks.') }}</p>
 
       <div class="format-timeline-toolbar">
         <ul class="format-timeline-key" aria-label="Visual asset color key">
@@ -279,12 +279,12 @@
                      contenteditable="{{ 'false' if is_old_version else 'plaintext-only' }}" spellcheck="true"
                      {% endif %}>{{ element.visual_description }}</p>
                   {% if element.recording_requirement %}
-                    <div class="format-following-action">
-                      <span>Following action</span>
+                    <details class="format-following-action">
+                      <summary>Details</summary>
                       <p data-following-action-editor data-visual-id="{{ element.id }}"
                          contenteditable="{{ 'false' if is_old_version else 'plaintext-only' }}"
                          spellcheck="true">{{ element.recording_requirement.exact_action }}</p>
-                    </div>
+                    </details>
                   {% endif %}
                   {% if comments_enabled %}
                   <button class="format-visual-comment-toggle" type="button"

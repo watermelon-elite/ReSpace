@@ -13,15 +13,17 @@ DATA = Path(__file__).parent / "data"
 VERSION = "respace-original"
 
 
-def timecode(seconds: int) -> str:
-    return f"{seconds // 60:02d}:{seconds % 60:02d}"
+def timecode(seconds: float) -> str:
+    whole = int(seconds)
+    fraction = f"{seconds % 1:.1f}"[1:] if seconds % 1 else ""
+    return f"{whole // 60:02d}:{whole % 60:02d}{fraction}"
 
 
 def build_seed() -> dict:
     narration = (DATA / "voiceover.txt").read_text()
     storyboard = (DATA / "storyboard.md").read_text()
     words = tokenize_narration(narration, version_id=VERSION)
-    assert len(words) == 224, "The approved recording copy must remain intact."
+    assert len(words) == 262, "Keep the recording copy and storyboard in sync."
     shots = []
     section = ""
     for line in storyboard.splitlines():
@@ -44,10 +46,10 @@ def build_seed() -> dict:
             "voiceover": "" if voiceover == "—" else voiceover.strip("“”"),
             "sound": sound,
         })
-    assert [shot["number"] for shot in shots] == list(range(1, 44))
+    assert [shot["number"] for shot in shots] == list(range(1, 48))
     assert shots[0]["start_seconds"] == 0 and shots[-1]["end_seconds"] == 180
     assert all(a["end_seconds"] == b["start_seconds"] for a, b in zip(shots, shots[1:]))
-    assert sum(s["end_seconds"] - s["start_seconds"] for s in shots[36:39]) == 24
+    assert sum(s["end_seconds"] - s["start_seconds"] for s in shots[41:43]) == 14
 
     # DS_HQ lays out the visual tracks against spoken words. Silent performance
     # and pitch shots remain timed instructions in the preceding spoken block.
@@ -68,155 +70,158 @@ def build_seed() -> dict:
         cursor = end
     assert cursor == len(words)
 
-    labels = {
-        1: "The anonymous dorm — locked doorway wide",
-        2: "Standard bed — precise one-second detail",
-        3: "Standard desk — repeat the framing line",
-        4: "Blank wall — complete the three-cut rhythm",
-        5: "A particular person enters — open notebook",
-        6: "An unfinished assignment — pencil detail",
-        7: "The friends and the game — photograph and cards",
-        8: "Try the photograph against the wall",
-        9: "Tuck the photograph into the notebook",
-        10: "Room to phone — the question that introduces ReSpace",
-        11: "Meet ReSpace — actual app over his shoulder",
-        12: "Scan the room and Keep the bed and desk",
-        13: "Set a comfortable budget — hold the actual amount",
-        14: "Tell ReSpace how he wants to live here",
-        15: "Hold the goal: study space and two friends",
-        16: "A generated question clarifies a useful detail",
-        17: "Choose a visual preference that appears in the result",
-        18: "Answers become a taste profile — honest processing edit",
-        19: "First complete proposal — lamp and selected materials",
-        20: "A real product joins the furniture he is keeping",
-        21: "Explore the photorealistic proposed room",
-        22: "Read the lamp card: size, price and merchant",
-        23: "Enter the explicitly imagined future",
-        24: "Study at the existing desk; finish the opening assignment",
-        26: "Page becomes cards; reveal the two friends on the real bed",
-        28: "The friend picks up a backpack — another hand is dealt",
-        29: "The friend sits again; let the room and laughter breathe",
-        31: "Back in the real dorm — the notebook needs more room",
-        32: "Ask for a smaller lamp in warm wood",
-        33: "Inspect the smaller lamp and clearer desktop",
-        34: "Explore other people's proposed rooms",
-        35: "Share the proposal; then three reserved eight-second pitch ideas",
-        40: "Return to the exact original room with a saved proposal",
-        41: "Finally display the photograph beside the proposed room",
-        42: "Photograph and proposal together — transition to wordmark",
-        43: "ReSpace / Make room for you. / Join the waitlist.",
-    }
-    reserved = {
-        37: (
-            "BRAINSTORM ONLY: Make the same room briefly explain itself: Measure / Plan / Check. "
-            "Measured structure becomes a proposed arrangement and a visible fit check. Optional small "
-            "technical labels: RoomPlan/LiDAR and Perceptron for measurement/perception, Gemini for "
-            "relationships, placement solver for geometry checks. Keep the recognizable dorm underneath. "
-            "An alternative follows the same lamp's available space, real dimensions and placement. "
-            "Use a research-informed caption only when tied to an actual planning rule. No finished VO."
-        ),
-        38: (
-            "BRAINSTORM ONLY: Follow the familiar lamp's purchase link: Generous free tier → Relevant "
-            "product links → Affiliate revenue. This is the intended business model, not earned revenue "
-            "or signed partnerships. No fictional sales, commission rates or conversions. Purchasing "
-            "furniture is not required to explore a design. No finished VO."
-        ),
-        39: (
-            "BRAINSTORM ONLY: Expand the dorm outline into a multi-room home, then a small café. "
-            "Label Future direction; give each place one beat and return through a doorway shape to "
-            "the actual dorm. No delivery date. No finished VO."
-        ),
-    }
-    base = []
     beats = []
     for group in groups:
         first, last = group["shots"][0], group["shots"][-1]
-        number = first["number"]
-        start, end = first["start_seconds"], last["end_seconds"]
-        shot_label = f"{number:02d}" if first is last else f"{number:02d}–{last['number']:02d}"
-        description = f"{timecode(start)}–{timecode(end)} · Shot {shot_label} · {labels[number]}"
-        assert len(description) <= 160
-        notes = []
-        for shot in group["shots"]:
-            silence = " VO: silent; leave room for the performance and sound." if not shot["voiceover"] else ""
-            notes.append(
-                f"SHOT {shot['number']:02d} · {timecode(shot['start_seconds'])}–{timecode(shot['end_seconds'])}. "
-                f"PICTURE / ACTION: {shot['picture']} SOUND / EDIT: {shot['sound']}{silence} "
-                f"{reserved.get(shot['number'], '')}".strip()
-            )
-        if number == 1:
-            notes.append("CAPTIONS: subtitle all spoken narration by default; the Subtitles lane only marks selective emphasis. Times are proposed edit timings, not scan-speed claims.")
-        if number == 23:
-            notes.append("COMPOSITING: Keep the physical bed, desk, chair and room architecture. Record locked clean plates with matched focus, exposure and white balance. Actors and all contact surfaces/shadows remain real. Added furnishings must come from the actual design; never buy or physically dress the room for this film. Keep digital rugs away from actors' feet, or omit them.")
-        if number == 26:
-            notes.append("CAPTURE PLAN: Film shots 27–30 as one continuous locked-wide performance, crop for the first beat, and use a second fixed angle only if needed. Mark an unobstructed standing area for the departing friend. Preserve spontaneous reactions. The friends appear only in this editorial imagined future, never as generated people in the app.")
-        if number == 35:
-            notes.append("EDIT OPTION: Shots 37–39 reserve 24 seconds; there is no spoken placeholder. Remove them together for the 02:36 story cut. Traction is omitted. The three directions remain brainstorms, not completed technical/business narration.")
-        if number == 43:
-            notes.append("DELIVERY: Hold the CTA to the end. Waitlist destination and final brand assets are still to be supplied; do not invent a URL. Master is 1920×1080 landscape.")
-        timing = {"start_seconds": start, "end_seconds": end}
-        base.append({
-            "id": f"base-{number:02d}", **group["range"], **timing,
-            "shot_ids": [s["id"] for s in group["shots"]],
-            "visual_description": description,
-            "visual_type": "recording",
-            "contributors": [],
-            "framing": "16:9 landscape; follow the specific shot directions.",
-            "recording_requirement": {
-                "id": f"capture-{number:02d}",
-                "timing_trigger": f"{timecode(start)}–{timecode(end)}; the written shot times govern silent holds.",
-                "capture_surface": "Actual room, actual app capture or finished composite, as specified per shot.",
-                "device_orientation": "Landscape 16:9 master, 1920×1080.",
-                "framing": "Preserve the established doorway, window, bed and desk geography.",
-                "exact_action": "\n\n".join(notes),
-                "lead_in_tail": "Record handles before and after the action; edit to the listed shot times.",
-                "natural_audio": " ".join(s["sound"] for s in group["shots"]),
-                "on_screen_state": "Use one coherent room/design session, consistent products, budget and prices; show processing edits visibly.",
-                "privacy_redaction": "Use permitted or staged community content with no fabricated engagement; omit personal account details.",
-                "acceptance_criteria": "Retain each shot direction and exact proposed time; imagined people remain separate from the app's room-only proposal.",
-            },
-        })
+        opening = first["number"] <= 10
         beats.append({
-            "id": f"beat-{number:02d}", **group["range"], **timing,
-            "speaker": "Narrator",
-            "delivery": "Warm, observant and conversational. Let connected phrases flow over cuts; leave the documented silent holds intact.",
-            "story_purpose": first["section"],
-            "evidence_ids": [],
+            "id": f"beat-{first['number']:02d}", **group["range"],
+            "start_seconds": first["start_seconds"], "end_seconds": last["end_seconds"],
+            "speaker": "External narrator" if opening else "ReSpace team",
+            "delivery": "Dramatic external voiceover." if opening else "To camera, continuing over demos and cutaways.",
+            "story_purpose": first["section"], "evidence_ids": [],
             "audio": " ".join(s["sound"] for s in group["shots"]),
         })
 
-    def overlay(number: int, start_shot: int, end_shot: int, description: str, *, lane: int = 1) -> dict:
-        a, b = shots[start_shot - 1], shots[end_shot - 1]
-        return {
-            "id": f"overlay-{lane}-{number:02d}",
-            "start_word_id": shot_ranges[start_shot]["start_word_id"],
-            "end_word_id": shot_ranges[end_shot]["end_word_id"],
+    base_takes = [
+        (1, 1, "Wide shot of the bare dorm from the doorway.", "The student stands at the threshold with a bag. The bed, desk and window fill the frame."),
+        (2, 2, "Close-up of the standard bed.", "Plain bedding fills a static, level frame."),
+        (3, 3, "Close-up of the standard desk.", "Match the bed shot's horizontal framing."),
+        (4, 4, "Close-up of the blank wall.", "Hold on the empty wall before the student enters."),
+        (5, 5, "The student puts an open notebook on the desk.", "An unfinished assignment and a small doodle are visible."),
+        (6, 6, "Close-up of his pencil correcting an unfinished line.", "His hand pauses beside the unfinished assignment."),
+        (7, 7, "A photograph of two friends and a deck of cards come out of his bag.", "Place both beside the notebook."),
+        (8, 8, "The student tries the photograph against the wall.", "He studies its position, then lowers it."),
+        (9, 9, "He tucks the photograph into his notebook.", "The desk and wall remain mostly bare."),
+        (10, 10, "The student looks around the room, then down at his phone.", "Match the doorway edge to the phone, then cut to the presenter."),
+        (11, 15, "Presenter speaks to camera from the left side of the dorm.", "Scan, budget and goal panels appear on the right during one continuous take."),
+        (16, 17, "Full-screen app demo shows a generated question and selected answer.", "The user answers a practical question, then chooses a material or color."),
+        (18, 18, "Presenter speaks beside a crop of the chosen answer.", "The answer expands into the room reveal."),
+        (19, 20, "Full-screen room proposal reveals the lamp and chosen materials.", "Move toward the lamp, keeping the existing desk and bed visible."),
+        (21, 21, "The room proposal shrinks to the right, revealing the presenter.", "The lamp is selected; its product card expands to fill the screen."),
+        (22, 22, "Full-screen product card shows the lamp's size, price and store link.", "Hold the card so all three details can be read."),
+        (23, 26, "Presenter introduces café and office design from the same dorm.", "Café and office designs appear beside them, then clear before the final thought."),
+        (27, 27, "Full-screen macro of a flower blooming in warm window light.", "Petals unfold against a dark, blurred background, then match-cut to the notebook opening."),
+        (28, 30, "The student opens his notebook and finishes the assignment.", "Widen from the opening notebook to the desk, then return to the pencil finishing the line and the page turning."),
+        (31, 35, "The student and two friends play cards on the bed.", "A friend starts to leave. The student deals another hand; the friend sits back down. Hold their laughter, then the room wide."),
+        (36, 37, "Presenter gestures to the notebook taking up desk space.", "An edit panel appears beside them as they request a smaller lamp."),
+        (38, 38, "Full-screen updated design shows a smaller lamp and more desk space.", "Keep the previous viewpoint so the extra notebook space is obvious."),
+        (39, 43, "Presenter introduces community designs, followed by the photograph and room diagram.", "Community and post previews appear beside the presenter. Cut to the notebook photo, then a plain room diagram beneath the reserved pitch graphics."),
+        (44, 45, "The student props the photo beside his phone in the bare room.", "Begin with the opening doorway view, then move closer to the photo and saved room proposal."),
+        (46, 46, "Presenter looks into the camera and says ‘ReSpace.’", "A line from the doorway begins forming the end card."),
+        (47, 47, "Warm, plain background behind the ReSpace end card.", "The wordmark, tagline and waitlist invitation sit in the center."),
+    ]
+    base = []
+    for first, last, description, action in base_takes:
+        a, b = shots[first - 1], shots[last - 1]
+        base.append({
+            "id": f"base-{first:02d}",
+            "start_word_id": shot_ranges[first]["start_word_id"],
+            "end_word_id": shot_ranges[last]["end_word_id"],
             "start_seconds": a["start_seconds"], "end_seconds": b["end_seconds"],
-            "visual_description": f"{timecode(a['start_seconds'])}–{timecode(b['end_seconds'])} · {description}",
-            "visual_type": "general-asset", "contributors": [],
-            "framing": "Keep the room and interface readable; use restrained emphasis within 16:9 safe margins.",
-            "recording_requirement": None,
+            "shot_ids": [s["id"] for s in shots[first - 1:last]],
+            "visual_description": description,
+            "visual_type": "general-asset" if first == 47 else "recording",
+            "contributors": [], "framing": "16:9 landscape.",
+            "recording_requirement": {
+                "id": f"capture-{first:02d}",
+                "timing_trigger": f"{timecode(a['start_seconds'])}–{timecode(b['end_seconds'])}",
+                "exact_action": action,
+                "natural_audio": " ".join(s["sound"] for s in shots[first - 1:last]),
+            },
+        })
+
+    positions = {word["id"]: i for i, word in enumerate(words)}
+
+    def layer(identifier, start, end, first, last, description, action, *, start_word=0, end_word=None, visual_type="recording"):
+        left = positions[shot_ranges[first]["start_word_id"]] + start_word
+        right = (positions[shot_ranges[last]["end_word_id"]] if end_word is None
+                 else positions[shot_ranges[last]["start_word_id"]] + end_word)
+        return {
+            "id": identifier, "start_word_id": words[left]["id"], "end_word_id": words[right]["id"],
+            "start_seconds": start, "end_seconds": end,
+            "visual_description": description,
+            "visual_type": visual_type, "contributors": [], "framing": "16:9 landscape.",
+            "recording_requirement": {
+                "id": f"asset-{identifier}",
+                "timing_trigger": f"{timecode(start)}–{timecode(end)}",
+                "exact_action": action,
+            },
         }
 
     overlay_1 = [
-        overlay(1, 12, 12, "Subtle emphasis on the actual Keep controls for the bed and desk."),
-        overlay(2, 16, 17, "Emphasize the actual generated question and chosen answer; do not invent branching or a profile dashboard."),
-        overlay(3, 19, 21, "Small ‘Proposed design’ identifier; keep the lamp, materials and room readable."),
-        overlay(4, 22, 22, "Emphasize size → actual price → merchant link in spoken order; hold the same real Product card."),
-        overlay(5, 23, 30, "Retain ‘Imagined future’ throughout the acted sequence. These people are editorial imagination."),
-        overlay(6, 33, 33, "Restrained emphasis on the smaller lamp and newly clear desktop; no unrelated changes."),
-        overlay(7, 35, 35, "Post preview: ‘First plan for my dorm.’ Clearly identify it as a proposed design; do not publish."),
-        overlay(8, 43, 43, "End-card text: ReSpace / Make room for you. / Join the waitlist. Add a URL only when supplied."),
+        layer("opening-key", 1, 3.5, 1, 1, "Close-up of the room key appears over the doorway wide.",
+              "A small inset on the right shows the plain key and room tag, then dissolves back into the bare room.", start_word=2, visual_type="personal-asset"),
+        layer("opening-notebook", 8, 12, 5, 6, "An enlarged notebook fragment reveals the unfinished assignment.",
+              "The handwriting appears beside the student, then blends into the pencil close-up.", start_word=2, end_word=1, visual_type="personal-asset"),
+        layer("opening-friends", 14, 18, 7, 8, "The friends' photograph enlarges beside the student.",
+              "Carry the photo across the cut as he tries it against the wall, then fade it away.", start_word=2, end_word=2, visual_type="personal-asset"),
+        layer("demo-scan", 26.5, 32.5, 11, 12, "Room scan and Keep selections appear beside the presenter.",
+              "The panel opens on the right, shows the scan and measured room, then changes to the budget screen.", start_word=1),
+        layer("demo-budget", 32.5, 37.5, 13, 13, "Budget input appears in the same right-side panel.",
+              "Hold the selected amount, then fade the panel away."),
+        layer("demo-goal", 38, 45, 14, 15, "A goal about studying and hosting friends is typed beside the presenter.",
+              "Hold the completed goal, then expand the panel into the full-screen question.", start_word=2),
+        layer("demo-answer", 55, 58, 18, 18, "The selected color or material appears beside the presenter.",
+              "Expand the answer crop into the matching material in the room proposal.", start_word=1),
+        layer("demo-before-room", 64.5, 67.5, 20, 20, "A small ‘Before’ view of the bare room appears over the proposal.",
+              "Place it in the upper left, clear of the proposed lamp, then dissolve it away.", start_word=1, end_word=7),
+        layer("demo-proposal", 69, 73, 21, 21, "The full-screen room shrinks beside the presenter.",
+              "Keep the room facing the same way. Selecting the lamp expands its product card to full screen."),
+        layer("vision-cafe", 83.5, 89.5, 24, 24, "A warm café design appears beside the presenter.",
+              "Small tables, warm light and soft seating create places to sit together.", visual_type="recording"),
+        layer("vision-office", 89.5, 96, 25, 26, "An office design replaces the café panel.",
+              "Show clear work surfaces and a quiet place to focus, then let the panel recede and disappear.", end_word=3, visual_type="recording"),
+        layer("future-study", 104, 112, 28, 29, "Proposed furnishings appear around the student at his desk.",
+              "Match the lamp, art and storage to the room design. The student, notebook, desk and chair remain real.", start_word=2, visual_type="generative"),
+        layer("future-friends", 112, 126, 31, 34, "Proposed furnishings surround the friends playing cards.",
+              "The additions follow the wide shot and cropped reactions while the people, bed, chair and cards remain real.", visual_type="generative"),
+        layer("demo-edit", 128, 133, 36, 37, "A request for a smaller wooden lamp is typed beside the presenter.",
+              "Hold the request, show processing, then expand into the updated room.", start_word=3),
+        layer("demo-before-lamp", 134, 136.5, 38, 38, "A small ‘Before’ inset shows the previous lamp.",
+              "Match the updated desk's viewpoint and keep the newly clear notebook space visible.", start_word=1),
+        layer("demo-community", 138, 144, 39, 40, "Community room designs scroll beside the presenter.",
+              "Select one proposed room, then change the panel to the student's own post preview.", start_word=1, end_word=2),
+        layer("demo-share-and-reservations", 144, 162, 40, 40, "The post preview expands into the reserved pitch graphics.",
+              "The room tile becomes Measure / Plan / Check, then a lamp-to-retailer affiliate diagram labeled ‘Intended model.’", start_word=3, visual_type="general-asset"),
+        layer("endcard-type", 174.5, 180, 47, 47, "ReSpace, ‘Make room for you’ and ‘Join the waitlist’ appear centrally.",
+              "The doorway line becomes the wordmark. The tagline and invitation settle beneath it.", visual_type="general-asset"),
     ]
     overlay_2 = [
-        overlay(1, 10, 11, "Match doorframe to phone edge; retain the same musical theme into the actual app.", lane=2),
-        overlay(2, 18, 19, "Visible editorial transition across processing; carry the selected color into the proposal.", lane=2),
-        overlay(3, 20, 20, "Precise product-image → placed-lamp match; keep the real desk and bed in the same design.", lane=2),
-        overlay(4, 22, 23, "Match the Product-card lamp to the future-room composite; pencil sound arrives before its source.", lane=2),
-        overlay(5, 26, 26, "Page-turn → card-deal match cut. Use real page and card sounds to join study and friends.", lane=2),
-        overlay(6, 31, 31, "Match the host's glance back to the barren room and the room-only proposal on the phone.", lane=2),
-        overlay(7, 36, 39, "SILENT 02:14–02:42: tile → room diagram; Measure / Plan / Check → affiliate branch → Future direction: home, café.", lane=2),
-        overlay(8, 42, 43, "A restrained doorway line resolves into the wordmark and final CTA; hold to the end.", lane=2),
+        layer("opening-edges", 4, 7, 2, 4, "A thin line follows the bed, desk and blank-wall cuts.",
+              "Match the line's position across all three shots, then let it disappear.", visual_type="general-asset"),
+        layer("opening-pencil", 10.5, 12.5, 6, 6, "A pencil-like underline picks out the unfinished assignment.",
+              "Trace one short line under the handwriting, then fade it before the photograph appears.", visual_type="general-asset"),
+        layer("opening-doorway", 21.5, 24, 10, 10, "A fine doorway outline narrows toward the phone's edge.",
+              "The line guides the cut from the student's room to the presenter in the same dorm.", start_word=1, visual_type="general-asset"),
+        layer("focus-brand", 24.5, 26.5, 11, 11, "A small ReSpace wordmark appears beside the presenter.",
+              "Fade it away as the scan panel enters.", start_word=1, visual_type="general-asset"),
+        layer("focus-keep", 29.5, 31.5, 12, 12, "An outline highlights the selected Keep controls.",
+              "Follow each selection inside the demo panel, then clear the outline.", start_word=3, visual_type="general-asset"),
+        layer("focus-budget", 34.5, 36.5, 13, 13, "A short underline highlights the selected budget.",
+              "Appear after the amount settles and fade before the panel closes.", start_word=3, visual_type="general-asset"),
+        layer("focus-goal", 41.5, 44.5, 15, 15, "The study and friends phrases are highlighted in the goal.",
+              "Clear the emphasis as the panel expands.", start_word=1, visual_type="general-asset"),
+        layer("focus-question", 47.5, 49.5, 16, 16, "A soft outline highlights the question and chosen answer.",
+              "Leave all text readable and clear the outline before the next question.", start_word=3, visual_type="general-asset"),
+        layer("focus-material", 51, 53, 17, 17, "A small ring highlights the chosen color or material.",
+              "The ring fades while the selected answer remains visible.", start_word=1, visual_type="general-asset"),
+        layer("label-proposal", 58, 73, 19, 21, "A small ‘Proposed design’ label sits inside the room view.",
+              "Keep it attached to the capture as the room shrinks beside the presenter.", visual_type="general-asset"),
+        layer("focus-product", 74, 78.5, 22, 22, "Size, price and store link are highlighted one at a time.",
+              "Finish on the complete, unobstructed product card.", start_word=2, visual_type="general-asset"),
+        layer("label-commercial-vision", 83.5, 96, 24, 26, "‘Café · Connection’ changes to ‘Office · Focus’ above the designs.",
+              "Change the label with the panel, then remove it as the office recedes.", end_word=3, visual_type="general-asset"),
+        layer("label-imagined", 104, 126, 28, 34, "‘Imagined future’ stays in the upper corner of the acted scenes.",
+              "Keep it clear of faces and remove it when the real room returns.", visual_type="general-asset"),
+        layer("focus-request", 130, 132, 37, 37, "The smaller-lamp phrase is highlighted in the typed request.",
+              "Clear the highlight before the updated room appears.", start_word=2, visual_type="general-asset"),
+        layer("focus-desktop", 133.5, 136.5, 38, 38, "A faint outline shows the newly available desk space.",
+              "Keep the comparison inset visible; fade both to leave the result unobstructed.", start_word=1, visual_type="general-asset"),
+        layer("focus-community", 139, 145, 39, 40, "A border follows the selected community tile into the post preview.",
+              "Carry it across the panel change, then fade it away.", start_word=4, end_word=4, visual_type="general-asset"),
+        layer("endcard-line", 170.5, 175, 46, 47, "A doorway line leads from the presenter into the ReSpace wordmark.",
+              "Carry the line onto the plain background, resolve it into the wordmark, then disappear.", end_word=1, visual_type="general-asset"),
     ]
 
     # Caption directives are exceptions to ordinary full captions, never extra VO.
@@ -252,7 +257,7 @@ def build_seed() -> dict:
         "visual_tracks": {"base": base, "overlay_1": overlay_1, "overlay_2": overlay_2},
         "subtitle_directives": directives,
         "storyboard_shots": shots,
-        "timeline_note": "The DS_HQ timeline is anchored to narration words, not elapsed time. Exact shot times and silent holds are in each Base block's Following action. Full spoken captions are on by default; the Subtitles lane contains selective emphasis only.",
+        "timeline_note": "Base: footage and full-screen demos. Overlay: story inserts, app panels and room additions. Top overlay: labels and emphasis. Expand Details for the shot action.",
     }
     retained = [shot_id for block in base for shot_id in block["shot_ids"]]
     assert retained == [shot["id"] for shot in shots]

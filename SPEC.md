@@ -12,11 +12,11 @@ The person needs a dependable path from a measured room to an understandable arr
 
 ## Solution
 
-ReSpace captures one room on a supported LiDAR iPhone, reviews native measurements, asks an adaptive sequence of useful questions, discovers and verifies real Products, then produces a validated 3D design. The user chooses Add a few things or Full redesign, provides a positive USD budget and optionally specifies styles and instructions.
+ReSpace captures one room on a supported LiDAR iPhone, reviews native measurements, asks an adaptive sequence of useful questions, discovers and verifies real Products, then produces a validated 3D design. The user describes the desired change in one natural-language composer. Gemini infers the scope and requested style, extracts an explicitly stated USD budget or asks for it, and never requires an Add/Full redesign picker. An explicit zero-budget request can use existing Objects only.
 
 The sequential planning workflow receives native room measurements and verified Product specifications before asking questions. It clarifies priorities and requests explicit approval before increasing the budget. After choices are finalized, perception and spatial processing assemble the processed room. Gemini proposes named spatial relationships; a deterministic solver computes metric placements and validates them.
 
-The design screen combines a navigable 3D room, persistent conversation and real Product cards. Users can request language edits, swap a compatible alternative, remove an Item, find additional Products, open the selected merchant offer and Undo a committed change. A multi-action edit saves its valid successful parts with explicit warnings for failures. The resulting complete Scene is one immutable version; Undo reverses that whole committed result.
+The design screen combines a navigable 3D room, a persistent command bar and on-demand real Product cards. Users can request language edits, swap a compatible alternative, remove an Item, find additional Products, open the selected merchant offer and Undo a committed change. A multi-action edit saves its valid successful parts with explicit warnings for failures. The resulting complete Scene is one immutable version; Undo reverses that whole committed result.
 
 The product uses one personal-room experience, requires a supported LiDAR iPhone and has no sample-room bypass. Completed Rooms and capture artifacts remain until explicit deletion. Backend operations survive app closure and worker interruption, pause at unanswered questions, and support explicit cancellation while preserving earlier saved results.
 
@@ -47,15 +47,15 @@ The product uses one personal-room experience, requires a supported LiDAR iPhone
 23. As a room owner, I want review commands to update instructions, so that measured geometry and saved designs remain unchanged.
 24. As a room owner, I want Add to preserve existing furnishings unless explicitly changed, so that small improvements remain small.
 25. As a room owner, I want Full redesign to permit broader changes, so that I can explore another arrangement.
-26. As a room owner, I want conflicting intent and text clarified, so that intent never silently changes.
-27. As a room owner, I want a required positive USD budget without a default amount, so that the design starts from my spending limit.
+26. As a room owner, I want the scope inferred from my words, so that I never have to choose a small-change or full-redesign mode.
+27. As a room owner, I want my stated USD spending limit respected and missing budget clarified, so that no amount is invented. Zero means no purchases.
 28. As a room owner, I want Match what I have or combined named styles, so that I can state a visual direction.
 29. As a room owner, I want form drafts preserved, so that navigation and failures do not lose input.
 30. As a room owner, I want measured context and verified listing dimensions supplied before questions, so that recommendations are grounded.
 31. As a room owner, I want questions about activities, occupants and priorities, so that recommendations fit how I use the room.
 32. As a room owner, I want known answers skipped, so that questions do not repeat my instructions.
 33. As a room owner, I want one clear question at a time, so that the interaction is understandable.
-34. As a room owner, I want choice cards, images and numeric controls, so that initial planning can finish without typing.
+34. As a room owner, I want one natural-language input for requests and ordinary clarifications, with clear Product comparisons and spending approvals when needed.
 35. As a room owner, I want optional free text, so that I can explain preferences missing from the choices.
 36. As a room owner, I want Skip and Decide for me, so that I control participation within approved constraints.
 37. As a room owner, I want pending questions restored, so that closing the app does not decide for me.
@@ -88,7 +88,7 @@ The product uses one personal-room experience, requires a supported LiDAR iPhone
 64. As a room owner, I want the full room rendered, so that existing Objects and new Products have context.
 65. As a room owner, I want orbit, pan, zoom and Reset View, so that I can inspect without moving furniture.
 66. As a room owner, I want model/card selection linked, so that geometry and Product information stay connected.
-67. As a room owner, I want Assistant and Items tabs with a composer, so that conversation and browsing share one screen.
+67. As a room owner, I want a persistent composer and an Items button that opens a compact Product panel, so that the room stays in focus while I request changes or browse Items.
 68. As a room owner, I want correctly sized asset fallbacks, so that media failures do not make the design unusable.
 69. As a room owner, I want representative models labeled, so that generic geometry is not mistaken for the exact Product.
 70. As a room owner, I want optional ghosts of removed Objects, so that visual context is preserved without occupying space.
@@ -127,7 +127,7 @@ The product uses one personal-room experience, requires a supported LiDAR iPhone
 - Target iOS 18 or later, LiDAR-capable iPhone hardware and supported RoomPlan capture. Portrait is the interface baseline. Unsupported devices show compatibility information and cannot enter room/design flows.
 - Use one personal-room experience. No business mode, mode selector, seat target or business-specific input/clearance workflow is required. A retained compatibility `mode` has the sole value `home`.
 - Support one physical room per capture and multiple saved Rooms. No multi-room reconstruction is included.
-- Support `add` and `redesign` intents, defaulting to Add. Spot selection and its coordinate-based input are excluded.
+- Infer `add` and `redesign` scope from natural language; do not default a new request to Add. Legacy explicit-mode clients retain their existing contract. Spot selection and its coordinate-based input are excluded.
 - Shopping uses real verified Products, supplied totals, Find more, validated Swap/Remove and exact Buy links. Placeholder shopping does not meet acceptance.
 - Furniture position changes use language commands. Camera gestures, Item selection, direct Swap and direct Remove remain supported. Furniture dragging and direct rotation are excluded.
 - Connectivity is required. Finished-upload recovery does not constitute offline scanning, editing or reopening.
@@ -146,7 +146,7 @@ An Addition carries a stable request identity and category through Product disco
 #### 1.3 Result invariants
 
 1. Gemini selects valid identities and named spatial relationships; the solver alone computes metric placements.
-2. Selected purchase Products require verified exact-variant width, depth and height. Scanned Object estimates are a separate evidence class.
+2. Selected purchase Products require usable published dimensions for fit-critical axes. Rugs require their published footprint, not thickness; representative missing axes and other reasonable assumptions remain explicitly labeled, not claimed as measured facts. Scanned Object estimates are a separate evidence class.
 3. Every saved Scene passes applicable boundary, collision, support and access checks.
 4. Keep, permanent fixtures, approved budget and must-haves constrain automatic changes.
 5. Saved versions are immutable; evolving search and operation records cannot rewrite them.
@@ -168,10 +168,10 @@ An Addition carries a stable request identity and category through Product disco
 | Capture | Native camera, outlines/coaching, Done and Cancel Scan, capture/upload status. | Done → finalized native export; interruption/cancel → discard/restart. |
 | Finalization | Stored artifacts, manifest and final native room export. | Durable completed capture → native room review; no server perception here. |
 | Room review | Native geometry/photos, measured Objects, planning choices and conversation. | Planning commands, intent, reopen design, rename or delete. |
-| Intent | Add/Full redesign, styles, required USD budget and optional text. | Valid submission → persistent generation. |
+| Room request | Persistent bottom composer; scope, style and spending limit interpreted from natural language. | Send → persistent generation or a missing-budget question. |
 | Interactive planning | Actual phase, one question, choices/images, optional text, Skip, Decide for me and Cancel. | Final selection → spatial processing; unanswered question persists. |
 | Processing | Actual persisted phase and known context, with no fabricated percentage. | Valid result → design; conflict → question; unusable room → recovery/Rescan; failure → explanation/retry. |
-| Design | Full 3D room, Assistant/Items sheet, composer, selection, Undo, Reset View, ghosts and status. | Chat, Swap, Remove, Find more, Buy, Undo or navigation. |
+| Design | Full 3D room, on-demand Items panel, persistent composer, selection, Undo, Reset View, ghosts and status. | Chat, Swap, Remove, Find more, Buy, Undo or navigation. |
 | Product detail/options | Real image, offer, dimensions, evidence, explanation and eligible alternatives. | Buy opens offer; Swap validates a child; browsing changes no design. |
 
 #### 2.2 My Rooms
@@ -195,22 +195,22 @@ An Addition carries a stable request identity and category through Product disco
 - Reject design start when capture evidence is already known to be unusable. If deferred normalization later cannot establish a usable boundary, prevent publication, attempt defined recovery and offer Rescan on failure.
 - There is no pre-generation “Wait for late detections / Continue with current room” branch. Spatial processing follows selection finalization.
 
-#### 2.4 Intent form
+#### 2.4 Natural-language room requests
 
-- Show Add a few things and Full redesign only; default to Add.
-- Add targets 1–5 new Items and prohibits AI-initiated movement/removal of existing Objects. Explicit user changes remain subject to Keep, physical constraints and intent clarification.
-- Full redesign targets 5–20 new Items and permits appropriate moves/removals. Targets never require ineligible Products, overspending or invalid placement; explained optional omissions can result in fewer Items.
-- Free text supplements intent. “Replace everything” under Add requires a question proposing Full redesign; never switch silently.
-- Budget is a required positive USD decimal with at most two fractional digits, a visible USD label and no prefilled amount. The client validates format; the backend enforces meaning and arithmetic.
-- Default style is Match what I have. Named styles are Cozy, Minimal, Japandi, Industrial, Boho and Mid-century and support multiple selection.
-- Named styles clear Match. Match clears named styles. Deselecting the final named style returns to Match.
-- Text is optional. Preserve the full form draft across navigation, failure and retry.
+- Keep a single composer floating over the Room canvas, anchored to the safe-area bottom and above the keyboard when editing, with no opaque footer behind it. Keep Objects/Items access at the top and show its contents only on request. Orbit, pan and pinch zoom remain native gestures; no zoom buttons or Cutaway toggle are shown.
+- Send the user's words with the current Room/capture and revision identities, optional selected Object, `intent: auto` and USD currency. No mode picker, default amount or required style form.
+- Gemini infers Add for limited additions preserving existing Objects, or Redesign for requested movement, removal, replacement or broader changes. Keep and permanent fixtures remain protected. The scope is saved before discovery, so a worker restart does not reinterpret an already resolved request.
+- Extract only a stated whole-room USD spending ceiling traceable to the user's text. Ask for missing or ambiguous budget in the same composer before discovering Products. An explicit $0 or no-purchases instruction permits existing-Object changes with an empty purchase selection; it does not authorize purchases.
+- Infer supported named styles from the text; otherwise match the room. Carry the original request, selected Object and subsequent answers into spatial planning.
+- Retain 5/20 new-Item maximums for Add/Redesign; neither scope requires buying a minimum quantity. Existing explicit-mode API clients remain supported and retain their conflict checks.
+- Preserve drafts across navigation, failure and retry. Durable operation and reply identities prevent duplicate generation or answers after response loss.
+- Imported reconstructed meshes may be attached as private Room planning context with their original capture/hash and Object bounds. Mark their provenance as reconstructed. Without original capture geometry, supports and calibrated evidence, save verified Product plans only and explicitly state that layout has not been applied; never fabricate a normalized snapshot or claim placement validity.
 
 #### 2.5 Questions and generation display
 
 - Start with a soft target of roughly three useful questions about activities, usual occupants/guests and the desired improvement. Skip answers already supplied. Three is neither quota nor cap.
-- One question is visible at a time. Prefer single-choice cards, multi-select chips, listing-image comparisons and numeric controls; free text is optional.
-- Initial planning must finish without typing. Custom audio recording is excluded; ordinary keyboard dictation is allowed.
+- One question is visible at a time. Use natural-language replies for ordinary planning questions. Verified Product comparisons, consequential spatial choices and explicit spending approvals may retain structured controls.
+- The bottom composer accepts the initial request and text clarifications without replacing the Room with a mode-selection form. Ordinary keyboard dictation is allowed.
 - Ask practical questions that can materially affect the plan, rather than repeated arbitrary Product comparisons. Finish when decisions are resolved/delegated and validation passes.
 - Questions about concrete Products use known verified listings, images, labeled measurements, checked offers and price implications.
 - Ordinary preferences are flexible. Explicit must-have and avoid choices, Keep, approved budget and spatial constraints are hard requirements; ask which can change when they conflict.
@@ -222,16 +222,17 @@ An Addition carries a stable request identity and category through Product disco
 
 #### 2.6 Design screen
 
-- Fill the screen with the room behind a draggable sheet with collapsed, medium and expanded positions.
-- Assistant shows conversation; Items shows cards and shopping. The composer is available in both tabs and remains visible above the keyboard.
-- Selecting a model switches to Items, reveals its card and shows selected-item context beside the composer. Preserve sheet height unless expansion is needed to reveal it.
+- Fill the screen with the room. A small Items button above the scene opens and closes a compact, scrollable Product panel; keep it closed on entry.
+- Remove the Assistant tab and transcript screen. Keep the composer visible at the bottom and above the keyboard, with compact request feedback and access to pending questions and operation details. Persist conversation as before.
+- Selecting a model highlights it and shows selected-item context beside the composer without automatically opening the Items panel. An open panel reveals its card; All items returns to the list.
 - Selecting a card highlights the corresponding Item by stable ID. Clearing selection clears command context; committed removal clears stale selection.
-- Place Undo, Reset View, ghost visibility and actual processing/error state above the scene. Reset View changes framing only.
+- Place Items, Undo and Reset View above the scene, with ghost visibility and design notes in view options. Show actual processing/error state beside the composer. Reset View changes framing only.
+- A gold-to-purple shopping-bag button at the top right saves and opens the displayed committed design's shopping list. View options remain available beside the scene controls.
 - Camera gestures orbit, pan and zoom; selection gestures select. They cannot alter furniture position/rotation.
 - Keep camera navigation available during room operations. Disable competing mutations and Undo until the operation is resolved.
 - Apply committed geometry immediately without animating model changes. Ordinary keyboard, sheet and navigation behavior is unaffected.
 - Language edits do not preview speculative geometry. Swap has a separately labeled temporary preview; the saved child is authoritative.
-- Camera pose, tab, sheet height, selection and ghost visibility are presentation state and create no design version.
+- Camera pose, panel visibility, selection and ghost visibility are presentation state and create no design version.
 
 ### 3. Capture, storage and recovery
 
@@ -475,6 +476,16 @@ Commit the final successful subset once, after full scene/purchase validation. V
 - Saved totals retain their price/check-time snapshot. Discovery or refresh does not silently update them.
 - An invalid, unavailable or newly over-budget replacement leaves its target Product/placement and purchases unchanged. A direct failed Swap creates no child; a multi-action command may still commit unrelated valid successes.
 
+#### 6.5 Saved shopping lists and sharing
+
+- Tapping the design's shopping bag saves one local shopping-list snapshot for that Room, replacing its previously saved list only after a successful write. Opening the purchase total uses the same flow. Save the displayed committed Design version, never temporary Swap geometry or candidate options.
+- The imported-room screen also exposes the bag. When it has a completed Product plan but no Design version, save that finalized SelectionSnapshot's purchases and label both the list and shared text “room fit is still pending.” An unfinished interview cannot be saved as a complete shopping list.
+- Build one entry per authoritative PurchaseLine, with the exact merchant URL, Product title, purchased pack count, supplied units, paid surplus and returned USD line total. Preserve the returned overall total and approved ceiling. Existing Objects and removed purchases do not appear; replacement Products do.
+- Show a clear empty state for a design with no purchases. Invalid or incomplete purchase data and storage failures show an error; never claim a partial or failed write was saved.
+- My Rooms provides Saved shopping lists. Lists survive app relaunch and remain readable without fetching the Room again. This local list does not provide offline design editing or cross-device synchronization. Display when it was saved; opening a changed design's shopping bag replaces that Room's list with the current displayed version.
+- Share list opens Apple's native share sheet. Choosing Messages prepares one text containing all Product names, quantities, exact links and saved totals, with tax/shipping exclusions and price/availability caveats. The user chooses recipients and sends; the app does not send automatically or share scan media, geometry, credentials or conversation.
+- Confirmed Room deletion also removes its local shopping list before the deletion request is marked locally complete. Saving or sharing a list creates no Design version and does not change Undo.
+
 ### 7. Discovery, verification, ranking and purchase planning
 
 #### 7.1 Discovery breadth and retention
@@ -491,12 +502,13 @@ Commit the final successful subset once, after full scene/purchase validation. V
 
 #### 7.2 Exact physical dimensions
 
-- Require width, depth and height of the actual exact variant before concrete listing choice, placement or selectable alternatives. Thin rugs still require thickness/height.
-- Accept exact unit conversion. Reject package-only measurements, absent axes, ambiguous variants and estimates invented from category, photo or title.
+- Require published width, depth and height for furniture whose volume determines fit. A rug's selected published size, such as 2′ × 5′, establishes its footprint and is sufficient without thickness.
+- Use the category's representative rug thickness only for geometry when height is absent. Record the assumed axis separately, label thickness as not published, and do not use that assumption to satisfy an explicit thickness limit.
+- Accept exact unit conversion and conventional axis mapping from selected size options. Reject package-only measurements, missing fit-critical axes and invented critical measurements.
 - Resolve merchant/manufacturer pages using deployed Playwright. Prefer explicit structured measurement data, then visible specifications.
-- Flash extraction may map published labels/units and distinguish item from package measurements. It may not manufacture absent values.
+- Flash extraction reasons about category-relevant evidence, maps published labels/units and distinguishes item from package measurements. It may explain reasonable assumptions, including shared dimensions across color-only options of the same furniture model, but may not invent a price or borrow dimensions across different sizes/models.
 - Preserve source URL, exact variant, original labels/values/units, extraction/check time and normalized dimensions.
-- Range checks detect package/unit/axis mistakes; they do not justify silently clamping a verified Product to a different size. Missing or unresolved evidence makes the Product ineligible.
+- Range checks detect package/unit/axis mistakes; they do not justify silently clamping a Product to a different size. Missing incidental details or conflicting merchant metadata do not automatically make a useful shopping option ineligible. Preserve conflicts and assumptions as visible caveats, prefer selected-option/current purchase evidence, and prefer clearer eligible alternatives before uncertain fallbacks.
 - Reuse exact-variant dimension evidence for seven days. Expiry triggers re-verification, not deletion of the retained Product or mutation of a saved design.
 - The curated catalog uses this same policy. A generated mesh, stand-in or apparent visual fit is not dimension evidence.
 
@@ -507,6 +519,7 @@ Commit the final successful subset once, after full scene/purchase validation. V
 - Combine offer and dimension extraction in one visit when both require refresh.
 - If refreshed evidence makes a selection unavailable, invalid or over budget, rerank retained replacements and continue useful fallback.
 - Inaccessible means unverified, not confirmed out of stock. Retry a transient page/provider failure once, then retain the reason and continue.
+- An accessible public shopping offer with a supported USD price can remain eligible when stock is unknown or contradictory; disclose that availability must be confirmed on the merchant page. Confirmed out-of-stock offers without contradictory evidence remain ineligible.
 - Do not repeatedly retry confirmed missing dimensions or unavailable stock within one search. A later new search can reconsider.
 - Optional further database verification requires a provisional overall score more than five points above the weakest selected eligible choice on the same current benchmark. With cutoff 80, skip 84/85 and check 86.
 - This cutoff never bypasses mandatory stale-offer checks or useful fallback when fewer than three eligible choices exist. Prefer fresh near-equivalent candidates when additional checks are discretionary.
@@ -516,8 +529,8 @@ Commit the final successful subset once, after full scene/purchase validation. V
 
 - Group exact physical variants across merchants only when identity evidence is reliable; title similarity alone is insufficient.
 - Distinct sizes/colors remain distinct variants. Store retained merchant offers under their shared variant.
-- Select the cheapest eligible checked offer for an otherwise identical physical variant; do not lose alternative offer evidence.
-- A pack offer defines actual supplied contents. Verify each component's identity/dimensions and reject ambiguous bundles from options while retaining their candidate record.
+- Prefer clearer checked offers over conflicting/availability-uncertain offers for an otherwise identical physical variant, then choose the cheapest within that reliability tier; retain alternative offer evidence.
+- An ordinary single-furnishing listing may reasonably supply one unit without an explicit count sentence. Extraction must classify it as a single item, record the assumption and disclose it. A known set or mixed/ambiguous bundle cannot silently become one item; packs still need a supported supplied count for whole-pack budgeting.
 
 #### 7.5 Shared ranking
 
@@ -528,6 +541,7 @@ Commit the final successful subset once, after full scene/purchase validation. V
 | Relative value | 10% | Price advantage/premium against comparable discoveries. |
 
 - Apply hard eligibility before ranking. Each component and overall score uses 0–100; retain reasons and scoring-rule version.
+- Keep conflicting or availability-uncertain candidates as fallback options rather than rejecting them outright. Rank clearer eligible candidates first, then apply the shared weighted score within each reliability tier. Ordinary single-item assumptions and missing rug thickness alone do not demote a Product to the conflict tier.
 - No database/live source bias is allowed. Rendering fidelity breaks otherwise equal scores, not hard eligibility or superior fit.
 - Absolute price constrains budget/allocation. It does not replace relative value with raw cheapness. An explicit cheapest preference guides feasible downstream selection.
 - “Best” means best among relevant eligible discoveries, not the entire market. Do not invent quality, durability or comfort evidence.
@@ -974,7 +988,7 @@ Precomputed story strings are not required transport or progress signals. Actual
 
 | Record | Required fields/invariants |
 |---|---|
-| `GenerationRequest` | Schema/operation ID, Room/capture ID, optional existing snapshot ID for exact reuse, planning revision, expected active ID/revision, intent `add` or `redesign`, styles or Match, positive budget decimal, USD currency and optional text. |
+| `GenerationRequest` | Schema/operation ID, Room/capture ID, optional existing snapshot ID for exact reuse, planning revision, expected active ID/revision, intent `auto` with required natural-language text and optional stated budget, or legacy `add`/`redesign` with positive budget; styles or Match, USD currency and optional selected Object ID. |
 | `DecisionSnapshot` | Decision revision, current explicit answers, delegated choices/assumptions, hard must-have/avoid constraints, soft priorities, approved budget and selection references. |
 | `Question` | Question ID, operation ID, kind, text, valid choice IDs/labels, optional verified listing/image references, selection cardinality/numeric constraints, skip/delegate policy, frozen BaseContext and decision revision. |
 | `BudgetProposal` | Old/new ceiling, affected purchase set, checked evidence/quantities, resulting total and explanation. |
@@ -1311,13 +1325,13 @@ Contract tests check that fields necessary to render or enforce rules are presen
 | AC-030 | Review command | Updates one planning revision and conversation; measured geometry and saved designs remain unchanged. |
 | AC-031 | Ordinary Remove on a Kept Object | No removal; explicit unlock requirement explained. |
 | AC-032 | Explicit unlock/change | Allowed target can change; permanent fixation still prevents physical movement/removal. |
-| AC-033 | Intent form | Only Add/Full redesign; required positive USD/no prefill; style exclusivity and drafts work. |
+| AC-033 | Room request | One anchored composer; inferred scope, grounded USD budget or clarification, explicit zero-purchase flow, drafts and idempotent recovery work. |
 | AC-034 | Text contradicts Add | Explicit intent-conflict question; no silent switch. |
 | AC-035 | Add planning | No AI-initiated existing-object moves/removals; optional count target does not force invalid additions. |
 | AC-036 | First interactive model request | Includes measured native context and verified initial listing batch or explicit empty batch/reasons. |
 | AC-037 | New listing introduced after answer | Verified dimensions/offer/context accompany the next relevant reasoning turn. |
 | AC-038 | Initial questions | Useful activity/occupancy/priority questions skip known answers; no forced quota. |
-| AC-039 | Choice-only planning | User can finish initial generation without typing through valid choices/delegation. |
+| AC-039 | Natural-language planning | Request and ordinary clarifications share the bottom composer; Product choices and explicit approvals retain their validated controls. |
 | AC-040 | Optional free text | Stored and incorporated without invalidating explicit constraints. |
 | AC-041 | Question pending | No search/spatial action remains in flight; worker/model call released. |
 | AC-042 | Close/reopen question | Same question/choices/base revision returns; no implicit answer, Skip or delegation. |
@@ -1359,6 +1373,8 @@ Contract tests check that fields necessary to render or enforce rules are presen
 | AC-073 | Whole-room trade-off | Full affected purchase set and consequences evaluated within approved total before requesting an increase. |
 | AC-074 | Find more | Another broad fresh pass; up to three unseen options appended; selection/version unchanged. |
 | AC-075 | New evidence changes offer eligibility | Intended new choice reranked/revalidated; saved historical total does not change silently. |
+| AC-075a | Save and share shopping list | Top-right gradient bag saves exact links and authoritative pack totals; My Rooms restores the list after relaunch; the native share sheet offers Messages on supported devices. Removed purchases and temporary previews are excluded; empty and failed-save states are explicit. |
+| AC-075b | Replace or delete a saved shopping list | Saving another version replaces only that Room's local list after a successful write; confirmed Room deletion removes it, including after a lost-response retry. |
 
 #### 3.4 Perception, geometry and layout
 
@@ -1472,7 +1488,7 @@ Contract tests check that fields necessary to render or enforce rules are presen
 - Business mode, mode selector, business labels, explicit seating-target controls, business seating-group placement and business-only counter/register clearance workflows.
 - Spot intent, tapped-placement input and `at_spot` Anchors.
 - Sample-room entry/recovery, unsupported-device browsing, iPad and Android.
-- Before/After UI, walk mode, Day/Evening toggle, sharing screenshots/shopping lists and public hosted design sharing.
+- Before/After UI, walk mode, Day/Evening toggle, sharing screenshots and public hosted design sharing. Local shopping lists and native text sharing are included.
 - Furniture dragging, direct rotation, mutable direct-transform PATCH and manual model-editor tools. Camera gestures and validated Swap/Remove remain included.
 - Cart, checkout, payments, Amazon Product API and an additional commerce backend. Exact-offer Buy and an optional secondary configured search link remain included.
 - User accounts/login, a shared app-key gate or a new authentication project. Input validation, private capture media and server credentials remain required.

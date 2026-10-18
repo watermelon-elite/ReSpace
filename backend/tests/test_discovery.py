@@ -5,7 +5,7 @@ import json
 import httpx
 import pytest
 
-from respace.discovery import GeminiProductModels, ProductService, SerpAPIShopping, TransientProductError, checked_facts, public_url
+from respace.discovery import GeminiProductModels, PlaywrightVerifier, ProductService, SerpAPIShopping, TransientProductError, checked_facts, public_url
 from respace.products import ProductError
 
 
@@ -58,9 +58,10 @@ class Verifier:
         if index in self.transient and self.calls.count(index) == 1:
             raise TransientProductError("page_inaccessible", "Try again")
         extracted = facts(index)
+        extracted['pack_quote'] = 'Contains one ' + candidate['category'].replace('_', ' ')
         if index in self.missing:
             extracted["measurements"].pop()
-        page = {"source_url": candidate["product_url"], "visible_text": f"Chair {index} Width 50 cm Depth 50 cm Height 80 cm USD 100.00 In stock Contains one chair"}
+        page = {"source_url": candidate["product_url"], "visible_text": f"Chair {index} Width 50 cm Depth 50 cm Height 80 cm USD 100.00 In stock {extracted['pack_quote']}"}
         return checked_facts(candidate, extracted, page)
 
 
@@ -98,6 +99,16 @@ def test_new_search_always_fresh_even_with_stored_eligible_options(store):
     assert len(verifier.calls) == calls
     assert result["state"] == "completed"
     assert result["source_candidate_pools"]["stored"]
+
+
+def test_no_match_returns_checked_evidence_for_the_next_agent_decision(store):
+    products, _, _ = service(store, [[hit(1)], [], []])
+    result = products.search({'category': 'chair', 'max_dimensions': [0.49, None, None]}, 'too_narrow')
+    assert result['state'] == 'no_match' and result['displayed_choices'] == []
+    rejected = result['rejected_choices'][0]
+    assert rejected['dimensions'] == [0.5, 0.5, 0.8]
+    assert rejected['dimension_outcome'] == 'verified' and rejected['offer_verified']
+    assert rejected['variant_id'] not in {c['variant_id'] for c in result['displayed_choices']}
 
 
 def test_source_failure_empty_pool_no_fabricated_options(store):
@@ -141,6 +152,22 @@ def test_serpapi_fresh_market_parameters_and_foreign_prices_are_only_raw():
     assert result["results"][0]["price"] == "€20"
 
 
+@pytest.mark.parametrize('failure', ['timeout', 429, 503])
+def test_serpapi_transient_failure_retries_once_in_the_discovery_pass(store, failure):
+    calls = []
+    def respond(request):
+        calls.append(request)
+        if len(calls) == 1:
+            if failure == 'timeout':
+                raise httpx.ReadTimeout('Timed out', request=request)
+            return httpx.Response(failure, json={})
+        return httpx.Response(200, json={'shopping_results': [], 'search_metadata': {'status': 'Success'}})
+    shopping = SerpAPIShopping('test-only', httpx.Client(transport=httpx.MockTransport(respond)))
+    result = ProductService(store, shopping, None, None).search({'category': 'chair'}, 'transient')
+    assert len(calls) == 4
+    assert len(result['queries']) == 3 and not result['source_failures']
+
+
 def test_private_evidence_targets_and_unquoted_model_claims_are_rejected():
     with pytest.raises(ProductError):
         public_url("https://127.0.0.1/private")
@@ -162,6 +189,98 @@ def test_real_sdk_accepts_extraction_json_schema_without_map_conversion_failure(
     result = models.extract({"title": "Chair 1"}, {"visible_text": "Published dimensions"})
     assert result["price"] == "100.00"
     assert calls[0]["generationConfig"]["responseJsonSchema"]["properties"]["options"]["type"] == "object"
+
+
+@pytest.mark.parametrize('field,value', [('classification', 'End tables & side tables'),
+                                       ('availability', 'https://schema.org/InStock')])
+def test_extraction_rejects_unmapped_merchant_taxonomy(field, value):
+    from types import SimpleNamespace
+    extracted = facts('1')
+    extracted[field] = value
+    client = SimpleNamespace(models=SimpleNamespace(generate_content=lambda **kwargs:
+        SimpleNamespace(text=json.dumps(extracted))))
+    with pytest.raises(TransientProductError, match='could not be extracted'):
+        GeminiProductModels(client=client, model='test').extract({'title': 'Chair 1'}, {})
+
+
+def test_bare_variant_option_is_not_proof_of_pack_contents():
+    extracted = facts('1')
+    extracted['pack_quote'] = 'Feature: 1'
+    page = {'source_url': 'https://example.com/chair/1',
+            'visible_text': 'Chair 1 Width 50 cm Depth 50 cm Height 80 cm USD 100.00 In stock Feature: 1'}
+    result = checked_facts({'title': 'Chair 1', 'category': 'chair', 'product_url': page['source_url']}, extracted, page)
+    assert result['dimension_evidence']['outcome'] == 'verified'
+    assert not result['offers'][0]['pack_contents']['verified']
+
+
+def test_published_description_supports_dimensions_and_pack_contents():
+    page = {'source_url': 'https://example.com/chair/1', 'visible_text': 'Chair 1 USD 100.00 In stock',
+            'specification_text': 'Width 50 cm Depth 50 cm Height 80 cm Contains one chair'}
+    result = checked_facts({'title': 'Chair 1', 'category': 'chair', 'product_url': page['source_url']}, facts('1'), page)
+    assert result['dimension_evidence']['outcome'] == 'verified'
+    assert result['offers'][0]['pack_contents']['verified']
+
+
+def test_supported_manufacturer_model_identity_survives_an_unquoted_gtin():
+    extracted = facts('1')
+    extracted.update(manufacturer='Maker', mpn='MODEL-1', gtin='unproven', identity_quote='Maker MODEL-1')
+    page = {'source_url': 'https://example.com/chair/1',
+            'visible_text': 'Chair 1 Maker MODEL-1 Width 50 cm Depth 50 cm Height 80 cm USD 100.00 In stock Contains one chair'}
+    first = checked_facts({'title': 'Chair 1', 'category': 'chair', 'product_url': page['source_url'], 'merchant': 'First'}, extracted, page)
+    second = checked_facts({'title': 'Chair 1', 'category': 'chair', 'product_url': 'https://example.org/chair/1', 'merchant': 'Second'}, extracted, page)
+    assert first['variant']['identity']['identity_verified']
+    assert first['variant']['identity']['gtin'] is None
+    assert first['variant']['variant_id'] == second['variant']['variant_id']
+
+
+def test_merchant_images_require_published_public_urls(monkeypatch):
+    monkeypatch.setattr('respace.discovery.public_url', lambda url: url)
+    extracted = facts('1')
+    photo = 'https://example.com/chair.jpg'
+    extracted['image_references'] = [photo, 'https://example.com/invented.jpg']
+    page = {'source_url': 'https://example.com/chair/1',
+            'visible_text': 'Chair 1 Width 50 cm Depth 50 cm Height 80 cm USD 100.00 In stock Contains one chair',
+            'image_sources': [{'url': photo, 'alt': 'Chair 1'}]}
+    result = checked_facts({'title': 'Chair 1', 'category': 'chair', 'product_url': page['source_url']}, extracted, page)
+    assert result['variant']['image_references'] == [photo]
+
+
+@pytest.mark.parametrize('collapsed', [False, True])
+@pytest.mark.parametrize('dom_characters', [120000, 500001])
+def test_verifier_reads_specifications_and_closes_browser_before_model(monkeypatch, collapsed, dom_characters):
+    from unittest.mock import MagicMock
+    import playwright.sync_api
+    runtime = MagicMock()
+    browser = runtime.chromium.launch.return_value
+    page = browser.new_context.return_value.new_page.return_value
+    page.goto.return_value.status = 200
+    page.url = 'https://example.com/chair/1'
+    complete_text = 'Chair 1 Width 50 cm Depth 50 cm Height 80 cm USD 100.00 In stock Contains one chair'
+    body, structured, description, images = MagicMock(), MagicMock(), MagicMock(), MagicMock()
+    body.inner_text.return_value = 'Chair 1' if collapsed else complete_text
+    body.evaluate.return_value = ('<body>' + complete_text + '</body>').ljust(dom_characters)
+    structured.all_text_contents.return_value = []
+    description.evaluate_all.return_value = [complete_text] if collapsed else []
+    images.evaluate_all.return_value = []
+    page.locator.side_effect = lambda selector: body if selector == 'body' else structured if selector.startswith('script') else images if selector == 'img' else description
+    monkeypatch.setattr(playwright.sync_api, 'sync_playwright', lambda: MagicMock(__enter__=lambda self: runtime))
+    monkeypatch.setattr('respace.discovery.public_url', lambda url: url)
+    class Extractor:
+        def extract(self, candidate, data):
+            assert browser.close.call_count == 1
+            assert len(data['product_dom']) == dom_characters
+            return facts('1')
+    verifier = PlaywrightVerifier(Extractor())
+    candidate = {'product_url': page.url, 'title': 'Chair 1', 'category': 'chair'}
+    if dom_characters > 500000:
+        page_data = verifier.capture(candidate)
+        assert page_data['truncated_fields'] == ['product_dom']
+        assert len(page_data['product_dom']) == 500000
+        with pytest.raises(ProductError, match='resource limit'):
+            verifier.verify(candidate)
+        return
+    result = verifier.verify(candidate)
+    assert result['dimension_evidence']['outcome'] == 'verified'
 
 
 def test_offer_refresh_does_not_substitute_merchant_without_user_choice(store):

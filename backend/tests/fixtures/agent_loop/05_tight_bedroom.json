@@ -1,0 +1,1070 @@
+{
+  "schema_version": 1,
+  "scenario_id": "05_tight_bedroom",
+  "title": "Tight bedroom with a required no-fit dresser",
+  "provenance": {
+    "kind": "synthetic",
+    "created_at": "2026-10-18T00:00:00+00:00",
+    "description": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.",
+    "measurement_accuracy": "Internally consistent authored values, not calibrated real-world measurements.",
+    "listing_evidence": "Fictional page text for offline verifier tests only. Never load these records into a production Product catalog."
+  },
+  "agent_context": {
+    "measured_context": {
+      "capture_id": "capture_05_tight_bedroom",
+      "captured_at": "2026-10-18T00:00:00+00:00",
+      "source": "synthetic_json",
+      "units": "meters",
+      "frame": "normalized_room",
+      "height": 2.4,
+      "extents": {
+        "width": 3,
+        "depth": 3.2,
+        "meaning": "Bounding extents only; use floor.polygon for usable floor."
+      },
+      "floor": {
+        "polygon": [
+          [
+            0,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            3.2
+          ],
+          [
+            0,
+            3.2
+          ]
+        ],
+        "area": 9.6
+      },
+      "walls": [
+        {
+          "id": "w_1",
+          "a": [
+            0,
+            0
+          ],
+          "b": [
+            3,
+            0
+          ],
+          "length": 3.0,
+          "inward_normal": [
+            0.0,
+            1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_2",
+          "a": [
+            3,
+            0
+          ],
+          "b": [
+            3,
+            3.2
+          ],
+          "length": 3.2,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_3",
+          "a": [
+            3,
+            3.2
+          ],
+          "b": [
+            0,
+            3.2
+          ],
+          "length": 3.0,
+          "inward_normal": [
+            -0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_4",
+          "a": [
+            0,
+            3.2
+          ],
+          "b": [
+            0,
+            0
+          ],
+          "length": 3.2,
+          "inward_normal": [
+            1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        }
+      ],
+      "openings": [
+        {
+          "id": "entry",
+          "type": "door",
+          "wall_id": "w_1",
+          "offset": 0.1,
+          "width": 0.8,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        },
+        {
+          "id": "window",
+          "type": "window",
+          "wall_id": "w_3",
+          "offset": 0.8,
+          "width": 1.4,
+          "bottom": 0.95,
+          "height": 1.1,
+          "source_ids": []
+        }
+      ],
+      "objects": [
+        {
+          "id": "bed",
+          "source_ids": [],
+          "category": "bed",
+          "source": "synthetic",
+          "center": [
+            1.5,
+            2.1
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            1.5,
+            1.9,
+            0.55
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "nightstand",
+          "source_ids": [],
+          "category": "nightstand",
+          "source": "synthetic",
+          "center": [
+            0.35,
+            2.3
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            0.4,
+            0.35,
+            0.5
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "radiator",
+          "source_ids": [],
+          "category": "radiator",
+          "source": "synthetic",
+          "center": [
+            2.82,
+            0.5
+          ],
+          "base_y": 0,
+          "yaw": -1.5707963267948966,
+          "size": [
+            0.7,
+            0.2,
+            0.6
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": true,
+          "attrs": {},
+          "observation_count": 0
+        }
+      ],
+      "uncertainty": "Exact authored test values; physical measurement accuracy and sensor confidence are untested."
+    },
+    "planning": {
+      "room_id": "room_05_tight_bedroom",
+      "capture_id": "capture_05_tight_bedroom",
+      "planning_revision": 0,
+      "instructions": [
+        {
+          "target": {
+            "kind": "object",
+            "id": "bed",
+            "capture_id": "capture_05_tight_bedroom"
+          },
+          "instruction": "keep"
+        },
+        {
+          "target": {
+            "kind": "object",
+            "id": "nightstand",
+            "capture_id": "capture_05_tight_bedroom"
+          },
+          "instruction": "keep"
+        }
+      ]
+    },
+    "request": {
+      "schema_version": 1,
+      "operation_id": "generate_05_tight_bedroom",
+      "capture_id": "capture_05_tight_bedroom",
+      "snapshot_id": "snapshot_05_tight_bedroom",
+      "planning_revision": 0,
+      "expected_active_design_id": null,
+      "expected_active_revision": 0,
+      "intent": "add",
+      "styles": [
+        "Cozy",
+        "Minimal"
+      ],
+      "budget": "300.00",
+      "currency": "USD",
+      "text": "Add a table lamp on my nightstand and a dresser. A dresser is a must-have. Preserve all existing Objects and the doorway. Ask if the dresser cannot fit."
+    },
+    "answers": [],
+    "initial_products": {
+      "state": "empty",
+      "displayed_choices": [],
+      "reasons": [
+        "Offline fixture before discovery; verify the fictional evidence through the controlled provider."
+      ]
+    },
+    "actions": [],
+    "approved_budget": "300.00",
+    "categories": [
+      "sofa",
+      "armchair",
+      "chair",
+      "stool",
+      "table",
+      "dining_table",
+      "coffee_table",
+      "side_table",
+      "desk",
+      "nightstand",
+      "dresser",
+      "counter",
+      "shelf",
+      "cabinet",
+      "tv_stand",
+      "bed",
+      "tv",
+      "floor_lamp",
+      "table_lamp",
+      "plant",
+      "decor",
+      "mirror",
+      "wall_art",
+      "rug",
+      "curtain",
+      "ceiling_light",
+      "outlet",
+      "light_switch",
+      "radiator",
+      "vent",
+      "sink",
+      "toilet",
+      "bathtub",
+      "refrigerator",
+      "stove",
+      "oven",
+      "dishwasher",
+      "washer_dryer",
+      "fireplace",
+      "stairs"
+    ]
+  },
+  "room_snapshot": {
+    "schema_version": 1,
+    "snapshot_id": "snapshot_05_tight_bedroom",
+    "revision": 1,
+    "room_id": "room_05_tight_bedroom",
+    "capture_id": "capture_05_tight_bedroom",
+    "created_at": "2026-10-18T00:00:00+00:00",
+    "room": {
+      "schema_version": 1,
+      "category_version": 1,
+      "room_id": "room_05_tight_bedroom",
+      "capture_id": "capture_05_tight_bedroom",
+      "height": 2.4,
+      "frame": {
+        "room_from_world": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "floor": {
+        "polygon": [
+          [
+            0,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            3.2
+          ],
+          [
+            0,
+            3.2
+          ]
+        ],
+        "area": 9.6
+      },
+      "walls": [
+        {
+          "id": "w_1",
+          "a": [
+            0,
+            0
+          ],
+          "b": [
+            3,
+            0
+          ],
+          "length": 3.0,
+          "inward_normal": [
+            0.0,
+            1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_2",
+          "a": [
+            3,
+            0
+          ],
+          "b": [
+            3,
+            3.2
+          ],
+          "length": 3.2,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_3",
+          "a": [
+            3,
+            3.2
+          ],
+          "b": [
+            0,
+            3.2
+          ],
+          "length": 3.0,
+          "inward_normal": [
+            -0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_4",
+          "a": [
+            0,
+            3.2
+          ],
+          "b": [
+            0,
+            0
+          ],
+          "length": 3.2,
+          "inward_normal": [
+            1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        }
+      ],
+      "corners": [
+        {
+          "id": "c_1",
+          "position": [
+            0,
+            0
+          ],
+          "wall_ids": [
+            "w_4",
+            "w_1"
+          ]
+        },
+        {
+          "id": "c_2",
+          "position": [
+            3,
+            0
+          ],
+          "wall_ids": [
+            "w_1",
+            "w_2"
+          ]
+        },
+        {
+          "id": "c_3",
+          "position": [
+            3,
+            3.2
+          ],
+          "wall_ids": [
+            "w_2",
+            "w_3"
+          ]
+        },
+        {
+          "id": "c_4",
+          "position": [
+            0,
+            3.2
+          ],
+          "wall_ids": [
+            "w_3",
+            "w_4"
+          ]
+        }
+      ],
+      "openings": [
+        {
+          "id": "entry",
+          "type": "door",
+          "wall_id": "w_1",
+          "offset": 0.1,
+          "width": 0.8,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        },
+        {
+          "id": "window",
+          "type": "window",
+          "wall_id": "w_3",
+          "offset": 0.8,
+          "width": 1.4,
+          "bottom": 0.95,
+          "height": 1.1,
+          "source_ids": []
+        }
+      ],
+      "objects": [
+        {
+          "id": "bed",
+          "source_ids": [],
+          "category": "bed",
+          "source": "synthetic",
+          "center": [
+            1.5,
+            2.1
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            1.5,
+            1.9,
+            0.55
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "nightstand",
+          "source_ids": [],
+          "category": "nightstand",
+          "source": "synthetic",
+          "center": [
+            0.35,
+            2.3
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            0.4,
+            0.35,
+            0.5
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "radiator",
+          "source_ids": [],
+          "category": "radiator",
+          "source": "synthetic",
+          "center": [
+            2.82,
+            0.5
+          ],
+          "base_y": 0,
+          "yaw": -1.5707963267948966,
+          "size": [
+            0.7,
+            0.2,
+            0.6
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": true,
+          "attrs": {},
+          "observation_count": 0
+        }
+      ],
+      "wall_features": [],
+      "zones": [
+        {
+          "id": "z_entry",
+          "type": "keep_clear",
+          "reason": "door",
+          "opening_id": "entry",
+          "polygon": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.9
+            ],
+            [
+              1.05,
+              0.9
+            ],
+            [
+              1.05,
+              0.0
+            ]
+          ]
+        }
+      ],
+      "style_hints": {},
+      "identity_map": {
+        "bed": {
+          "kind": "object",
+          "id": "bed"
+        },
+        "nightstand": {
+          "kind": "object",
+          "id": "nightstand"
+        },
+        "radiator": {
+          "kind": "object",
+          "id": "radiator"
+        }
+      },
+      "processing": {
+        "expected_frames": 0,
+        "not_started": 0,
+        "pending": 0,
+        "succeeded": 0,
+        "failed": 0,
+        "lifted": 0,
+        "completed": 0
+      },
+      "validity": {
+        "usable": true,
+        "reasons": [],
+        "warnings": [
+          {
+            "code": "synthetic_input",
+            "message": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers."
+          }
+        ]
+      }
+    },
+    "identity_map": {
+      "bed": {
+        "kind": "object",
+        "id": "bed"
+      },
+      "nightstand": {
+        "kind": "object",
+        "id": "nightstand"
+      },
+      "radiator": {
+        "kind": "object",
+        "id": "radiator"
+      }
+    }
+  },
+  "listings": [
+    {
+      "listing_id": "deep_dresser",
+      "candidate": {
+        "title": "SYNTHETIC deep dresser / oak",
+        "category": "dresser",
+        "product_url": "https://fixtures.example.com/deep_dresser",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "deep_dresser"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC deep dresser / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "deep_dresser",
+        "identity_quote": "Synthetic Fixtures model deep_dresser",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "160",
+            "unit": "cm",
+            "quote": "Width 160 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "90",
+            "unit": "cm",
+            "quote": "Depth 90 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "95",
+            "unit": "cm",
+            "quote": "Height 95 cm"
+          }
+        ],
+        "price": "249.99",
+        "currency": "USD",
+        "price_quote": "USD 249.99",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical dresser units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/deep_dresser",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC deep dresser / oak\nSynthetic Fixtures model deep_dresser\nWidth 160 cm\nDepth 90 cm\nHeight 95 cm\nUSD 249.99\nin stock\nContains 1 identical dresser units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          1.6,
+          0.9,
+          0.95
+        ],
+        "offer_available": true
+      }
+    },
+    {
+      "listing_id": "premium_dresser",
+      "candidate": {
+        "title": "SYNTHETIC premium dresser / oak",
+        "category": "dresser",
+        "product_url": "https://fixtures.example.com/premium_dresser",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "premium_dresser"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC premium dresser / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "premium_dresser",
+        "identity_quote": "Synthetic Fixtures model premium_dresser",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "160",
+            "unit": "cm",
+            "quote": "Width 160 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "90",
+            "unit": "cm",
+            "quote": "Depth 90 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "95",
+            "unit": "cm",
+            "quote": "Height 95 cm"
+          }
+        ],
+        "price": "399.99",
+        "currency": "USD",
+        "price_quote": "USD 399.99",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical dresser units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/premium_dresser",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC premium dresser / oak\nSynthetic Fixtures model premium_dresser\nWidth 160 cm\nDepth 90 cm\nHeight 95 cm\nUSD 399.99\nin stock\nContains 1 identical dresser units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          1.6,
+          0.9,
+          0.95
+        ],
+        "offer_available": true
+      }
+    },
+    {
+      "listing_id": "bedside_lamp",
+      "candidate": {
+        "title": "SYNTHETIC bedside lamp / oak",
+        "category": "table_lamp",
+        "product_url": "https://fixtures.example.com/bedside_lamp",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "bedside_lamp"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC bedside lamp / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "bedside_lamp",
+        "identity_quote": "Synthetic Fixtures model bedside_lamp",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "15",
+            "unit": "cm",
+            "quote": "Width 15 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "15",
+            "unit": "cm",
+            "quote": "Depth 15 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "30",
+            "unit": "cm",
+            "quote": "Height 30 cm"
+          }
+        ],
+        "price": "24.99",
+        "currency": "USD",
+        "price_quote": "USD 24.99",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical table_lamp units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/bedside_lamp",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC bedside lamp / oak\nSynthetic Fixtures model bedside_lamp\nWidth 15 cm\nDepth 15 cm\nHeight 30 cm\nUSD 24.99\nin stock\nContains 1 identical table_lamp units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          0.15,
+          0.15,
+          0.3
+        ],
+        "offer_available": true
+      }
+    },
+    {
+      "listing_id": "lamp_out_of_stock",
+      "candidate": {
+        "title": "SYNTHETIC lamp out of stock / oak",
+        "category": "table_lamp",
+        "product_url": "https://fixtures.example.com/lamp_out_of_stock",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "lamp_out_of_stock"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC lamp out of stock / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "lamp_out_of_stock",
+        "identity_quote": "Synthetic Fixtures model lamp_out_of_stock",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "15",
+            "unit": "cm",
+            "quote": "Width 15 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "15",
+            "unit": "cm",
+            "quote": "Depth 15 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "30",
+            "unit": "cm",
+            "quote": "Height 30 cm"
+          }
+        ],
+        "price": "19.99",
+        "currency": "USD",
+        "price_quote": "USD 19.99",
+        "availability": "out_of_stock",
+        "availability_quote": "out of stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical table_lamp units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/lamp_out_of_stock",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC lamp out of stock / oak\nSynthetic Fixtures model lamp_out_of_stock\nWidth 15 cm\nDepth 15 cm\nHeight 30 cm\nUSD 19.99\nout of stock\nContains 1 identical table_lamp units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          0.15,
+          0.15,
+          0.3
+        ],
+        "offer_available": false
+      }
+    }
+  ],
+  "replay": {
+    "actions": [
+      {
+        "action": "ask_user",
+        "payload": {
+          "kind": "numeric",
+          "topic": "occupants",
+          "text": "How many people usually use this room?",
+          "numeric_min": 1,
+          "numeric_max": 8,
+          "numeric_step": 1,
+          "allow_skip": true,
+          "allow_delegate": true,
+          "choices": []
+        }
+      },
+      {
+        "action": "search_products",
+        "payload": {
+          "category": "dresser",
+          "function": "Synthetic Tight bedroom with a required no-fit dresser",
+          "quantity": 1
+        }
+      },
+      {
+        "action": "search_products",
+        "payload": {
+          "category": "table_lamp",
+          "function": "Synthetic Tight bedroom with a required no-fit dresser",
+          "quantity": 1
+        }
+      },
+      {
+        "action": "finalize_selection",
+        "payload": {
+          "selected": [
+            {
+              "variant_id": "v_edd3ea8081738af90f0dd24a",
+              "offer_id": "offer_9d6e45e335d93df476fec316",
+              "quantity": 1,
+              "selection_id": "selection_dresser"
+            },
+            {
+              "variant_id": "v_0091c98f982783b6a0b939d0",
+              "offer_id": "offer_97e2ef97ea07afbee0232c8e",
+              "quantity": 1,
+              "selection_id": "selection_lamp"
+            }
+          ],
+          "assumptions": [
+            "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers."
+          ],
+          "reasons": [
+            "Recorded offline replay; the live model may ask different valid questions."
+          ]
+        }
+      }
+    ],
+    "answer": {
+      "action": "answer",
+      "number": 1
+    },
+    "selection_listings": {
+      "dresser": "deep_dresser",
+      "lamp": "bedside_lamp"
+    }
+  },
+  "spatial_case": {
+    "plan": {
+      "summary": "SYNTHETIC: Tight bedroom with a required no-fit dresser",
+      "adds": [
+        {
+          "action_id": "add_dresser",
+          "add_id": "dresser",
+          "category": "dresser",
+          "priority": 1,
+          "quantity": 1,
+          "selection_id": "selection_dresser",
+          "anchor": {
+            "type": "against_wall",
+            "wall_id": "w_1",
+            "alignment": "center"
+          },
+          "reason": "Controlled synthetic placement case."
+        },
+        {
+          "action_id": "add_lamp",
+          "add_id": "lamp",
+          "category": "table_lamp",
+          "priority": 2,
+          "quantity": 1,
+          "selection_id": "selection_lamp",
+          "anchor": {
+            "type": "on_top_of",
+            "target": {
+              "kind": "object",
+              "id": "nightstand"
+            }
+          },
+          "reason": "Controlled synthetic placement case."
+        }
+      ],
+      "moves": [],
+      "removes": [],
+      "replaces": [],
+      "restores": [],
+      "unlocks": []
+    },
+    "constraints": {
+      "intent": "add",
+      "instructions": {
+        "bed": "keep",
+        "nightstand": "keep"
+      },
+      "approved_ceiling": "300.00",
+      "must_have_add_ids": [
+        "dresser"
+      ],
+      "allow_adjustments": true
+    }
+  },
+  "expected": {
+    "floor_area": 9.6,
+    "selected_total": "274.98",
+    "candidate_total": "24.99",
+    "new_item_count": 1,
+    "conflict_codes": [
+      "must_have_unplaced"
+    ],
+    "omitted_add_ids": [
+      "dresser"
+    ],
+    "must_have_add_ids": [
+      "dresser"
+    ],
+    "eligible_choices_by_category": {
+      "dresser": 1,
+      "table_lamp": 1
+    },
+    "publishable": false,
+    "checks": [
+      "verified listing is not proof of room fit",
+      "required dresser conflicts with bed, entry or fixed radiator",
+      "ask before dropping a must-have",
+      "over-budget offer rejected",
+      "unplaced dresser excluded from candidate purchases"
+    ]
+  }
+}

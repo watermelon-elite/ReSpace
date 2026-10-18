@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
@@ -25,14 +26,17 @@ class ScriptScreenTest(unittest.TestCase):
         page = self.client.get("/").get_data(as_text=True)
         for lane in ("base", "overlay_1", "overlay_2", "subtitles"):
             self.assertIn(f'data-track-key="{lane}"', page)
-        for number in range(1, 44):
-            self.assertIn(f"SHOT {number:02}", page)
+        self.assertIn("Close-up of the standard bed.", page)
         self.assertNotIn('class="format-contributors"', page)
         self.assertIn('data-copy-export-button', page)
         old = self.client.get("/?version=" + ORIGINAL_ID).get_data(as_text=True)
         self.assertIn('data-editing-disabled="true"', old)
         current = self.state()["versions"][-1]["content"]
         self.assertEqual(current["script"]["narration"], (ROOT / "data/voiceover.txt").read_text())
+        for blocks in current["visual_tracks"].values():
+            for block in blocks:
+                text = block["visual_description"] + block["recording_requirement"]["exact_action"]
+                self.assertIsNone(re.search(r"\d{2}:\d{2}|DELIVERY:|PICTURE / ACTION:|SOUND / EDIT:|SOURCE:", text))
 
     def test_edit_reanchors_without_changing_runtime_or_original(self):
         before = self.state()
@@ -90,10 +94,53 @@ class ScriptScreenTest(unittest.TestCase):
     def test_export_retains_all_silent_shots(self):
         content = self.state()["versions"][-1]["content"]
         export = build_script_export(title="ReSpace", version_id=WORKING_ID, content=content)
-        for number in range(1, 44):
-            self.assertEqual(export["plain_text"].count(f"SHOT {number:02} ·"), 1)
-        self.assertIn("02:18", export["plain_text"])
+        retained = [shot for block in content["visual_tracks"]["base"] for shot in block["shot_ids"]]
+        self.assertEqual(retained, [f"shot-{number:02}" for number in range(1, 48)])
+        self.assertIn("A friend starts to leave.", export["plain_text"])
+        self.assertIn("Measure / Plan / Check", export["plain_text"])
         self.assertIn("02:42", export["plain_text"])
+        self.assertIn("A flower blooms in the right environment.", export["plain_text"])
+        self.assertIn("Or use it to design your business.", export["plain_text"])
+        self.assertIn("Café · Connection", export["plain_text"])
+        self.assertNotIn("Future vision", export["plain_text"])
+
+    def test_independent_layers_and_speaker_handoff(self):
+        content = self.state()["versions"][-1]["content"]
+        positions = {word["id"]: index for index, word in enumerate(content["script"]["words"])}
+        tracks = content["visual_tracks"]
+        for blocks in tracks.values():
+            previous_end = -1
+            previous_word = -1
+            for block in blocks:
+                self.assertLessEqual(previous_end, block["start_seconds"])
+                self.assertLess(block["start_seconds"], block["end_seconds"])
+                self.assertLessEqual(block["end_seconds"], 180)
+                self.assertLess(previous_word, positions[block["start_word_id"]])
+                previous_end = block["end_seconds"]
+                previous_word = positions[block["end_word_id"]]
+                self.assertTrue(block["recording_requirement"]["exact_action"])
+        presenter = next(block for block in tracks["base"] if block["id"] == "base-11")
+        self.assertEqual((presenter["start_seconds"], presenter["end_seconds"]), (24, 45))
+        panels = [block for block in tracks["overlay_1"] if block["id"] in {"demo-scan", "demo-budget", "demo-goal"}]
+        self.assertGreater(panels[0]["start_seconds"], presenter["start_seconds"])
+        self.assertEqual(panels[-1]["end_seconds"], presenter["end_seconds"])
+        community = next(block for block in tracks["overlay_1"] if block["id"] == "demo-community")
+        next_beat = next(beat for beat in content["script"]["beats"] if beat["id"] == "beat-40")
+        self.assertLess(community["start_seconds"], next_beat["start_seconds"])
+        self.assertGreater(community["end_seconds"], next_beat["start_seconds"])
+        for beat in content["script"]["beats"]:
+            self.assertEqual(beat["speaker"], "External narrator" if beat["start_seconds"] < 24 else "ReSpace team")
+        export = build_script_export(title="ReSpace", version_id=WORKING_ID, content=content)
+        self.assertIn("External narrator", export["lines"][0]["heading"])
+        panel = panels[0]
+        response = self.client.put(self.base + "/autosave", json={
+            "generated_base_version_id": ORIGINAL_ID, "narration": content["script"]["narration"],
+            "visual_edits": [{"id": panel["id"], "exact_action": "Enter beside the presenter after the first sentence."}],
+        })
+        self.assertEqual(response.status_code, 200)
+        saved = next(block for block in response.json["content"]["visual_tracks"]["overlay_1"] if block["id"] == panel["id"])
+        self.assertEqual(saved["start_seconds"], 26.5)
+        self.assertEqual(saved["recording_requirement"]["exact_action"], "Enter beside the presenter after the first sentence.")
 
 
 if __name__ == "__main__":

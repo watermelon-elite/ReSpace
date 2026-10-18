@@ -43,6 +43,8 @@ Verified facts, each claim tagged confirmed or inferred with its source URL. Rea
 ### Code
 - [`script/README.md`](script/README.md): contained temporary DS_HQ Script-screen copy, ReSpace narration and visual tracks, local autosave and run instructions. Read when changing the launch-script prototype; independent of the iPhone app.
 - [`ReSpace/`](ReSpace/), [`ReSpace.xcodeproj/`](ReSpace.xcodeproj/): the iOS capture, Room review, planning and immutable design client.
+- [`ReSpace/DesignSystem.swift`](ReSpace/DesignSystem.swift), [`ReSpace/IntentViews.swift`](ReSpace/IntentViews.swift), [`ReSpace/OperationViews.swift`](ReSpace/OperationViews.swift), [`ReSpace/ProductViews.swift`](ReSpace/ProductViews.swift): DreamSeal presentation components, guided brief/questions and focused Product pages; bundled Inter retains its [license](ReSpace/Resources/Inter-LICENSE.txt).
+- [`ReSpace/ShoppingList.swift`](ReSpace/ShoppingList.swift), [`ReSpace/ShoppingListViews.swift`](ReSpace/ShoppingListViews.swift): saved per-Room purchase links, local persistence and native sharing from the design and My Rooms.
 - [`backend/`](backend/): versioned API, durable state, Product verification, perception and deterministic placement; contract and behavior tests are under `backend/tests/`.
 - [`backend/README.md`](backend/README.md): local runtime, opt-in model testing, startup instructions and test-data limits.
 - [`assets/`](assets/): versioned render assets and offline conversion; [`Kenney license`](assets/sources/kenney/LICENSE.txt) records the retained source license.

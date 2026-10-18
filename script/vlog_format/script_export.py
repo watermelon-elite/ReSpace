@@ -191,7 +191,7 @@ def _plain_text(export: dict[str, Any]) -> str:
 def _visual_description(block: dict[str, Any]) -> str:
     description = block["visual_description"]
     action = (block.get("recording_requirement") or {}).get("exact_action")
-    return f"{description} Following action: {action}" if action else description
+    return f"{description} Details: {action}" if action else description
 
 
 def build_script_export(
@@ -294,7 +294,7 @@ def build_script_export(
             {
                 "heading": (
                     f"(Line {line_number}) {'' if has_explicit_time else '~'}{_timecode(start_seconds)}–"
-                    f"{_timecode(end_seconds)}"
+                    f"{_timecode(end_seconds)} · {beat.get('speaker', 'Narrator')}"
                 ),
                 "segments": _styled_narration(content, beat, positions),
                 "bullets": bullets,

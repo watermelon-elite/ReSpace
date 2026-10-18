@@ -21,8 +21,10 @@
 /* Begin PBXFrameworksBuildPhase section */
 		C9E010B93083EE0400A11453 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
 			files = (
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -55,6 +57,8 @@
 				C9E010BA3083EE0400A11453 /* Resources */,
 			);
 			buildRules = (
+			);
+			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
 				C9E010BE3083EE0400A11453 /* ReSpace */,
@@ -101,21 +105,25 @@
 /* Begin PBXResourcesBuildPhase section */
 		C9E010BA3083EE0400A11453 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
 			files = (
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C9E010B83083EE0400A11453 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
 			files = (
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		C9E010C53083EE0600A11453 /* Debug configuration for PBXProject "ReSpace" */ = {
+		C9E010C53083EE0600A11453 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -179,7 +187,7 @@
 			};
 			name = Debug;
 		};
-		C9E010C63083EE0600A11453 /* Release configuration for PBXProject "ReSpace" */ = {
+		C9E010C63083EE0600A11453 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -236,7 +244,7 @@
 			};
 			name = Release;
 		};
-		C9E010C83083EE0600A11453 /* Debug configuration for PBXNativeTarget "ReSpace" */ = {
+		C9E010C83083EE0600A11453 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -247,12 +255,12 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ReSpace.xcodeproj/DebugInfo.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "ReSpace uses the camera and LiDAR to measure your room.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_NSCameraUsageDescription = "ReSpace uses the camera and LiDAR to measure your room.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -270,7 +278,7 @@
 			};
 			name = Debug;
 		};
-		C9E010C93083EE0600A11453 /* Release configuration for PBXNativeTarget "ReSpace" */ = {
+		C9E010C93083EE0600A11453 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -280,12 +288,12 @@
 				DEVELOPMENT_TEAM = W62GSPN4YJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "ReSpace uses the camera and LiDAR to measure your room.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_NSCameraUsageDescription = "ReSpace uses the camera and LiDAR to measure your room.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -309,21 +317,22 @@
 		C9E010B73083EE0400A11453 /* Build configuration list for PBXProject "ReSpace" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C9E010C53083EE0600A11453 /* Debug configuration for PBXProject "ReSpace" */,
-				C9E010C63083EE0600A11453 /* Release configuration for PBXProject "ReSpace" */,
+				C9E010C53083EE0600A11453 /* Debug */,
+				C9E010C63083EE0600A11453 /* Release */,
 			);
+			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		C9E010C73083EE0600A11453 /* Build configuration list for PBXNativeTarget "ReSpace" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C9E010C83083EE0600A11453 /* Debug configuration for PBXNativeTarget "ReSpace" */,
-				C9E010C93083EE0600A11453 /* Release configuration for PBXNativeTarget "ReSpace" */,
+				C9E010C83083EE0600A11453 /* Debug */,
+				C9E010C93083EE0600A11453 /* Release */,
 			);
+			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
 	rootObject = C9E010B43083EE0400A11453 /* Project object */;
-	validationLevel = 1;
 }
