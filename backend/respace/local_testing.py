@@ -137,7 +137,7 @@ class TestEditModel:
         return {'action': 'execute_plan', 'payload': {'plan': plan}}
 
 
-def seed_test_room(store, storage, device_id, raw, metadata):
+def seed_test_room(store, storage, device_id, raw, metadata, *, live_providers=False):
     key = stable_id('local_test_import', [device_id, metadata['sha256']])
     with store.transaction():
         if store.get('local_test_imports', key):
@@ -158,12 +158,14 @@ def seed_test_room(store, storage, device_id, raw, metadata):
         capture['test_source'] = deepcopy(metadata)
         store.put('captures', capture_id, capture)
         room = store.get('rooms', room_id)
-        room['warnings'] = [{'code': 'offline_test', 'message': TEST_NOTICE}]
+        notice = ('Local test: model-derived room with uncalibrated dimensions; live providers enabled. No room photos or native scan evidence.'
+                  if live_providers else TEST_NOTICE)
+        room['warnings'] = [{'code': 'local_test' if live_providers else 'offline_test', 'message': notice}]
         store.put('rooms', room_id, room)
         store.put('local_test_imports', key, {'device_id': device_id, 'sha256': metadata['sha256']})
 
 
-def create_test_app(data_dir, model_paths, *, load_model=load_test_model):
+def create_test_app(data_dir, model_paths, *, load_model=load_test_model, live_providers=False):
     models = []
     for path in model_paths:
         try:
@@ -172,16 +174,25 @@ def create_test_app(data_dir, model_paths, *, load_model=load_test_model):
             logging.warning('Skipping test model %s: %s', Path(path).name, error)
     if not models:
         raise ValueError('No supported single-room test models were loaded.')
-    root = Path(data_dir)
-    root.mkdir(parents=True, exist_ok=True, mode=0o700)
-    store, storage = SQLiteStore(root / 'records.sqlite3'), LocalCaptureStorage(root / 'captures')
-    operations, catalog = OperationService(store), TestCatalog()
-    def guard(record):
-        context = record.get('intended_context') or record.get('context') or {}
-        operations.guard(context.get('operation_id', record.get('operation_id')))
-    products = ProductService(store, catalog, catalog, catalog, guard=guard)
-    spatial = SpatialPipeline(store, operations, storage, planner=TestSpatialPlanner(), products=products)
-    app = create_app(store, storage, products, TestPlanningModel(), spatial, edit_model=TestEditModel(), local=True)
+    if live_providers:
+        from .local import create_local_app
+        from .spatial_planning import GeminiSpatialPlanner
+        app = create_local_app(data_dir, live_providers=True)
+        app.state.controller.spatial.planner = GeminiSpatialPlanner(allow_geometry_only=True)
+        store, storage = app.state.store, app.state.storage
+    else:
+        from .local import bind_provider_mode
+        root = Path(data_dir)
+        root.mkdir(parents=True, exist_ok=True, mode=0o700)
+        store, storage = SQLiteStore(root / 'records.sqlite3'), LocalCaptureStorage(root / 'captures')
+        bind_provider_mode(store, False)
+        operations, catalog = OperationService(store), TestCatalog()
+        def guard(record):
+            context = record.get('intended_context') or record.get('context') or {}
+            operations.guard(context.get('operation_id', record.get('operation_id')))
+        products = ProductService(store, catalog, catalog, catalog, guard=guard)
+        spatial = SpatialPipeline(store, operations, storage, planner=TestSpatialPlanner(), products=products)
+        app = create_app(store, storage, products, TestPlanningModel(), spatial, edit_model=TestEditModel(), local=True)
 
     @app.middleware('http')
     async def import_models(request, call_next):
@@ -192,7 +203,7 @@ def create_test_app(data_dir, model_paths, *, load_model=load_test_model):
             except ValueError:
                 return await call_next(request)
             for raw, metadata in models:
-                await asyncio.to_thread(seed_test_room, store, storage, device_id, raw, metadata)
+                await asyncio.to_thread(seed_test_room, store, storage, device_id, raw, metadata, live_providers=live_providers)
         return await call_next(request)
 
     return app

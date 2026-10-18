@@ -63,6 +63,25 @@ def test_real_adapter_sends_room_selections_and_photos_and_retries_malformed_onc
     assert '"w_1"' in calls[0]["contents"][0].text
 
 
+def test_geometry_only_local_mode_is_explicit_and_preserves_normal_photo_requirement():
+    calls = []
+    async def generate(**kwargs):
+        calls.append(kwargs)
+        return SimpleNamespace(text=json.dumps(plan()), usage_metadata=None)
+    client = SimpleNamespace(aio=SimpleNamespace(models=SimpleNamespace(generate_content=generate)))
+    room = normalize_room(native_room(), 'capture', 'room')
+    for photos in ([], [b'only-one-photo']):
+        with pytest.raises(PlanningFailure) as failure:
+            asyncio.run(GeminiSpatialPlanner(client=client, model='model').plan(room, {'sel': selection()}, {}, photos, {'intent': 'add'}))
+        assert failure.value.code == 'missing_planning_photos'
+    assert calls == []
+    planner = GeminiSpatialPlanner(client=client, model='model', allow_geometry_only=True)
+    result = asyncio.run(planner.plan(room, {'sel': selection()}, {}, [], {'intent': 'add'}))
+    assert result['plan']['adds'][0]['selection_id'] == 'sel'
+    assert len(calls[0]['contents']) == 1
+    assert 'geometry-only test with no room photos' in calls[0]['contents'][0].text
+
+
 def test_provider_failures_are_bounded_and_hard_requirement_cannot_publish():
     calls = []
     async def generate(**kwargs):

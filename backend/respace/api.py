@@ -35,7 +35,8 @@ class LazyPlanningModel:
         finally: await model.client.aio.aclose()
 
 
-def create_app(store=None, storage=None, products=None, model=None, spatial=None, *, edit_model=None, local=False):
+def create_app(store=None, storage=None, products=None, model=None, spatial=None, *, edit_model=None, local=False, allow_review_model=None):
+    allow_review_model = not local if allow_review_model is None else allow_review_model
     if store is None:
         from .store import PostgresStore
         store=PostgresStore(os.environ['DATABASE_URL'])
@@ -62,7 +63,7 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         elif kind in {'edit','swap'}:await editor.run(operation_id,bounded=bounded)
         elif kind=='planning_command':
             from .review import review_command
-            try:await review_command(store,operations,operation_id,allow_model=not local)
+            try:await review_command(store,operations,operation_id,allow_model=allow_review_model)
             except DomainError as error:
                 operations.finish(operation_id,'failed' if error.retryable else 'rejected',failure={'code':error.code,'message':error.message,'retryable':error.retryable})
         else:raise DomainError('unavailable_capability','This operation cannot be continued by a worker.',422)
@@ -97,7 +98,7 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         if workers is not None:workers.enqueue(operation['operation_id'])
         elif operation['kind']=='planning_command':
             from .review import review_command
-            background.add_task(review_command,store,operations,operation['operation_id'],allow_model=not local)
+            background.add_task(review_command,store,operations,operation['operation_id'],allow_model=allow_review_model)
         else:background.add_task(editor.run if operation['kind'] in {'edit','swap'} else controller.run,operation['operation_id'])
 
     @app.middleware('http')
@@ -226,7 +227,7 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
             if workers is not None:schedule(background,operation)
             else:
                 try:
-                    await review_command(store,operations,operation['operation_id'],allow_model=not local)
+                    await review_command(store,operations,operation['operation_id'],allow_model=allow_review_model)
                 except DomainError as error:
                     operations.finish(operation['operation_id'],'rejected',{'result_kind':error.code,'message':error.message,'message_ids':[]})
         return operation_response(operations.get(device(x_device_id),body.operation_id))

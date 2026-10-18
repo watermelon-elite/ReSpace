@@ -80,6 +80,94 @@ def generation(capture_id):
             'budget': '200.00', 'currency': 'USD', 'text': ''}
 
 
+@pytest.fixture
+def live_config(monkeypatch):
+    for name in ('GEMINI_API_KEY', 'SERPAPI_API_KEY', 'GEMINI_PLANNING_MODEL',
+                 'GEMINI_EXTRACTION_MODEL', 'GEMINI_SPATIAL_MODEL'):
+        monkeypatch.setenv(name, 'configured-no-network-calls')
+    monkeypatch.delenv('GOOGLE_API_KEY', raising=False)
+
+
+def test_live_local_providers_fail_fast_before_creating_data_without_configuration(tmp_path, monkeypatch):
+    from respace.local import create_local_app
+
+    for name in ('GEMINI_API_KEY', 'GOOGLE_API_KEY', 'SERPAPI_API_KEY', 'GEMINI_PLANNING_MODEL',
+                 'GEMINI_EXTRACTION_MODEL', 'GEMINI_SPATIAL_MODEL'):
+        monkeypatch.delenv(name, raising=False)
+    with pytest.raises(ValueError, match='SERPAPI_API_KEY.*GEMINI_PLANNING_MODEL'):
+        create_local_app(tmp_path / 'missing', live_providers=True)
+    assert not (tmp_path / 'missing').exists()
+
+
+def test_live_local_runtime_uses_real_adapters_without_cloud_dispatch(tmp_path, live_config, monkeypatch):
+    from respace.local import create_local_app
+    from test_api import QuestionModel, complete_room
+
+    monkeypatch.setenv('RESPACE_SERVICE_ROLE', 'worker')
+    monkeypatch.setenv('CLOUD_TASKS_QUEUE', 'must-not-use-cloud')
+    app = create_local_app(tmp_path, live_providers=True)
+    assert app.state.workers is None
+    contexts = []
+    async def act(self, context):
+        contexts.append(context)
+        return await QuestionModel().act(context)
+    monkeypatch.setattr('respace.planning.GeminiPlanningModel.act', act)
+    allowed = []
+    async def review(store, operations, operation_id, *, allow_model):
+        allowed.append(allow_model)
+        operations.finish(operation_id, 'succeeded', {'result_kind': 'test', 'message_ids': []})
+    monkeypatch.setattr('respace.review.review_command', review)
+    with TestClient(app, headers={'X-Device-Id': 'device'}) as api:
+        room_id, capture_id = complete_room(api)
+        response = api.post(f'/v1/rooms/{room_id}/planning-commands', json={
+            'operation_id': 'review', 'capture_id': capture_id, 'planning_revision': 0,
+            'text': 'Please preserve this.'})
+        assert response.status_code == 200, response.json()
+        assert api.post(f'/v1/rooms/{room_id}/designs', json=generation(capture_id)).status_code == 202
+        pending = api.get('/v1/operations/generate').json()['operation']
+        assert pending['state'] == 'needs_clarification', pending
+        assert pending['pending_question']['text'] == 'What matters most?'
+        assert contexts[0]['measured_context']
+    assert allowed == [True]
+
+
+def test_live_import_uses_geometry_only_planner_and_cannot_mix_simulated_data(tmp_path, live_config):
+    from respace.local_testing import create_test_app
+    from test_geometry import native_room
+
+    def load_model(path):
+        return native_room(), {'sha256': 'room-model', 'filename': 'fixture.glb', 'native_scan': False}
+    app = create_test_app(tmp_path, ['fixture.glb'], load_model=load_model, live_providers=True)
+    with TestClient(app, headers={'X-Device-Id': 'device'}) as api:
+        room = api.get('/v1/rooms').json()['rooms'][0]
+        warning = app.state.store.get('rooms', room['room_id'])['warnings'][0]
+        assert warning['code'] == 'local_test' and 'live providers enabled' in warning['message']
+    with pytest.raises(ValueError, match='separate data directory'):
+        create_test_app(tmp_path, ['fixture.glb'], load_model=load_model)
+    offline_dir = tmp_path / 'offline'
+    with TestClient(create_test_app(offline_dir, ['fixture.glb'], load_model=load_model), headers={'X-Device-Id': 'device'}) as api:
+        assert api.get('/v1/rooms').status_code == 200
+    with pytest.raises(ValueError, match='separate data directory'):
+        create_test_app(offline_dir, ['fixture.glb'], load_model=load_model, live_providers=True)
+
+
+def test_provider_mode_survives_room_deletion_and_rejects_legacy_simulated_offers(tmp_path):
+    from respace.local import bind_provider_mode
+    from respace.store import SQLiteStore
+
+    store = SQLiteStore(tmp_path / 'records.sqlite3')
+    bind_provider_mode(store, False)
+    with store.transaction():
+        store.delete_room_records('deleted-room')
+    with pytest.raises(ValueError, match='separate data directory'):
+        bind_provider_mode(SQLiteStore(store.path), True)
+    legacy = SQLiteStore(tmp_path / 'legacy.sqlite3')
+    with legacy.transaction():
+        legacy.put('offers', 'test-offer', {'product_url': 'https://offline.invalid/chair/0'})
+    with pytest.raises(ValueError, match='separate data directory'):
+        bind_provider_mode(legacy, True)
+
+
 def test_local_api_reopens_capture_without_cloud_or_provider_calls(tmp_path, monkeypatch):
     from respace.local import create_local_app
     from test_api import complete_room

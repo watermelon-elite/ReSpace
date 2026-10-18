@@ -296,13 +296,14 @@ def validate_plan(raw, room_snapshot, selections, constraints, base_scene=None):
 
 
 class GeminiSpatialPlanner:
-    def __init__(self, *, client=None, model=None, timeout=60):
+    def __init__(self, *, client=None, model=None, timeout=60, allow_geometry_only=False):
         self.client = client
         self.model = model or os.getenv("GEMINI_SPATIAL_MODEL") or os.getenv("GEMINI_MODEL")
         self.timeout = timeout
+        self.allow_geometry_only = allow_geometry_only
 
     async def plan(self, room_snapshot, selections, instructions, photos, constraints, base_scene=None):
-        if not 2 <= len(photos) <= 3:
+        if not 2 <= len(photos) <= 3 and not (self.allow_geometry_only and not photos):
             raise PlanningFailure("missing_planning_photos", "Spatial planning requires 2–3 relevant stored capture photos.")
         if not self.model:
             raise PlanningFailure("provider_not_configured", "Configure GEMINI_SPATIAL_MODEL for spatial planning.")
@@ -311,7 +312,7 @@ class GeminiSpatialPlanner:
 
         client = self.client
         if client is None:
-            key = os.getenv("GEMINI_API_KEY")
+            key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
             if not key:
                 raise PlanningFailure("provider_not_configured", "Gemini credentials are not configured.")
             client = genai.Client(api_key=key, http_options=types.HttpOptions(timeout=int(self.timeout * 1000), retry_options=types.HttpRetryOptions(attempts=1)))
@@ -322,6 +323,8 @@ class GeminiSpatialPlanner:
                   "Use only supplied identities and selection_id; never invent metric placement coordinates. "
                   "Preserve Keep, permanent fixtures, hard requirements, intent and approved budget. "
                   "Use photos only for style/context, never Product measurements. " + json.dumps(context, allow_nan=False))
+        if not photos:
+            prompt += " This is a local geometry-only test with no room photos. Do not claim observed appearance or visual evidence."
         contents = [types.Part.from_text(text=prompt)]
         for photo in photos:
             data = photo if isinstance(photo, bytes) else photo["bytes"]
