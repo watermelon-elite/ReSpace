@@ -14,10 +14,15 @@ import uuid
 
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
-from pydantic import ValidationError
+from pydantic import BaseModel, ConfigDict, ValidationError
 
 from .models import Manifest
 from .store import Store, digest
+
+
+class RestartRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    request_id: uuid.UUID
 
 
 class Worker:
@@ -36,6 +41,8 @@ class Worker:
                 continue
             folder = self.store.folder(job["id"])
             command = [sys.executable, "-m", "respace_reconstruction.pipeline", "--job", str(folder), "--revision", str(job["revision"])]
+            if job.get("generation_id"):
+                command.extend(["--generation-id", job["generation_id"]])
             timer=None
             expired=threading.Event()
             try:
@@ -229,11 +236,11 @@ def create_app(root: Path | None = None, token: str | None = None, start_worker=
     def status(job_id: str):
         return get(job_id)
 
-    async def enqueue(job_id, retry):
+    async def enqueue(job_id, retry, restart_id=None):
         async with locks.setdefault(job_id, asyncio.Lock()):
             get(job_id)
             try:
-                return await asyncio.to_thread(store.queue, job_id, retry)
+                return await asyncio.to_thread(store.queue, job_id, retry, restart_id)
             except ValueError as exc:
                 raise HTTPException(409, str(exc))
 
@@ -244,6 +251,12 @@ def create_app(root: Path | None = None, token: str | None = None, start_worker=
     @app.post("/v1/reconstructions/{job_id}/retry", dependencies=[Depends(authorize)])
     async def retry(job_id: str):
         return await enqueue(job_id, True)
+
+    @app.post("/v1/reconstructions/{job_id}/restart", dependencies=[Depends(authorize)])
+    async def restart(job_id: str, body: RestartRequest):
+        if os.environ.get("RESPACE_PIPELINE", "astra") != "astra":
+            raise HTTPException(409, "Start the direct OpenAI service to generate from scratch")
+        return await enqueue(job_id, True, str(body.request_id))
 
     @app.get("/v1/reconstructions/{job_id}/results/{revision}/assets/{filename}", dependencies=[Depends(authorize)])
     def asset(job_id: str, revision: int, filename: str):

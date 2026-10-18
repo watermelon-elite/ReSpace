@@ -75,6 +75,7 @@ struct ReconstructionJob: Codable, Sendable {
     var error: String?
     var result: ReconstructionResult?
     var missingArtifactIds: [String]
+    var generationId: String? = nil
 
     var isRunning: Bool { ["queued", "running"].contains(state) }
     var canRetry: Bool {
@@ -113,4 +114,5 @@ struct ReconstructionReceipt: Codable, Sendable {
     var origin: String
     var job: ReconstructionJob?
     var downloadedRevision: Int?
+    var pendingRestartId: String? = nil
 }

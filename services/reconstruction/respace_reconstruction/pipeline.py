@@ -434,11 +434,15 @@ def process_legacy(folder: Path, revision: int):
     return result
 
 
-def process(folder: Path, revision: int):
+def process(folder: Path, revision: int, generation_id=None):
     mode=os.environ.get("RESPACE_PIPELINE","astra")
     if mode=="astra":
         from .astra_room import process_astra_room
+        if generation_id is not None:
+            return process_astra_room(folder,revision,generation_id=generation_id)
         return process_astra_room(folder,revision)
+    if generation_id is not None:
+        raise ValueError("Fresh generation requires the direct OpenAI pipeline")
     if mode=="legacy":return process_legacy(folder,revision)
     if mode!="walkthrough":raise ValueError("Unknown reconstruction pipeline")
     from .walkthrough import process_walkthrough
@@ -449,9 +453,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--job", type=Path, required=True)
     parser.add_argument("--revision", type=int, required=True)
+    parser.add_argument("--generation-id")
     args = parser.parse_args()
     try:
-        process(args.job, args.revision)
+        process(args.job, args.revision, args.generation_id)
     except Exception as exc:
         from .instances import RescanRequired
         (args.job/"work").mkdir(parents=True,exist_ok=True)

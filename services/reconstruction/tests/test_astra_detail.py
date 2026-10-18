@@ -406,3 +406,38 @@ def test_unaffordable_first_request_explains_reservation_without_claiming_spend(
     assert ledger.allocated == 0 and not ledger.data["entries"]
     preflight = json.loads((tmp_path/"inventory/budget-preflight.json").read_text())
     assert preflight["remaining_usd"] == 10 and preflight["input_tokens"] == 500000
+
+
+def test_fresh_run_does_not_reuse_old_responses_or_budget_and_retry_reuses_new_run(tmp_path, monkeypatch):
+    import uuid
+    room_capture(tmp_path)
+    configure(monkeypatch)
+    calls = []
+    def generate(body, key):
+        calls.append(body)
+        return reply(room_plan()) if "INVENTORY stage" in body["instructions"] else detailed_reply()
+    monkeypatch.setattr(astra, "call_astra", generate)
+    assert astra_room.process_astra_room(tmp_path, 1)["status"] == "succeeded"
+    assert len(calls) == 2
+    prior_response = (tmp_path/"work/sol-v1/inventory/response.json").read_bytes()
+    ledger = Spending(tmp_path/"work/astra-budget-v3.json")
+    ledger.data["entries"]["unknown-old-call"] = {"state":"reserved", "reserved_units":9000000}
+    ledger.save()
+    prior_budget = ledger.path.read_bytes()
+    first = str(uuid.uuid4())
+    monkeypatch.setenv("RESPACE_PIPELINE", "astra")
+    from respace_reconstruction.pipeline import process
+    assert process(tmp_path, 2, generation_id=first)["status"] == "succeeded"
+    assert len(calls) == 4
+    fresh = json.loads((tmp_path/"results/2/quality.json").read_text())
+    assert fresh["budget"]["paid_call_count"] == 2 and fresh["budget"]["known_cost_usd"] == .024
+    assert not fresh["response_reused"]
+    assert (tmp_path/"work/runs"/first/"astra-budget-v3.json").exists()
+    assert astra_room.process_astra_room(tmp_path, 3, generation_id=first)["status"] == "succeeded"
+    assert len(calls) == 4
+    second = str(uuid.uuid4())
+    assert astra_room.process_astra_room(tmp_path, 4, generation_id=second)["status"] == "succeeded"
+    assert len(calls) == 6
+    assert ledger.path.read_bytes() == prior_budget
+    assert (tmp_path/"work/sol-v1/inventory/response.json").read_bytes() == prior_response
+    assert (tmp_path/"results/1/completion.json").exists()

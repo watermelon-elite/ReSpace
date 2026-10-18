@@ -102,3 +102,73 @@ def test_failed_v2_retry_cannot_expose_retained_scene_assets(tmp_path,capture):
         assert client.get(path).status_code==200
         store.finish(manifest.capture_id,"failed",error="retry failed")
         assert client.get(path).status_code==404
+
+
+def test_fresh_generation_is_idempotent_isolated_and_preserves_inputs_and_results(tmp_path, capture, monkeypatch):
+    import uuid
+    monkeypatch.setenv("RESPACE_PIPELINE", "astra")
+    manifest, payloads = capture
+    app = create_app(tmp_path, TOKEN, start_worker=False)
+    store = app.state.store
+    store.create(manifest)
+    folder = store.folder(manifest.capture_id)
+    for name, data in payloads.items():
+        (folder/"inputs"/name).write_bytes(data)
+    store.queue(manifest.capture_id); store.claim()
+    original = {"revision": 1, "assets": []}
+    store.finish(manifest.capture_id, "succeeded", original)
+    (folder/"work").mkdir()
+    (folder/"work/astra-budget-v3.json").write_text('{"reserved":"old unknown outcome"}')
+    path = "/v1/reconstructions/"+manifest.capture_id
+    request_id = str(uuid.uuid4())
+    with TestClient(app) as client:
+        assert client.post(path+"/restart", json={"request_id": request_id}).status_code == 401
+        client.headers["Authorization"] = "Bearer "+TOKEN
+        assert client.post(path+"/restart", json={"request_id":"../../bad"}).status_code == 422
+        queued = client.post(path+"/restart", json={"request_id":request_id}).json()
+        assert queued["state"] == "queued" and queued["generation_id"] == request_id
+        assert queued["result"] == original
+        assert client.post(path+"/restart", json={"request_id":request_id}).json() == queued
+        assert client.post(path+"/restart", json={"request_id":str(uuid.uuid4())}).status_code == 409
+        claimed = store.claim()
+        assert claimed["revision"] == 2 and claimed["generation_id"] == request_id
+        # Recovery and normal Retry resume the same run; only a new restart ID resets it.
+        reopened = Store(tmp_path); reopened.recover()
+        assert reopened.claim()["generation_id"] == request_id
+        reopened.finish(manifest.capture_id, "failed", error="test failure")
+        assert client.post(path+"/restart", json={"request_id":request_id}).json()["state"] == "failed"
+        assert client.post(path+"/retry").json()["generation_id"] == request_id
+        reopened.claim(); reopened.finish(manifest.capture_id, "failed", error="test failure")
+        next_id = str(uuid.uuid4())
+        fresh = client.post(path+"/restart", json={"request_id":next_id}).json()
+        assert fresh["generation_id"] == next_id and fresh["result"] == original
+    assert (folder/"work/astra-budget-v3.json").read_text() == '{"reserved":"old unknown outcome"}'
+    assert all((folder/"inputs"/name).read_bytes() == data for name, data in payloads.items())
+
+
+def test_fresh_generation_requires_uploaded_inputs(tmp_path, capture, monkeypatch):
+    import uuid
+    monkeypatch.setenv("RESPACE_PIPELINE", "astra")
+    manifest, _ = capture
+    app = create_app(tmp_path, TOKEN, start_worker=False)
+    app.state.store.create(manifest)
+    with TestClient(app) as client:
+        client.headers["Authorization"] = "Bearer "+TOKEN
+        response = client.post("/v1/reconstructions/"+manifest.capture_id+"/restart", json={"request_id":str(uuid.uuid4())})
+        assert response.status_code == 409
+        assert app.state.store.get(manifest.capture_id)["generation_id"] is None
+
+
+def test_existing_database_upgrade_preserves_jobs_and_results(tmp_path, capture):
+    import sqlite3
+    manifest, _ = capture
+    previous = {"revision": 7, "assets": []}
+    with sqlite3.connect(tmp_path/"jobs.sqlite3") as db:
+        db.execute("CREATE TABLE jobs (id TEXT PRIMARY KEY, manifest TEXT NOT NULL, state TEXT NOT NULL, revision INTEGER NOT NULL DEFAULT 0, stage TEXT NOT NULL DEFAULT 'uploading', error TEXT, result TEXT)")
+        db.execute("INSERT INTO jobs(id,manifest,state,revision,stage,result) VALUES(?,?,'succeeded',7,'finished',?)",
+                   (manifest.capture_id, manifest.model_dump_json(), json.dumps(previous)))
+    store = Store(tmp_path)
+    job = store.get(manifest.capture_id)
+    assert job["generation_id"] is None and job["revision"] == 7 and job["result"] == previous
+    assert job["state"] == "succeeded"
+    assert Store(tmp_path).get(manifest.capture_id)["result"] == previous

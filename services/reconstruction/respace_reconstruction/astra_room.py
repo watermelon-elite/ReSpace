@@ -503,7 +503,7 @@ def assemble_room(shell, furnishings, detailed=False):
         "entities": shell.entities+furnishings.entities})
 
 
-def process_astra_room(folder: Path, revision: int, detailed=True):
+def process_astra_room(folder: Path, revision: int, detailed=True, generation_id=None):
     import open3d as o3d
     from .pipeline import progress
     started = time.monotonic()
@@ -516,8 +516,9 @@ def process_astra_room(folder: Path, revision: int, detailed=True):
     manifest, audit = inspect_capture(folder)
     if not audit["complete"]:
         raise ValueError("Upload all immutable scan artifacts before generation")
-    working = folder/"work"
-    working.mkdir(exist_ok=True)
+    from .store import generation_working_directory
+    working = generation_working_directory(folder, generation_id)
+    working.mkdir(parents=True, exist_ok=True)
     progress("astra_selecting_evidence")
     original = read_scan(folder/"inputs"/manifest.scene_mesh.filename, manifest.capture_id, o3d)
     evidence, images = collect_evidence(manifest, folder/"inputs", original)
@@ -559,6 +560,7 @@ def process_astra_room(folder: Path, revision: int, detailed=True):
         atomic_json(output/"astra-room.json", plan.model_dump(serialize_as_any=True))
         atomic_json(output/"astra-furnishings.json", furnishings.model_dump(serialize_as_any=True))
         atomic_json(output/"provenance.json", {"model": astra.MODEL, "prompt_version": PROMPT_VERSION,
+                    "generation_id": generation_id,
                     "source_mesh_sha256": manifest.scene_mesh.sha256,
                     "lidar_frame_count": len(manifest.frames), "valid_depth_pixel_count": evidence["valid_depth_pixel_count"],
                     "selected_frame_ids": [p["frame_id"] for p in evidence["selected_photos"]],

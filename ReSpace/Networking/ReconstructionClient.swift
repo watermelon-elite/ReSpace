@@ -76,13 +76,16 @@ actor ReconstructionClient {
         return job
     }
 
-    func submit(_ id: String, repository: CaptureRepository, retry: Bool = false) async throws -> ReconstructionJob {
+    func submit(_ id: String, repository: CaptureRepository, retry: Bool = false, fromScratch: Bool = false) async throws -> ReconstructionJob {
         let manifest = try await repository.load(id)
         guard ["completed", "local_saved"].contains(manifest.state), manifest.sceneMesh != nil else {
             throw ClientError.storage("This room has no retained surface mesh. Scan it again before processing.")
         }
         let folder = try await folder(id, repository: repository)
         var retained = try receipt(folder: folder) ?? ReconstructionReceipt(origin: baseURL.absoluteString)
+        if fromScratch && retained.pendingRestartId == nil {
+            retained.pendingRestartId = UUID().uuidString
+        }
         // Record intent before the first network write; known capture identity recovers unknown outcomes.
         try save(retained, folder: folder)
         let path = ["v1", "reconstructions", id]
@@ -101,7 +104,14 @@ actor ReconstructionClient {
             let (data, response) = try await session.upload(for: upload, fromFile: url)
             try checked(response, body: data)
         }
-        let job = try await execute(request(path + [retry ? "retry" : "run"], method: "POST"), id: id)
+        var start = try request(path + [fromScratch ? "restart" : (retry ? "retry" : "run")], method: "POST")
+        if fromScratch {
+            struct RestartBody: Encodable { let requestId: String }
+            start.httpBody = try Wire.encoder().encode(RestartBody(requestId: retained.pendingRestartId!))
+            start.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
+        let job = try await execute(start, id: id)
+        if fromScratch { retained.pendingRestartId = nil }
         retained.job = job; try save(retained, folder: folder)
         return try await retainResult(job, retained: retained, folder: folder)
     }
@@ -116,6 +126,9 @@ actor ReconstructionClient {
             // A failed/unknown-outcome first PUT leaves a local intent. It is
             // legitimate for that job not to exist yet; Improve model retries it.
             return nil
+        }
+        if let pending=retained.pendingRestartId, job.generationId?.lowercased()==pending.lowercased() {
+            retained.pendingRestartId=nil
         }
         retained.job = job; try save(retained, folder: folder)
         return try await retainResult(job, retained: retained, folder: folder)
@@ -134,10 +147,11 @@ actor ReconstructionClient {
         return folder.appendingPathComponent("result-\(result.revision)").appendingPathComponent(result.modelFilename)
     }
 
-    func sceneURL(_ id: String, repository: CaptureRepository) async throws -> URL? {
+    func sceneURL(_ id: String, repository: CaptureRepository, allowPrevious: Bool = false) async throws -> URL? {
         let folder=try await folder(id,repository:repository)
-        guard let retained=try receipt(folder:folder), let job=retained.job, job.hasFinalWalkthrough,
-              let result=job.result, retained.downloadedRevision==result.revision,
+        guard let retained=try receipt(folder:folder), let job=retained.job,
+              job.hasFinalWalkthrough || allowPrevious,
+              let result=job.result, result.isWalkthrough, retained.downloadedRevision==result.revision,
               let name=result.sceneFilename else { return nil }
         let directory=folder.appendingPathComponent("result-\(result.revision)")
         // Recheck cached bytes as well as new downloads before native import.

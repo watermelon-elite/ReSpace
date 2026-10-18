@@ -178,6 +178,100 @@ final class ReconstructionTests: XCTestCase {
         let hasCapacity = try await repository.hasReconstructionFrameCapacity(manifest.captureId)
         XCTAssertTrue(hasCapacity)
     }
+
+    func testFreshGenerationPersistsRequestIdentityAcrossLostResponsesAndReconcilesRefresh() async throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        addTeardownBlock { try? FileManager.default.removeItem(at: root) }
+        let repository = CaptureRepository(directory: root)
+        var manifest = try await repository.create()
+        manifest.state = "local_saved"
+        manifest.sceneMesh = ArtifactRecord(id: "mesh", type: "scene_mesh", filename: "mesh.mesh", byteLength: 1,
+            sha256: String(repeating: "a", count: 64))
+        try await repository.save(manifest)
+        let id = manifest.captureId
+        var restartIds: [String] = []
+        let recorder = ReconstructionRequestRecorder { request in
+            if request.url!.lastPathComponent == "restart" {
+                var data = request.httpBody ?? Data()
+                if data.isEmpty, let stream = request.httpBodyStream {
+                    stream.open(); defer { stream.close() }
+                    var bytes = [UInt8](repeating: 0, count: 1024)
+                    while stream.hasBytesAvailable {
+                        let count = stream.read(&bytes, maxLength: bytes.count)
+                        if count <= 0 { break }
+                        data.append(contentsOf: bytes.prefix(count))
+                    }
+                }
+                let body = try JSONSerialization.jsonObject(with: data) as! [String: String]
+                let restartId = try XCTUnwrap(body["request_id"])
+                XCTAssertNotNil(UUID(uuidString: restartId))
+                restartIds.append(restartId)
+                if [1, 3].contains(restartIds.count) { throw URLError(.networkConnectionLost) }
+            }
+            var job = ReconstructionJob(schemaVersion: 1, id: id, state: "failed", revision: 1,
+                stage: "finished", missingArtifactIds: [])
+            job.generationId = restartIds.last
+            return (200, try Wire.encoder().encode(job))
+        }
+        let origin = URL(string: "http://mac.local:8008")!
+        func client() -> ReconstructionClient {
+            ReconstructionClient(baseURL: origin, token: "test-reconstruction-token", session: recorder.session())
+        }
+        do {
+            _ = try await client().submit(id, repository: repository, fromScratch: true)
+            XCTFail("Expected a lost restart response")
+        } catch { }
+        _ = try await client().submit(id, repository: repository, fromScratch: true)
+        XCTAssertEqual(restartIds[0], restartIds[1])
+        do {
+            _ = try await client().submit(id, repository: repository, fromScratch: true)
+            XCTFail("Expected a lost restart response")
+        } catch { }
+        XCTAssertNotEqual(restartIds[1], restartIds[2])
+        _ = try await client().refresh(id, repository: repository)
+        _ = try await client().submit(id, repository: repository, fromScratch: true)
+        XCTAssertNotEqual(restartIds[2], restartIds[3])
+        XCTAssertTrue(recorder.requests.allSatisfy { !$0.url!.path.hasSuffix("/retry") && !$0.url!.path.hasSuffix("/run") })
+    }
+
+    func testPreviousWalkthroughRemainsAvailableAfterFreshGenerationFails() async throws {
+        let source = try XCTUnwrap(Bundle.module.url(forResource: "Fixtures", withExtension: nil))
+            .appendingPathComponent("Walkthrough")
+        let bundle = try Wire.decoder().decode(WalkthroughBundle.self,
+            from: Data(contentsOf: source.appendingPathComponent("scene.json")))
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        addTeardownBlock { try? FileManager.default.removeItem(at: root) }
+        let repository = CaptureRepository(directory: root)
+        var manifest = try await repository.create()
+        manifest.captureId = bundle.captureId
+        try await repository.save(manifest)
+        let origin = URL(string: "http://mac.local:8008")!
+        let captureRoot = try await repository.reconstructionDirectory(bundle.captureId)
+        let originHash = SHA256.hash(data: Data(origin.absoluteString.utf8)).map { String(format: "%02x", $0) }.joined()
+        let folder = captureRoot.appendingPathComponent(originHash)
+        let destination = folder.appendingPathComponent("result-1")
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        try FileManager.default.copyItem(at: source, to: destination)
+        let files = try FileManager.default.contentsOfDirectory(at: destination, includingPropertiesForKeys: nil)
+        let assets = try files.map { url in
+            let data = try Data(contentsOf: url)
+            return ReconstructionAsset(filename: url.lastPathComponent, byteLength: data.count,
+                sha256: SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined())
+        }
+        let result = ReconstructionResult(revision: 1, status: "succeeded", modelFilename: "model.obj", assets: assets,
+            needsReview: false, coordinateSystem: "arkit_scan_meters_y_up", qualityFilename: "quality.json",
+            generationModel: "gpt-6-sol", sceneFilename: "scene.json", sceneSchemaVersion: 2)
+        let job = ReconstructionJob(schemaVersion: 1, id: bundle.captureId, state: "failed", revision: 2,
+            stage: "finished", error: "New run failed", result: result, missingArtifactIds: [])
+        let receipt = ReconstructionReceipt(origin: origin.absoluteString, job: job, downloadedRevision: 1)
+        try Wire.encoder().encode(receipt).write(to: folder.appendingPathComponent("job.json"))
+        let client = ReconstructionClient(baseURL: origin, token: "test-reconstruction-token")
+        let current = try await client.sceneURL(bundle.captureId, repository: repository)
+        XCTAssertNil(current)
+        let previous = try await client.sceneURL(bundle.captureId, repository: repository, allowPrevious: true)
+        XCTAssertEqual(previous?.lastPathComponent, "scene.json")
+    }
+
 }
 
 private final class ReconstructionRequestRecorder: @unchecked Sendable {

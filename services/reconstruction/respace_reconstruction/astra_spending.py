@@ -14,7 +14,7 @@ import urllib.request
 from . import astra
 from .store import atomic_json
 
-CEILING_UNITS = 10_000_000  # USD millionths; user-authorized $10/capture.
+CEILING_UNITS = 10_000_000  # USD millionths; $10 per explicitly started generation.
 # Standard USD per million tokens: ordinary input, cache hit, cache write, output.
 # Keep historical Astra rates for receipts/reservations created before migration.
 RATES = {"gpt-6-astra": (10., 1., 12.5, 50.), "gpt-6-sol": (2., .2, 2.5, 10.)}

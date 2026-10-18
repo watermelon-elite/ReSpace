@@ -3,6 +3,7 @@ import json
 import os
 import sqlite3
 import threading
+import uuid
 from pathlib import Path
 
 from .models import Manifest, Metadata
@@ -22,6 +23,12 @@ def digest(path: Path):
         return hashlib.file_digest(f, "sha256").hexdigest()
 
 
+def generation_working_directory(folder: Path, generation_id=None):
+    if generation_id is None:
+        return folder/"work"
+    return folder/"work"/"runs"/str(uuid.UUID(generation_id))
+
+
 class Store:
     """SQLite owns job state; immutable files own inputs and versioned results."""
     def __init__(self, root: Path):
@@ -32,6 +39,9 @@ class Store:
         with self.connect() as c:
             c.execute("PRAGMA journal_mode=WAL")
             c.execute("CREATE TABLE IF NOT EXISTS jobs (id TEXT PRIMARY KEY, manifest TEXT NOT NULL, state TEXT NOT NULL, revision INTEGER NOT NULL DEFAULT 0, stage TEXT NOT NULL DEFAULT 'uploading', error TEXT, result TEXT)")
+            if "generation_id" not in {row[1] for row in c.execute("PRAGMA table_info(jobs)")}:
+                c.execute("ALTER TABLE jobs ADD COLUMN generation_id TEXT")
+            c.execute("CREATE TABLE IF NOT EXISTS generation_requests (job_id TEXT NOT NULL, request_id TEXT NOT NULL, PRIMARY KEY(job_id, request_id))")
 
     def connect(self):
         c = sqlite3.connect(self.db, timeout=30)
@@ -71,13 +81,21 @@ class Store:
         self.get(job_id)
         return Manifest.model_validate_json((self.folder(job_id) / "manifest.json").read_text())
 
-    def queue(self, job_id, retry=False):
+    def queue(self, job_id, retry=False, restart_id=None):
         with self.lock, self.connect() as c:
+            c.execute("BEGIN IMMEDIATE")
             job = self.get(job_id)
-            if job["state"] in ("queued", "running") or (job["state"] == "succeeded" and not retry):
-                return job
-            if job["state"] in ("failed", "partially_processed") and not retry:
-                return job
+            if restart_id is not None:
+                restart_id = str(uuid.UUID(restart_id))
+                if c.execute("SELECT 1 FROM generation_requests WHERE job_id=? AND request_id=?", (job_id, restart_id)).fetchone():
+                    return job
+                if job["state"] in ("queued", "running"):
+                    raise ValueError("Wait for the current generation to finish before starting from scratch")
+            else:
+                if job["state"] in ("queued", "running") or (job["state"] == "succeeded" and not retry):
+                    return job
+                if job["state"] in ("failed", "partially_processed") and not retry:
+                    return job
             if job["missing_artifact_ids"]:
                 raise ValueError("Upload all artifacts before starting")
             # Revalidate immutable bytes before each execution, including a retry.
@@ -91,11 +109,15 @@ class Store:
                 stored = Metadata.model_validate_json((self.folder(job_id) / "inputs" / metadata.filename).read_text())
                 if stored != frame.metadata:
                     raise ValueError("Frame metadata artifact disagrees with manifest calibration")
-            if retry:
+            if restart_id is not None:
+                c.execute("INSERT INTO generation_requests(job_id,request_id) VALUES(?,?)", (job_id, restart_id))
+                c.execute("UPDATE jobs SET generation_id=? WHERE id=?", (restart_id, job_id))
+            elif retry:
                 # Only an explicit retry may repeat an API request interrupted by
                 # a crash. Automatic queue recovery leaves this marker intact.
-                (self.folder(job_id) / "work" / "astra-inflight.json").unlink(missing_ok=True)
-                rejected = self.folder(job_id) / "work" / "astra-room-rejected.json"
+                working = generation_working_directory(self.folder(job_id), job.get("generation_id"))
+                (working / "astra-inflight.json").unlink(missing_ok=True)
+                rejected = working / "astra-room-rejected.json"
                 if rejected.exists():
                     (rejected.parent / "astra-room-response.json").unlink(missing_ok=True)
                     rejected.unlink()
