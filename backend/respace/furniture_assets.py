@@ -133,7 +133,7 @@ def build_assets(selection, output, lab):
                     raise ValueError(reconstruction_error or 'Reconstruction incomplete; inspect reconstruction.log.')
                 destination = folder / 'model.usdz'
                 converted = subprocess.run([str(lab / '.venv-prepare/bin/python'), str(ROOT / 'assets/prepare.py'),
-                    str(folder / 'mesh.glb'), str(destination), '--category', product['category'],
+                    str(folder / 'mesh.glb'), str(destination), '--auto-orient', '--category', product['category'],
                     '--variant-id', product['variant_id'], '--evidence-id', product['dimension_evidence_id'],
                     '--dimensions', *map(str, product['dimensions'])], capture_output=True, text=True, check=True)
                 asset = validate_asset(json.loads(converted.stdout))

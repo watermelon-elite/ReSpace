@@ -1,0 +1,6 @@
+// Copy to Configuration/Local.xcconfig. Keep tokens out of version control.
+// Configure the planning backend through Connect ReSpace in the current app.
+// Debug permits private/local HTTP; Release requires an HTTPS service.
+// Slash substitution prevents xcconfig from treating // as a comment.
+RESPACE_RECONSTRUCTION_URL = http:/$()/your-mac.local:8008
+RESPACE_RECONSTRUCTION_TOKEN = replace-with-the-token-from-services-reconstruction-env

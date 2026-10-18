@@ -1,0 +1,12 @@
+newmtl actual-chair-fill
+Kd 1 1 1
+map_Kd actual-chair-fill.png
+newmtl actual-chair-photo-0
+Kd 1 1 1
+map_Kd capture-0.jpg
+newmtl actual-chair-photo-1
+Kd 1 1 1
+map_Kd capture-1.jpg
+newmtl actual-chair-photo-3
+Kd 1 1 1
+map_Kd capture-3.jpg

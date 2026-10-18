@@ -1,0 +1,6 @@
+// Capture retains reconstruction evidence locally; planning uses the current app connection.
+RESPACE_LOCAL_CAPTURE = YES
+RESPACE_RECONSTRUCTION_URL =
+RESPACE_RECONSTRUCTION_TOKEN =
+// Private developer service configuration; never commit the token.
+#include? "Local.xcconfig"

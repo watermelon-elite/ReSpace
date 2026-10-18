@@ -164,9 +164,9 @@ An Addition carries a stable request identity and category through Product disco
 |---|---|---|
 | Device gate | Platform and RoomPlan support. | Supported → My Rooms; unsupported → compatibility information only. |
 | My Rooms | Rooms, thumbnails, editable names, scan dates and actual pending-state badges. | New Scan → permissions/setup; saved Room → review with Reopen design when available. |
-| Scan setup | Camera permission, connectivity, backend draft capture and writable storage. | Valid prerequisites → acquisition; otherwise actionable recovery. |
+| Scan setup | Camera permission, LiDAR mesh support and writable storage. | Valid prerequisites → retained acquisition; otherwise actionable recovery. |
 | Capture | Native camera, outlines/coaching, Done and Cancel Scan, capture/upload status. | Done → finalized native export; interruption/cancel → discard/restart. |
-| Finalization | Stored artifacts, manifest and final native room export. | Durable completed capture → native room review; no server perception here. |
+| Finalization | Local artifacts, mesh, manifest and native room export. | Saved scan → reconstruction or Plan changes; the latter uploads calibrated evidence before native review. No server perception here. |
 | Room review | Native geometry/photos, measured Objects, planning choices and conversation. | Planning commands, intent, reopen design, rename or delete. |
 | Room request | Persistent bottom composer; scope, style and spending limit interpreted from natural language. | Send → persistent generation or a missing-budget question. |
 | Interactive planning | Actual phase, one question, choices/images, optional text, Skip, Decide for me and Cancel. | Final selection → spatial processing; unanswered question persists. |
@@ -238,25 +238,25 @@ An Addition carries a stable request identity and category through Product disco
 
 #### 3.1 Acquisition integrity
 
-- Before acquisition, create an idempotent draft Room/capture and confirm connectivity and writable local storage.
+- Before acquisition, create a durable local capture identity and confirm writable storage. Create the backend draft idempotently when transferring the completed scan for planning (§3.5).
 - Request camera permission on New Scan. Denial offers Settings and return to My Rooms, not an unsupported-device result.
 - Use RoomPlan's AR session as the coordinate source; sample its current frame without replacing its AR-session delegate.
 - Collect poses only after capture-session start, within the same run that produces the final CapturedRoom. A restart uses fresh identities and a fresh frame.
 - On Done, stop acquisition, obtain and persist the finalized native room. Never submit an intermediate live update as the completed export.
-- Approximately 60–120 seconds is capture guidance, not an automatic timer. Reaching the frame cap ends sampling only.
+- Reconstruction capture requires at least 60 seconds and offers continued scanning after that; it never automatically finishes. Reaching the frame cap ends photo sampling only.
 
 #### 3.2 Sampling and bounded work
 
 | Setting | Contract |
 |---|---|
-| Triggers | Approximately 1.5 s elapsed, 0.5 m translation or 20° turn since last accepted frame; coalesce simultaneous triggers. |
+| Triggers | Reconstruction: 0.5 s elapsed, 0.10 m translation or 8° turn, with a hard 0.3 s interval; coalesce simultaneous triggers. Legacy capture retains its earlier bounded policy. |
 | Tracking | Accept only normal tracking; pause on transient degradation. |
 | Motion | Reject if the motion-speed proxy exceeds 0.3 m/s. |
-| Frame count | At most 40 accepted keyframes per capture. |
+| Frame count | Planning transfer: at most 40 evenly sampled frames across the completed scan. Reconstruction capture: at most 900 frames and 2 GB, with the existing 60-second minimum. |
 | Encoding | One image/depth task at a time; reject candidates when bounded capacity is unavailable. |
 | Upload | One in-flight upload per Room. |
-| Queue | Incremental disk records, at most the capture's 40 accepted frames; no unbounded camera-buffer queue. |
-| JPEG | Longest edge ≤1280 px, quality 0.7, native sensor orientation retained. |
+| Queue | Incremental disk records within the reconstruction limits; one encoder and no unbounded camera-buffer queue. Planning uploads one frame at a time. |
+| JPEG | Planning transfer: longest edge ≤1280 px, quality 0.7, native sensor orientation retained. Reconstruction retains original capture images up to 2560 px. |
 | Calibration | Actual uploaded dimensions and intrinsics scaled to those dimensions. |
 | Pose | Camera-to-original-scan-world, 16 floats, column-major. |
 | Identity | Persist capture/frame IDs, index and timestamp before sending. |
@@ -273,7 +273,7 @@ Uploads only store inputs and return durable receipts. They do not invoke detect
 |---|---|
 | Temporary tracking degradation | Pause sampling, retain session, guide user; resume only after valid same-frame recovery. |
 | Background, phone lock, session failure or origin loss during acquisition | Interrupt; display “Scan interrupted. Start again to capture this room.” Require restart. |
-| Transport/network failure during acquisition | Interrupt and restart; no offline capture continuation. |
+| Transport/network failure during acquisition | Local reconstruction capture continues within its storage limits. Network transfer begins after capture completion; retain completed evidence for retry. |
 | Retryable server response while connected | At most one upload retry with the same identity; actual transport loss follows restart. |
 | Storage/write failure | Stop with actionable error; do not claim retained artifacts. |
 | Cancel/Restart | Confirm discard as appropriate; abandon incomplete draft and uploaded artifacts; restart with fresh capture/origin. |
@@ -292,6 +292,19 @@ Previously completed Rooms survive restart/cancellation of another acquisition. 
 - This is sampled evidence, not full-frame-rate video, inaccessible sensor data or textured reconstruction.
 - Abandoned interrupted captures request backend deletion. Persist cleanup identity and retry on reconnection if necessary.
 - Explicit Room deletion removes its media, snapshots, designs, conversation and metadata. Shared Product records are separate; retaining them must not retain deleted private room evidence.
+
+#### 3.5 Reconstruction integration (accepted 2026-10-18)
+
+The current DreamSeal/Ollo app remains the router, with `docs/design/PROFILE.md` and its linked design system governing every integrated screen. Integrate the `OpenAI-3dmodelgen` acquisition, mesh retention, reconstruction job recovery, verified scene import and camera navigation. The existing installation identity, saved Rooms, shopping lists and backend design history remain authoritative.
+
+- Save full reconstruction evidence locally in the existing `ReSpace/LocalTesting/Captures` store, including earlier scans from that branch. This path is retained for compatibility despite its historical name. Completed scans survive network loss and app closure. Interrupted acquisition still requires a fresh scan.
+- Plan changes transfers the original native RoomPlan export and up to 40 evenly spaced frames into the current backend. Resize photos with calibrated intrinsics, convert packed Float16 depth to packed Float32 meters, preserve sensor orientation and camera pose, and verify confidence dimensions. Keep the original files for reconstruction. Persist the backend link and replay stable creation/finalization identities; retries must not duplicate Rooms.
+- Reconstruction uses the separate service and private service token. Its OpenAI key stays on the service. Keep verified assets, retry/restart identities and prior successful revisions. Actual progress and errors remain visible. Fresh paid generation retains its explicit cost confirmation. Release clients require HTTPS; Debug also permits private/local HTTP.
+- Walkthroughs display the captured reconstruction only. Move, Hide/Remove, Rotate, Paint, Tile, Wallpaper, local Undo and local Restore are absent. Historical local `design-*.json` files stay untouched and are not applied. Edits and Undo remain in the existing immutable backend workflow. This decision supersedes the editable-view portions of incoming ADR-0001 and ADR-0002; it does not add backend finish operations.
+- Planning keeps the restricted reconstruction reader documented in `specs/room-reconstruction-json.md`. Inset sinks, logical counter groups and zero-headroom surfaces are deferred. Rich exporter results remain available to the viewer, but are not silently flattened or promoted to placement evidence. Planning from integrated scans uses their original native measurements; a reconstructed mesh is not the saved edited Design.
+- Use 1.2 m doorway depth and 0.45 m side margins consistently. Keep permanent-fixture/Keep protection. A stationary obstacle prevents moving, removing or replacing its support when that would strand it.
+- `sample_room_2` is explicitly excluded from planning until both JSON and USDZ are re-exported consistently. Preserve its geometry as diagnostic evidence.
+- Removing a saved Room removes its linked local scan and planning data after backend confirmation. Reconstruction-service copies have separate retention; local deletion must disclose that boundary.
 
 ### 4. Sequential generation and operations
 
@@ -698,10 +711,8 @@ Doors/windows/openings retain real dimensions and elevation required for renderi
 #### 9.5 Door and opening access zones
 
 - Every door and doorless opening creates a room-side keep-clear rectangle along its wall's inward normal.
-- Width is opening width plus 0.15 m at each side.
-- Depth is the greater of the personal-room minimum 0.9 m and assumed swing depth.
-- For a door, assumed swing depth is full width; if width exceeds 1.2 m, use half-width as a double-door approximation. Native capture does not certify actual hinge/swing type.
-- Doorless opening swing depth is zero. Clip zones to the floor polygon.
+- Reserve 0.45 m on each side of a door or doorless opening, clipped to the wall endpoints.
+- Extend the zone 1.2 m into the room and clip it to the floor polygon. This is the exporter clearance selected during the 2026-10-18 integration; both native normalization and reconstructed-room placement use it. Native capture does not certify actual hinge/swing type.
 - Only rugs and wall-mounted Items may overlap keep-clear zones under the collision model. Existing blocking geometry must be reported, not ignored to claim a valid final arrangement.
 - These are product geometry defaults, not regulatory certification. Business counter/register zones and business seating groups are excluded.
 
@@ -790,15 +801,15 @@ Serial operation ordering prevents competing room recomputations. Retries still 
 
 | Anchor | Required references | Placement semantics |
 |---|---|---|
-| `against_wall` | Real wall; alignment; optional offset. | Item back 0.05 m from wall, facing inward. Yaw is atan2(inward normal X, inward normal Z). Left/right judged by a person inside facing the wall; offset measured from that end, default 0 and ignored for center. |
-| `corner` | Real corner ID. | 0.05 m wall gaps. Seating faces the inward bisector; other Items align with the longer wall. |
+| `against_wall` | Real wall; alignment; optional offset. | Item back 0.05 m from the wall face, facing inward. The wall face is the front of the deepest wall protrusion overlapping the Item's height and its span along the wall, or the bare wall where none does. Yaw is atan2(inward normal X, inward normal Z). Left/right judged by a person inside facing the wall; offset measured from that end, default 0 and ignored for center. |
+| `corner` | Real corner ID. | 0.05 m gaps from each wall face, as for `against_wall`. Seating faces the inward bisector; other Items align with the longer wall. |
 | `under` | Referenced Object/Item. | Rugs only, centered on target footprint with matching yaw. |
 | `next_to` | Target and side. | Own-target left/right/front orientation, 0.10 m gap. Match target yaw except front placement faces the target. |
 | `facing` | Target; optional distance. | In front of and facing target. Default footprint gap 0.45 m for tables, 0.8 m for seating. |
 | `in_front_of_window` | Window opening ID. | Against its real wall and centered on window. If taller than sill, try permitted nudges; unresolved placement becomes omission/conflict according to constraints. |
 | `room_center` | None. | Floor polygon centroid, aligned with longest wall; still subject to containment and collision validation. |
 | `on_wall` | Real wall, alignment, optional height. | Default center elevation 1.45 m or 0.25 m above furniture directly below, whichever is higher. Convert explicitly to bottom-center placement. |
-| `on_top_of` | Valid support Object/Item. | Centered on support top. Reject footprint larger than usable top or missing support. |
+| `on_top_of` | Valid support Object/Item. | Centered on support top. The usable top is the support's recorded surface where one exists (height, outline and clearance above), otherwise its box top. Reject footprint larger than usable top, height above the recorded clearance, or missing support. |
 
 `at_spot` and business `seating_group` are not supported types in this product. Targets may refer to an original Object, a current Item or a specified new Addition unit; references are typed and validated. Forward references resolve only when their target exists in the same accepted candidate. Cyclic or missing support references are conflicts, not guessed coordinates.
 
@@ -806,12 +817,16 @@ Serial operation ordering prevents competing room recomputations. Retries still 
 
 Every relevant footprint collision check includes a 0.05 m margin. The margin is a validation clearance, not a change to measured physical size.
 
+Walls are the room boundary: a footprint must lie within the floor polygon, and containment takes no margin, so measured Objects standing flush against a wall are valid. A wall protrusion is anything fixed to a real wall that juts into the room, such as a sill, baseboard or wall-hung radiator. It is recorded on its wall with its depth, bottom and top elevation, and its span along the wall from end A. A protrusion is an obstacle, with the margin, to floor and wall Items that overlap its height. Anchors that stand an Item against a wall measure their gap from the front of the deepest protrusion they would meet, so the anchor gap and the margin agree.
+
+Clearance is a placement rule, so it is not checked between two measured Objects that are both still at their measured placement: cabinets standing flush with a refrigerator are measured fact, not a conflict. Containment, keep-clear zones and support remain checked for every Item, so a measured Object blocking a door is still reported.
+
 | Collision class | Checks |
 |---|---|
-| `floor` | Other floor Items, room boundary/walls and keep-clear zones. Small detected Objects such as plants occupy space. |
+| `floor` | Other floor Items, room boundary/walls, wall protrusions overlapping its height and keep-clear zones. Small detected Objects such as plants occupy space. |
 | `rug` | Other rugs and room boundary/walls; can lie under furniture and in keep-clear zones. |
-| `wall` | Other wall Items, openings and floor Items against the same wall extending above its bottom edge. |
-| `tabletop` | Other Items on the same top; required support identity, elevation and footprint containment. |
+| `wall` | Other wall Items, openings, wall protrusions overlapping its height and floor Items against the same wall extending above its bottom edge. |
+| `tabletop` | Other Items on the same top; required support identity, elevation, footprint containment and recorded clearance above. |
 | `ceiling` | Does not obstruct floor placement; remains associated with valid room/ceiling geometry. |
 | `none` | Informational features do not create ordinary furniture collisions. |
 
@@ -828,7 +843,7 @@ Removed ghosts are not obstacles or present supports. Every active support relat
 5. Among dependency-ready Additions, sort by ascending Priority; for equal Priority, larger footprint first. Missing Priority falls back to plan order with an explicit diagnostic, not an invented model preference. Dependencies determine readiness, not a new preference score.
 6. Expand quantity into physical units with deterministic Item IDs. Distinguish requested placed quantity from purchased pack quantity.
 7. Resolve Anchor and candidate yaw/elevation; validate footprint, containment, support and clearances.
-8. On a collision, try bounded adjustments: slide along wall in ±0.1 m steps up to ±1.0 m, then 90° rotation, then a supported alternative Anchor. Only attempts allowed by the explicit choice/constraints are eligible.
+8. On a collision, try bounded adjustments: slide along wall in ±0.1 m steps up to ±1.0 m (for `on_top_of`, along the support's longer side), then 90° rotation, then a supported alternative Anchor. Only attempts allowed by the explicit choice/constraints are eligible.
 9. Recheck access connectivity for Full redesign: shrink free floor by 0.45 m, representing half the 0.9 m passage baseline, and check that door keep-clear areas remain connected to usable free area. Remove lowest-priority optional new Items and repeat only when the removal is allowed. Never remove an original Object to repair access without its explicit permitted plan action.
 10. Validate the complete candidate, attach outcomes/warnings/conflicts and return it to the controller. Persist only after geometry, instructions and purchases all pass.
 
@@ -863,7 +878,7 @@ Do not implement an automatic lamp-near-outlet score bonus. Outlet positions can
 - Load asynchronously and cache by immutable asset ID/revision. Fallback order is requested asset → category stand-in → labeled correctly sized box. Missing textures use neutral materials.
 - Replacing a fallback preserves identity, placement, dimensions, selection and camera state. Do not rebuild the room for one download or conversation update.
 - Respect declared scaling mode. A dimensioned catalog model is not scaled twice; a normalized stand-in is scaled to explicit width/depth/height in X/Z/Y order.
-- Use neutral indoor environment lighting, directional light from a known window where applicable, and grounding shadows where supported. No Day/Evening control or walk camera is included.
+- Use neutral indoor environment lighting, directional light from a known window where applicable, and grounding shadows where supported. Design editing retains its existing orbit camera. The separate original-room reconstruction supports a viewing-only walk camera; no Day/Evening control is included.
 
 #### 11.2 Ghosts and restoration
 
@@ -969,11 +984,13 @@ The public upload response acknowledges storage and explicitly reports deferred 
 | `room_id`, `capture_id` | Identities of measured evidence. |
 | `height`, `frame` | Positive room height and explicit `room_from_world` Matrix4. |
 | `floor` | Ordered Vec2 polygon and computed area in square meters; usable/nondegenerate when validity is true. |
-| `walls` | Stable ID, endpoints A/B, length, inward unit normal and virtual flag; deterministic winding/order. |
+| `walls` | Stable ID, endpoints A/B, length, inward unit normal and virtual flag; deterministic winding/order. Optional `protrusions`, each with depth, bottom, top, span from A (`from_a`, `to_a`) and source reference (§10.3). |
 | `corners` | Stable ID, position and two real wall IDs satisfying corner-angle rule. |
 | `openings` | Stable ID, type `door`, `window` or `opening`, wall ID, offset from A, width, bottom/sill and height. Required dimension uncertainty is explicit. |
 | `objects` | Object records defined below, including non-floor placement information. |
 | `wall_features` | Stable ID, type outlet/light_switch/vent, wall ID, offset and height; optional source confidence. |
+| `obstacles` | Optional. Measured things outside the category registry (a kettle, a faucet), with the Object pose fields and a `collision_class`. They block placement like an Object of that class but are not planning targets and never move. |
+| `render` | Optional, for a modelled room: `node_pivot` (`bottom_center` or `box_center`) and the USD node name for each wall, opening, Object and obstacle ID. The model shares the RoomModel's frame: each node sits at its record's pose. |
 | `zones` | Stable ID, type `keep_clear`, reason door/opening and polygon. |
 | `style_hints` | Optional observed/derived floor and wall descriptions with appropriate uncertainty. |
 | `validity` | Usable flag and structured reasons/warnings. A false flag prevents final placement publication. |
@@ -981,6 +998,8 @@ The public upload response acknowledges storage and explicitly reports deferred 
 | `identity_map` | Native IDs/aliases mapped to normalized Object and surface references. |
 
 An Object record includes stable `id`, retained native/source IDs, category, source (`roomplan`, `mk1` or refined evidence), X/Z footprint `center`, explicit `base_y`, yaw, Size3, Mount, optional real wall/support Object reference, optional `against_wall`, `fixed_in_place`, observed attributes and supporting evidence/observation count. `sightings`, if retained for compatibility, is the number of 3D observations in a cluster, not the number of unique Objects.
+
+A support Object may record `surfaces`: each a usable top elevation, optional X/Z outline with optional `holes` (a sink), and optional `clearance_above` to whatever hangs over it, because a box top that includes a backsplash or upstand is not the surface Items stand on.
 
 Wall-mounted Objects require their elevation/wall association; tabletop Objects require their elevation/support association. The renderer and solver do not reconstruct these from category defaults. `attrs.color` is optional `#RRGGBB`; a missing sampled color uses a default tint. No required measured-material field exists.
 
@@ -1396,7 +1415,7 @@ Contract tests check that fields necessary to render or enforce rules are presen
 | AC-087 | Native/detector duplicate | Compatible category refinement absorbs into stable Object rather than creating a duplicate. |
 | AC-088 | Repeated merge | Stable existing IDs reused; new IDs never recycle old numbers; input replay deterministic. |
 | AC-089 | Color insufficient | Default tint used; no fabricated sampled/material result. |
-| AC-090 | Door/opening clearance | Personal minimum, swing approximation and side margins applied consistently; rugs/wall Items use stated exceptions. |
+| AC-090 | Door/opening clearance | 1.2 m depth and 0.45 m side margins applied consistently; rugs/wall Items use stated exceptions. |
 | AC-091 | Optional placement ordering | Dependency-ready Additions use Priority first and footprint tie-break; fallback order logged if missing. |
 | AC-092 | Targeted edit | Target/permitted dependents can change; unaffected base Items remain Fixed. |
 | AC-093 | Addition/support dependency | Support resolves before dependent despite priority/type ordering; cycles/missing targets return conflict. |
@@ -1494,8 +1513,8 @@ Contract tests check that fields necessary to render or enforce rules are presen
 - Furniture dragging, direct rotation, mutable direct-transform PATCH and manual model-editor tools. Camera gestures and validated Swap/Remove remain included.
 - Cart, checkout, payments, Amazon Product API and an additional commerce backend. Exact-offer Buy and an optional secondary configured search link remain included.
 - User accounts/login, a shared app-key gate or a new authentication project. Input validation, private capture media and server credentials remain required.
-- Offline capture/edit/reopen guarantees, interrupted-acquisition continuation and Use partial scan. Recovery of completed uploads remains included.
-- Multi-room reconstruction, textured mesh/Gaussian splats, photorealistic room rebuilding, live camera AR placement or erasing physical furniture from camera images.
+- Offline design editing, interrupted-acquisition continuation and Use partial scan. Local reconstruction capture and completed-upload recovery are included under §3.5.
+- Multi-room reconstruction, Gaussian splats, live camera AR placement or erasing physical furniture from camera images. Single-room reconstruction and viewing-only walkthroughs are included under §3.5.
 - On-demand 3D generation for live results, optional photoreal inspiration images and model review of rendered Scenes. Offline catalog asset preparation remains included.
 - Custom voice recording, Redo/history browsing, cross-room preference profiles and a preference-reuse interface.
 - Concurrent speculative spatial work, searches behind unanswered questions, parallel per-Room branches, overlapping mutations and future dependency-graph orchestration. Local action dependency validation remains required.

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		A17C0F103083EE0400A11453 /* Configuration/App.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Configuration/App.xcconfig; sourceTree = "<group>"; };
 		C9E010BC3083EE0400A11453 /* ReSpace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReSpace.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -32,6 +33,7 @@
 		C9E010B33083EE0400A11453 = {
 			isa = PBXGroup;
 			children = (
+				A17C0F103083EE0400A11453 /* Configuration/App.xcconfig */,
 				C9E010BE3083EE0400A11453 /* ReSpace */,
 				C9E010BD3083EE0400A11453 /* Products */,
 			);
@@ -246,6 +248,7 @@
 		};
 		C9E010C83083EE0600A11453 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A17C0F103083EE0400A11453 /* Configuration/App.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -282,6 +285,7 @@
 		};
 		C9E010C93083EE0600A11453 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A17C0F103083EE0400A11453 /* Configuration/App.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -291,6 +295,7 @@
 				ENABLE_PREVIEWS = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"ReSpace/Preview Content\"";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Configuration/AppInfo.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "ReSpace uses the camera and LiDAR to measure your room.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save your room post images to Photos to share on Instagram.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

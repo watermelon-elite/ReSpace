@@ -464,3 +464,46 @@ are retained in [`assets/proof.json`](../assets/proof.json).
 `POST /v1/rooms/imported` attaches reconstructed Object bounds as private planning context, with `source_capture_id`, `source_scene_sha256` and typed `entities`. It uses creation receipts for retries. This is not a native RoomPlan capture: generated results are verified Product selections, not applied layouts. The UI states this limit; original capture/support evidence is still required for validated placement.
 
 Verification: `PYTHONPATH=backend .local/venv/bin/python -m pytest backend/tests/test_natural_request.py -q`. Offline providers simulate the interpretation for UI testing; live Gemini interpretation requires the configured planning model.
+
+## Room previews from a reconstruction
+
+Places Products into a fully modelled room (a reconstruction USDZ plus its JSON
+record) and writes one preview USDZ. The record format is version 2 of
+[`specs/room-reconstruction-json.md`](../specs/room-reconstruction-json.md).
+
+1. `reconstruction.room_from_reconstruction(record, room_id)` reads the record
+   into the same RoomModel that native captures produce, with wall
+   `protrusions`, support `surfaces` (with `holes`) and unclassified `obstacles`
+   (`SPEC.md` §12.5). It returns `validity.usable: false` with reasons instead
+   of guessing. It snaps floor, ceiling and tabletop contact within 2 cm.
+2. `solver.solve(...)` places the Additions as for any room.
+3. `composition.compose(room_usdz, room, scene, out)` references each new Item's
+   asset at its placement, moves the nodes of moved Objects and deactivates
+   removed or replaced ones. It refuses the room when a node is missing, or is more
+   than 1 cm or 1° from its record horizontally, or more than 3 cm vertically.
+
+The model must be in room coordinates, like the JSON. A model left in scan
+coordinates is off by the `room_from_world` translation on every node, and is
+refused. Placements stay in room coordinates even if the model's root carries a
+transform. Records may name a node as written (`chair-6`) or as USD stores it
+(`chair_6`).
+
+The room model can be a `.usdz` or a plain USD layer. Product assets come from
+`assets.asset_path` unless a `resolve` function is passed; a missing asset is
+drawn as a box of the placement's size.
+
+Composition needs usd-core, which the API image does not install by default:
+
+```sh
+.local/venv/bin/pip install -e 'backend[test,usd]'
+```
+
+Without it, `tests/test_composition.py` skips. Not yet wired to an endpoint:
+`POST /v1/rooms/imported` still accepts the version 1 record as planning-only
+context.
+
+## Three-branch integration
+
+New scans retain reconstruction evidence locally and transfer a calibrated subset through the existing Room/keyframe/finalize API when Plan changes is chosen. The separate `services/reconstruction` service owns verified walkthrough generation; the backend remains the owner of immutable designs and edits. Keep its Python environment separate from offline asset tooling and the reconstruction service.
+
+The restricted reconstruction contract is in `specs/room-reconstruction-json.md`. Rich exporter support remains deferred. `sample_room_2` is quarantined because JSON attachments and USDZ coordinates disagree; do not use it as placement input or silently repair measurements.

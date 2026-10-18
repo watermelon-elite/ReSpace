@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "op_1",
+  "room_id": "room_1",
+  "kind": "edit",
+  "state": "needs_clarification",
+  "clarification": {
+    "question_id": "q1",
+    "text": "Which chair?",
+    "candidates": [
+      {
+        "id": "chair_1",
+        "label": "Window chair"
+      }
+    ],
+    "reply_token": "base-token"
+  }
+}

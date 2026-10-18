@@ -72,7 +72,7 @@ def test_openings_keep_real_elevation_and_clip_access_zones():
     assert room["openings"][1]["bottom"] == pytest.approx(1)
     assert room["openings"][0]["offset"] == pytest.approx(.5)
     assert len(room["zones"]) == 1
-    assert max(p[1] for p in room["zones"][0]["polygon"]) == 1
+    assert max(p[1] for p in room["zones"][0]["polygon"]) == 1.2
 
 
 def test_object_axis_order_bottom_center_and_stool_attribute():
@@ -97,3 +97,15 @@ def test_versioned_transport_fixture_replays_exact_native_mapping_and_diagnostic
         assert actual == fixture["snapshot"]["room"]
     else:
         assert not actual["validity"]["usable"]
+
+
+def test_door_clearance_matches_reconstruction_exporter():
+    from shapely.geometry import Polygon
+    from respace.geometry import keep_clear
+    wall = {"a": [0, 0], "b": [4, 0], "length": 4, "inward_normal": [0, 1]}
+    floor = Polygon([[0, 0], [4, 0], [4, 3], [0, 3]])
+    for kind in ("door", "opening"):
+        zone = keep_clear(wall, {"id": "entrance", "type": kind, "offset": 1, "width": .9}, floor)
+        assert Polygon(zone["polygon"]).bounds == pytest.approx((.55, 0, 2.35, 1.2))
+    edge = keep_clear(wall, {"id": "edge", "type": "door", "offset": 0, "width": .9}, floor)
+    assert Polygon(edge["polygon"]).bounds == pytest.approx((0, 0, 1.35, 1.2))

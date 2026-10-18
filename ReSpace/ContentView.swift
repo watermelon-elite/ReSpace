@@ -8,6 +8,14 @@ struct ContentView: View {
     #if DEBUG
     @State private var showDemoRoom = false
     #endif
+    @State private var scanRecoveryID: String?
+    @State private var scanning = false
+    @State private var scannedRoom: LocalSavedRoom?
+    @State private var completedScanID: String?
+    @State private var discardScanID: String?
+    @State private var renameScan: LocalSavedRoom?
+    @State private var renameScanText = ""
+    @State private var deleteScan: LocalSavedRoom?
     @State private var setup = false
     @State private var scanSetup = false
     @State private var capture: CaptureController?
@@ -54,8 +62,32 @@ struct ContentView: View {
                         Image("RoomInspiration").resizable().scaledToFill().frame(height: 300).clipped().clipShape(RoundedRectangle(cornerRadius: 28))
                             .accessibilityLabel("Room inspiration")
                     }
-                    ForEach(Array(app.rooms.filter { $0["source_scene_sha256"] == .null }.enumerated()), id: \.element) { index, room in
+                    ForEach(Array(app.rooms.filter { room in room["source_scene_sha256"] == .null && !app.localRooms.contains { $0.backendRoomId == room["room_id"].text } }.enumerated()), id: \.element) { index, room in
                         NavigationLink { RoomReview(app: app, roomID: room["room_id"].text) } label: { roomCard(room, hero: index == 0) }.buttonStyle(.plain)
+                    }
+                    if let store = app.scanStore {
+                        ForEach(app.localRooms) { room in
+                            NavigationLink { LocalRoomPreviewView(room: room, repository: store.captures, reconstruction: store.reconstruction, app: app) } label: {
+                                RSRoomCard(title: app.rooms.first { $0["room_id"].text == room.backendRoomId }?["name"].string ?? room.name,
+                                           subtitle: "Scanned \(room.createdAt.scanDateLabel)", hero: false) {
+                                    ReSpaceStyle.canvas.overlay { Image(systemName: "cube.transparent").foregroundStyle(ReSpaceStyle.purple) }
+                                }
+                            }.buttonStyle(.plain)
+                                .contextMenu {
+                                    Button("Rename", systemImage: "pencil") { renameScan = room; renameScanText = room.name }
+                                    Button("Delete room", systemImage: "trash", role: .destructive) { deleteScan = room }
+                                }
+                        }
+                        ForEach(app.scanRecoveries, id: \.captureId) { manifest in
+                            if manifest.state == "completed" {
+                                Button("Finish saving your scan") { scanRecoveryID = manifest.captureId; scanning = true }
+                                    .buttonStyle(RSButtonStyle(kind: .secondary))
+                            } else {
+                                RSNotice(message: "This scan was interrupted. Start a new scan to capture the room.")
+                                Button("Discard interrupted scan") { discardScanID = manifest.captureId }
+                                    .buttonStyle(RSButtonStyle(kind: .secondary))
+                            }
+                        }
                     }
                     if ImportedRoomView.modelURL != nil && !app.isUIDemo {
                         NavigationLink { ImportedRoomView(app: app) } label: {
@@ -93,12 +125,43 @@ struct ContentView: View {
                     }
                 } footer: {
                     Button("Scan your room") { if !simulatedScan { scanSetup = true } }
-                        .buttonStyle(RSButtonStyle()).disabled(!simulatedScan && (!captureSupported || app.client == nil || app.busy))
+                        .buttonStyle(RSButtonStyle()).disabled(!simulatedScan && (!captureSupported || app.scanStore == nil || app.busy))
                 }
-                .refreshable { await app.refresh(); if !app.isUIDemo { recoveries = CaptureArchive.recoverable() } }
-                .task { await app.recoverPending(); await app.refresh(); if !app.isUIDemo { recoveries = CaptureArchive.recoverable() } }
+                .refreshable { await app.refresh(); await app.refreshScans(); if !app.isUIDemo { recoveries = CaptureArchive.recoverable().filter { archive in !app.localRooms.contains { $0.backendRoomId == archive.roomID } } } }
+                .task { await app.recoverPending(); await app.refresh(); await app.refreshScans(); if !app.isUIDemo { recoveries = CaptureArchive.recoverable().filter { archive in !app.localRooms.contains { $0.backendRoomId == archive.roomID } } } }
             }
         }
+        .fullScreenCover(isPresented: $scanning, onDismiss: {
+            Task {
+                await app.refreshScans()
+                if let id = completedScanID { completedScanID = nil; scannedRoom = app.localRooms.first { $0.id == id } }
+            }
+        }) {
+            if let store = app.scanStore {
+                ScanCaptureScreen(store: store, recoveryId: scanRecoveryID) { id in completedScanID = id; scanning = false }
+            }
+        }
+        .sheet(item: $scannedRoom) { room in
+            if let store = app.scanStore { LocalRoomPreviewView(room: room, repository: store.captures, reconstruction: store.reconstruction, app: app) }
+        }
+        .alert("Discard interrupted scan?", isPresented: Binding(get: { discardScanID != nil }, set: { if !$0 { discardScanID = nil } })) {
+            Button("Cancel", role: .cancel) { discardScanID = nil }
+            Button("Discard", role: .destructive) {
+                if let id = discardScanID, let store = app.scanStore {
+                    Task { do { try await store.captures.removeCapture(id); await app.refreshScans() } catch { app.error = error.localizedDescription } }
+                }
+                discardScanID = nil
+            }
+        } message: { Text("This incomplete scan and its local photos will be removed. Your other rooms are kept.") }
+        .alert("Rename room", isPresented: Binding(get: { renameScan != nil }, set: { if !$0 { renameScan = nil } })) {
+            TextField("Room name", text: $renameScanText)
+            Button("Cancel", role: .cancel) { renameScan = nil }
+            Button("Save") { if let room = renameScan { Task { await renameLocalRoom(room, name: renameScanText) } }; renameScan = nil }
+        }
+        .alert("Delete this room?", isPresented: Binding(get: { deleteScan != nil }, set: { if !$0 { deleteScan = nil } })) {
+            Button("Cancel", role: .cancel) { deleteScan = nil }
+            Button("Delete", role: .destructive) { if let room = deleteScan { Task { await removeLocalRoom(room) } }; deleteScan = nil }
+        } message: { Text("Removes this iPhone’s scan and any linked planning room and designs. Copies on the reconstruction service remain there.") }
         .sheet(isPresented: $setup) { backendSettings }
         #if DEBUG
         .fullScreenCover(isPresented: $showDemoRoom) {
@@ -119,7 +182,7 @@ struct ContentView: View {
                 OlloMessage(cue: .presenting) {
                     Text("Move slowly around the room. Include the walls and larger Objects.").foregroundStyle(ReSpaceStyle.secondary)
                 }
-                DisclosureGroup("Ready to scan") { Text("ReSpace checks camera access, the connection and space to save your scan before starting.").padding(.top, 8) }.font(ReSpaceStyle.font(13))
+                DisclosureGroup("Ready to scan") { Text("ReSpace checks camera access and space to save your scan. Your completed scan stays on this iPhone; connect to plan changes or create a walkthrough.").padding(.top, 8) }.font(ReSpaceStyle.font(13))
             } footer: {
                 Button("Start scan") { scanSetup = false; Task { await start() } }.buttonStyle(RSButtonStyle()).disabled(app.busy)
             }
@@ -135,9 +198,38 @@ struct ContentView: View {
             }
         }
         .confirmationDialog("Discard the interrupted scan and its uploaded photos?", isPresented: Binding(get: { discardArchive != nil }, set: { if !$0 { discardArchive = nil } }), titleVisibility: .visible) {
-            Button("Discard Scan", role: .destructive) { if let archive = discardArchive, let client = app.client { Task { let controller = CaptureController(archive: archive, app: app, client: client); await controller.abandon(); recoveries = CaptureArchive.recoverable() }; discardArchive = nil } }
+            Button("Discard Scan", role: .destructive) { if let archive = discardArchive, let client = app.client { Task { let controller = CaptureController(archive: archive, app: app, client: client); await controller.abandon(); recoveries = CaptureArchive.recoverable().filter { archive in !app.localRooms.contains { $0.backendRoomId == archive.roomID } } }; discardArchive = nil } }
         }
-        .fullScreenCover(item: $capture, onDismiss: { Task { await app.refresh(); recoveries = CaptureArchive.recoverable() } }) { CaptureScreen(controller: $0) }
+        .fullScreenCover(item: $capture, onDismiss: { Task { await app.refresh(); recoveries = CaptureArchive.recoverable().filter { archive in !app.localRooms.contains { $0.backendRoomId == archive.roomID } } } }) { CaptureScreen(controller: $0) }
+    }
+    private func renameLocalRoom(_ scan: LocalSavedRoom, name: String) async {
+        guard let store = app.scanStore else { return }
+        do {
+            var scan = try await store.captures.localRoom(scan.id)
+            if scan.backendCreationName != nil && scan.backendRoomId == nil {
+                scan = try await app.linkScan(scan.id)
+            }
+            if let roomID = scan.backendRoomId, let client = app.client {
+                let detail = try await client.request("rooms/\(roomID)")
+                _ = try await app.submit(PendingRequest(path: "rooms/\(roomID)", method: "PATCH", roomID: roomID,
+                    body: ["name": .string(name), "expected_metadata_revision": detail["room"]["metadata_revision"]]))
+            } else if scan.backendRoomId != nil { throw ContractError.invalid("Connect ReSpace to rename this saved room.") }
+            try await store.captures.renameLocalRoom(scan.id, name: name)
+            await app.refreshScans(); await app.refresh()
+        } catch { app.error = error.localizedDescription }
+    }
+    private func removeLocalRoom(_ scan: LocalSavedRoom) async {
+        guard let store = app.scanStore else { return }
+        do {
+            var scan = try await store.captures.localRoom(scan.id)
+            if scan.backendCreationName != nil && scan.backendRoomId == nil { scan = try await app.linkScan(scan.id) }
+            if let roomID = scan.backendRoomId {
+                let pending = app.pending.first { $0.roomID == roomID && $0.method == "DELETE" }
+                let result = try await app.submit(pending ?? PendingRequest(path: "rooms/\(roomID)", method: "DELETE", roomID: roomID, body: [:]))
+                guard result["deletion"]["state"].text == "deleted" else { throw ContractError.invalid("Deletion is pending. Check the request before retrying.") }
+            } else { try await store.captures.removeCapture(scan.id) }
+            await app.refreshScans(); await app.refresh()
+        } catch { app.error = error.localizedDescription }
     }
     private var backendSettings: some View {
         RSPage(title: "Connect ReSpace", back: { setup = false }) {
@@ -166,19 +258,9 @@ struct ContentView: View {
         #if DEBUG
         if app.isUIDemo { showDemoRoom = true; return }
         #endif
-        guard captureSupported, let client = app.client else { return }
-        let allowed = AVCaptureDevice.authorizationStatus(for: .video) == .authorized ? true : await AVCaptureDevice.requestAccess(for: .video)
-        guard allowed else { permissionDenied = true; return }
-        app.busy = true; defer { app.busy = false }
-        do {
-            _ = try await client.request("health")
-            let probe = app.disk.appendingPathComponent("write-probe"); try Data([1]).write(to: probe); try FileManager.default.removeItem(at: probe)
-            let result = try await app.submit(PendingRequest(path: "rooms", roomID: nil, body: [:]))
-            var archive = CaptureArchive(roomID: result["room"]["room_id"].text, captureID: result["capture_id"].text, startedAt: ISO8601DateFormatter().string(from: Date()))
-            guard !archive.roomID.isEmpty, !archive.captureID.isEmpty else { throw ContractError.invalid("Backend did not create a draft capture.") }
-            archive.phase = "capturing"; try archive.save()
-            capture = CaptureController(archive: archive, app: app, client: client)
-        } catch { app.error = error.localizedDescription }
+        guard captureSupported, app.scanStore != nil else { return }
+        scanRecoveryID = nil
+        scanning = true
     }
 }
 extension CaptureController: Identifiable { var id: String { archive.captureID } }

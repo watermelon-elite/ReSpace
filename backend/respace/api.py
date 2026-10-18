@@ -8,6 +8,7 @@ from fastapi import BackgroundTasks, FastAPI, Header, Request as HTTPRequest
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, Response
 from pydantic import ValidationError
+from starlette.datastructures import UploadFile
 
 from . import contracts
 from .capture import CaptureService
@@ -185,13 +186,17 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
     async def keyframe(room_id:contracts.ID,request:HTTPRequest,x_device_id:str=Header()):
         form=await request.form(max_files=3,max_fields=1,max_part_size=100000)
         require(set(form.keys())<= {'jpeg','depth','confidence','meta'} and 'jpeg' in form and isinstance(form.get('meta'),str),'invalid_keyframe','Expected calibrated multipart evidence.',422)
-        try: meta=json.loads(form['meta'],parse_constant=lambda _: (_ for _ in ()).throw(ValueError()))
+        raw_meta=form['meta']
+        if not isinstance(raw_meta,str):
+            raise DomainError('invalid_keyframe','Frame metadata must be JSON text.',422)
+        try: meta=json.loads(raw_meta,parse_constant=lambda _: (_ for _ in ()).throw(ValueError()))
         except ValueError: raise DomainError('invalid_keyframe','Frame metadata must be valid finite JSON.',422) from None
         parts={}
         for kind in ('jpeg','depth','confidence'):
             if kind in form:
                 upload=form[kind]
-                require(hasattr(upload,'read'),'invalid_keyframe','Evidence parts must be files.',422)
+                if not isinstance(upload,UploadFile):
+                    raise DomainError('invalid_keyframe','Evidence parts must be files.',422)
                 parts[kind]=await upload.read(4000001)
                 require(len(parts[kind])<=4000000,'request_too_large','A frame artifact exceeds the upload limit.',413)
         contracts.validate_frame(meta,parts)

@@ -1,0 +1,1076 @@
+{
+  "schema_version": 1,
+  "name": "Imported kitchenette",
+  "capture_id": "E5022320-E920-411D-A2B9-7BAB20277320",
+  "source_scene_sha256": "1f26720111f1aa273d087842d9ad9552335cb715f7721ae99d49faee79e5cc2a",
+  "model_sha256": "59ed992438d2b5dcbb3f32c3cac84faf66b94a6d04c2b1da99eecd02145efdf2",
+  "coordinate_system": "meters_y_up_floor_zero",
+  "translation_from_scan": [
+    1.10806714484208,
+    1.497552,
+    5.885594026537159
+  ],
+  "bounds_min": [
+    7.106903954223753e-10,
+    -0.00044800715255732815,
+    -2.2012947958893747e-07
+  ],
+  "bounds_max": [
+    3.968852358087255,
+    3.127500019981384,
+    6.007777237798456
+  ],
+  "triangle_count": 3140,
+  "dropped_zero_area_triangles": 2,
+  "texture_count": 36,
+  "entities": [
+    {
+      "id": "wall-97e82580aac993abf164",
+      "label": "Measured wall",
+      "kind": "wall",
+      "category": "wall",
+      "move_ready": false,
+      "node_name": "scan_wall_97e82580aac993abf164",
+      "bounds_min": [
+        2.092079252389551,
+        -4.861022961932804e-08,
+        0.5316048152758626
+      ],
+      "bounds_max": [
+        3.957575437294609,
+        3.1275000086102294,
+        6.007777237798456
+      ],
+      "cutaway": "wall",
+      "center": [
+        3.02482734484208,
+        1.56374998,
+        3.2696910265371595
+      ],
+      "inward_normal": [
+        -0.9465830542438898,
+        0,
+        -0.3224601082588498
+      ]
+    },
+    {
+      "id": "wall-687159d16597d3f99eb4",
+      "label": "Measured wall",
+      "kind": "wall",
+      "category": "wall",
+      "move_ready": false,
+      "node_name": "scan_wall_687159d16597d3f99eb4",
+      "bounds_min": [
+        7.106903954223753e-10,
+        -5.861022955855333e-08,
+        1.8566740542408664
+      ],
+      "bounds_max": [
+        1.1713222089734696,
+        3.1274999986102294,
+        5.2950953988334515
+      ],
+      "cutaway": "wall",
+      "center": [
+        0.5856611048420801,
+        1.56374997,
+        3.5758847265371596
+      ],
+      "inward_normal": [
+        0.9465830453666975,
+        0,
+        0.3224601343178857
+      ]
+    },
+    {
+      "id": "wall-70e690787f11866d588b",
+      "label": "Measured wall",
+      "kind": "wall",
+      "category": "wall",
+      "move_ready": false,
+      "node_name": "scan_wall_70e690787f11866d588b",
+      "bounds_min": [
+        2.3970457797385434,
+        -4.861022939728343e-08,
+        -2.2012947958893747e-07
+      ],
+      "bounds_max": [
+        3.957574909945615,
+        3.1275000086102294,
+        0.5316052732037981
+      ],
+      "cutaway": "wall",
+      "center": [
+        3.1773103448420796,
+        1.56374998,
+        0.2658025265371595
+      ],
+      "inward_normal": [
+        -0.32246042608105846,
+        0,
+        0.946582945975482
+      ]
+    },
+    {
+      "id": "wall-7af66f7dea69dcfb9f5f",
+      "label": "Measured wall",
+      "kind": "wall",
+      "category": "wall",
+      "move_ready": false,
+      "node_name": "scan_wall_7af66f7dea69dcfb9f5f",
+      "bounds_min": [
+        0.9402074710939494,
+        -5.861022955855333e-08,
+        0.243626748967413
+      ],
+      "bounds_max": [
+        1.4628829265902106,
+        3.1274999986102294,
+        1.777943304106906
+      ],
+      "cutaway": "wall",
+      "center": [
+        1.20154519884208,
+        1.56374997,
+        1.0107850265371594
+      ],
+      "inward_normal": [
+        0.9465830741377658,
+        0,
+        0.3224600498602841
+      ]
+    },
+    {
+      "id": "wall-c99411614f15686d0bb9",
+      "label": "Measured wall",
+      "kind": "wall",
+      "category": "wall",
+      "move_ready": false,
+      "node_name": "scan_wall_c99411614f15686d0bb9",
+      "bounds_min": [
+        1.4628834734753084,
+        -5.861023000264254e-08,
+        0.24362613969343275
+      ],
+      "bounds_max": [
+        2.225547296208852,
+        3.127499998610229,
+        0.5034329133808858
+      ],
+      "cutaway": "wall",
+      "center": [
+        1.8442153848420801,
+        1.56374997,
+        0.3735295265371592
+      ],
+      "inward_normal": [
+        -0.3224600815751264,
+        0,
+        0.9465830633338856
+      ]
+    },
+    {
+      "id": "wall-989958448c9488842794",
+      "label": "Measured wall",
+      "kind": "wall",
+      "category": "wall",
+      "move_ready": false,
+      "node_name": "scan_wall_989958448c9488842794",
+      "bounds_min": [
+        2.2255477133236297,
+        -4.861022939728343e-08,
+        4.2350682560865494e-07
+      ],
+      "bounds_max": [
+        2.39704557636053,
+        3.1275000086102294,
+        0.5034330295674931
+      ],
+      "cutaway": "wall",
+      "center": [
+        2.3112966448420798,
+        1.56374998,
+        0.2517167265371594
+      ],
+      "inward_normal": [
+        0.9465829754239163,
+        0,
+        0.32246033963513315
+      ]
+    },
+    {
+      "id": "wall-8294c8be1eba25c732c5",
+      "label": "Measured wall",
+      "kind": "wall",
+      "category": "wall",
+      "move_ready": false,
+      "node_name": "scan_wall_8294c8be1eba25c732c5",
+      "bounds_min": [
+        0.9402077161072795,
+        -5.861022955855333e-08,
+        1.7779439382820448
+      ],
+      "bounds_max": [
+        1.1713217855768805,
+        3.1274999986102294,
+        1.8566741147922732
+      ],
+      "cutaway": "wall",
+      "center": [
+        1.05576475084208,
+        1.56374997,
+        1.817309026537159
+      ],
+      "inward_normal": [
+        0.32245833694819126,
+        0,
+        -0.9465836576513492
+      ]
+    },
+    {
+      "id": "wall-adce9f82aa4c44907f05",
+      "label": "Measured wall",
+      "kind": "wall",
+      "category": "wall",
+      "move_ready": false,
+      "node_name": "scan_wall_adce9f82aa4c44907f05",
+      "bounds_min": [
+        1.4011550897308214e-07,
+        -4.861022984137264e-08,
+        5.295095504254956
+      ],
+      "bounds_max": [
+        2.0920793695686517,
+        3.127500008610229,
+        6.007776948819363
+      ],
+      "cutaway": "wall",
+      "center": [
+        1.0460397548420803,
+        1.56374998,
+        5.651436226537159
+      ],
+      "inward_normal": [
+        0.3224601672333906,
+        0,
+        -0.9465830341537999
+      ]
+    },
+    {
+      "id": "floor-7048b65d2e5946c48f90",
+      "label": "Measured floor",
+      "kind": "floor",
+      "category": "floor",
+      "move_ready": false,
+      "node_name": "scan_floor_7048b65d2e5946c48f90",
+      "bounds_min": [
+        1.0916703119256965e-07,
+        -3.7239074712758224e-08,
+        1.3539336052303952e-07
+      ],
+      "bounds_max": [
+        3.9575751919459616,
+        -3.7239074712758224e-08,
+        6.007777029068688
+      ]
+    },
+    {
+      "id": "ceiling-7048b65d2e5946c48f90",
+      "label": "Measured ceiling",
+      "kind": "ceiling",
+      "category": "ceiling",
+      "move_ready": false,
+      "node_name": "scan_ceiling_7048b65d2e5946c48f90",
+      "bounds_min": [
+        1.0916703119256965e-07,
+        3.127500019981384,
+        1.3539336052303952e-07
+      ],
+      "bounds_max": [
+        3.9575751919459616,
+        3.127500019981384,
+        6.007777029068688
+      ],
+      "cutaway": "ceiling"
+    },
+    {
+      "id": "base-cabinets",
+      "label": "Main wood base-cabinet run",
+      "kind": "fixed",
+      "category": "cabinet",
+      "move_ready": false,
+      "node_name": "scan_base_cabinets",
+      "bounds_min": [
+        0.019586842903829338,
+        5.199523162841002e-05,
+        3.045787222248653
+      ],
+      "bounds_max": [
+        1.3665474467803307,
+        0.8650520047683716,
+        5.489400830825663
+      ]
+    },
+    {
+      "id": "upper-cabinets",
+      "label": "Long wood wall-cabinet assembly",
+      "kind": "fixed",
+      "category": "cabinet",
+      "move_ready": false,
+      "node_name": "scan_upper_cabinets",
+      "bounds_min": [
+        0.018687086347856874,
+        1.4440520016689298,
+        2.4674910323384096
+      ],
+      "bounds_max": [
+        1.315447203336303,
+        2.43505199833107,
+        5.387697020735908
+      ]
+    },
+    {
+      "id": "dishwasher",
+      "label": "Built-in stainless dishwasher",
+      "kind": "fixed",
+      "category": "appliance",
+      "move_ready": false,
+      "node_name": "scan_dishwasher",
+      "bounds_min": [
+        0.7837478356587979,
+        5.199928474430848e-05,
+        2.4962042565266698
+      ],
+      "bounds_max": [
+        1.5123864540253622,
+        0.8610520007152558,
+        3.2129837965476478
+      ]
+    },
+    {
+      "id": "microwave-base-cabinet",
+      "label": "Base cabinet beneath microwave tower",
+      "kind": "fixed",
+      "category": "cabinet",
+      "move_ready": false,
+      "node_name": "scan_microwave_base_cabinet",
+      "bounds_min": [
+        0.970059511729972,
+        5.199523162841002e-05,
+        1.8579386975610837
+      ],
+      "bounds_max": [
+        1.710074777954188,
+        0.8650520047683716,
+        2.657249355513235
+      ]
+    },
+    {
+      "id": "main-countertop",
+      "label": "Continuous gray countertop with end and rear upstands",
+      "kind": "fixed",
+      "category": "countertop",
+      "move_ready": false,
+      "node_name": "scan_main_countertop",
+      "bounds_min": [
+        0.004179777285166164,
+        0.8630519991059302,
+        1.8525774050648627
+      ],
+      "bounds_max": [
+        1.787954512398993,
+        1.0155519952316285,
+        5.492610648009456
+      ]
+    },
+    {
+      "id": "microwave-tower",
+      "label": "Wood microwave shelving tower with upper cupboard",
+      "kind": "fixed",
+      "category": "cabinet",
+      "move_ready": false,
+      "node_name": "scan_microwave_tower",
+      "bounds_min": [
+        0.95739314884612,
+        0.9075520262260435,
+        1.8278225998795488
+      ],
+      "bounds_max": [
+        1.6237042952712044,
+        2.437551997615814,
+        2.5986809117639678
+      ]
+    },
+    {
+      "id": "lower-microwave",
+      "label": "Lower black and stainless microwave",
+      "kind": "furniture",
+      "category": "appliance",
+      "move_ready": true,
+      "node_name": "scan_lower_microwave",
+      "bounds_min": [
+        1.0858811640038712,
+        0.9125519940395355,
+        1.9079583109012672
+      ],
+      "bounds_max": [
+        1.6702531256802884,
+        1.2125520059604644,
+        2.567229742173051
+      ]
+    },
+    {
+      "id": "upper-microwave",
+      "label": "Upper stainless microwave",
+      "kind": "furniture",
+      "category": "appliance",
+      "move_ready": true,
+      "node_name": "scan_upper_microwave",
+      "bounds_min": [
+        1.0858811640038712,
+        1.422551998807907,
+        1.9079583109012672
+      ],
+      "bounds_max": [
+        1.6702531256802884,
+        1.7325520011920927,
+        2.567229742173051
+      ]
+    },
+    {
+      "id": "refrigerator-near",
+      "label": "Near stainless upright refrigerator",
+      "kind": "furniture",
+      "category": "appliance",
+      "move_ready": true,
+      "node_name": "scan_refrigerator_near",
+      "bounds_min": [
+        1.0919658841674822,
+        5.1981403350720434e-05,
+        1.0352812024541875
+      ],
+      "bounds_max": [
+        2.1496516045609972,
+        1.7605519952316282,
+        2.0617167908645877
+      ]
+    },
+    {
+      "id": "refrigerator-far",
+      "label": "Far stainless upright refrigerator",
+      "kind": "furniture",
+      "category": "appliance",
+      "move_ready": true,
+      "node_name": "scan_refrigerator_far",
+      "bounds_min": [
+        1.3639588976766333,
+        5.1981403350720434e-05,
+        0.3102441631059265
+      ],
+      "bounds_max": [
+        2.322175392007527,
+        1.761052018596649,
+        1.2809438899683925
+      ]
+    },
+    {
+      "id": "sink",
+      "label": "Inset single-bowl stainless sink",
+      "kind": "fixed",
+      "category": "sink",
+      "move_ready": false,
+      "node_name": "scan_sink",
+      "bounds_min": [
+        0.6279796228467129,
+        0.6895520026226043,
+        3.1678856050047868
+      ],
+      "bounds_max": [
+        1.2401546668374472,
+        0.9075519973773956,
+        3.8793024480695317
+      ]
+    },
+    {
+      "id": "main-faucet",
+      "label": "Chrome kitchen mixer faucet",
+      "kind": "fixed",
+      "category": "faucet",
+      "move_ready": false,
+      "node_name": "scan_main_faucet",
+      "bounds_min": [
+        0.6930695412404552,
+        0.908552,
+        3.471277639785245
+      ],
+      "bounds_max": [
+        0.9190537056207081,
+        1.188552001192093,
+        3.594275035797053
+      ]
+    },
+    {
+      "id": "filtered-water-tap",
+      "label": "Separate filtered-water tap",
+      "kind": "fixed",
+      "category": "faucet",
+      "move_ready": false,
+      "node_name": "scan_filtered_water_tap",
+      "bounds_min": [
+        0.8141078826154966,
+        0.908552,
+        3.2196347643105763
+      ],
+      "bounds_max": [
+        0.9641369090419323,
+        1.1825519890327454,
+        3.2891468637122143
+      ]
+    },
+    {
+      "id": "sink-air-gap",
+      "label": "Cylindrical sink-deck plumbing fitting",
+      "kind": "fixed",
+      "category": "plumbing_fixture",
+      "move_ready": false,
+      "node_name": "scan_sink_air_gap",
+      "bounds_min": [
+        0.7860671452891148,
+        0.9085519992549419,
+        3.3435940269841944
+      ],
+      "bounds_max": [
+        0.8260671443950451,
+        1.0085520007450581,
+        3.3835940260901247
+      ]
+    },
+    {
+      "id": "kettle",
+      "label": "Stainless electric kettle",
+      "kind": "furniture",
+      "category": "appliance",
+      "move_ready": true,
+      "node_name": "scan_kettle",
+      "bounds_min": [
+        0.5125181755276764,
+        0.908551994635582,
+        3.864554441933197
+      ],
+      "bounds_max": [
+        0.7491067294460415,
+        1.178552005364418,
+        4.129230292299455
+      ]
+    },
+    {
+      "id": "sandwich-grill",
+      "label": "Countertop clamshell sandwich grill",
+      "kind": "furniture",
+      "category": "appliance",
+      "move_ready": true,
+      "node_name": "scan_sandwich_grill",
+      "bounds_min": [
+        0.2906174345732428,
+        0.9085519985098838,
+        4.232540266303116
+      ],
+      "bounds_max": [
+        0.7255168551109176,
+        1.108552001490116,
+        4.698647786771203
+      ]
+    },
+    {
+      "id": "waste-station",
+      "label": "Built-in three-stream waste-sorting cabinet",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_waste_station",
+      "bounds_min": [
+        2.2267108154702915,
+        -0.00044800715255732815,
+        0.018725993447424327
+      ],
+      "bounds_max": [
+        3.7454234742138675,
+        1.0595519952316286,
+        0.9644620596268935
+      ]
+    },
+    {
+      "id": "paper-towel-dispenser",
+      "label": "Wall-mounted paper-towel dispenser",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_paper_towel_dispenser",
+      "bounds_min": [
+        1.7442300727296005,
+        1.2175519970197677,
+        5.633723260934456
+      ],
+      "bounds_max": [
+        2.1499042169545604,
+        1.6175520029802322,
+        5.989464792139863
+      ]
+    },
+    {
+      "id": "thermostat",
+      "label": "Entrance wall thermostat",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_thermostat",
+      "bounds_min": [
+        0.38843015323694835,
+        1.2025520002980234,
+        5.380846096470785
+      ],
+      "bounds_max": [
+        0.5417041364472125,
+        1.312551999701977,
+        5.462341956603531
+      ]
+    },
+    {
+      "id": "entrance-switch",
+      "label": "Entrance light-switch plate",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_entrance_switch",
+      "bounds_min": [
+        0.426668040604211,
+        0.9975520013411048,
+        5.400983413943629
+      ],
+      "bounds_max": [
+        0.50346624907995,
+        1.1175519986588958,
+        5.442204639130687
+      ]
+    },
+    {
+      "id": "outlet-near",
+      "label": "Near countertop electrical receptacle",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_outlet_near",
+      "bounds_min": [
+        0.14414357581671425,
+        1.1000519989569186,
+        4.839066401152327
+      ],
+      "bounds_max": [
+        0.19199071386744546,
+        1.2150520010430812,
+        4.918121651921992
+      ]
+    },
+    {
+      "id": "outlet-middle",
+      "label": "Middle countertop electrical receptacle",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_outlet_middle",
+      "bounds_min": [
+        0.41314357581671457,
+        1.1000519989569186,
+        4.054066401152327
+      ],
+      "bounds_max": [
+        0.46099071386744583,
+        1.2150520010430812,
+        4.133121651921992
+      ]
+    },
+    {
+      "id": "outlet-sink",
+      "label": "Sink-side electrical receptacle",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_outlet_sink",
+      "bounds_min": [
+        0.7941435758167144,
+        1.1000519989569186,
+        2.9370664011523266
+      ],
+      "bounds_max": [
+        0.8419907138674456,
+        1.2150520010430812,
+        3.0161216519219916
+      ]
+    },
+    {
+      "id": "undercabinet-light",
+      "label": "Continuous under-cabinet task-light assembly",
+      "kind": "fixed",
+      "category": "lighting_fixture",
+      "move_ready": false,
+      "node_name": "scan_undercabinet_light",
+      "bounds_min": [
+        0.2177954979963121,
+        1.4180519998137353,
+        2.544847546298756
+      ],
+      "bounds_max": [
+        1.2083387916878479,
+        1.4430520001862643,
+        5.342340506775562
+      ]
+    },
+    {
+      "id": "window-assembly",
+      "label": "Black-framed multi-bay window glazing assembly",
+      "kind": "fixed",
+      "category": "window",
+      "move_ready": false,
+      "node_name": "scan_window_assembly",
+      "bounds_min": [
+        2.1670664584138035,
+        0.8450519961853027,
+        0.5382046769688121
+      ],
+      "bounds_max": [
+        3.968852358087255,
+        2.8120520038146974,
+        5.4311538806249935
+      ],
+      "cutaway": "wall",
+      "center": [
+        3.0932807727071148,
+        1.828552,
+        2.993304303289498
+      ],
+      "inward_normal": [
+        -0.9465830542438898,
+        0,
+        -0.3224601082588498
+      ]
+    },
+    {
+      "id": "shade-near",
+      "label": "Near gray roller shade",
+      "kind": "fixed",
+      "category": "curtain",
+      "move_ready": false,
+      "node_name": "scan_shade_near",
+      "bounds_min": [
+        2.2218414682796785,
+        2.017552011920929,
+        3.8143573604308116
+      ],
+      "bounds_max": [
+        2.7742928214044804,
+        2.917551988079071,
+        5.374830692643506
+      ],
+      "cutaway": "wall",
+      "center": [
+        2.49806714484208,
+        2.467552,
+        4.594594026537159
+      ],
+      "inward_normal": [
+        -0.9465830542438898,
+        0,
+        -0.3224601082588498
+      ]
+    },
+    {
+      "id": "shade-middle",
+      "label": "Middle lowered gray roller shade",
+      "kind": "fixed",
+      "category": "curtain",
+      "move_ready": false,
+      "node_name": "scan_shade_middle",
+      "bounds_min": [
+        2.773841468279679,
+        1.567551988079071,
+        2.1963573604308118
+      ],
+      "bounds_max": [
+        3.326292821404481,
+        2.917552011920929,
+        3.7568306926435064
+      ],
+      "cutaway": "wall",
+      "center": [
+        3.05006714484208,
+        2.242552,
+        2.9765940265371595
+      ],
+      "inward_normal": [
+        -0.9465830542438898,
+        0,
+        -0.3224601082588498
+      ]
+    },
+    {
+      "id": "shade-far",
+      "label": "Far gray roller shade",
+      "kind": "fixed",
+      "category": "curtain",
+      "move_ready": false,
+      "node_name": "scan_shade_far",
+      "bounds_min": [
+        3.321841468279679,
+        2.017552011920929,
+        0.5863573604308121
+      ],
+      "bounds_max": [
+        3.874292821404481,
+        2.917551988079071,
+        2.1468306926435066
+      ],
+      "cutaway": "wall",
+      "center": [
+        3.59806714484208,
+        2.467552,
+        1.3665940265371592
+      ],
+      "inward_normal": [
+        -0.9465830542438898,
+        0,
+        -0.3224601082588498
+      ]
+    },
+    {
+      "id": "window-sill",
+      "label": "Continuous white window sill",
+      "kind": "fixed",
+      "category": "architectural_detail",
+      "move_ready": false,
+      "node_name": "scan_window_sill",
+      "bounds_min": [
+        2.1106144123635566,
+        0.7725519998509884,
+        0.5020981452906241
+      ],
+      "bounds_max": [
+        3.9415198773206033,
+        0.8425520001490117,
+        5.435089907783694
+      ]
+    },
+    {
+      "id": "window-wall-skirting",
+      "label": "Dark window-wall baseboard trim",
+      "kind": "fixed",
+      "category": "architectural_detail",
+      "move_ready": false,
+      "node_name": "scan_window_wall_skirting",
+      "bounds_min": [
+        2.0686339565287386,
+        -0.0004480007450580262,
+        0.5343755958240867
+      ],
+      "bounds_max": [
+        3.9495003331554215,
+        0.0995520007450581,
+        5.994812457250232
+      ]
+    },
+    {
+      "id": "entrance-protection",
+      "label": "Metal protection plates at doorway jamb bases",
+      "kind": "fixed",
+      "category": "architectural_detail",
+      "move_ready": false,
+      "node_name": "scan_entrance_protection",
+      "bounds_min": [
+        0.5592179461078369,
+        -0.00044800119209284506,
+        5.464403687932232
+      ],
+      "bounds_max": [
+        1.7789163435763233,
+        0.3095520011920929,
+        5.900784365142084
+      ]
+    },
+    {
+      "id": "alarm-sounder",
+      "label": "Back-wall alarm sounder and strobe",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_alarm_sounder",
+      "bounds_min": [
+        2.7165205149422733,
+        2.2675520032782552,
+        0.11189291134565474
+      ],
+      "bounds_max": [
+        2.8716137747418853,
+        2.4775519967217443,
+        0.22329514172866347
+      ]
+    },
+    {
+      "id": "refrigerator-soffit-grille",
+      "label": "Vent grille above refrigerator recess",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_refrigerator_soffit_grille",
+      "bounds_min": [
+        1.389348936720487,
+        2.4410519998137357,
+        0.8032514814213569
+      ],
+      "bounds_max": [
+        1.866785352963673,
+        2.4660520001862647,
+        1.4679365716529618
+      ]
+    },
+    {
+      "id": "ceiling-linear-light",
+      "label": "Long linear ceiling light",
+      "kind": "fixed",
+      "category": "lighting_fixture",
+      "move_ready": false,
+      "node_name": "scan_ceiling_linear_light",
+      "bounds_min": [
+        1.752927426301125,
+        3.084552000447035,
+        1.1662476099369175
+      ],
+      "bounds_max": [
+        2.975206863383035,
+        3.124551999552965,
+        4.594940443137402
+      ],
+      "cutaway": "ceiling"
+    },
+    {
+      "id": "ceiling-round-cover",
+      "label": "Flush circular ceiling service cover",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_ceiling_round_cover",
+      "bounds_min": [
+        1.5090671472262658,
+        3.0950519998137356,
+        4.187594028921345
+      ],
+      "bounds_max": [
+        1.6390671424578942,
+        3.1200520001862646,
+        4.3175940241529736
+      ],
+      "cutaway": "ceiling"
+    },
+    {
+      "id": "ceiling-sensor-inner",
+      "label": "Inner round ceiling detector",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_ceiling_sensor_inner",
+      "bounds_min": [
+        1.7030671445440568,
+        3.055052001192093,
+        3.595594026239136
+      ],
+      "bounds_max": [
+        1.8430671451401033,
+        3.120051998807907,
+        3.7355940268351824
+      ],
+      "cutaway": "ceiling"
+    },
+    {
+      "id": "ceiling-sensor-window",
+      "label": "Window-side ceiling sensor",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_ceiling_sensor_window",
+      "bounds_min": [
+        2.245067144544057,
+        3.055052001192093,
+        3.770594026239136
+      ],
+      "bounds_max": [
+        2.3850671451401033,
+        3.120051998807907,
+        3.9105940268351826
+      ],
+      "cutaway": "ceiling"
+    },
+    {
+      "id": "ceiling-diffuser-near",
+      "label": "Near linear ceiling air diffuser",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_ceiling_diffuser_near",
+      "bounds_min": [
+        2.1669346136900054,
+        3.0970519998137354,
+        3.567621998412643
+      ],
+      "bounds_max": [
+        2.6351996759941545,
+        3.1220520001862644,
+        4.647566054661674
+      ],
+      "cutaway": "ceiling"
+    },
+    {
+      "id": "ceiling-diffuser-far",
+      "label": "Far linear ceiling air diffuser",
+      "kind": "fixed",
+      "category": "functional_equipment",
+      "move_ready": false,
+      "node_name": "scan_ceiling_diffuser_far",
+      "bounds_min": [
+        2.942934613690005,
+        3.0970519998137354,
+        1.5076219984126435
+      ],
+      "bounds_max": [
+        3.4111996759941543,
+        3.1220520001862644,
+        2.587566054661675
+      ],
+      "cutaway": "ceiling"
+    },
+    {
+      "id": "caution-sign",
+      "label": "Freestanding yellow wet-floor safety sign",
+      "kind": "furniture",
+      "category": "functional_equipment",
+      "move_ready": true,
+      "node_name": "scan_caution_sign",
+      "bounds_min": [
+        1.732549731055845,
+        5.200476837163848e-05,
+        5.609438976529506
+      ],
+      "bounds_max": [
+        2.103584558628317,
+        0.6350519952316285,
+        5.961749076544813
+      ]
+    }
+  ],
+  "geometry_source": "RoomPlan shell built locally; intentional room contents, appliances and fixtures authored by Astra; random incidental junk excluded",
+  "assumptions": [
+    "Local shell extends partial RoomPlan walls to the upper consistent wall-top height, preserving measured openings",
+    "Cabinet and appliance envelopes follow RoomPlan dimensions, adjusted using photographs and depth evidence; concealed backs and bases are completed.",
+    "The refrigerator recess contains two adjacent upright refrigerators; the second unit is estimated from photographs and depth.",
+    "Countertop cutouts, cabinet compartments, window mullions and appliance details are deferred to object refinement.",
+    "Only contents inside the measured kitchenette are included; the adjoining lounge is outside the supplied boundary."
+  ],
+  "coarse_object_count": 38
+}

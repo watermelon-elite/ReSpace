@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "id": "design_2",
+  "parent_id": "design_1",
+  "room_id": "room_1",
+  "room_snapshot_id": "snapshot_1",
+  "planning": {
+    "room_id": "room_1",
+    "revision": 4,
+    "instructions": {
+      "sofa_1": "keep"
+    }
+  },
+  "inputs": {
+    "intent": "add",
+    "styles": [
+      "cozy"
+    ],
+    "budget": "300.00",
+    "currency": "USD",
+    "text": "Warm reading nook"
+  },
+  "summary": "A quiet reading corner",
+  "warnings": [],
+  "items": [
+    {
+      "id": "i_sofa",
+      "original_object_id": "sofa_1",
+      "origin": "existing",
+      "status": "existing",
+      "category": "sofa",
+      "label": "Sofa",
+      "position": [
+        2,
+        0,
+        2
+      ],
+      "yaw": 0.4,
+      "size": [
+        2.1,
+        0.9,
+        0.8
+      ],
+      "planning_state": "keep",
+      "render": {
+        "kind": "standin",
+        "category": "sofa",
+        "tint": "#A0AFA0"
+      }
+    },
+    {
+      "id": "i_lamp",
+      "origin": "new",
+      "status": "new",
+      "category": "floor_lamp",
+      "label": "Reading lamp",
+      "position": [
+        0.4,
+        0,
+        0.5
+      ],
+      "yaw": 0,
+      "size": [
+        0.4,
+        0.4,
+        1.6
+      ],
+      "planning_state": "decide",
+      "render": {
+        "kind": "standin",
+        "category": "floor_lamp",
+        "tint": "#D1BE99"
+      },
+      "product": {
+        "id": "demo_lamp",
+        "title": "Demo reading lamp",
+        "store": "Demo store",
+        "price_text": "$89.00",
+        "is_demo": true,
+        "alternatives": [
+          {
+            "id": "demo_alt",
+            "title": "Demo paper lamp",
+            "store": "Demo store",
+            "price_text": "$69.00"
+          }
+        ]
+      },
+      "reason": "A softer light beside your sofa."
+    }
+  ],
+  "monetary": {
+    "text": "$89.00 \u00b7 1 item",
+    "design_id": "design_2",
+    "is_demo": true
+  },
+  "created_at": "2026-10-17T12:02:00Z"
+}

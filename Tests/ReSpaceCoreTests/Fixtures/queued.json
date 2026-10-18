@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "id": "op_1",
+  "room_id": "room_1",
+  "kind": "edit",
+  "state": "queued"
+}

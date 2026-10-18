@@ -1,4 +1,45 @@
-# H1/H2/H3 specification reconciliation
+# Merge conflict register
+
+## Three-branch integration — 2026-10-18
+
+Sources: checkpoint `eb4d300` (all original local work), remote `humaidjaffery` at `5be3d9c`, and remote `OpenAI-3dmodelgen` at `383dc9f`. The user explicitly accepted the resolutions below. The first incoming branch had no textual conflicts; the second had four. A clean Git merge alone did not establish runtime compatibility.
+
+| Conflict and evidence | Accepted resolution and implementation |
+|---|---|
+| `ContentView.swift`: AppModel rooms/planning/shopping versus WorkspaceStore’s separate local/remote app. Both branches also declare APIClient, JSONValue, CaptureController and other unrelated types. | Keep the current router and existing saved data. Retain the new capture/reconstruction implementation with distinct Scan-prefixed types. Show saved scans in the current Room library; Plan changes uses the existing backend. Reuse Inter, RS actions/notices and the DreamSeal palette. |
+| Capture wire contracts: 900 reconstruction frames, 2560px JPEGs, Float16 depth, sensor orientation metadata, versus 40 planning frames, 1280px JPEGs and Float32 depth. Remote draft/acknowledgment envelopes also differ. | Preserve local reconstruction evidence. `CaptureTransfer` converts an evenly spaced subset with scaled intrinsics and original poses. `ScanIntegration` uses the current Room/keyframe/finalize protocol, persistent backend links and stable replay identities. Freeze the creation name so a rename cannot change a replay payload. The incoming remote API client remains isolated for its retained tests; it is not the production planning transport. |
+| Rich exporter: inset sinks, logical counter runs, zero-headroom surfaces versus the restricted reader. | Defer richer planning support as requested. Use original native measurements for planning from integrated scans. Keep richer scene results for viewing. Reject unsupported groups rather than treating a logical counter as another solid physical object. |
+| Door clearance: former swing-dependent depth/minimum 0.9m and 0.15m sides versus exporter 1.2m and 0.45m sides. | Adopt exporter clearance in the shared backend helper, clipped to the wall/floor; update the geometry fixture and governing spec. |
+| Walkthrough Move/Hide/Paint/Tile/Wallpaper/Undo creates a separate local history without backend Keep/partial-success guarantees. | Viewing-only walkthrough. Remove local mutation methods and controls; preserve old local files without applying them. Existing immutable backend history owns all design edits. This supersedes the editable-view aspects of incoming ADR-0001/0002. |
+| `.gitignore` add/add. | Union local configuration, caches, environments and reconstruction data exclusions. |
+| `Package.swift` add/add: different source/test libraries. | Retain both disjoint library targets and test suites. Add transfer-calibration and retry-persistence coverage. |
+| Xcode Info.plists/permissions/configuration and actor isolation. Incoming branch independently uses project version 110, unavailable in installed Xcode. Duplicate APIClient filenames also collide in generated strings output. | Use compatible project version 77 and explicit nonisolated default; combine camera/Photos/reconstruction settings. Debug retains local networking; Release requires HTTPS. Rename the incoming APIClient source and duplicate symbols; retain UI and normal shared schemes. |
+| Swift compiler cannot type-check a chained matrix expression and the integrated preview body in reasonable time. | Split identical arithmetic into named terms and break the view body into smaller view expressions. Preserve rendering math and job lifecycle. |
+| `furniture_assets.py` omits the new orientation option. | Pass `--auto-orient` for SPAR3D conversion; visual review remains required and pending assets are not promoted automatically. |
+| Reconstruction reader indexes empty walls and accepts NaN/Infinity in comparison-based validation. | Fail closed on malformed or nonfinite evidence; retain specific validity reasons and regression tests. |
+| A stationary kettle in `obstacles` is absent from editable Scene items, so removing its counter could strand it. | Shared scene validation blocks changing/removing its original support, including publication paths that bypass an edit helper. Preserve partial-success behavior for unrelated actions. |
+| Six existing mypy errors in provider configuration and multipart parsing. | Use typed provider configuration and explicit string/UploadFile narrowing; backend type checking passes. |
+| `sample_room_2`: wall attachment/protrusion is inconsistent and USDZ nodes remain in scan coordinates while JSON is in room coordinates. | Preserve source measurements and explicitly quarantine the pair with `planning_eligible: false`. Re-export both files from the original capture before clearing quarantine. |
+| Duplicate proposal documents claim fields different from the implementation. | Put the restricted reader contract first in `specs/room-reconstruction-json.md`, retain the original proposal as history, point the root duplicate at it, and distinguish the richer exporter guide. |
+| Different Python package requirements for backend, reconstruction and offline assets. | Keep their environments separate. Do not downgrade or replace the user's existing environments. |
+
+The added transfer adapter, tests and documentation are integration work: the adapter preserves calibration and recovery across incompatible protocols; tests verify those boundaries; documentation records the user's decisions and prevents later reintroduction of incompatible contracts. No unrelated feature was added.
+
+### Verification of the resolved merge
+
+- Debug and Release iOS Simulator builds passed for the combined app. Both built Info.plists retain camera, Photos-sharing and reconstruction settings; only Debug permits local HTTP.
+- Swift: 111 executed, 110 passed, one live-service check skipped. Includes real native import of the offline-generated room, transfer calibration/depth conversion, stable frame sampling, stored backend links and immutable creation-name replay.
+- Planning backend: 416 passed; six opt-in live/provider checks skipped. Includes malformed geometry, richer-format rejection, stationary support protection and larger doorway clearance regressions.
+- Reconstruction service: 249 passed; one live check skipped. Its Python environment was isolated from the backend and offline asset tools.
+- Launch-script prototype: eight passed. Backend mypy: no issues in 34 source files with unavailable third-party stubs ignored.
+- Actual Swift-converted JPEG/depth/confidence were accepted by the Python API; repeated creation, upload and finalization reused the same identities and yielded a readable native Room.
+- An isolated iPhone Simulator exercised saved scan → Plan changes → upload/finalize → rendered native Room review. Installing the final build and reopening reused the same Room without another upload. The reconstruction entry screen was visually checked against the shared RS layout.
+- Both remote tips were rechecked and remained at the source commits above. Staged whitespace/conflict-marker checks passed.
+
+No paid provider calls or physical LiDAR capture were performed. Offline checks cannot establish arbitrary-room reconstruction quality, real-device performance or provider availability. Rich exporter-to-planner support remains intentionally deferred. Non-blocking diagnostics were Starlette’s test-client deprecation and Xcode’s skipped AppIntents metadata extraction (the app has no AppIntents dependency).
+
+## Earlier H1/H2/H3 specification reconciliation
+
 
 Status: resolved. The user accepted every Q1–Q9 recommendation, then explicitly chose partial success for multi-action edits. The user requested a complete product specification organized by functionality and system components, excluding builder labels, assignments, ownership tables, team handoffs and staffing plans. This register preserves reconciliation history; `../SPEC.md` is the consolidated product specification.
 

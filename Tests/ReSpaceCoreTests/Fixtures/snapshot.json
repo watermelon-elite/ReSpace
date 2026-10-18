@@ -1,0 +1,117 @@
+{
+  "id": "snapshot_1",
+  "revision": 1,
+  "room_id": "room_1",
+  "capture_id": "capture_1",
+  "validity": {
+    "usable": true,
+    "reasons": [],
+    "warnings": []
+  },
+  "height": 2.6,
+  "floor": {
+    "polygon": [
+      [
+        0,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "area_m2": 12
+  },
+  "walls": [
+    {
+      "id": "w1",
+      "a": [
+        0,
+        0
+      ],
+      "b": [
+        4,
+        0
+      ],
+      "height": 2.6
+    }
+  ],
+  "corners": [],
+  "openings": [
+    {
+      "id": "win1",
+      "type": "window",
+      "wall_id": "w1",
+      "offset": 1,
+      "width": 1.5,
+      "bottom": 0.8,
+      "height": 1.3
+    }
+  ],
+  "objects": [
+    {
+      "id": "sofa_1",
+      "category": "sofa",
+      "label": "Sofa",
+      "center": [
+        2,
+        2
+      ],
+      "base_elevation": 0,
+      "yaw": 0.4,
+      "size": [
+        2.1,
+        0.9,
+        0.8
+      ],
+      "attrs": {
+        "color": "sage"
+      },
+      "render": {
+        "kind": "standin",
+        "category": "sofa",
+        "tint": "#A0AFA0"
+      }
+    }
+  ],
+  "wall_features": [],
+  "zones": [],
+  "style_hints": {
+    "floor": "light oak"
+  },
+  "story": [
+    "Measuring your window wall\u2026"
+  ],
+  "processing": {
+    "pending": 2,
+    "completed": 3,
+    "failed": 1
+  },
+  "scan_to_room_transform": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1
+  ],
+  "object_aliases": {}
+}

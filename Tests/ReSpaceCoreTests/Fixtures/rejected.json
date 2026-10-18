@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "id": "op_1",
+  "room_id": "room_1",
+  "kind": "edit",
+  "state": "rejected",
+  "failure": {
+    "code": "blocked_doorway",
+    "message": "The chair would block the door.",
+    "retryable": false
+  }
+}

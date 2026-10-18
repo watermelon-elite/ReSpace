@@ -16,6 +16,7 @@ from typing import Literal, Protocol
 from urllib.parse import urlsplit
 
 import httpx
+from google.genai import types
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from .categories import CATEGORIES
@@ -372,8 +373,8 @@ class GeminiProductModels:
         try:
             with tracing.span('gemini.extraction', model=self.model, candidate_id=candidate.get('candidate_id'), prompt=prompt) as trace:
                 result = self.client.models.generate_content(model=self.model, contents=prompt,
-                    config={"response_mime_type": "application/json", "response_json_schema": ExtractedFacts.model_json_schema(), "temperature": 0, "max_output_tokens": 8192,
-                            **({'thinking_config': {'thinking_level': 'low'}} if self.model.startswith('gemini-3') else {})})
+                    config=types.GenerateContentConfig(response_mime_type="application/json", response_json_schema=ExtractedFacts.model_json_schema(), temperature=0, max_output_tokens=8192,
+                            thinking_config=types.ThinkingConfig(thinking_level=types.ThinkingLevel.LOW) if self.model.startswith("gemini-3") else None))
                 trace.update(response=result.text, usage=tracing.usage(result))
                 return ExtractedFacts.model_validate_json(result.text or "").model_dump()
         except Exception:
@@ -387,8 +388,8 @@ class GeminiProductModels:
         try:
             with tracing.span('gemini.ranking', model=self.model, variant_id=choice.get('variant_id'), prompt=prompt) as trace:
                 result = self.client.models.generate_content(model=self.model, contents=prompt,
-                    config={"response_mime_type": "application/json", "response_json_schema": FitScores.model_json_schema(), "temperature": 0, "max_output_tokens": 2048,
-                            **({'thinking_config': {'thinking_level': 'low'}} if self.model.startswith('gemini-3') else {})})
+                    config=types.GenerateContentConfig(response_mime_type="application/json", response_json_schema=FitScores.model_json_schema(), temperature=0, max_output_tokens=2048,
+                            thinking_config=types.ThinkingConfig(thinking_level=types.ThinkingLevel.LOW) if self.model.startswith("gemini-3") else None))
                 trace.update(response=result.text, usage=tracing.usage(result))
                 return FitScores.model_validate_json(result.text or "").model_dump()
         except Exception:

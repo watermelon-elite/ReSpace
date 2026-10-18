@@ -25,6 +25,85 @@ def footprint(placement):
                     [(-w/2,-d/2), (w/2,-d/2), (w/2,d/2), (-w/2,d/2)]])
 
 
+# Measured geometry is rounded and reconstructed meshes touch their walls; within
+# this, an unmoved measured Object is measured fact, not a violation.
+MEASURED_TOLERANCE = .02
+
+
+def _unmoved(item):
+    """A measured original still at its measured pose. Measurement is not re-validated against itself."""
+    return item.get("origin") == "existing" and item.get("original_placement") == item["placement"]
+
+
+def _carry(point, old, new):
+    """Move a room-frame X/Z point rigidly with an Item from its old pose to its new one."""
+    offset = np.asarray(point) - [old["position"][0], old["position"][2]]
+    local = [offset @ [math.cos(old["yaw"]), -math.sin(old["yaw"])], offset @ [math.sin(old["yaw"]), math.cos(old["yaw"])]]
+    yaw = new["yaw"]
+    return [new["position"][0] + math.cos(yaw) * local[0] + math.sin(yaw) * local[1],
+            new["position"][2] - math.sin(yaw) * local[0] + math.cos(yaw) * local[1]]
+
+
+def surfaces(item):
+    """Usable tops at the Item's current pose: recorded surfaces, else its box top."""
+    placement = item["placement"]
+    if not item.get("surfaces"):
+        return [{"top": placement["position"][1] + placement["size"][2], "polygon": None, "clearance_above": None}]
+    old = item.get("original_placement") or placement
+    rise = placement["position"][1] - old["position"][1]
+    return [{**surface, "top": surface["top"] + rise,
+             "polygon": [_carry(p, old, placement) for p in surface["polygon"]] if surface.get("polygon") else None,
+             "holes": [[_carry(p, old, placement) for p in hole] for hole in surface.get("holes") or []]}
+            for surface in item["surfaces"]]
+
+
+def _outline(surface, support):
+    """Where Items can stand: the surface outline less its holes (a sink), else the support's box."""
+    return Polygon(surface["polygon"], surface.get("holes") or []) if surface["polygon"] else footprint(support["placement"])
+
+
+def _protrusion(wall, along, half, bottom, top):
+    """Depth of the deepest protrusion overlapping a span along the wall and a height band."""
+    return max([p["depth"] for p in wall.get("protrusions", [])
+                if p["bottom"] < top and p["top"] > bottom
+                and p["from_a"] < along + half + .05 and p["to_a"] > along - half - .05], default=0.)
+
+
+def _extents(direction, placement):
+    """Half extents of a placement's footprint along a direction and across it."""
+    w, d, _ = placement["size"]
+    right = np.array([math.cos(placement["yaw"]), -math.sin(placement["yaw"])])
+    forward = np.array([math.sin(placement["yaw"]), math.cos(placement["yaw"])])
+    across = np.array([-direction[1], direction[0]])
+    return (abs(direction @ right) * w / 2 + abs(direction @ forward) * d / 2,
+            abs(across @ right) * w / 2 + abs(across @ forward) * d / 2)
+
+
+def _stand_off(wall, placement):
+    """Put a floor placement's back 0.05 m from the wall face, keeping its position along the wall."""
+    direction = (np.asarray(wall["b"]) - wall["a"]) / wall["length"]
+    along = float((np.asarray([placement["position"][0], placement["position"][2]]) - wall["a"]) @ direction)
+    half, depth = _extents(direction, placement)
+    bottom = placement["position"][1]
+    gap = .05 + _protrusion(wall, along, half, bottom, bottom + placement["size"][2])
+    p = np.asarray(wall["a"]) + direction * along + np.asarray(wall["inward_normal"]) * (depth + gap)
+    placement["position"] = [float(p[0]), bottom, float(p[1])]
+    return placement
+
+
+def _protrusion_polygons(room, placement):
+    bottom, top = placement["position"][1], placement["position"][1] + placement["size"][2]
+    for wall in room["walls"]:
+        if wall["virtual"]:
+            continue
+        direction = (np.asarray(wall["b"]) - wall["a"]) / wall["length"]
+        normal = np.asarray(wall["inward_normal"])
+        for p in wall.get("protrusions", []):
+            if p["bottom"] < top and p["top"] > bottom:
+                start, end = np.asarray(wall["a"]) + direction * p["from_a"], np.asarray(wall["a"]) + direction * p["to_a"]
+                yield Polygon([start, end, end + normal * p["depth"], start + normal * p["depth"]])
+
+
 def _collision_class(item):
     mount = item["placement"]["mount"]
     if item["category"] == "rug":
@@ -44,14 +123,32 @@ def check_overlaps(room, scene, item_id):
     bounds = footprint(placement)
     own_class = _collision_class(item)
     floor = Polygon(room["floor"]["polygon"])
-    if own_class in ("floor", "rug", "tabletop", "ceiling") and not floor.buffer(1e-7).covers(bounds.buffer(.05)):
+    measured = _unmoved(item)
+    # Walls are the room boundary; containment takes no margin (SPEC 10.3).
+    slack = MEASURED_TOLERANCE if measured else 1e-7
+    if own_class in ("floor", "rug", "tabletop", "ceiling") and not floor.buffer(slack).covers(bounds):
         collisions.append("wall")
     if own_class == "floor":
         for zone in room["zones"]:
             if bounds.buffer(.05).intersection(Polygon(zone["polygon"])).area > 1e-8:
                 collisions.extend([f"keep_clear:{zone['id']}", f"door:{zone['opening_id']}"])
+    if own_class in ("floor", "wall") and not measured:
+        if any(bounds.buffer(.05).intersection(p).area > 1e-8 for p in _protrusion_polygons(room, placement)):
+            collisions.append("wall")
+    for obstacle in room.get("obstacles", []) if not measured else []:
+        other_class = obstacle["collision_class"]
+        if other_class != own_class or own_class not in ("floor", "wall", "tabletop"):
+            continue
+        if own_class == "tabletop" and placement.get("support_id") != f"i_{obstacle['support_id']}":
+            continue
+        if own_class == "wall" and placement.get("wall_id") != obstacle["wall_id"]:
+            continue
+        pose = {"position": [obstacle["center"][0], obstacle["base_y"], obstacle["center"][1]],
+                "size": obstacle["size"], "yaw": obstacle["yaw"]}
+        if bounds.buffer(.05).intersection(footprint(pose)).area > 1e-8:
+            collisions.append(f"obstacle:{obstacle['id']}")
     for other in items.values():
-        if other["id"] == item_id:
+        if other["id"] == item_id or (measured and _unmoved(other)):
             continue
         other_class = _collision_class(other)
         relevant = ((own_class == other_class and own_class in ("floor", "rug")) or
@@ -63,7 +160,7 @@ def check_overlaps(room, scene, item_id):
             if placement["position"][1] < op["position"][1] + op["size"][2] + .05 and op["position"][1] < placement["position"][1] + placement["size"][2] + .05:
                 if bounds.buffer(.05).intersection(footprint(op)).area > 1e-8:
                     collisions.append(other["id"])
-    if own_class == "wall":
+    if own_class == "wall" and not measured:
         for opening in room["openings"]:
             if opening["wall_id"] != placement.get("wall_id"):
                 continue
@@ -87,6 +184,14 @@ def validate_scene(snapshot, scene, constraints=None):
         conflicts.append({"code": "missing_original_object", "reason": "Every original Object must remain represented exactly once.", "target_ids": [], "action_ids": []})
     if len({i["id"] for i in scene["items"]}) != len(scene["items"]):
         conflicts.append({"code": "duplicate_identity", "reason": "Scene Item IDs must be unique.", "target_ids": [], "action_ids": []})
+    for obstacle in room.get("obstacles", []):
+        support_id = obstacle.get("support_id")
+        if not support_id:
+            continue
+        support = next((i for i in active.values() if i.get("object_id") == support_id), None)
+        if support is None or not _unmoved(support):
+            conflicts.append({"code": "stationary_dependent", "target_ids": [support_id], "action_ids": [],
+                              "reason": "A stationary observed Object must retain its original support and placement."})
     for item in active.values():
         placement = item["placement"]
         anchor_target = _target_id(item.get("anchor", {}).get("target"))
@@ -116,16 +221,23 @@ def validate_scene(snapshot, scene, constraints=None):
                 inward = float(np.dot(relative, wall["inward_normal"]))
                 corners = list(footprint(placement).exterior.coords)[:-1]
                 projected = [float(np.dot(np.asarray(point) - wall["a"], direction)) for point in corners]
-                if min(projected) < .05 - 1e-7 or max(projected) > wall["length"] - .05 + 1e-7 or not 0 <= inward <= placement["size"][1]/2 + .15:
+                edge = -MEASURED_TOLERANCE if _unmoved(item) else .05
+                if min(projected) < edge - 1e-7 or max(projected) > wall["length"] - edge + 1e-7 or not min(0, edge) <= inward <= placement["size"][1]/2 + .15:
                     raise ValueError("wall Item lies outside its associated real wall")
             if mount == "tabletop":
                 support = active.get(placement.get("support_id"))
                 if not support or support["category"] not in SUPPORT_CATEGORIES:
                     conflicts.append({"code": "missing_support", "target_ids": [item["id"]], "action_ids": [], "reason": "Required support is absent."})
                     continue
-                sp = support["placement"]
-                if abs(placement["position"][1] - sp["position"][1] - sp["size"][2]) > .01 or not footprint(sp).buffer(1e-7).covers(footprint(placement).buffer(.05)):
+                margin = -MEASURED_TOLERANCE if _unmoved(item) and _unmoved(support) else .05
+                standing = footprint(placement).buffer(margin)
+                standing = standing if not standing.is_empty else footprint(placement).centroid
+                top = next((s for s in surfaces(support) if abs(placement["position"][1] - s["top"]) <= .01
+                            and _outline(s, support).buffer(1e-7).covers(standing)), None)
+                if top is None:
                     conflicts.append({"code": "invalid_support", "target_ids": [item["id"]], "action_ids": [], "reason": "Item does not fit on the measured support top."})
+                elif top.get("clearance_above") is not None and placement["size"][2] > top["clearance_above"] + 1e-7 and not _unmoved(item):
+                    conflicts.append({"code": "no_headroom", "target_ids": [item["id"]], "action_ids": [], "reason": "Item is taller than the clearance above its support surface."})
                 seen, current = {item["id"]}, support
                 while current["placement"].get("support_id") in active:
                     if current["id"] in seen:
@@ -198,6 +310,8 @@ def _existing(room, constraints):
                       "last_valid_placement": deepcopy(placement), "instruction": instructions.get(obj["id"], "decide"),
                       "fixed_in_place": obj["fixed_in_place"], "reason": "Measured original Object",
                       "render": render})
+        if obj.get("surfaces"):
+            items[-1]["surfaces"] = deepcopy(obj["surfaces"])
     return items
 
 
@@ -248,6 +362,9 @@ def _anchor(room, anchor, size, category, items):
         normal = np.asarray(wall["inward_normal"])
         p = np.asarray(wall["a"]) + direction * along + normal * (d/2 + .05)
         placement.update(position=[float(p[0]), 0, float(p[1])], yaw=math.atan2(normal[0], normal[1]), wall_id=wall["id"])
+        if kind != "on_wall":
+            # Standing Items clear what juts from the wall; hung Items stay on it and collide instead.
+            _stand_off(wall, placement)
         if kind == "on_wall":
             below = [i["placement"] for i in items if i.get("status") != "removed" and i["placement"].get("wall_id") == wall["id"] and _collision_class(i) == "floor" and abs(LineString([wall["a"], wall["b"]]).project(Point(i["placement"]["position"][0], i["placement"]["position"][2])) - along) <= (w+i["placement"]["size"][0])/2]
             center_y = anchor.get("height")
@@ -272,6 +389,15 @@ def _anchor(room, anchor, size, category, items):
         yaw = math.atan2(facing[0], facing[1])
         right, forward = np.array([math.cos(yaw), -math.sin(yaw)]), np.array([math.sin(yaw), math.cos(yaw)])
         distances = [.05 + abs(np.dot(wall["inward_normal"], right))*w/2 + abs(np.dot(wall["inward_normal"], forward))*d/2 for wall in pair]
+        # Each wall face is the deepest protrusion within reach of the corner, measured from the
+        # corner end; the reach bound includes the other wall's deepest protrusion.
+        deepest = [max([p["depth"] for p in wall.get("protrusions", [])], default=0.) for wall in pair]
+        for i, wall in enumerate(pair):
+            direction = (np.asarray(wall["b"]) - wall["a"]) / wall["length"]
+            half, _ = _extents(direction, {"size": size, "yaw": yaw})
+            reach = 2 * half + .05 + deepest[1 - i]
+            along = wall["length"] - reach / 2 if i == 0 else reach / 2
+            distances[i] += _protrusion(wall, along, reach / 2 - .05, 0, h)
         p = np.linalg.solve(np.asarray([wall["inward_normal"] for wall in pair]), np.asarray(distances)) + corner["position"]
         placement.update(position=[float(p[0]), 0, float(p[1])], yaw=yaw)
     else:
@@ -292,7 +418,12 @@ def _anchor(room, anchor, size, category, items):
             if target["category"] not in SUPPORT_CATEGORIES:
                 raise ValueError("target has no supported top")
             placement.update(mount="tabletop", support_id=target_id)
-            placement["position"][1] = ty + th
+            top = surfaces(target)[0]
+            placement["position"][1] = top["top"]
+            if top["polygon"]:
+                outline = _outline(top, target)
+                centre = outline.centroid if outline.covers(outline.centroid) else outline.representative_point()
+                p = np.array([centre.x, centre.y])
         elif kind == "next_to":
             side = anchor["side"]
             if side == "front":
@@ -326,14 +457,24 @@ def _candidate_positions(room, anchor, size, category, items, constraints):
                     candidate = deepcopy(placement)
                     candidate["position"][0] += float(direction[0] * step * .1 * sign)
                     candidate["position"][2] += float(direction[1] * step * .1 * sign)
+                    # Sliding onto or off a protrusion changes how far the wall face is.
+                    yield _stand_off(wall, candidate) if candidate["mount"] == "floor" else candidate
+        elif placement["mount"] == "tabletop":
+            # A long top such as a counter is cluttered at its centre; slide along its long side.
+            support = next(i for i in items if i["id"] == placement["support_id"])["placement"]
+            yaw, (w, d, _) = support["yaw"], support["size"]
+            axis = [math.cos(yaw), -math.sin(yaw)] if w >= d else [math.sin(yaw), math.cos(yaw)]
+            for step in range(1, 11):
+                for sign in (1, -1):
+                    candidate = deepcopy(placement)
+                    candidate["position"][0] += axis[0] * step * .1 * sign
+                    candidate["position"][2] += axis[1] * step * .1 * sign
                     yield candidate
         if placement["mount"] == "floor" and constraints.get("allow_rotation", True):
             rotated = deepcopy(placement)
             rotated["yaw"] += math.pi/2
             if wall_id:
-                normal = next(w["inward_normal"] for w in room["walls"] if w["id"] == wall_id)
-                rotated["position"][0] += normal[0] * (size[0]-size[1])/2
-                rotated["position"][2] += normal[1] * (size[0]-size[1])/2
+                _stand_off(next(w for w in room["walls"] if w["id"] == wall_id), rotated)
             yield rotated
 
 
@@ -380,23 +521,37 @@ def _outcome(result, action, kind, outcome, code, reason, affected=None):
         result["warnings"].append({"code": code, "message": reason, "action_id": action["action_id"]})
 
 
+def _new_issues(room, before, after, constraints):
+    """Conflicts a change introduces. Ones already present, such as a measured Object
+    in a doorway, are reported by the final validation and do not block unrelated changes."""
+    checks = constraints if constraints.get("_base_scene_edit") else None
+    existing = validate_scene(room, before, checks)
+    return [issue for issue in validate_scene(room, after, checks) if issue not in existing]
+
+
 def _find_placement(room, scene, item, anchor, constraints):
     issues = []
     target_id = _target_id(anchor.get("target"))
     if target_id and not any(i["id"] == target_id and i.get("status") != "removed" for i in scene["items"]):
         return None, [{"code": "missing_support" if anchor["type"] == "on_top_of" else "missing_target", "reason": "Required Anchor target is absent or removed."}]
+    others = [i for i in scene["items"] if i["id"] != item["id"]]
+    checks = constraints if constraints.get("_base_scene_edit") else None
+    existing = validate_scene(room, {**scene, "items": others}, checks)
+    first = None
     try:
         for placement in _candidates(room, anchor, item["placement"]["size"], item["category"], scene["items"], constraints):
             candidate = deepcopy(item)
             candidate["placement"] = placement
             candidate["anchor"] = deepcopy(anchor)
-            trial = {**scene, "items": [i for i in scene["items"] if i["id"] != item["id"]] + [candidate]}
-            issues = validate_scene(room, trial, constraints if constraints.get("_base_scene_edit") else None)
+            trial = {**scene, "items": others + [candidate]}
+            issues = [issue for issue in validate_scene(room, trial, checks) if issue not in existing]
             if not issues:
                 return placement, []
+            # Why the requested pose failed explains more than the last bounded adjustment.
+            first = first or issues
     except (KeyError, StopIteration, TypeError, ValueError, np.linalg.LinAlgError):
         issues = [{"code": "bad_anchor", "reason": "Anchor is unresolved or incompatible."}]
-    return None, issues or [{"code": "collision", "reason": "No valid placement was found."}]
+    return None, first or issues or [{"code": "collision", "reason": "No valid placement was found."}]
 
 
 def _required(item, constraints):
@@ -432,7 +587,7 @@ def _dependent_consequences(room, scene, target_id, before, constraints):
     for item in dependents:
         original = previous[item["id"]]
         item.update(deepcopy(original))
-        if not validate_scene(room, scene, constraints if constraints.get("_base_scene_edit") else None):
+        if not _new_issues(room, {**scene, "items": before}, scene, constraints):
             continue
         _remove_item(item)
         if _protected(original, constraints):
@@ -529,7 +684,7 @@ def _apply_edit(room, scene, action, kind, selections, constraints, result):
             if issue["code"] == "consequence_approval_required":
                 result.setdefault("required_questions", []).append({"action_id": action["action_id"], "target_item_id": target_id, "affected_item_ids": issue["item_ids"]})
             return "failed", issue["code"], issue["reason"], []
-    issues = validate_scene(room, scene, constraints if constraints.get("_base_scene_edit") else None)
+    issues = _new_issues(room, {**scene, "items": before_items}, scene, constraints)
     if issues:
         scene["items"] = before_items
         return "failed", issues[0]["code"], issues[0]["reason"], []

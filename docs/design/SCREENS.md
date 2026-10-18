@@ -124,9 +124,9 @@ Do not add authentication/accounts or remove the existing connection flow under 
 
 **Disclosed:** readiness details explaining camera access, connection and storage. Show a failed prerequisite directly rather than hiding it inside a collapsed checklist.
 
-**Contract:** validate camera permission, connectivity, backend draft capture and writable local storage before acquisition. Request permission in the scan context.
+**Contract (integration decision, 2026-10-18):** validate camera permission, mesh capture support and writable local storage before acquisition. Retain reconstruction evidence locally; connect to the planning backend when Plan changes is chosen. Request permission in the scan context.
 
-**Failure branches:** camera denied → explanation and Settings route; no connectivity → reconnect/retry; insufficient writable storage → actionable storage explanation; unsupported hardware → compatibility state.
+**Failure branches:** camera denied → explanation and Settings route; planning/reconstruction connection failure → retain saved scan and reconnect/retry; insufficient writable storage → actionable storage explanation; unsupported hardware → compatibility state.
 
 **Verification:** each prerequisite has a distinct message and recovery; restarting setup does not create duplicate logical captures.
 
@@ -160,7 +160,7 @@ Do not call this “Delete room” if it only concerns the current incomplete ca
 
 Show actual saving/upload state, optional measured-room preview and a clear path back when allowed. Details can include stored artifacts if they help explain recovery, but the first message should describe the consequence for the user.
 
-**Contract:** final native export and durable receipts precede completed Room review. Deferred perception has not yet run; do not claim detected small objects or a finished design.
+**Contract:** a verified local save precedes the saved-scan screen. Plan changes transfers the calibrated subset and requires durable backend completion before native Room review. Reconstruction runs separately and publishes only a verified finished walkthrough. Deferred perception has not yet run; do not claim detected small objects or a finished design.
 
 If the operation is still safely completing, leaving does not mean discard. If storage failed, do not use “Your scan is safe.”
 
@@ -636,3 +636,9 @@ For each changed screen, test the applicable conditions:
 - External handoff cancelled.
 
 Use this checklist to choose meaningful fixtures and runtime checks. It is not permission to implement backend behavior that does not exist.
+
+## Integrated reconstruction screens (2026-10-18)
+
+Saved scan has one primary reconstruction action and a secondary Plan changes route into the existing Room review. Actual upload/progress/error state persists; prior successful walkthroughs remain available. Use Inter, RS actions/notices, bright surfaces and purple/gold emphasis from SYSTEM. Keep regenerate/share operations in secondary controls. A new paid generation retains the explicit $10 limit confirmation.
+
+The walkthrough presents the original room, navigation, Reset View, object selection and optional image generation. It exposes no local editing or Undo controls and ignores old local edit files. Design changes open the existing backend flow. The image action is a generated rendition, not a committed Design.

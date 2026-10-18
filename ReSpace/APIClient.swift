@@ -57,6 +57,9 @@ struct APIClient {
     var backend = UserDefaults.standard.string(forKey: "backendURL") ?? ""
     #endif
     var rooms: [JSONValue] = []
+    var scanStore: WorkspaceStore?
+    var localRooms: [LocalSavedRoom] = []
+    var scanRecoveries: [CaptureManifest] = []
     var error: String?
     var busy = false
     private var recoveryBlocked = false
@@ -76,6 +79,9 @@ struct APIClient {
             deviceID = try Self.installationID()
             disk = try FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("ReSpace", isDirectory: true)
             try FileManager.default.createDirectory(at: disk, withIntermediateDirectories: true)
+            var configuration = try AppConfiguration.load()
+            configuration.localCaptureEnabled = true
+            scanStore = WorkspaceStore(configuration: configuration, deviceId: deviceID)
             let queue = disk.appendingPathComponent("requests.json")
             if FileManager.default.fileExists(atPath: queue.path) { pending = try JSONDecoder().decode([PendingRequest].self, from: Data(contentsOf: queue)) }
             do { shoppingLists = try ShoppingListStore(fileURL: disk.appendingPathComponent("shopping-lists.json")) }
@@ -121,6 +127,15 @@ struct APIClient {
             if request.method == "DELETE", result["deletion"]["state"].text == "deleted", let roomID = request.roomID {
                 guard let shoppingLists else { throw ContractError.invalid("Saved shopping lists are unavailable. Reopen the app to finish local cleanup.") }
                 try shoppingLists.remove(roomID: roomID)
+                for archive in CaptureArchive.recoverable() where archive.roomID == roomID {
+                    try FileManager.default.removeItem(at: archive.folder)
+                }
+                if let scanStore {
+                    for scan in try await scanStore.captures.localRooms() where scan.backendRoomId == roomID {
+                        try await scanStore.captures.removeCapture(scan.id)
+                    }
+                    await refreshScans()
+                }
             }
             if result["deletion"]["state"].text != "pending" { pending.removeAll { $0.operationID == request.operationID }; try persistPending() }
             return result

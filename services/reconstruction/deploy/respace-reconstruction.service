@@ -1,0 +1,33 @@
+[Unit]
+Description=ReSpace reconstruction API and sequential worker
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=respace
+Group=respace
+WorkingDirectory=/opt/respace-reconstruction
+EnvironmentFile=/etc/respace-reconstruction.env
+Environment=HOME=/var/lib/respace-reconstruction
+Environment=MPLCONFIGDIR=/var/lib/respace-reconstruction/.cache/matplotlib
+Environment=HF_HOME=/var/lib/respace-reconstruction/.cache/huggingface
+Environment=OMP_NUM_THREADS=4
+Environment=OPENBLAS_NUM_THREADS=4
+ExecStart=/opt/respace-reconstruction/.venv/bin/python -m uvicorn respace_reconstruction.app:create_app --factory --host 127.0.0.1 --port 8008
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/respace-reconstruction
+MemoryHigh=12G
+MemoryMax=14G
+OOMPolicy=continue
+
+[Install]
+WantedBy=multi-user.target

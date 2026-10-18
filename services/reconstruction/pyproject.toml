@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "respace-reconstruction"
+version = "0.1.0"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "fastapi>=0.115,<1", "uvicorn>=0.34,<1", "numpy>=1.26,<3",
+  "open3d==0.19.0", "Pillow>=11,<13",
+  "shapely==2.1.2", "mapbox-earcut==1.0.3",
+  "usd-core==26.5",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10", "httpx>=0.28,<1"]
+
+[project.scripts]
+respace-reconstruct = "respace_reconstruction.pipeline:main"
+respace-benchmark = "respace_reconstruction.benchmark:main"
+respace-segment = "respace_reconstruction.segment_capture:main"
+respace-segment-geometry = "respace_reconstruction.segment_geometry:main"
+respace-discover = "respace_reconstruction.discover_capture:main"
+respace-associate = "respace_reconstruction.associate_capture:main"
+respace-completion-probe = "respace_reconstruction.completion_probe:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+include = ["respace_reconstruction*"]

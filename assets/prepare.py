@@ -5,13 +5,15 @@ Catalog: add --dimensions WIDTH DEPTH HEIGHT --variant-id ID --evidence-id ID.
 The caller supplies verified source dimensions; reconstruction never establishes size.
 
 --yaw turns the model to face +Z; --pitch stands up a reconstruction that leans,
-which Kenney sources never do. assets/spar3d/upright.py proposes a pitch.
+which Kenney sources never do. --auto-orient works out both for a SPAR3D
+reconstruction instead; see assets/spar3d/orient.py.
 """
 
 import argparse
 import hashlib
 import json
 from pathlib import Path
+import sys
 import tempfile
 
 import numpy as np
@@ -23,9 +25,19 @@ import trimesh
 from pxr import Gf, Sdf, Usd, UsdGeom, UsdShade, UsdUtils
 
 
+def _spar3d_orientation(scene, category):
+    sys.path.insert(0, str(Path(__file__).resolve().parent / "spar3d"))
+    import orient as spar3d_orient
+    vertices = np.vstack([mesh.vertices for mesh in scene.dump()])
+    return spar3d_orient.orient(vertices, category)
+
+
 def convert(source: Path, destination: Path, category: str, *, yaw: float = 0,
-            pitch: float = 0, dimensions: list[float] | None = None,
-            variant_id: str | None = None, evidence_id: str | None = None) -> dict:
+            pitch: float = 0, roll: float = 0, dimensions: list[float] | None = None,
+            variant_id: str | None = None, evidence_id: str | None = None,
+            auto_orient: bool = False) -> dict:
+    if auto_orient and (yaw or pitch or roll):
+        raise ValueError("auto_orient works out yaw, pitch and roll; do not also pass them")
     catalog = dimensions is not None or variant_id is not None or evidence_id is not None
     if catalog and (dimensions is None or not variant_id or not evidence_id):
         raise ValueError("Catalog conversion requires exact-variant dimension evidence")
@@ -33,12 +45,18 @@ def convert(source: Path, destination: Path, category: str, *, yaw: float = 0,
     if desired.shape != (3,) or not np.isfinite(desired).all() or (desired <= 0).any():
         raise ValueError("Bounds must be positive finite width/depth/height")
     scene = trimesh.load_scene(source, process=False)
-    # Pitch before yaw: pitch stands the model up, yaw then turns the upright
-    # model to face +Z. Reversing them mixes the two into a diagonal lean.
-    # Kenney sources are authored upright, so pitch defaults to none; it exists
-    # for reconstructions, which lean. assets/spar3d/upright.py proposes a value.
+    orientation = None
+    if auto_orient:
+        orientation = _spar3d_orientation(scene, category)
+        yaw, pitch, roll = orientation["yaw_degrees"], orientation["pitch_degrees"], orientation["roll_degrees"]
+    # Pitch and roll before yaw: they stand the model up, yaw then turns the
+    # upright model to face +Z. Reversing them mixes the two into a diagonal lean.
+    # Kenney sources are authored upright, so both default to none; they exist
+    # for reconstructions, which lean. assets/spar3d/orient.py proposes values.
     if pitch:
         scene.apply_transform(trimesh.transformations.rotation_matrix(np.radians(pitch), [1, 0, 0]))
+    if roll:
+        scene.apply_transform(trimesh.transformations.rotation_matrix(np.radians(roll), [0, 0, 1]))
     scene.apply_transform(trimesh.transformations.rotation_matrix(np.radians(yaw), [0, 1, 0]))
     meshes = list(scene.dump())
     low = np.min([mesh.bounds[0] for mesh in meshes], axis=0)
@@ -120,14 +138,15 @@ def convert(source: Path, destination: Path, category: str, *, yaw: float = 0,
         raise ValueError("Packaged model failed physical bounds/pivot validation")
     data = destination.read_bytes()
     digest = hashlib.sha256(data).hexdigest()
-    return {"schema_version": 1, "asset_id": ("catalog-" + variant_id) if variant_id else "kenney-" + category,
+    extra = {"orientation": orientation} if orientation else {}
+    return {**extra, "schema_version": 1, "asset_id": ("catalog-" + variant_id) if variant_id else "kenney-" + category,
             "revision": digest[:16], "kind": "catalog" if variant_id else "standin", "category": category,
             "variant_id": variant_id, "dimension_evidence_id": evidence_id, "sha256": digest,
             "byte_count": len(data), "under_3_mb": len(data) < 3_000_000,
             "authored_bounds": desired.tolist(), "units": "meters", "pivot": "bottom_center",
             "forward_axis": "+Z", "up_axis": "+Y", "scaling_mode": "dimensioned" if variant_id else "normalized",
             "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
-            "source_yaw_degrees": yaw, "source_pitch_degrees": pitch,
+            "source_yaw_degrees": yaw, "source_pitch_degrees": pitch, "source_roll_degrees": roll,
             "conversion": {"trimesh": trimesh.__version__, "usd": list(Usd.GetVersion()),
                            "triangles": sum(len(mesh.faces) for mesh in meshes),
                            "physical_bounds_reopened": actual.tolist()},
@@ -142,10 +161,15 @@ if __name__ == "__main__":
     parser.add_argument("--yaw", type=float, default=0)
     parser.add_argument("--pitch", type=float, default=0,
                         help="stand a leaning reconstruction up; see assets/spar3d/upright.py")
+    parser.add_argument("--roll", type=float, default=0,
+                        help="correct a sideways lean, applied after --pitch")
+    parser.add_argument("--auto-orient", action="store_true",
+                        help="work out yaw and pitch for a SPAR3D reconstruction; see assets/spar3d/orient.py")
     parser.add_argument("--dimensions", nargs=3, type=float)
     parser.add_argument("--variant-id")
     parser.add_argument("--evidence-id")
     args = parser.parse_args()
     record = convert(args.source, args.destination, args.category, yaw=args.yaw, pitch=args.pitch,
-                     dimensions=args.dimensions, variant_id=args.variant_id, evidence_id=args.evidence_id)
+                     roll=args.roll, dimensions=args.dimensions, variant_id=args.variant_id, evidence_id=args.evidence_id,
+                     auto_orient=args.auto_orient)
     print(json.dumps(record, indent=2))
