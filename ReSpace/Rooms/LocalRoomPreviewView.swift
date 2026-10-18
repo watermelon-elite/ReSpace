@@ -9,6 +9,7 @@ struct LocalRoomPreviewView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var job: ReconstructionJob?
     @State private var sceneURL: URL?
+    @State private var priorSceneURL: URL?
     @State private var error: String?
     @State private var submitting=false
     @State private var attempt=0
@@ -39,20 +40,32 @@ struct LocalRoomPreviewView: View {
                             Text(message).font(.caption).foregroundStyle(.red)
                             Button("Check again") { attempt += 1 }
                         }
+                        if let priorSceneURL, job?.isRunning != true, !submitting {
+                            Button("Open previous version") { sceneURL=priorSceneURL }
+                        }
                     }.padding(28)
                 }
             }
             .navigationTitle(room.name).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement:.cancellationAction) { Button("Done") { dismiss() } } }
+            .toolbar {
+                if sceneURL != nil, reconstruction != nil {
+                    ToolbarItem(placement:.primaryAction) {
+                        Button("Improve detail · $10 limit") { Task { await submit(forceRetry:true) } }
+                            .disabled(submitting)
+                    }
+                }
+            }
             .task(id:attempt) { await watch() }
         }
     }
-    private func submit() async {
+    private func submit(forceRetry: Bool = false) async {
         guard let reconstruction,!submitting else { return }
         submitting=true;error=nil
+        if forceRetry { priorSceneURL=sceneURL;sceneURL=nil }
         defer { submitting=false }
         do {
-            job=try await reconstruction.submit(room.id,repository:repository,retry:job?.canRetry==true)
+            job=try await reconstruction.submit(room.id,repository:repository,retry:forceRetry || job?.canRetry==true)
             attempt += 1
         } catch is CancellationError {} catch { self.error=error.localizedDescription }
     }

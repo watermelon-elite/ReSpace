@@ -121,4 +121,16 @@ final class WalkthroughTests: XCTestCase {
         bundle.materials[0].ownerId="unknown-owner"
         XCTAssertThrowsError(try bundle.validate(captureId:"analytic-room",revision:1,assets:assets))
     }
+    func testDetailedGeometryBudgetAndMaterialParametersAreValidated() throws {
+        var (bundle,root,assets)=try fixture()
+        var result=try Wire.decoder().decode(ReconstructionResult.self,from:Data(contentsOf:root.appendingPathComponent("completion.json")))
+        result.generatedTriangleCount=100_000
+        try result.validate()
+        result.generatedTriangleCount=200_001
+        XCTAssertThrowsError(try result.validate())
+        bundle.materials[0].roughness = .nan
+        XCTAssertThrowsError(try bundle.validate(captureId:"analytic-room",revision:1,assets:assets))
+        bundle.materials[0].roughness=0.5;bundle.materials[0].metallic=2
+        XCTAssertThrowsError(try bundle.validate(captureId:"analytic-room",revision:1,assets:assets))
+    }
 }

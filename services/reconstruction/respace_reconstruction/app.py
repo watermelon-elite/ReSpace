@@ -54,7 +54,7 @@ class Worker:
                                     try:os.killpg(process.pid,signal.SIGKILL)
                                     except ProcessLookupError:pass
                             escalation=threading.Timer(5,hard_stop);escalation.daemon=True;escalation.start()
-                    timeout=float(os.environ.get("RESPACE_ROOM_TIMEOUT_SECONDS","1800"))
+                    timeout=float(os.environ.get("RESPACE_ROOM_TIMEOUT_SECONDS","3600"))
                     if not 1<=timeout<=86400:raise ValueError("Invalid room timeout")
                     timer=threading.Timer(timeout,expire);timer.daemon=True;timer.start()
                 with (folder / "worker.log").open("a") as log:

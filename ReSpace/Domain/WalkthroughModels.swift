@@ -56,6 +56,8 @@ struct WalkthroughMaterial: Codable, Sendable {
     var baseColor: [Double]
     var finish: String
     var repeatMeters: Double
+    var roughness: Double?
+    var metallic: Double?
 }
 
 struct WalkthroughNavigation: Codable, Sendable {
@@ -178,6 +180,8 @@ struct WalkthroughBundle: Codable, Sendable {
         }
         for m in materials {
             guard byId[m.ownerId] != nil, m.baseColor.count==3, m.baseColor.allSatisfy({ $0.isFinite && (0...1).contains($0) }),
+                  m.roughness.map({ $0.isFinite && (0...1).contains($0) }) ?? true,
+                  m.metallic.map({ $0.isFinite && (0...1).contains($0) }) ?? true,
                   m.repeatMeters.isFinite, (0.01...10).contains(m.repeatMeters) else { throw ClientError.invalidResponse }
         }
         let n=navigation

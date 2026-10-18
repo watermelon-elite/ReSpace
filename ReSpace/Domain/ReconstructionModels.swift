@@ -52,7 +52,7 @@ struct ReconstructionResult: Codable, Sendable {
 
     func validate() throws {
         guard revision > 0, coordinateSystem == "arkit_scan_meters_y_up",
-              generatedTriangleCount.map({ (0...24000).contains($0) }) ?? true,
+              generatedTriangleCount.map({ (0...200000).contains($0) }) ?? true,
               ["succeeded", "partially_processed"].contains(status),
               (1...512).contains(assets.count), Set(assets.map(\.filename)).count == assets.count,
               assets.contains(where: { $0.filename == modelFilename }), modelFilename.hasSuffix(".obj"),
@@ -86,8 +86,14 @@ struct ReconstructionJob: Codable, Sendable {
         switch stage {
         case "astra_selecting_evidence": return "Selecting scan photos…"
         case "astra_generating_scene": return "Astra is generating your room…"
+        case "astra_inventory": return "Identifying furniture and decor…"
+        case "astra_baking_photos": return "Applying captured photo textures…"
         case "astra_validating_geometry": return "Building and checking the AI model…"
-        default: return stage.replacingOccurrences(of: "_", with: " ")
+        default:
+            if stage.hasPrefix("astra_detail:") {
+                return "Adding furniture detail · " + stage.replacingOccurrences(of:"astra_detail:",with:"")
+            }
+            return stage.replacingOccurrences(of: "_", with: " ")
         }
     }
 

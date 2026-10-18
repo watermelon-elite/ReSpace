@@ -1,0 +1,122 @@
+"""Durable, serial Astra reservations using exact API input-token counts.
+
+The ceiling applies to this multi-call pipeline's model-token charges, including
+known failed calls and retries, at the recorded Standard rates; excludes tax.
+Unknown outcomes retain their entire reservation and stop further paid calls.
+"""
+import hashlib
+import json
+import math
+import os
+import urllib.error
+import urllib.request
+
+from . import astra
+from .store import atomic_json
+
+CEILING_UNITS = 10_000_000  # USD millionths; user-authorized $10/capture.
+
+
+class BudgetExhausted(RuntimeError):
+    pass
+
+
+def count_input_tokens(body, key):
+    payload = {k: body[k] for k in ("model", "input", "instructions", "text") if k in body}
+    request = urllib.request.Request("https://api.openai.com/v1/responses/input_tokens",
+        data=json.dumps(payload, allow_nan=False, separators=(",", ":")).encode(),
+        headers={"Authorization": "Bearer "+key, "Content-Type": "application/json"}, method="POST")
+    try:
+        with urllib.request.urlopen(request, timeout=60) as response:
+            data = json.loads(response.read(4096))
+    except (urllib.error.URLError, TimeoutError, OSError, ValueError):
+        raise RuntimeError("Could not count Astra input tokens; no generation was started") from None
+    value = data.get("input_tokens")
+    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+        raise RuntimeError("Invalid Astra input-token count; no generation was started")
+    return value
+
+
+def actual_units(response):
+    usage = response.get("usage") or {}
+    inputs, outputs = usage.get("input_tokens"), usage.get("output_tokens")
+    details = usage.get("input_tokens_details") or {}
+    cached, writes = details.get("cached_tokens", 0), details.get("cache_write_tokens", 0)
+    values = (inputs, outputs, cached, writes)
+    if any(isinstance(v, bool) or not isinstance(v, int) or v < 0 for v in values) or cached+writes > inputs:
+        raise RuntimeError("Missing or invalid Astra billing usage; reservation retained")
+    if response.get("service_tier", "default") not in (None, "default"):
+        raise RuntimeError("Unexpected Astra processing tier; reservation retained")
+    multiplier = 2 if inputs > 272000 else 1
+    return math.ceil(((inputs-cached-writes)*10+cached+writes*12.5)*multiplier
+                     + outputs*(75 if multiplier == 2 else 50))
+
+
+class Spending:
+    def __init__(self, path):
+        self.path = path
+        self.data = json.loads(path.read_text()) if path.exists() else {
+            "ceiling_units": CEILING_UNITS, "currency": "USD", "units_per_dollar": 1000000,
+            "rate_basis": "2026-10-17 Astra Standard: input 10/cache 1/write 12.5/output 50 per million; long-context uplift",
+            "entries": {}}
+        if self.data["ceiling_units"] != CEILING_UNITS:
+            raise RuntimeError("The retained Astra budget policy differs; review it before continuing")
+
+    @property
+    def allocated(self):
+        return sum(e.get("cost_units", e["reserved_units"]) for e in self.data["entries"].values())
+
+    def save(self):
+        atomic_json(self.path, self.data)
+
+    def request(self, body, directory, label):
+        directory.mkdir(parents=True, exist_ok=True)
+        fingerprint = hashlib.sha256(json.dumps(body, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        checkpoint = directory/"response.json"
+        entry = self.data["entries"].get(fingerprint)
+        if checkpoint.exists():
+            saved = json.loads(checkpoint.read_text())
+            if saved.get("fingerprint") == fingerprint:
+                if entry is None:
+                    raise RuntimeError("Paid checkpoint is missing its budget receipt; restore the ledger")
+                self.settle(fingerprint, saved["response"])
+                return saved["response"], True
+        if any(e["state"] == "reserved" for e in self.data["entries"].values()):
+            raise RuntimeError("An Astra call has an unknown billing outcome; retained reservations block further paid calls")
+        if entry:
+            raise RuntimeError("The billed response checkpoint is missing; refusing to pay for it again")
+        key = os.environ.get("OPENAI_API_KEY", "").strip()
+        if not key:
+            raise RuntimeError("Set OPENAI_API_KEY on the local reconstruction service")
+        inputs = count_input_tokens(body, key)
+        # All input is reserved at the most expensive cache-write rate, with
+        # headroom for counting discrepancies. Long-context threshold uses this
+        # ceiling too. Reasoning is already part of max_output_tokens.
+        input_ceiling = math.ceil(inputs*1.01)+256
+        long = input_ceiling > 272000
+        reserved = math.ceil(input_ceiling*(25 if long else 12.5)+body["max_output_tokens"]*(75 if long else 50))
+        if self.allocated+reserved > CEILING_UNITS:
+            raise BudgetExhausted("The $10 room API budget cannot cover another detailed object; completed objects are retained")
+        self.data["entries"][fingerprint] = {"label": label, "state": "reserved", "reserved_units": reserved,
+                                            "input_token_ceiling": input_ceiling, "max_output_tokens": body["max_output_tokens"]}
+        self.save()  # Must commit before the potentially billable network action.
+        response = astra.call_astra(body, key)
+        atomic_json(checkpoint, {"fingerprint": fingerprint, "response": response})
+        self.settle(fingerprint, response)
+        return response, False
+
+    def settle(self, fingerprint, response):
+        units = actual_units(response)
+        entry = self.data["entries"][fingerprint]
+        usage = response["usage"]
+        if usage["input_tokens"] > entry["input_token_ceiling"] or usage["output_tokens"] > entry["max_output_tokens"]:
+            raise RuntimeError("Astra usage exceeded its counted token bounds; stop and review provider usage")
+        if units > entry["reserved_units"]:
+            raise RuntimeError("Astra usage exceeded its reservation; stop and review provider usage")
+        entry.update(state="settled", cost_units=units, status=response.get("status"))
+        self.save()
+
+    def report(self):
+        return {"ceiling_usd": 10., "allocated_usd": self.allocated/1000000,
+                "known_cost_usd": sum(e.get("cost_units", 0) for e in self.data["entries"].values())/1000000,
+                "paid_call_count": len(self.data["entries"]), "entries": self.data["entries"]}

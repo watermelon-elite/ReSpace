@@ -44,6 +44,8 @@ class SceneMaterial(SceneContract):
     source_material: str = Field(max_length=256)
     base_color: Vector3 = Field(default_factory=lambda: [1., 1., 1.])
     finish: Literal["captured", "paint", "tile", "wallpaper"] = "captured"
+    roughness: float = Field(default=.7, ge=0, le=1)
+    metallic: float = Field(default=0., ge=0, le=1)
     repeat_meters: float = Field(default=.25, ge=.01, le=10)
 
     @model_validator(mode="after")

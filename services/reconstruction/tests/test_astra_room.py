@@ -15,6 +15,14 @@ from respace_reconstruction.store import Store, digest
 from test_walkthrough import room_capture
 
 
+@pytest.fixture(autouse=True)
+def single_call_contract(monkeypatch):
+    # These tests cover the retained coarse-generation contract. The staged
+    # default and spending controller are exercised by test_astra_detail.py.
+    from functools import partial
+    monkeypatch.setattr(astra_room, "process_astra_room", partial(astra_room.process_astra_room, detailed=False))
+
+
 def vector(x=0., y=0., z=0.):
     return {"x": x, "y": y, "z": z}
 

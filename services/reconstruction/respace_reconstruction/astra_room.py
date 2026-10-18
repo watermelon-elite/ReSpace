@@ -24,8 +24,8 @@ from .scene import SceneBundle, SceneEntity, SceneMaterial, Navigation
 from .store import atomic_json, digest
 from .walkthrough import merge_scene
 
-PROMPT_VERSION = 2
-MAX_TRIANGLES = 24000
+PROMPT_VERSION = 3
+MAX_TRIANGLES = 200000
 
 
 class FloorPoint(SceneData):
@@ -267,7 +267,11 @@ def compile_room(plan, frame_ids, output, o3d):
         if entity.material_id not in materials or not set(entity.evidence_frame_ids) <= frame_ids:
             raise ValueError("Generated material or evidence reference is unknown")
         mesh = o3d.geometry.TriangleMesh()
+        face_materials = []
         for part in entity.parts:
+            material_id = getattr(part, "material_id", entity.material_id)
+            if material_id not in materials:
+                raise ValueError("Generated part material is unknown")
             generated = part_mesh(part, o3d)
             if part.shape == "mesh" and entity.kind in ("furniture", "fixed"):
                 solid = o3d.geometry.TriangleMesh(generated)
@@ -275,6 +279,7 @@ def compile_room(plan, frame_ids, output, o3d):
                 if not solid.is_watertight():
                     raise ValueError("Generated furniture parts must include complete closed surfaces")
             mesh += generated
+            face_materials.extend([material_id]*len(generated.triangles))
             if total+len(mesh.triangles) > MAX_TRIANGLES:
                 raise ValueError("Generated room exceeds the mobile triangle budget")
         vertices, faces = np.asarray(mesh.vertices), np.asarray(mesh.triangles)
@@ -299,23 +304,29 @@ def compile_room(plan, frame_ids, output, o3d):
                 polygon = Polygon(triangle[:, [0, 2]])
                 if polygon.area > 1e-9:
                     coverage[entity.kind].append(polygon)
-        material = materials[entity.material_id]
-        name = "material_"+entity.id
+        owned = list(dict.fromkeys(face_materials))
+        names = {identifier: "material_"+entity.id+"_"+str(i) for i, identifier in enumerate(owned)}
         asset = "entity_"+entity.id+".obj"
         with (output/asset).open("w") as stream:
             stream.write(f"mtllib entity_{entity.id}.mtl\no {entity.id}\n")
             np.savetxt(stream, vertices, fmt="v %.6f %.6f %.6f")
-            stream.write("usemtl "+name+"\n")
-            np.savetxt(stream, faces+1, fmt="f %d %d %d")
-        color = [material.color.r, material.color.g, material.color.b]
-        (output/f"entity_{entity.id}.mtl").write_text(
-            f"newmtl {name}\nKd {' '.join(map(str, color))}\nPr {material.roughness}\nillum 2\n")
-        bindings.append(SceneMaterial(id=name, owner_id=entity.id, slot="surface", source_material=name,
-                                      base_color=color))
+            for identifier in owned:
+                stream.write("usemtl "+names[identifier]+"\n")
+                np.savetxt(stream, faces[np.array(face_materials) == identifier]+1, fmt="f %d %d %d")
+        material_text = []
+        for identifier in owned:
+            material = materials[identifier]
+            name = names[identifier]
+            color = [material.color.r, material.color.g, material.color.b]
+            metallic = getattr(material, "metallic", 0.)
+            material_text.append(f"newmtl {name}\nKd {' '.join(map(str, color))}\nPr {material.roughness}\nPm {metallic}\nillum 2\n")
+            bindings.append(SceneMaterial(id=name, owner_id=entity.id, slot="surface", source_material=name,
+                                          base_color=color, roughness=material.roughness, metallic=metallic))
+        (output/f"entity_{entity.id}.mtl").write_text("".join(material_text))
         entities.append(SceneEntity(id=entity.id, label=entity.label, category=getattr(entity, "category", entity.kind), kind=entity.kind,
             asset=asset, local_to_scan_transform=m.flatten(order="F").tolist(),
             bounds_min=vertices.min(axis=0).tolist(), bounds_max=vertices.max(axis=0).tolist(),
-            material_ids=[name], support_id=entity.support_id,
+            material_ids=list(names.values()), support_id=entity.support_id,
             move_ready=entity.kind in ("furniture", "wall_decor"),
             finish_ready=entity.kind in ("wall", "floor", "ceiling"),
             collidable=entity.kind not in ("floor", "ceiling", "wall_decor"),
@@ -461,11 +472,11 @@ def measured_structure(evidence):
     return shell
 
 
-def assemble_room(shell, furnishings):
-    if sum(len(e.parts) for e in furnishings.entities) > 160:
+def assemble_room(shell, furnishings, detailed=False):
+    if not detailed and sum(len(e.parts) for e in furnishings.entities) > 160:
         raise ValueError("Furniture response exceeds the 160-part detail budget")
     parts = [p for e in furnishings.entities for p in e.parts]
-    if sum(len(p.vertices) for p in parts) > 256 or sum(len(p.triangles) for p in parts) > 384:
+    if not detailed and (sum(len(p.vertices) for p in parts) > 256 or sum(len(p.triangles) for p in parts) > 384):
         raise ValueError("Furniture response exceeds the explicit mesh detail budget")
     wall_ids = {e.id for e in shell.entities if e.kind == "wall"}
     for entity in furnishings.entities:
@@ -478,7 +489,7 @@ def assemble_room(shell, furnishings):
         "entities": shell.entities+furnishings.entities})
 
 
-def process_astra_room(folder: Path, revision: int):
+def process_astra_room(folder: Path, revision: int, detailed=True):
     import open3d as o3d
     from .pipeline import progress
     started = time.monotonic()
@@ -503,7 +514,12 @@ def process_astra_room(folder: Path, revision: int):
         shell_entities, _, shell_meshes, shell_floor, _ = compile_room(shell, set(), Path(temporary), o3d)
         validate_shell(shell, shell_entities, shell_meshes, shell_floor)
     progress("astra_generating_scene")
-    furnishings, response, cached = generate(evidence, images, working)
+    if detailed:
+        from .astra_detail import generate_detailed
+        furnishings, detail_report = generate_detailed(evidence, images, working, shell, manifest, folder/"inputs", progress)
+        cached = detail_report["response_reused"]
+    else:
+        furnishings, response, cached = generate(evidence, images, working)
     output = folder/"results"/f"{revision}.building"
     if output.exists():
         shutil.rmtree(output)
@@ -511,7 +527,7 @@ def process_astra_room(folder: Path, revision: int):
     try:
         progress("astra_validating_geometry")
         try:
-            plan = assemble_room(shell, furnishings)
+            plan = assemble_room(shell, furnishings, detailed=detailed)
             entities, bindings, meshes, floor, count = compile_room(plan, {f.id for f in manifest.frames}, output, o3d)
             validate_shell(plan, entities, meshes, floor)
             nav = navigation(plan, entities, meshes, floor, manifest.frames)
@@ -521,8 +537,13 @@ def process_astra_room(folder: Path, revision: int):
         bundle = SceneBundle(capture_id=manifest.capture_id, scene_id="astra-"+manifest.capture_id,
                              reconstruction_revision=revision, entities=entities, materials=bindings,
                              navigation=nav, ready=True)
-        atomic_json(output/"astra-room.json", plan.model_dump())
-        atomic_json(output/"astra-furnishings.json", furnishings.model_dump())
+        texture_report = []
+        if detailed:
+            progress("astra_baking_photos")
+            from .astra_textures import texture_furnishings
+            texture_report = texture_furnishings(bundle, manifest, folder/"inputs", output, detail_report["objects"])
+        atomic_json(output/"astra-room.json", plan.model_dump(serialize_as_any=True))
+        atomic_json(output/"astra-furnishings.json", furnishings.model_dump(serialize_as_any=True))
         atomic_json(output/"provenance.json", {"model": astra.MODEL, "prompt_version": PROMPT_VERSION,
                     "source_mesh_sha256": manifest.scene_mesh.sha256,
                     "lidar_frame_count": len(manifest.frames), "valid_depth_pixel_count": evidence["valid_depth_pixel_count"],
@@ -531,9 +552,14 @@ def process_astra_room(folder: Path, revision: int):
                     "geometry": "RoomPlan shell built locally; only furniture and intentional decor authored by Astra; incidental clutter excluded"})
         report = {"ready": True, "capture_id": manifest.capture_id, "pipeline": "astra", "generation_model": astra.MODEL,
                   "triangle_count": count, "entity_count": len(entities), "response_reused": cached,
-                  "elapsed_seconds": round(time.monotonic()-started, 3), **usage_cost(response),
+                  "elapsed_seconds": round(time.monotonic()-started, 3),
                   "checks": ["schema", "metric_bounds", "floor_ceiling_coverage", "references", "navigation", "asset_integrity"],
                   "fidelity_note": "Geometric validity does not establish photographic fidelity or reflection rejection accuracy"}
+        if detailed:
+            report.update(detail_report, photo_textures=texture_report,
+                          estimated_cost_usd=detail_report["budget"]["known_cost_usd"])
+        else:
+            report.update(usage_cost(response))
         atomic_json(output/"quality.json", report)
         merge_scene(bundle, output)
         atomic_json(output/"scene.json", bundle.model_dump())

@@ -26,9 +26,13 @@ private actor WalkthroughLoader {
                 child.enumerateHierarchy { node,_ in
                     if let geometry=node.geometry {
                         count += geometry.elements.reduce(0) { $0+$1.primitiveCount }
-                        geometry.materials.forEach {
-                            $0.lightingModel = generated ? .physicallyBased : .constant
-                            $0.isDoubleSided=true
+                        geometry.materials.forEach { material in
+                            material.lightingModel = generated ? .physicallyBased : .constant
+                            material.isDoubleSided=true
+                            if generated, let binding=bundle.materials.first(where:{ $0.ownerId==entity.id && $0.sourceMaterial==material.name }) {
+                                material.roughness.contents=binding.roughness ?? 0.7
+                                material.metalness.contents=binding.metallic ?? 0
+                            }
                         }
                     }
                 }
@@ -48,6 +52,7 @@ private actor WalkthroughLoader {
     @Published var selection: String?
     @Published var message: String?
     @Published var canUndo=false
+    @Published var detailSummary: String?
     let camera=SCNNode()
     var position=[0.0,0.0]
     var yaw=0.0, pitch=0.0
@@ -64,6 +69,11 @@ private actor WalkthroughLoader {
         let assets=Set(try FileManager.default.contentsOfDirectory(atPath:directory.path))
         try original.validate(captureId:original.captureId,revision:original.reconstructionRevision,assets:assets)
         try original.validateFiles(in:directory,assets:assets)
+        if let quality=try JSONSerialization.jsonObject(with:Data(contentsOf:directory.appendingPathComponent(original.qualityFilename))) as? [String:Any],
+           let objects=quality["objects"] as? [[String:Any]], !objects.isEmpty {
+            let detailed=objects.filter { $0["detail"] as? String == "detailed" }.count
+            detailSummary="\(detailed) of \(objects.count) items received detailed geometry"
+        }
         source=original
         stateURL=directory.deletingLastPathComponent().appendingPathComponent("design-\(original.reconstructionRevision).json")
         var selected=original
@@ -87,6 +97,11 @@ private actor WalkthroughLoader {
         let loaded=try await WalkthroughLoader().load(original,directory:directory)
         try Task.checkCancellation()
         camera.camera=SCNCamera();camera.camera?.zNear=0.03;camera.camera?.zFar=100
+        if original.sceneId.hasPrefix("astra-") {
+            camera.camera?.screenSpaceAmbientOcclusionIntensity=0.65
+            camera.camera?.screenSpaceAmbientOcclusionRadius=0.15
+            camera.camera?.wantsHDR=true
+        }
         loaded.rootNode.addChildNode(camera)
         bundle=selected;scene=loaded;reset();apply()
     }
@@ -251,6 +266,7 @@ struct WalkthroughView: View {
                 WalkthroughCanvas(scene:scene,session:session).ignoresSafeArea(edges:.bottom)
                 VStack {
                     HStack { Button("Reset view") { session.reset() };Spacer();Button("Undo") { session.undo() }.disabled(!session.canUndo);Button("Restore room") { session.restore() } }.buttonStyle(.bordered).padding().background(.regularMaterial)
+                    if let summary=session.detailSummary { Text(summary).font(.caption).padding(6).background(.regularMaterial) }
                     Spacer()
                     if let entity=session.selected {
                         VStack(spacing:8) {
