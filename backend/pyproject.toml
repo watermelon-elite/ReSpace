@@ -25,6 +25,8 @@ dependencies = [
 
 [project.optional-dependencies]
 test = ["pytest>=8,<10", "pytest-asyncio>=0.25,<2", "mypy>=1.13,<2"]
+# Composing room previews (respace.composition). Not needed by the rest of the API.
+usd = ["usd-core>=26.5,<27"]
 
 [tool.setuptools.packages.find]
 include = ["respace*"]

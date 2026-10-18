@@ -183,8 +183,18 @@ def normalize_room(raw, capture_id, room_id):
             old = room["identity_map"].get(segment["source"])
             room["identity_map"][segment["source"]] = {"kind": "wall", "id": wall["id"],
                 "ids": [*(old.get("ids", [old["id"]]) if old else []), wall["id"]]}
-    for i, wall in enumerate(room["walls"]):
-        previous = room["walls"][i - 1]
+    room["corners"] = corners(room["walls"])
+    _openings(raw, room, translation, reasons, warnings)
+    _objects(raw, room, translation, reasons, warnings)
+    room["validity"]["usable"] = not reasons
+    return room
+
+
+def corners(walls):
+    """Corner Anchors where two real walls, in closed winding order, meet at 45-135 degrees."""
+    result = []
+    for i, wall in enumerate(walls):
+        previous = walls[i - 1]
         if wall["virtual"] or previous["virtual"]:
             continue
         u = np.asarray(previous["a"]) - previous["b"]
@@ -192,11 +202,23 @@ def normalize_room(raw, capture_id, room_id):
         angle = math.degrees(math.acos(float(np.clip(np.dot(u, v) / np.linalg.norm(u) / np.linalg.norm(v), -1, 1))))
         convex = -u[0] * v[1] + u[1] * v[0] > 0
         if convex and 45 <= angle <= 135:
-            room["corners"].append({"id": f"c_{i + 1}", "position": wall["a"], "wall_ids": [previous["id"], wall["id"]]})
-    _openings(raw, room, translation, reasons, warnings)
-    _objects(raw, room, translation, reasons, warnings)
-    room["validity"]["usable"] = not reasons
-    return room
+            result.append({"id": f"c_{i + 1}", "position": wall["a"], "wall_ids": [previous["id"], wall["id"]]})
+    return result
+
+
+def keep_clear(wall, opening, floor):
+    """The room-side access zone in front of a door or doorless opening, or None."""
+    direction = (np.asarray(wall["b"]) - wall["a"]) / wall["length"]
+    start = np.asarray(wall["a"]) + direction * (opening["offset"] - .15)
+    end = start + direction * (opening["width"] + .3)
+    width = opening["width"]
+    depth = max(.9, (width if width <= 1.2 else width / 2) if opening["type"] == "door" else 0)
+    normal = np.asarray(wall["inward_normal"]) * depth
+    zone = Polygon([start, end, end + normal, start + normal]).intersection(floor)
+    if not isinstance(zone, Polygon) or zone.is_empty:
+        return None
+    return {"id": f"z_{opening['id']}", "type": "keep_clear", "reason": opening["type"],
+            "opening_id": opening["id"], "polygon": [list(p) for p in zone.exterior.coords[:-1]]}
 
 
 def _openings(raw, room, translation, reasons, warnings):
@@ -229,15 +251,9 @@ def _openings(raw, room, translation, reasons, warnings):
                 room["openings"].append(opening)
                 room["identity_map"][entry["identifier"]] = {"kind": "opening", "id": opening["id"]}
                 if kind != "window":
-                    direction = (np.asarray(wall["b"]) - wall["a"]) / wall["length"]
-                    start = np.asarray(wall["a"]) + direction * (opening["offset"] - .15)
-                    end = start + direction * (width + .3)
-                    depth = max(.9, (width if width <= 1.2 else width / 2) if kind == "door" else 0)
-                    normal = np.asarray(wall["inward_normal"]) * depth
-                    zone = Polygon([start, end, end + normal, start + normal]).intersection(floor)
-                    if isinstance(zone, Polygon) and not zone.is_empty:
-                        room["zones"].append({"id": f"z_{opening['id']}", "type": "keep_clear", "reason": kind,
-                                              "opening_id": opening["id"], "polygon": [list(p) for p in zone.exterior.coords[:-1]]})
+                    zone = keep_clear(wall, opening, floor)
+                    if zone:
+                        room["zones"].append(zone)
             except (KeyError, TypeError, ValueError):
                 reasons.append({"code": "invalid_opening", "source_id": entry.get("identifier")})
 

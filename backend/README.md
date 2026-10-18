@@ -404,3 +404,30 @@ are retained in [`assets/proof.json`](../assets/proof.json).
 `POST /v1/rooms/imported` attaches reconstructed Object bounds as private planning context, with `source_capture_id`, `source_scene_sha256` and typed `entities`. It uses creation receipts for retries. This is not a native RoomPlan capture: generated results are verified Product selections, not applied layouts. The UI states this limit; original capture/support evidence is still required for validated placement.
 
 Verification: `PYTHONPATH=backend .local/venv/bin/python -m pytest backend/tests/test_natural_request.py -q`. Offline providers simulate the interpretation for UI testing; live Gemini interpretation requires the configured planning model.
+
+## Room previews from a reconstruction
+
+Places Products into a fully modelled room (a reconstruction USDZ plus its JSON
+record) and writes one preview USDZ. The record format is version 2 of
+[`specs/room-reconstruction-json.md`](../specs/room-reconstruction-json.md).
+
+1. `reconstruction.room_from_reconstruction(record, room_id)` reads the record
+   into the same RoomModel that native captures produce, with wall
+   `protrusions`, support `surfaces` and unclassified `obstacles`
+   (`SPEC.md` §12.5). It returns `validity.usable: false` with reasons instead
+   of guessing.
+2. `solver.solve(...)` places the Additions as for any room.
+3. `composition.compose(room_usdz, room, scene, out)` references each new Item's
+   asset at its placement, moves the nodes of moved Objects and deactivates
+   removed or replaced ones. It refuses a record whose poses disagree with the
+   model's nodes by more than 1 cm or 1°.
+
+Composition needs usd-core, which the API image does not install by default:
+
+```sh
+.local/venv/bin/pip install -e 'backend[test,usd]'
+```
+
+Without it, `tests/test_composition.py` skips. Not yet wired to an endpoint:
+`POST /v1/rooms/imported` still accepts the version 1 record as planning-only
+context.

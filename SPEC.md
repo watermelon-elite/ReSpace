@@ -790,15 +790,15 @@ Serial operation ordering prevents competing room recomputations. Retries still 
 
 | Anchor | Required references | Placement semantics |
 |---|---|---|
-| `against_wall` | Real wall; alignment; optional offset. | Item back 0.05 m from wall, facing inward. Yaw is atan2(inward normal X, inward normal Z). Left/right judged by a person inside facing the wall; offset measured from that end, default 0 and ignored for center. |
-| `corner` | Real corner ID. | 0.05 m wall gaps. Seating faces the inward bisector; other Items align with the longer wall. |
+| `against_wall` | Real wall; alignment; optional offset. | Item back 0.05 m from the wall face, facing inward. The wall face is the front of the deepest wall protrusion overlapping the Item's height and its span along the wall, or the bare wall where none does. Yaw is atan2(inward normal X, inward normal Z). Left/right judged by a person inside facing the wall; offset measured from that end, default 0 and ignored for center. |
+| `corner` | Real corner ID. | 0.05 m gaps from each wall face, as for `against_wall`. Seating faces the inward bisector; other Items align with the longer wall. |
 | `under` | Referenced Object/Item. | Rugs only, centered on target footprint with matching yaw. |
 | `next_to` | Target and side. | Own-target left/right/front orientation, 0.10 m gap. Match target yaw except front placement faces the target. |
 | `facing` | Target; optional distance. | In front of and facing target. Default footprint gap 0.45 m for tables, 0.8 m for seating. |
 | `in_front_of_window` | Window opening ID. | Against its real wall and centered on window. If taller than sill, try permitted nudges; unresolved placement becomes omission/conflict according to constraints. |
 | `room_center` | None. | Floor polygon centroid, aligned with longest wall; still subject to containment and collision validation. |
 | `on_wall` | Real wall, alignment, optional height. | Default center elevation 1.45 m or 0.25 m above furniture directly below, whichever is higher. Convert explicitly to bottom-center placement. |
-| `on_top_of` | Valid support Object/Item. | Centered on support top. Reject footprint larger than usable top or missing support. |
+| `on_top_of` | Valid support Object/Item. | Centered on support top. The usable top is the support's recorded surface where one exists (height, outline and clearance above), otherwise its box top. Reject footprint larger than usable top, height above the recorded clearance, or missing support. |
 
 `at_spot` and business `seating_group` are not supported types in this product. Targets may refer to an original Object, a current Item or a specified new Addition unit; references are typed and validated. Forward references resolve only when their target exists in the same accepted candidate. Cyclic or missing support references are conflicts, not guessed coordinates.
 
@@ -806,12 +806,16 @@ Serial operation ordering prevents competing room recomputations. Retries still 
 
 Every relevant footprint collision check includes a 0.05 m margin. The margin is a validation clearance, not a change to measured physical size.
 
+Walls are the room boundary: a footprint must lie within the floor polygon, and containment takes no margin, so measured Objects standing flush against a wall are valid. A wall protrusion is anything fixed to a real wall that juts into the room, such as a sill, baseboard or wall-hung radiator. It is recorded on its wall with its depth, bottom and top elevation, and its span along the wall from end A. A protrusion is an obstacle, with the margin, to floor and wall Items that overlap its height. Anchors that stand an Item against a wall measure their gap from the front of the deepest protrusion they would meet, so the anchor gap and the margin agree.
+
+Clearance is a placement rule, so it is not checked between two measured Objects that are both still at their measured placement: cabinets standing flush with a refrigerator are measured fact, not a conflict. Containment, keep-clear zones and support remain checked for every Item, so a measured Object blocking a door is still reported.
+
 | Collision class | Checks |
 |---|---|
-| `floor` | Other floor Items, room boundary/walls and keep-clear zones. Small detected Objects such as plants occupy space. |
+| `floor` | Other floor Items, room boundary/walls, wall protrusions overlapping its height and keep-clear zones. Small detected Objects such as plants occupy space. |
 | `rug` | Other rugs and room boundary/walls; can lie under furniture and in keep-clear zones. |
-| `wall` | Other wall Items, openings and floor Items against the same wall extending above its bottom edge. |
-| `tabletop` | Other Items on the same top; required support identity, elevation and footprint containment. |
+| `wall` | Other wall Items, openings, wall protrusions overlapping its height and floor Items against the same wall extending above its bottom edge. |
+| `tabletop` | Other Items on the same top; required support identity, elevation, footprint containment and recorded clearance above. |
 | `ceiling` | Does not obstruct floor placement; remains associated with valid room/ceiling geometry. |
 | `none` | Informational features do not create ordinary furniture collisions. |
 
@@ -828,7 +832,7 @@ Removed ghosts are not obstacles or present supports. Every active support relat
 5. Among dependency-ready Additions, sort by ascending Priority; for equal Priority, larger footprint first. Missing Priority falls back to plan order with an explicit diagnostic, not an invented model preference. Dependencies determine readiness, not a new preference score.
 6. Expand quantity into physical units with deterministic Item IDs. Distinguish requested placed quantity from purchased pack quantity.
 7. Resolve Anchor and candidate yaw/elevation; validate footprint, containment, support and clearances.
-8. On a collision, try bounded adjustments: slide along wall in ±0.1 m steps up to ±1.0 m, then 90° rotation, then a supported alternative Anchor. Only attempts allowed by the explicit choice/constraints are eligible.
+8. On a collision, try bounded adjustments: slide along wall in ±0.1 m steps up to ±1.0 m (for `on_top_of`, along the support's longer side), then 90° rotation, then a supported alternative Anchor. Only attempts allowed by the explicit choice/constraints are eligible.
 9. Recheck access connectivity for Full redesign: shrink free floor by 0.45 m, representing half the 0.9 m passage baseline, and check that door keep-clear areas remain connected to usable free area. Remove lowest-priority optional new Items and repeat only when the removal is allowed. Never remove an original Object to repair access without its explicit permitted plan action.
 10. Validate the complete candidate, attach outcomes/warnings/conflicts and return it to the controller. Persist only after geometry, instructions and purchases all pass.
 
@@ -969,11 +973,13 @@ The public upload response acknowledges storage and explicitly reports deferred 
 | `room_id`, `capture_id` | Identities of measured evidence. |
 | `height`, `frame` | Positive room height and explicit `room_from_world` Matrix4. |
 | `floor` | Ordered Vec2 polygon and computed area in square meters; usable/nondegenerate when validity is true. |
-| `walls` | Stable ID, endpoints A/B, length, inward unit normal and virtual flag; deterministic winding/order. |
+| `walls` | Stable ID, endpoints A/B, length, inward unit normal and virtual flag; deterministic winding/order. Optional `protrusions`, each with depth, bottom, top, span from A (`from_a`, `to_a`) and source reference (§10.3). |
 | `corners` | Stable ID, position and two real wall IDs satisfying corner-angle rule. |
 | `openings` | Stable ID, type `door`, `window` or `opening`, wall ID, offset from A, width, bottom/sill and height. Required dimension uncertainty is explicit. |
 | `objects` | Object records defined below, including non-floor placement information. |
 | `wall_features` | Stable ID, type outlet/light_switch/vent, wall ID, offset and height; optional source confidence. |
+| `obstacles` | Optional. Measured things outside the category registry (a kettle, a faucet), with the Object pose fields and a `collision_class`. They block placement like an Object of that class but are not planning targets and never move. |
+| `render` | Optional, for a modelled room: `node_pivot` (`bottom_center` or `box_center`) and the USD node name for each wall, opening, Object and obstacle ID. |
 | `zones` | Stable ID, type `keep_clear`, reason door/opening and polygon. |
 | `style_hints` | Optional observed/derived floor and wall descriptions with appropriate uncertainty. |
 | `validity` | Usable flag and structured reasons/warnings. A false flag prevents final placement publication. |
@@ -981,6 +987,8 @@ The public upload response acknowledges storage and explicitly reports deferred 
 | `identity_map` | Native IDs/aliases mapped to normalized Object and surface references. |
 
 An Object record includes stable `id`, retained native/source IDs, category, source (`roomplan`, `mk1` or refined evidence), X/Z footprint `center`, explicit `base_y`, yaw, Size3, Mount, optional real wall/support Object reference, optional `against_wall`, `fixed_in_place`, observed attributes and supporting evidence/observation count. `sightings`, if retained for compatibility, is the number of 3D observations in a cluster, not the number of unique Objects.
+
+A support Object may record `surfaces`: each a usable top elevation, optional X/Z outline and optional `clearance_above` to whatever hangs over it, because a box top that includes a backsplash or upstand is not the surface Items stand on.
 
 Wall-mounted Objects require their elevation/wall association; tabletop Objects require their elevation/support association. The renderer and solver do not reconstruct these from category defaults. `attrs.color` is optional `#RRGGBB`; a missing sampled color uses a default tint. No required measured-material field exists.
 
