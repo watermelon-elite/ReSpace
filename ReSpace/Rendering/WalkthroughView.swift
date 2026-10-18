@@ -8,6 +8,15 @@ import UIKit
 private actor WalkthroughLoader {
     func load(_ bundle: WalkthroughBundle, directory: URL) throws -> SCNScene {
         let scene=SCNScene()
+        let generated=bundle.sceneId.hasPrefix("astra-")
+        if generated {
+            scene.background.contents=UIColor(white:0.12,alpha:1)
+            let ambient=SCNNode();ambient.light=SCNLight();ambient.light?.type = .ambient
+            ambient.light?.intensity=500;scene.rootNode.addChildNode(ambient)
+            let sun=SCNNode();sun.light=SCNLight();sun.light?.type = .directional
+            sun.light?.intensity=900;sun.eulerAngles=SCNVector3(-0.7,-0.5,0)
+            scene.rootNode.addChildNode(sun)
+        }
         var count=0
         for entity in bundle.entities {
             let asset=MDLAsset(url:directory.appendingPathComponent(entity.asset)); asset.loadTextures()
@@ -17,7 +26,10 @@ private actor WalkthroughLoader {
                 child.enumerateHierarchy { node,_ in
                     if let geometry=node.geometry {
                         count += geometry.elements.reduce(0) { $0+$1.primitiveCount }
-                        geometry.materials.forEach { $0.lightingModel = .constant; $0.isDoubleSided=true }
+                        geometry.materials.forEach {
+                            $0.lightingModel = generated ? .physicallyBased : .constant
+                            $0.isDoubleSided=true
+                        }
                     }
                 }
                 root.addChildNode(child)
@@ -253,8 +265,8 @@ struct WalkthroughView: View {
                             Button("Done") { session.selection=nil }
                         }.padding().background(.regularMaterial,in:RoundedRectangle(cornerRadius:16)).padding()
                     }
-                    HStack { Button("◀") { session.walk(x:-0.25,z:0) };Button("Forward") { session.walk(x:0,z:-0.3) };Button("Back") { session.walk(x:0,z:0.3) };Button("▶") { session.walk(x:0.25,z:0) } }.buttonStyle(.borderedProminent).padding().background(.regularMaterial)
-                    Text("Drag to look around · Tap an item to select").font(.caption).padding(6).background(.regularMaterial)
+                    HStack { Button("◀") { session.walk(x:-0.15,z:0) };Button("Forward") { session.walk(x:0,z:-0.15) };Button("Back") { session.walk(x:0,z:0.15) };Button("▶") { session.walk(x:0.15,z:0) } }.buttonRepeatBehavior(.enabled).buttonStyle(.borderedProminent).padding().background(.regularMaterial)
+                    Text("Drag to look · Hold a walking control to move · Tap to select").font(.caption).padding(6).background(.regularMaterial)
                 }
             } else if let error { ContentUnavailableView("Walkthrough unavailable",systemImage:"cube",description:Text(error)) }
             else { ProgressView("Opening your room…") }

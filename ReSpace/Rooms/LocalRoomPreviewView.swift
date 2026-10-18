@@ -23,7 +23,7 @@ struct LocalRoomPreviewView: View {
                         Image(systemName:"cube.transparent").font(.system(size:64)).foregroundStyle(.secondary)
                         if submitting { ProgressView("Sending your scan…") }
                         else if job?.isRunning==true {
-                            ProgressView("Creating your room…")
+                            ProgressView(job?.stageDescription ?? "Creating your room…")
                             Text("You can close this screen. Your finished walkthrough will be here when it is ready.").multilineTextAlignment(.center)
                         } else if needsRescan {
                             Text("This room needs another scan").font(.headline)

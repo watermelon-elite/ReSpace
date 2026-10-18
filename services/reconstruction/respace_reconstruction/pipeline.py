@@ -435,7 +435,10 @@ def process_legacy(folder: Path, revision: int):
 
 
 def process(folder: Path, revision: int):
-    mode=os.environ.get("RESPACE_PIPELINE","walkthrough")
+    mode=os.environ.get("RESPACE_PIPELINE","astra")
+    if mode=="astra":
+        from .astra_room import process_astra_room
+        return process_astra_room(folder,revision)
     if mode=="legacy":return process_legacy(folder,revision)
     if mode!="walkthrough":raise ValueError("Unknown reconstruction pipeline")
     from .walkthrough import process_walkthrough

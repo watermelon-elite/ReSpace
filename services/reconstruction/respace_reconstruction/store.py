@@ -95,6 +95,10 @@ class Store:
                 # Only an explicit retry may repeat an API request interrupted by
                 # a crash. Automatic queue recovery leaves this marker intact.
                 (self.folder(job_id) / "work" / "astra-inflight.json").unlink(missing_ok=True)
+                rejected = self.folder(job_id) / "work" / "astra-room-rejected.json"
+                if rejected.exists():
+                    (rejected.parent / "astra-room-response.json").unlink(missing_ok=True)
+                    rejected.unlink()
             c.execute("UPDATE jobs SET state='queued',stage='queued',error=NULL WHERE id=?", (job_id,))
         return self.get(job_id)
 

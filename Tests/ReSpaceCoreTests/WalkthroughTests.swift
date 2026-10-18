@@ -5,6 +5,39 @@ import SceneKit.ModelIO
 @testable import ReSpaceCore
 
 final class WalkthroughTests: XCTestCase {
+    func testAstraGeneratedSceneImportsWithMaterialsAndSafeFirstPersonNavigation() throws {
+        guard let path=ProcessInfo.processInfo.environment["RESPACE_TEST_ASTRA_SCENE"] else {
+            throw XCTSkip("Opt-in native import of the Python-produced synthetic Astra scene")
+        }
+        let root=URL(fileURLWithPath:path)
+        let result=try Wire.decoder().decode(ReconstructionResult.self,from:Data(contentsOf:root.appendingPathComponent("completion.json")))
+        try result.validate()
+        XCTAssertTrue(result.isAstraGenerated && result.isWalkthrough)
+        let bundle=try Wire.decoder().decode(WalkthroughBundle.self,from:Data(contentsOf:root.appendingPathComponent("scene.json")))
+        let assets=Set(result.assets.map(\.filename))
+        try bundle.validate(captureId:"analytic-room",revision:1,assets:assets)
+        try bundle.validateFiles(in:root,assets:assets)
+        let spawn=bundle.navigation.spawnPosition
+        XCTAssertTrue(bundle.navigation.canStand([spawn[0],spawn[2]],entities:bundle.entities))
+        let walked=bundle.navigation.move(from:[1.5,1.5],delta:[8,0],entities:bundle.entities)
+        XCTAssertLessThan(walked[0],1.8)
+        var count=0
+        for entity in bundle.entities {
+            let asset=MDLAsset(url:root.appendingPathComponent(entity.asset));asset.loadTextures()
+            let scene=SCNScene(mdlAsset:asset)
+            let names=Set(bundle.materials.filter { $0.ownerId==entity.id }.map(\.sourceMaterial))
+            var hasMaterial=false
+            scene.rootNode.enumerateHierarchy { node,_ in
+                if let geometry=node.geometry {
+                    count += geometry.elements.reduce(0) { $0+$1.primitiveCount }
+                    hasMaterial = hasMaterial || geometry.materials.contains { names.contains($0.name ?? "") && $0.diffuse.contents != nil }
+                }
+            }
+            XCTAssertTrue(hasMaterial,"Generated material missing for \(entity.id)")
+        }
+        XCTAssertEqual(count,result.generatedTriangleCount)
+    }
+
     private func fixture() throws -> (WalkthroughBundle,URL,Set<String>) {
         let root=try XCTUnwrap(Bundle.module.url(forResource:"Fixtures",withExtension:nil)).appendingPathComponent("Walkthrough")
         let bundle=try Wire.decoder().decode(WalkthroughBundle.self,from:Data(contentsOf:root.appendingPathComponent("scene.json")))
