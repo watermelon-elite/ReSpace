@@ -16,6 +16,7 @@ struct ReSpaceApp: App {
             Group {
                 #if DEBUG
                 if ProcessInfo.processInfo.arguments.contains("--ui-demo") { UIDemoGallery() }
+                else if ProcessInfo.processInfo.arguments.contains("--demo-redesign") { NavigationStack { DemoRedesignView(app: AppModel()) } }
                 else { ContentView() }
                 #else
                 ContentView()

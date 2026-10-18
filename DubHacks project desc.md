@@ -27,12 +27,10 @@ ReSpace turns a short scan of your room into a walkable 3D model of the room and
 
 **Walkthrough reconstruction (Python, OpenAI GPT-6 Sol).** A small reconstruction service keeps the API key off the phone. It builds the walls, floor and ceiling directly from RoomPlan's measurements, then sends Sol up to 64 sharp photos picked for different viewpoints, a compact summary of every frame's LiDAR depth, and a simplified room mesh. Sol first lists everything in the room with its size, position and materials, then builds detailed models four objects at a time. The service validates the result, converts it to 3D files and the phone opens it in a first-person viewer. Every paid call is counted before it's sent and held to a per-room spending ceiling.
 
-**Perception (Python, NumPy, Perceptron Mk1.5).**
+**Room geometry (Python, NumPy).**
 
 - We convert Apple's room scan into our own room model. Walls are snapped into a closed floor outline, doors and windows are attached to their walls, and every door gets a keep-clear zone 1.2 m into the room and 45 cm past each side.  
-- Once you've finished the interview, each stored keyframe goes to Perceptron Mk1.5 once, which returns boxes around smaller objects RoomPlan misses.  
-- We cast a ray from the camera through each box into the measured room. Wall art lands on a wall, ceiling lights on the ceiling, and a lamp on whatever surface is in the way, a nightstand or the floor. When LiDAR depth is available and agrees within 30 cm, it sharpens the position. Rugs are fit from their corners projected onto the floor.  
-- Sightings from different keyframes are clustered into single objects. Anything RoomPlan already found is merged rather than duplicated, object IDs stay stable as new photos arrive, and each object's color is sampled from the pixels where it's actually visible.
+- Each existing piece of furniture gets a stable ID, so *Keep in place* and *Remove* always point at the same physical object, and its color is sampled from the keyframe pixels where it's actually visible.
 
 **The AI designer (Python, FastAPI, Gemini).** Gemini first reads your request to decide its scope, styles and budget, and that reading is saved before any search runs. It then runs the interview through exactly three tools: `search_products`, `ask_user` and `finalize_selection`. The backend runs each call, validates it, saves the result and starts the next turn. Gemini can't skip product verification, fake a price check, or approve its own budget increase. Its system prompt is built from research on how people use and feel in rooms.
 
@@ -46,10 +44,7 @@ Gemini also **never outputs coordinates**. It plans with *anchors*: "against wal
 
 ## Challenges we ran into
 
-- **LiDAR depth isn't there when you need it.** We planned to place objects using depth, then found that ARKit often provides no depth frames while RoomPlan is scanning. We flipped the approach: ray casting against RoomPlan's measured walls and floor became the main method, and depth became an optional refinement.  
 - **Coordinate frames.** Apple's room export stores matrices column-major, puts the floor around y \= −1.3 m instead of 0, and has no full public sample. The camera looks down −z while image pixels count downward. One wrong sign and every lamp lands in the wrong place. We wrote a round-trip test that projects known 3D points into a synthetic camera and back, and requires them to return within 1 cm before we touch real data.  
-- **Mirrors and windows.** A lamp seen in a mirror projects to a point behind the wall. We reject detections that land outside the floor outline or off a real wall.  
-- **One output format per request.** Mk1.5 returns boxes, points or polygons per call, not a mix. To keep one call per keyframe we went boxes-only: outlets use the box center, and rugs are fit from box corners.  
 - **Models are bad at geometry and confident about numbers.** Ask a model for coordinates and it will give you some. Ask it for a sofa's size and it will guess from the photo. Anchors and verified dimensions take both decisions away from the model.  
 - **Shopping data is messy.** Package sizes listed as product sizes, the same chair sold by five stores, chairs sold in two-packs when you need three. We merge identical products across stores, and the budget counts whole packs: two two-packs for three chairs costs both packs, and the spare chair is shown.  
 - **One scan, two very different consumers.** The walkthrough wants hundreds of full-size frames; the planner wants 40 small ones with matching lens math. We keep the full scan on the phone and derive the planning set from it, rescaling lens parameters and converting depth formats so both pipelines read the same capture.  
@@ -62,14 +57,13 @@ Gemini also **never outputs coordinates**. It plans with *anchors*: "against wal
 - Every recommended product has real dimensions taken from its merchant page, not guessed from a photo.  
 - A walkable 3D model of your own room, rebuilt from a one-minute phone scan.  
 - One text box for everything: describe the room you want, answer questions, and edit the design, with no forms or modes.  
-- Combining RoomPlan with Perceptron Mk1.5 so the room includes the small things that make it yours: lamps, plants, art, rugs, outlets.  
-- A spatial core that is deterministic and fully testable: everything except the detector call is pure Python with no network access.  
+- A spatial core that is deterministic and fully testable: pure Python with no network access.  
 - Undo that always works, because saved designs never change.
 
 ## What we learned
 
 - **Let the model choose, let code place.** Gemini is good at "a rug under the sofa and a lamp by the reading chair." It is not good at x \= 2.13 m. Separating intent from geometry made both reliable.  
-- **Check facts before writing code.** Reading Apple's and Perceptron's documentation closely, and writing down sources, caught wrong assumptions about depth availability, coordinate grids and data formats before they became bugs.  
+- **Check facts before writing code.** Reading Apple's documentation closely, and writing down sources, caught wrong assumptions about depth availability, coordinate frames and data formats before they became bugs.  
 - **Contracts first.** Agreeing on data shapes and one shared category list early let three people work in parallel from day one.  
 - **Simple before concurrent.** We designed background processing that overlapped the interview, then cut it for a strictly sequential pipeline we could reason about and recover from.  
 - **Fewer controls, more listening.** Replacing mode pickers and style forms with one text box made the app simpler to use and forced the backend to be explicit about what it inferred.  
@@ -78,6 +72,7 @@ Gemini also **never outputs coordinates**. It plans with *anchors*: "against wal
 ## What's next for ReSpace
 
 - **Your redesign inside the walkthrough.** The backend can already place new products into a reconstructed room and export one 3D file; next is connecting it to the app.  
+- **Small-object detection** for the lamps, plants, outlets and radiators RoomPlan misses, so the planner never puts a bookshelf in front of a radiator.  
 - **Before/After and day/evening lighting** for exploring a redesign.  
 - **Café and small-business mode:** seating targets, table-and-chair groups, 90 cm aisles, and clearance around counters and registers.  
 - **Process the room while you answer questions**, so the 3D result is ready the moment the interview ends.  

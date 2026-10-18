@@ -9,7 +9,10 @@ struct ProductImage: View {
     var body: some View {
         ZStack {
             ReSpaceStyle.canvas
-            if let source = product["variant"]["image_references"].array.first?.string, let url = URL(string: source) {
+            if let source = product["variant"]["image_references"].array.first?.string, URL(string: source)?.scheme == nil,
+               let image = UIImage(named: source) {
+                Image(uiImage: image).resizable().scaledToFit()
+            } else if let source = product["variant"]["image_references"].array.first?.string, let url = URL(string: source) {
                 AsyncImage(url: url) { phase in
                     if let image = phase.image { image.resizable().scaledToFit() }
                     else if phase.error != nil { Image(systemName: "photo").foregroundStyle(ReSpaceStyle.secondary).accessibilityLabel("Product image unavailable") }
@@ -31,6 +34,48 @@ struct ProductSummary: View {
                 Text(productOffer(product)["merchant"].string ?? productOffer(product)["merchant_id"].text).font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
             }.frame(maxWidth: .infinity, alignment: .leading)
         }.foregroundStyle(ReSpaceStyle.ink)
+    }
+}
+
+/// Selected context for a Product tapped in the room: price and the exact offer handoff, with details one tap away.
+struct ProductSelectionCard: View {
+    let product: JSONValue
+    var status = "New in this design"
+    let onDetails: () -> Void
+    let onClose: () -> Void
+    @Environment(\.openURL) private var openURL
+    private var merchant: String { productOffer(product)["merchant"].string ?? "merchant" }
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .top, spacing: 14) {
+                ProductImage(product: product).frame(width: 72, height: 72).clipShape(RoundedRectangle(cornerRadius: 14))
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(status).font(ReSpaceStyle.font(12, weight: .medium)).foregroundStyle(ReSpaceStyle.purple)
+                    Text(productTitle(product)).font(ReSpaceStyle.font(16, weight: .semibold)).lineLimit(2)
+                    if let variant = product["variant"]["variant_label"].string {
+                        Text(variant).font(ReSpaceStyle.font(12)).foregroundStyle(ReSpaceStyle.secondary).lineLimit(1)
+                    }
+                    Text("$\(productPrice(product)) · \(merchant)").font(ReSpaceStyle.font(15, weight: .semibold)).padding(.top, 2)
+                }.frame(maxWidth: .infinity, alignment: .leading)
+                RSIconButton(symbol: "xmark", label: "Clear selection", action: onClose)
+            }
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 8) { buttons }
+                VStack(spacing: 8) { buttons }
+            }
+        }
+        .padding(16).background(.white, in: RoundedRectangle(cornerRadius: 24))
+        .overlay { RoundedRectangle(cornerRadius: 24).stroke(ReSpaceStyle.line, lineWidth: 1).allowsHitTesting(false) }
+        .shadow(color: .black.opacity(0.08), radius: 16, y: 6)
+        .accessibilityElement(children: .contain)
+    }
+    @ViewBuilder private var buttons: some View {
+        Button("Details", action: onDetails).buttonStyle(RSButtonStyle(kind: .secondary, compact: true)).fixedSize()
+        if let choice = try? ProductChoice(product) {
+            Button("Buy at \(merchant)") { openURL(choice.exactOfferURL) }
+                .buttonStyle(RSButtonStyle(compact: true)).lineLimit(1)
+                .accessibilityHint("Opens the exact offer on \(choice.exactOfferURL.host ?? merchant)")
+        }
     }
 }
 

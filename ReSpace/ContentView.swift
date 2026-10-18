@@ -98,6 +98,14 @@ struct ContentView: View {
                             }
                         }.buttonStyle(.plain)
                     }
+                    if DemoRedesignView.modelURL != nil && !app.isUIDemo {
+                        NavigationLink { DemoRedesignView(app: app) } label: {
+                            RSRoomCard(title: "Meeting room redesign", subtitle: "Soft-seating corner · 3 IKEA pieces", hero: false) {
+                                Image(systemName: "sofa").font(.system(size: 26, weight: .light)).foregroundStyle(ReSpaceStyle.purple)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity).background(ReSpaceStyle.wash).accessibilityHidden(true)
+                            }
+                        }.buttonStyle(.plain)
+                    }
                     if let error = app.error {
                         RSNotice(message: error, isError: true)
                         Button("Refresh") { Task { await app.refresh() } }.buttonStyle(RSButtonStyle(kind: .secondary))

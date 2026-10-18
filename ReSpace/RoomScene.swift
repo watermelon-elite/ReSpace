@@ -142,6 +142,22 @@ struct RoomScene: UIViewRepresentable {
                             target.addChild(marker); highlights[id] = marker
                         }
                     }
+                    // A cached redesign hides removed scan Objects and adds Product models stored beside the room model.
+                    for name in parent.document["hidden_nodes"].array { model.findEntity(named: name.text)?.isEnabled = false }
+                    for addition in parent.document["additions"].array {
+                        let id = addition["id"].text, p = addition["position"].numbers
+                        guard p.count == 3, let file = addition["asset"].string else { throw ContractError.invalid("A redesign addition is incomplete.") }
+                        let product = try await Entity(contentsOf: url.deletingLastPathComponent().appendingPathComponent(file))
+                        guard !Task.isCancelled, content === target else { return }
+                        product.name = id
+                        product.position = SIMD3(Float(p[0]), Float(p[1]), Float(p[2]))
+                        product.orientation = simd_quatf(angle: Float(addition["yaw"].number ?? 0), axis: [0, 1, 0])
+                        product.generateCollisionShapes(recursive: true); target.addChild(product); itemRoots[id] = product
+                        let bounds = product.visualBounds(relativeTo: product)
+                        let marker = ModelEntity(mesh: .generateBox(size: bounds.extents + SIMD3(repeating: 0.02)), materials: [material(.systemYellow, alpha: 0.2)])
+                        marker.position = bounds.center; marker.isEnabled = id == parent.selectedID
+                        product.addChild(marker); highlights[id] = marker
+                    }
                     reset(); parent.onModelLoad?(nil)
                 } catch {
                     guard !Task.isCancelled else { return }
@@ -345,7 +361,7 @@ struct RoomScene: UIViewRepresentable {
             let extent = simd_length(bounds.extents)
             guard extent.isFinite, extent > 0, bounds.center.x.isFinite, bounds.center.y.isFinite, bounds.center.z.isFinite else { return }
             let framing: Float = parent.importedModelURL == nil ? 1.1 : max(1.1, Float((view?.bounds.height ?? 1) / max(view?.bounds.width ?? 1, 1)))
-            center = bounds.center; radius = max(2, extent * framing)
+            center = bounds.center; radius = max(2, extent * framing) / pow(1.25, Float(parent.zoomSteps))
             azimuth = .pi / 4; elevation = .pi / 4; positionCamera()
             framedContent = true
         }

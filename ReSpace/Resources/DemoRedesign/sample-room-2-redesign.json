@@ -1,0 +1,891 @@
+{
+ "schema_version": 1,
+ "name": "Meeting room",
+ "capture_id": "909E38AA-0E98-4B37-8BC6-BCB3237E3F9B",
+ "model": "sample-room-2.usdz",
+ "coordinate_system": "sample_room_2 scan frame, metres, +Y up; room.json coordinates = scan + translation_to_room",
+ "translation_to_room": [
+  0.8206772316679813,
+  1.5351055,
+  4.5941834766669984
+ ],
+ "entities": [
+  {
+   "id": "wall-d34e1cc7b4605fbe12c0",
+   "label": "Wall",
+   "kind": "wall",
+   "category": "wall",
+   "node_name": "wall_d34e1cc7b4605fbe12c0",
+   "cutaway": "wall",
+   "center": [
+    -0.71605647,
+    0.00989438730000125,
+    -1.4589045
+   ],
+   "inward_normal": [
+    0.9993975546258648,
+    0,
+    -0.034706307897004914
+   ]
+  },
+  {
+   "id": "wall-cf6e536b603fa75e21c3",
+   "label": "Wall",
+   "kind": "wall",
+   "category": "wall",
+   "node_name": "wall_cf6e536b603fa75e21c3",
+   "cutaway": "wall",
+   "center": [
+    2.8155624999999995,
+    0.00989438730000125,
+    -1.5815480000000002
+   ],
+   "inward_normal": [
+    -0.999397557208978,
+    0,
+    0.0347062335139896
+   ]
+  },
+  {
+   "id": "wall-703cacedc453eaad175b",
+   "label": "Wall",
+   "kind": "wall",
+   "category": "wall",
+   "node_name": "wall_703cacedc453eaad175b",
+   "cutaway": "wall",
+   "center": [
+    0.9451326,
+    0.00989438730000125,
+    -4.532862
+   ],
+   "inward_normal": [
+    0.034706304428465146,
+    0,
+    0.9993975547463175
+   ]
+  },
+  {
+   "id": "wall-764b7ae968f1cc2992ce",
+   "label": "Wall",
+   "kind": "wall",
+   "category": "wall",
+   "node_name": "wall_764b7ae968f1cc2992ce",
+   "cutaway": "wall",
+   "center": [
+    1.1543736,
+    0.00989438730000125,
+    1.4924095
+   ],
+   "inward_normal": [
+    -0.03470645172355988,
+    0,
+    -0.9993975496311566
+   ]
+  },
+  {
+   "id": "floor-c0e38ce06cb0166a3d25",
+   "label": "Floor",
+   "kind": "floor",
+   "category": "floor",
+   "node_name": "floor_c0e38ce06cb0166a3d25"
+  },
+  {
+   "id": "ceiling",
+   "label": "Ceiling",
+   "kind": "ceiling",
+   "category": "ceiling",
+   "node_name": "ceiling_c0e38ce06cb0166a3d25",
+   "cutaway": "ceiling"
+  },
+  {
+   "id": "table-1",
+   "label": "Rear round meeting table",
+   "kind": "furniture",
+   "category": "table",
+   "node_name": "table_1",
+   "bounds_min": [
+    0.7219999432563782,
+    -1.527999997138977,
+    -4.498999774456024
+   ],
+   "bounds_max": [
+    1.821999967098236,
+    -0.75,
+    -3.598999798297882
+   ]
+  },
+  {
+   "id": "table-3",
+   "label": "Long oval meeting table",
+   "kind": "furniture",
+   "category": "table",
+   "node_name": "table_3",
+   "bounds_min": [
+    0.42978163471475206,
+    -1.534500002861023,
+    -1.9659031381790948
+   ],
+   "bounds_max": [
+    1.8442182947133485,
+    -0.7570000290870667,
+    0.5659031620209527
+   ]
+  },
+  {
+   "id": "chair-1",
+   "label": "Blue chair by rear table",
+   "kind": "furniture",
+   "category": "chair",
+   "node_name": "chair_1",
+   "bounds_min": [
+    0.0618973502804545,
+    -1.5329999923706055,
+    -4.418477896284965
+   ],
+   "bounds_max": [
+    0.7185728421519499,
+    -0.550000011920929,
+    -3.795256730485055
+   ]
+  },
+  {
+   "id": "chair-2",
+   "label": "Blue chair by rear table",
+   "kind": "furniture",
+   "category": "chair",
+   "node_name": "chair_2",
+   "bounds_min": [
+    1.7805448484611244,
+    -1.5349999666213987,
+    -4.038455274337597
+   ],
+   "bounds_max": [
+    2.298465638141659,
+    -0.6004999876022337,
+    -3.4863917563020532
+   ]
+  },
+  {
+   "id": "chair-3",
+   "label": "Blue chair beside rear wall",
+   "kind": "furniture",
+   "category": "chair",
+   "node_name": "chair_3",
+   "bounds_min": [
+    -0.7340940913988067,
+    -1.532999992370605,
+    -4.268909784592008
+   ],
+   "bounds_max": [
+    -0.16805087711086733,
+    -0.5349999666213985,
+    -3.7582451378933452
+   ]
+  },
+  {
+   "id": "chair-7",
+   "label": "Blue chair along side of long table",
+   "kind": "furniture",
+   "category": "chair",
+   "node_name": "chair_7",
+   "bounds_min": [
+    0.521726913044871,
+    -1.534999966621399,
+    -1.8418792120431986
+   ],
+   "bounds_max": [
+    1.0731568865080465,
+    -0.5849999785423279,
+    -1.251618779518691
+   ]
+  },
+  {
+   "id": "chair-8",
+   "label": "Blue chair along long table",
+   "kind": "furniture",
+   "category": "chair",
+   "node_name": "chair_8",
+   "bounds_min": [
+    1.8478481770630353,
+    -1.5329999923706055,
+    -1.5010685407109023
+   ],
+   "bounds_max": [
+    2.413711309326125,
+    -0.5180000066757202,
+    -0.9604137457423447
+   ]
+  },
+  {
+   "id": "chair-9",
+   "label": "Blue chair beside long table",
+   "kind": "furniture",
+   "category": "chair",
+   "node_name": "chair_9",
+   "bounds_min": [
+    0.6462525160313674,
+    -1.534999966621399,
+    0.7877227454124334
+   ],
+   "bounds_max": [
+    1.2946776120661667,
+    -0.5549999475479126,
+    1.4041188569130056
+   ]
+  },
+  {
+   "id": "chair-10",
+   "label": "Blue chair at far end of long table",
+   "kind": "furniture",
+   "category": "chair",
+   "node_name": "chair_10",
+   "bounds_min": [
+    1.809672548776982,
+    -1.5329999923706055,
+    0.3867278045640619
+   ],
+   "bounds_max": [
+    2.5092323279320023,
+    -0.5199999809265137,
+    1.0900758558286991
+   ]
+  },
+  {
+   "id": "projection-screen",
+   "label": "Retractable projection screen",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "projection_screen",
+   "bounds_min": [
+    -0.6289999485015869,
+    -0.512499988079071,
+    -4.5450000166893005
+   ],
+   "bounds_max": [
+    1.3889999389648438,
+    1.1300000548362732,
+    -4.415000021457672
+   ]
+  },
+  {
+   "id": "projector",
+   "label": "Short-throw wall-mounted projector",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "projector",
+   "bounds_min": [
+    -0.5699999928474426,
+    0.8899999856948853,
+    -4.499999791383743
+   ],
+   "bounds_max": [
+    -0.14499998092651367,
+    1.1599999964237213,
+    -4.035499781370163
+   ]
+  },
+  {
+   "id": "whiteboard",
+   "label": "Large wall whiteboard",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "whiteboard",
+   "bounds_min": [
+    1.2500000596046448,
+    -0.8774999976158142,
+    -4.47700023278594
+   ],
+   "bounds_max": [
+    2.6700000166893005,
+    0.8844999670982361,
+    -4.385000232607126
+   ]
+  },
+  {
+   "id": "av-wall-unit",
+   "label": "Presentation wall control unit",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "av_wall_unit",
+   "bounds_min": [
+    -0.5550000071525574,
+    -0.8450000286102295,
+    -4.514999881386757
+   ],
+   "bounds_max": [
+    -0.36500000953674316,
+    -0.6550000309944153,
+    -4.445499882102013
+   ]
+  },
+  {
+   "id": "glass-door",
+   "label": "Glazed entry door",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "glass_door",
+   "bounds_min": [
+    -0.6790345357677106,
+    -1.5249999761581416,
+    0.5234578853710874
+   ],
+   "bounds_max": [
+    -0.5530075384357802,
+    0.975000023841858,
+    1.466148733510138
+   ]
+  },
+  {
+   "id": "ceiling-light-1",
+   "label": "Long ceiling strip light",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "ceiling_light_1",
+   "bounds_min": [
+    -0.10749999806284904,
+    1.5125000476837158,
+    -3.4500001072883606
+   ],
+   "bounds_max": [
+    -0.05249999836087227,
+    1.5475000478327274,
+    -1.8500000834465027
+   ],
+   "cutaway": "ceiling"
+  },
+  {
+   "id": "ceiling-light-2",
+   "label": "Second ceiling strip light",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "ceiling_light_2",
+   "bounds_min": [
+    1.9225000478327274,
+    1.5145000219345093,
+    -1.9549999237060547
+   ],
+   "bounds_max": [
+    1.9775000475347042,
+    1.5475000217556953,
+    -0.4049999713897705
+   ],
+   "cutaway": "ceiling"
+  },
+  {
+   "id": "ceiling-speaker",
+   "label": "Round ceiling speaker",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "ceiling_speaker",
+   "bounds_min": [
+    0.07000000774860382,
+    1.5169999599456787,
+    -3.260000094771385
+   ],
+   "bounds_max": [
+    0.2900000065565109,
+    1.5504999607801437,
+    -3.040000095963478
+   ],
+   "cutaway": "ceiling"
+  },
+  {
+   "id": "ceiling-sensor",
+   "label": "Small ceiling detector",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "ceiling_sensor",
+   "bounds_min": [
+    1.0275000520050526,
+    1.5180000066757202,
+    -3.172500114887953
+   ],
+   "bounds_max": [
+    1.1125000528991222,
+    1.5505000054836273,
+    -3.087500113993883
+   ],
+   "cutaway": "ceiling"
+  },
+  {
+   "id": "wall-alarm",
+   "label": "High wall-mounted sensor",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "wall_alarm",
+   "bounds_min": [
+    -0.5299999974668026,
+    0.8949999809265137,
+    -4.507999934256077
+   ],
+   "bounds_max": [
+    -0.4100000001490116,
+    0.9849999845027924,
+    -4.427999936044216
+   ]
+  },
+  {
+   "id": "touch-control",
+   "label": "Wall-mounted room control touchscreen",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "touch_control",
+   "bounds_min": [
+    2.761553567337478,
+    -0.22499999403953552,
+    -0.9055573522785697
+   ],
+   "bounds_max": [
+    2.802446562362229,
+    0.025000005960464478,
+    -0.7344426334163155
+   ]
+  },
+  {
+   "id": "thermostat",
+   "label": "Wall thermostat",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "thermostat",
+   "bounds_min": [
+    2.7670753118212925,
+    0.4099999964237213,
+    -0.6805664433789081
+   ],
+   "bounds_max": [
+    2.807924020606685,
+    0.5299999937415123,
+    -0.5393987761187725
+   ]
+  },
+  {
+   "id": "wall-control",
+   "label": "Adjacent wall control",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "wall_control",
+   "bounds_min": [
+    2.7719217845070467,
+    0.41999998688697815,
+    -0.4804855243278751
+   ],
+   "bounds_max": [
+    2.807077734841097,
+    0.5199999883770943,
+    -0.35947969993817713
+   ]
+  },
+  {
+   "id": "outlets",
+   "label": "Paired wall outlet plates",
+   "kind": "fixed",
+   "category": "outlet",
+   "node_name": "outlets",
+   "bounds_min": [
+    2.7772890927893643,
+    -0.8349999785423279,
+    -1.0503440696023654
+   ],
+   "bounds_max": [
+    2.8140099642174716,
+    -0.7049999833106995,
+    -0.7496107023931791
+   ]
+  },
+  {
+   "id": "side-outlet",
+   "label": "Low presentation-side outlet",
+   "kind": "fixed",
+   "category": "outlet",
+   "node_name": "side_outlet",
+   "bounds_min": [
+    2.745594145337599,
+    -1.1375000476837158,
+    -3.67540168203065
+   ],
+   "bounds_max": [
+    2.7710078939995593,
+    -1.0625000447034836,
+    -3.5647168215399065
+   ]
+  },
+  {
+   "id": "baseboard-right",
+   "label": "White side-wall baseboard",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "baseboard_right",
+   "bounds_min": [
+    2.6532915745003396,
+    -1.5295000076293943,
+    -4.498858193729864
+   ],
+   "bounds_max": [
+    2.9122172679679212,
+    -1.3800000101327894,
+    1.399365643833624
+   ]
+  },
+  {
+   "id": "baseboard-front",
+   "label": "Presentation-wall baseboard",
+   "kind": "fixed",
+   "category": "other",
+   "node_name": "baseboard_front",
+   "bounds_min": [
+    -0.7399911709525117,
+    -1.528499960899353,
+    -4.567476716071209
+   ],
+   "bounds_max": [
+    2.6595887966849334,
+    -1.3859999626874924,
+    -4.401030096978108
+   ]
+  }
+ ],
+ "hidden_nodes": [
+  "table_2",
+  "chair_4",
+  "chair_5",
+  "chair_6"
+ ],
+ "removed": [
+  {
+   "id": "table-2",
+   "label": "Middle round meeting table"
+  },
+  {
+   "id": "chair-4",
+   "label": "Blue chair by middle table"
+  },
+  {
+   "id": "chair-5",
+   "label": "Blue chair by middle table"
+  },
+  {
+   "id": "chair-6",
+   "label": "Blue chair near presentation wall"
+  }
+ ],
+ "additions": [
+  {
+   "id": "new-gullvalla",
+   "label": "Loveseat",
+   "category": "sofa",
+   "selection_id": "sel-gullvalla",
+   "asset": "ikea-gullvalla-40618509.usdz",
+   "position": [
+    -0.3027,
+    -1.5351,
+    -2.6602
+   ],
+   "yaw": 1.6055
+  },
+  {
+   "id": "new-herrakra",
+   "label": "Armchair",
+   "category": "armchair",
+   "selection_id": "sel-herrakra",
+   "asset": "ikea-herrakra-40535547.usdz",
+   "position": [
+    1.5793,
+    -1.5351,
+    -2.6942
+   ],
+   "yaw": -1.5361
+  },
+  {
+   "id": "new-flyghojd",
+   "label": "Floor lamp",
+   "category": "floor_lamp",
+   "selection_id": "sel-flyghojd",
+   "asset": "ikea-flyghojd-00543846.usdz",
+   "position": [
+    -0.4607,
+    -1.5351,
+    -1.6642
+   ],
+   "yaw": 1.6055
+  }
+ ],
+ "design": {
+  "design_id": "demo-sample-room-2-v1",
+  "room_id": "demo-sample-room-2",
+  "scene": {
+   "summary": "Swapped the middle meeting table for a soft-seating corner: a loveseat against the wall, an armchair facing it, and a floor lamp at the arm.",
+   "selections": {
+    "sel-gullvalla": {
+     "selection_id": "sel-gullvalla",
+     "title": "GULLVALLA Loveseat",
+     "variant_id": "40618509",
+     "variant": {
+      "title": "GULLVALLA Loveseat",
+      "variant_label": "Silkeryd gray-green",
+      "image_references": [
+       "ikea-gullvalla-40618509.jpg"
+      ]
+     },
+     "offer": {
+      "offer_id": "ikea-us-40618509",
+      "variant_id": "40618509",
+      "merchant": "IKEA",
+      "merchant_id": "ikea-us",
+      "price": "399.00",
+      "currency": "USD",
+      "product_url": "https://www.ikea.com/us/en/p/gullvalla-loveseat-silkeryd-gray-green-40618509/",
+      "checked_at": "2026-10-18T16:00:00Z"
+     },
+     "offers": [
+      {
+       "offer_id": "ikea-us-40618509",
+       "variant_id": "40618509",
+       "merchant": "IKEA",
+       "merchant_id": "ikea-us",
+       "price": "399.00",
+       "currency": "USD",
+       "product_url": "https://www.ikea.com/us/en/p/gullvalla-loveseat-silkeryd-gray-green-40618509/",
+       "checked_at": "2026-10-18T16:00:00Z"
+      }
+     ],
+     "dimensions": [
+      1.419,
+      0.829,
+      0.781
+     ],
+     "reason": "A soft two-seater against the wall turns the empty middle of the room into a place to talk, not just present.",
+     "dimension_evidence": {
+      "variant_id": "40618509",
+      "outcome": "verified",
+      "dimensions": [
+       1.419,
+       0.829,
+       0.781
+      ],
+      "source_url": "https://www.ikea.com/us/en/p/gullvalla-loveseat-silkeryd-gray-green-40618509/",
+      "verified_at": "2026-10-18T16:00:00Z",
+      "original_measurements": [
+       {
+        "axis": "width",
+        "label": "Width",
+        "value": "55 7/8\"",
+        "unit": ""
+       },
+       {
+        "axis": "depth",
+        "label": "Depth",
+        "value": "32 5/8\"",
+        "unit": ""
+       },
+       {
+        "axis": "height",
+        "label": "Height including back cushions",
+        "value": "30 3/4\"",
+        "unit": ""
+       }
+      ]
+     }
+    },
+    "sel-herrakra": {
+     "selection_id": "sel-herrakra",
+     "title": "HERRÅKRA Armchair",
+     "variant_id": "40535547",
+     "variant": {
+      "title": "HERRÅKRA Armchair",
+      "variant_label": "Diseröd dark yellow",
+      "image_references": [
+       "ikea-herrakra-40535547.jpg"
+      ]
+     },
+     "offer": {
+      "offer_id": "ikea-us-40535547",
+      "variant_id": "40535547",
+      "merchant": "IKEA",
+      "merchant_id": "ikea-us",
+      "price": "199.99",
+      "currency": "USD",
+      "product_url": "https://www.ikea.com/us/en/p/herrakra-armchair-diseroed-dark-yellow-40535547/",
+      "checked_at": "2026-10-18T16:00:00Z"
+     },
+     "offers": [
+      {
+       "offer_id": "ikea-us-40535547",
+       "variant_id": "40535547",
+       "merchant": "IKEA",
+       "merchant_id": "ikea-us",
+       "price": "199.99",
+       "currency": "USD",
+       "product_url": "https://www.ikea.com/us/en/p/herrakra-armchair-diseroed-dark-yellow-40535547/",
+       "checked_at": "2026-10-18T16:00:00Z"
+      }
+     ],
+     "dimensions": [
+      0.711,
+      0.66,
+      0.73
+     ],
+     "reason": "Faces the loveseat across about 1.2 m of open floor, close enough for conversation, and adds one warm colour to the blue chairs.",
+     "dimension_evidence": {
+      "variant_id": "40535547",
+      "outcome": "verified",
+      "dimensions": [
+       0.711,
+       0.66,
+       0.73
+      ],
+      "source_url": "https://www.ikea.com/us/en/p/herrakra-armchair-diseroed-dark-yellow-40535547/",
+      "verified_at": "2026-10-18T16:00:00Z",
+      "original_measurements": [
+       {
+        "axis": "width",
+        "label": "Width",
+        "value": "28\"",
+        "unit": ""
+       },
+       {
+        "axis": "depth",
+        "label": "Depth",
+        "value": "26\"",
+        "unit": ""
+       },
+       {
+        "axis": "height",
+        "label": "Height",
+        "value": "28 3/4\"",
+        "unit": ""
+       }
+      ]
+     }
+    },
+    "sel-flyghojd": {
+     "selection_id": "sel-flyghojd",
+     "title": "FLYGHÖJD Floor lamp",
+     "variant_id": "00543846",
+     "variant": {
+      "title": "FLYGHÖJD Floor lamp",
+      "variant_label": "Brass/green-gray",
+      "image_references": [
+       "ikea-flyghojd-00543846.jpg"
+      ]
+     },
+     "offer": {
+      "offer_id": "ikea-us-00543846",
+      "variant_id": "00543846",
+      "merchant": "IKEA",
+      "merchant_id": "ikea-us",
+      "price": "69.99",
+      "currency": "USD",
+      "product_url": "https://www.ikea.com/us/en/p/flyghoejd-floor-lamp-brass-green-gray-00543846/",
+      "checked_at": "2026-10-18T16:00:00Z"
+     },
+     "offers": [
+      {
+       "offer_id": "ikea-us-00543846",
+       "variant_id": "00543846",
+       "merchant": "IKEA",
+       "merchant_id": "ikea-us",
+       "price": "69.99",
+       "currency": "USD",
+       "product_url": "https://www.ikea.com/us/en/p/flyghoejd-floor-lamp-brass-green-gray-00543846/",
+       "checked_at": "2026-10-18T16:00:00Z"
+      }
+     ],
+     "dimensions": [
+      0.356,
+      0.356,
+      1.422
+     ],
+     "reason": "Softer light at the loveseat's arm, so the corner works without the overhead strips.",
+     "dimension_evidence": {
+      "variant_id": "00543846",
+      "outcome": "verified",
+      "dimensions": [
+       0.356,
+       0.356,
+       1.422
+      ],
+      "source_url": "https://www.ikea.com/us/en/p/flyghoejd-floor-lamp-brass-green-gray-00543846/",
+      "verified_at": "2026-10-18T16:00:00Z",
+      "original_measurements": [
+       {
+        "axis": "width",
+        "label": "Shade diameter",
+        "value": "14\"",
+        "unit": ""
+       },
+       {
+        "axis": "depth",
+        "label": "Base diameter",
+        "value": "9\"",
+        "unit": ""
+       },
+       {
+        "axis": "height",
+        "label": "Height",
+        "value": "56\"",
+        "unit": ""
+       }
+      ]
+     }
+    }
+   },
+   "purchase_summary": {
+    "currency": "USD",
+    "total": "668.98",
+    "lines": [
+     {
+      "offer_id": "ikea-us-40618509",
+      "offer": {
+       "offer_id": "ikea-us-40618509",
+       "variant_id": "40618509",
+       "merchant": "IKEA",
+       "merchant_id": "ikea-us",
+       "price": "399.00",
+       "currency": "USD",
+       "product_url": "https://www.ikea.com/us/en/p/gullvalla-loveseat-silkeryd-gray-green-40618509/",
+       "checked_at": "2026-10-18T16:00:00Z"
+      },
+      "purchased_pack_count": 1,
+      "supplied_unit_count": 1,
+      "paid_surplus_count": 0,
+      "line_total": "399.00"
+     },
+     {
+      "offer_id": "ikea-us-40535547",
+      "offer": {
+       "offer_id": "ikea-us-40535547",
+       "variant_id": "40535547",
+       "merchant": "IKEA",
+       "merchant_id": "ikea-us",
+       "price": "199.99",
+       "currency": "USD",
+       "product_url": "https://www.ikea.com/us/en/p/herrakra-armchair-diseroed-dark-yellow-40535547/",
+       "checked_at": "2026-10-18T16:00:00Z"
+      },
+      "purchased_pack_count": 1,
+      "supplied_unit_count": 1,
+      "paid_surplus_count": 0,
+      "line_total": "199.99"
+     },
+     {
+      "offer_id": "ikea-us-00543846",
+      "offer": {
+       "offer_id": "ikea-us-00543846",
+       "variant_id": "00543846",
+       "merchant": "IKEA",
+       "merchant_id": "ikea-us",
+       "price": "69.99",
+       "currency": "USD",
+       "product_url": "https://www.ikea.com/us/en/p/flyghoejd-floor-lamp-brass-green-gray-00543846/",
+       "checked_at": "2026-10-18T16:00:00Z"
+      },
+      "purchased_pack_count": 1,
+      "supplied_unit_count": 1,
+      "paid_surplus_count": 0,
+      "line_total": "69.99"
+     }
+    ]
+   }
+  }
+ }
+}
