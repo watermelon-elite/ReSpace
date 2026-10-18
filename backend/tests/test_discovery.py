@@ -174,6 +174,9 @@ def test_offer_refresh_does_not_substitute_merchant_without_user_choice(store):
     selected = products.verify_selection([choice], "500.00")[0]
     assert selected["offer_id"] == original_offer["offer_id"]
     assert selected["search_id"] == choice["search_id"]
+    assert selected["scores"] == choice["scores"]
+    assert selected["reasons"] == choice["reasons"]
+    assert selected["comparison_snapshot_id"] == choice["comparison_snapshot_id"]
 
 
 def test_private_search_cannot_resurrect_room_after_provider_returns(store):
@@ -217,6 +220,10 @@ def test_persisted_budget_proposal_uses_whole_room_checked_purchases(store):
                                       "No verified chair meets the required use within the ceiling", {"room_id": "r", "operation_id": "op"}, ["One chair supports the required reading activity"])
     assert proposal["new_ceiling"] == "100.00"
     assert store.get("budget_proposals", proposal["proposal_id"])["affected_purchases"][0]["placed_item_ids"] == ["i"]
+    assert proposal["room_id"] == "r"
+    with store.transaction():
+        store.delete_room_records("r")
+    assert store.get("budget_proposals", proposal["proposal_id"]) is None
 
 
 def test_reusable_candidates_do_not_retain_private_search_wording_after_deletion(store):
@@ -229,3 +236,63 @@ def test_reusable_candidates_do_not_retain_private_search_wording_after_deletion
     assert store.list("searches") == []
     reusable = [record for kind in ("candidates", "variants", "offers", "dimensions") for record in store.list(kind)]
     assert private not in json.dumps(reusable)
+    assert store.list("comparisons") == []
+
+
+def test_selection_refresh_with_production_guard_preserves_completed_search(store):
+    from respace.operations import OperationService
+
+    products, _, verifier = service(store, [[hit(1)], [], []])
+    with store.transaction():
+        store.put("rooms", "r", {"room_id": "r", "device_id": "device", "current_operation_id": None,
+                                 "planning_revision": 0, "active_revision": 0, "active_design_id": None})
+    operations = OperationService(store)
+    operations.submit("device", "r", "generation", {"operation_id": "source-operation"})
+    products.guard = lambda record: operations.guard(record.get("intended_context", {}).get("operation_id", record.get("operation_id")))
+    source = products.search({"room_id": "r", "category": "chair"}, "source-operation")
+    selected = source["displayed_choices"][0]
+    operations.finish("source-operation", "succeeded", {})
+    with store.transaction():
+        evidence = store.get("dimensions", selected["dimension_evidence"]["evidence_id"])
+        evidence["verified_at"] = (datetime.now(timezone.utc) - timedelta(days=8)).isoformat()
+        store.put("dimensions", evidence["evidence_id"], evidence)
+        offer = store.get("offers", selected["offer_id"])
+        offer["checked_at"] = (datetime.now(timezone.utc) - timedelta(days=2)).isoformat()
+        store.put("offers", offer["offer_id"], offer)
+
+    refreshed = products.verify_selection([selected], "500.00")[0]
+
+    assert len(verifier.calls) == 2
+    assert refreshed["search_id"] == source["search_id"]
+    assert refreshed["dimension_evidence"]["evidence_id"] != selected["dimension_evidence"]["evidence_id"]
+    assert store.get("offers", selected["offer_id"])["checked_at"] == refreshed["offer"]["checked_at"]
+    assert store.list("searches") == [source]
+
+
+def test_selection_price_refresh_reranks_both_sources_without_rewriting_original_basis(store):
+    products, _, verifier = service(store, [[hit(1), hit(2)], [], [], [hit(3), hit(4)], [], []])
+    products.search({"category": "chair", "room_id": "r"}, "initial-pool")
+    source = products.search({"category": "chair", "room_id": "r"}, "ranking-source")
+    assert len(source["source_shortlists"]["stored"]) == len(source["source_shortlists"]["live"]) == 2
+    selected = source["displayed_choices"][0]
+    original_comparison = store.get("comparisons", selected["comparison_snapshot_id"])
+    with store.transaction():
+        offer = store.get("offers", selected["offer_id"])
+        offer["checked_at"] = (datetime.now(timezone.utc) - timedelta(days=2)).isoformat()
+        store.put("offers", offer["offer_id"], offer)
+    original_verify = verifier.verify
+    def price_increased(candidate):
+        result = original_verify(candidate)
+        result["offers"][0]["price"] = "125.00"
+        return result
+    verifier.verify = price_increased
+
+    refreshed = products.verify_selection([selected], "500.00")[0]
+
+    assert refreshed["scores"]["value"] == 25
+    assert refreshed["reasons"]
+    assert refreshed["historical_ranking"]["scores"] == selected["scores"]
+    assert refreshed["comparison_snapshot_id"] != selected["comparison_snapshot_id"]
+    assert store.get("comparisons", refreshed["comparison_snapshot_id"])["sample_count"] == 4
+    assert store.get("comparisons", selected["comparison_snapshot_id"]) == original_comparison
+    assert products.get_search(source["search_id"]) == source

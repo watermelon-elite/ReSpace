@@ -79,4 +79,28 @@ final class ContractsTests: XCTestCase {
         XCTAssertEqual(recovered.body["expected_active_revision"].int, 4)
     }
 
+    func testFindMorePresentationRetainsSavedChoiceAndAppendsUnseenOptions() throws {
+        let selected = try fixture("api/roundtrip.json")["design"]["design"]["scene"]["selections"]["sel"]
+        func choice(_ variant: String, price: String = "60.00") -> JSONValue {
+            var fields = selected.object
+            fields["variant_id"] = .string(variant)
+            var offer = selected["offer"].object
+            offer["variant_id"] = .string(variant); offer["price"] = .string(price)
+            fields["offer"] = .object(offer)
+            var evidence = selected["dimension_evidence"].object
+            evidence["variant_id"] = .string(variant)
+            fields["dimension_evidence"] = .object(evidence)
+            return .object(fields)
+        }
+        let search: JSONValue = .object([
+            "prior_displayed_choices": .array([choice("prior1"), selected, choice("prior2")]),
+            "displayed_choices": .array([choice("new1"), choice("new2"), choice("new3"), choice("prior1"), choice("v", price: "99.00")])
+        ])
+        let choices = ProductOptions.choices(selected: selected, search: search)
+        XCTAssertEqual(choices.map { $0["variant_id"].text }, ["v", "prior1", "prior2", "new1", "new2", "new3"])
+        XCTAssertEqual(choices.first?["offer"]["price"].text, "50.00")
+        XCTAssertEqual(selected["offer"]["price"].text, "50.00")
+        XCTAssertEqual(ProductOptions.choices(selected: selected, search: .null), [selected])
+    }
+
 }

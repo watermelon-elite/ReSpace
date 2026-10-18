@@ -148,3 +148,43 @@ def test_deferred_pipeline_publishes_once_and_reopens_saved_transport(store):
     assert api.post(f'/v1/rooms/{room_id}/designs',json=generation).json()['operation']['outcome']['design_id']==design_id
     assert len(store.list('designs',room_id))==1
     assert api.get('/v1/designs/'+design_id).json()['design']==design
+
+
+def test_changed_artifact_identity_is_rejected_before_storage_write(api,store):
+    created=api.post('/v1/rooms',json={'operation_id':'create'}).json()
+    room_id,capture_id=created['room']['room_id'],created['capture_id']
+    responses=[]
+    for index,color in enumerate(('red','blue')):
+        buffer=BytesIO();Image.new('RGB',(8,6),color=color).save(buffer,'JPEG');jpeg=buffer.getvalue()
+        frame=f'frame{index}'
+        meta={'schema_version':1,'operation_id':f'upload{index}','capture_id':capture_id,'frame_id':frame,'idx':index,'w':8,'h':6,'orientation':'sensor_landscape','intrinsics':{'fx':10,'fy':10,'cx':4,'cy':3},'transform':[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],'timestamp':index+1.5,'artifacts':[descriptor('same-artifact',capture_id,'jpeg',jpeg,frame)]}
+        responses.append(api.post(f'/v1/rooms/{room_id}/keyframes',data={'meta':json.dumps(meta)},files={'jpeg':('frame.jpg',jpeg,'image/jpeg')}))
+    assert responses[0].status_code==200
+    assert responses[1].status_code==409
+    assert responses[1].json()['error']['code']=='artifact_identity_conflict'
+    assert len(store.list('keyframes',room_id))==1
+    assert store.get('artifacts','same-artifact')['descriptor']['frame_id']=='frame0'
+
+
+def test_find_more_exposes_durable_native_search_reference_without_changing_design(store):
+    from test_discovery import Shopping,Verifier,Ranker,hit
+    from respace.discovery import ProductService
+    test_deferred_pipeline_publishes_once_and_reopens_saved_transport(store)
+    room=store.list('rooms')[0]
+    original=store.get('designs',room['active_design_id'])
+    item=next(item for item in original['scene']['items'] if item['origin']=='new')
+    shopping=Shopping([[hit(1),hit(2),hit(3)],[],[]])
+    products=ProductService(store,shopping,Verifier(shopping),Ranker())
+    api=TestClient(create_app(store,MemoryStorage(),products,QuestionModel(),lambda *args:None),headers={'X-Device-Id':'device'})
+    request={'operation_id':'more','item_id':item['id'],'expected_active_design_id':original['design_id'],'expected_active_revision':room['active_revision']}
+    response=api.post('/v1/designs/'+original['design_id']+'/find-more',json=request)
+    assert response.status_code==202,response.text
+    operation=api.get('/v1/operations/more').json()['operation']
+    assert operation['state']=='succeeded',operation
+    reference=api.get('/v1/rooms/'+room['room_id']).json()['product_searches'][0]
+    assert reference['search_id']==operation['outcome']['search_id']
+    assert reference['item_id']==item['id'] and reference['design_id']==original['design_id']
+    choices=api.get('/v1/searches/'+reference['search_id']).json()['search']['displayed_choices']
+    assert len(choices)==3 and all(choice['variant_id']!=item['variant_id'] for choice in choices)
+    assert api.get('/v1/designs/'+original['design_id']).json()['design']==original
+    assert api.post('/v1/designs/'+original['design_id']+'/find-more',json=request).json()['operation']['outcome']['search_id']==reference['search_id']

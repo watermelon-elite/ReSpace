@@ -123,6 +123,7 @@ class OperationService:
             require(question is not None,'stale_question','There is no pending question.')
             require(request.get('operation_id',operation_id)==operation_id and request['question_id']==question['question_id'] and request['expected_decision_revision']==operation['decision_revision'] and request['expected_question_revision']==question['question_revision'],'stale_question','The question or decision revision changed.')
             action=request.get('action','answer')
+            require(request.get('budget_approval') is None or (question['kind']=='budget' and action=='answer'),'unexpected_budget_approval','Budget approval belongs only to an explicit pending budget question.',422)
             require(action in {'answer','skip','delegate'},'invalid_answer','Unknown answer action.',422)
             if action!='answer':
                 require(question.get('allow_'+('skip' if action=='skip' else 'delegate')) and question['kind']!='budget','constraint_approval_required','This question requires an explicit answer.')

@@ -17,6 +17,8 @@ struct DesignView: View {
     @State private var sheet = true
     @State private var error: String?
     @State private var selectedProduct: JSONValue?
+    @State private var selectedProductItemID: String?
+    @State private var productSearches: [String: String] = [:]
     var scene: JSONValue { design["scene"] }
     var locked: Bool { room["current_operation_id"].string != nil || app.pending.contains { $0.roomID == roomID } }
     var selectedItem: JSONValue { scene["items"].array.first { ($0["id"].string ?? $0["item_id"].string) == selectedID } ?? .null }
@@ -61,7 +63,7 @@ struct DesignView: View {
             .presentationDetents([.height(170), .medium, .large], selection: $detent)
             .presentationBackgroundInteraction(.enabled(upThrough: .medium))
             .interactiveDismissDisabled()
-            .sheet(item: $selectedProduct) { ProductDetail(app: app, product: $0) }
+            .sheet(item: $selectedProduct) { ProductDetail(app: app, product: $0, searchID: selectedProductItemID.flatMap { productSearches[$0] }) }
         }
         .task { text = UserDefaults.standard.string(forKey: "design_draft_\(roomID)") ?? ""; await load(initial: true) }
         .onChange(of: text) { _, value in UserDefaults.standard.set(value, forKey: "design_draft_\(roomID)") }
@@ -83,7 +85,7 @@ struct DesignView: View {
             Text(item["reason"].text)
             if let placement = try? Placement(item["placement"]) { Text(String(format: "%.2f × %.2f × %.2f m · %@", placement.size[0], placement.size[1], placement.size[2], placement.mount)).font(.caption) }
             Text("Representative geometry · saved placement validated").font(.caption).foregroundStyle(.secondary)
-            if product != .null { ProductSummary(product: product); Button("Product evidence and options") { selectedProduct = product } }
+            if product != .null { ProductSummary(product: product); Button("Product evidence and options") { selectedProductItemID = id; selectedProduct = product } }
             HStack { Button("Remove") { Task { await mutate("designs/\(design["design_id"].text)/remove", body: ["item_id": .string(id)]) } }.disabled(locked || item["status"].text == "removed"); if product != .null { Button("Find more") { Task { await mutate("designs/\(design["design_id"].text)/find-more", body: ["item_id": .string(id)]) } }.disabled(locked) } }
         }.padding().background(selectedID == id ? Color.accentColor.opacity(0.1) : Color.secondary.opacity(0.06)).clipShape(RoundedRectangle(cornerRadius: 12))
     }
@@ -94,6 +96,11 @@ struct DesignView: View {
             let id = initial ? designID : room["active_design_id"].string ?? designID
             let envelope = try await client.request("designs/\(id)")
             design = try SavedDesign(envelope: envelope).value
+            var searches: [String: String] = [:]
+            for reference in detail["product_searches"].array where reference["design_id"].text == id {
+                if let itemID = reference["item_id"].string, let searchID = reference["search_id"].string { searches[itemID] = searchID }
+            }
+            productSearches = searches
             if let selectedID, !scene["items"].array.contains(where: { ($0["id"].string ?? $0["item_id"].string) == selectedID && $0["status"].text != "removed" }) { self.selectedID = nil }
             entries = try await client.request("rooms/\(roomID)/conversation")["entries"].array
             if detail["current_operation"] != .null { operation = detail["current_operation"] }
@@ -130,18 +137,14 @@ struct ProductSummary: View {
 struct ProductDetail: View {
     let app: AppModel
     let product: JSONValue
+    let searchID: String?
     @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
     @State private var search: JSONValue = .null
     @State private var error: String?
     var offer: JSONValue { product["offer"] }
-    var choices: [JSONValue] {
-        var seen = Set<String>()
-        return ([product] + search["displayed_choices"].array + search["prior_displayed_choices"].array).filter { value in
-            guard (try? ProductChoice(value)) != nil else { return false }
-            return seen.insert(value["variant_id"].text).inserted
-        }
-    }
+    var choices: [JSONValue] { ProductOptions.choices(selected: product, search: search) }
+    var effectiveSearchID: String? { searchID ?? product["search_id"].string }
     var body: some View {
         NavigationStack { List {
             ProductSummary(product: product)
@@ -168,7 +171,7 @@ struct ProductDetail: View {
             if !product["offers"].array.isEmpty { Section("Merchant offers for this exact variant") { ForEach(product["offers"].array, id: \.self) { offer in VStack(alignment: .leading) { Text("\(offer["merchant"].text) · USD \(offer["price"].text)"); if let url = URL(string: offer["product_url"].text), ["http", "https"].contains(url.scheme ?? "") { Link("Open exact offer", destination: url) } } } } }
             Section("Eligible options") {
                 Text("Selected identity is separate from rank. Fewer than three verified options may be available.").font(.caption)
-                ForEach(Array(choices.prefix(3)), id: \.self) { choice in VStack(alignment: .leading) {
+                ForEach(choices, id: \.self) { choice in VStack(alignment: .leading) {
                     ProductSummary(product: choice)
                     Text(choice["variant_id"].text == product["variant_id"].text ? "Selected · saved evidence" : "Alternative · placement fit pending").font(.caption)
                     if choice["variant_id"].text != product["variant_id"].text { NavigationLink("Inspect option evidence") { OptionEvidence(choice: choice) } }
@@ -176,7 +179,16 @@ struct ProductDetail: View {
                 if let error { Text(error).foregroundStyle(.secondary) }
             }
         }.navigationTitle("Product details").toolbar { Button("Done") { dismiss() } } }
-        .task { if let id = product["search_id"].string, let client = app.client { do { search = try await client.request("searches/\(id)")["search"] } catch { self.error = "Current alternatives unavailable: \(error.localizedDescription). Saved selection retained." } } }
+        .task(id: effectiveSearchID) {
+            search = .null; error = nil
+            if let id = effectiveSearchID, let client = app.client {
+                do {
+                    let result = try await client.request("searches/\(id)")["search"]
+                    if !Task.isCancelled, id == effectiveSearchID { search = result }
+                }
+                catch { if !Task.isCancelled { self.error = "Current alternatives unavailable: \(error.localizedDescription). Saved selection retained." } }
+            }
+        }
     }
 }
 

@@ -162,3 +162,13 @@ public enum SceneItems {
         scene["items"].array.filter { $0["status"].text != "removed" || ($0["origin"].text == "existing" && showGhosts) }
     }
 }
+
+public enum ProductOptions {
+    public static func choices(selected: JSONValue, search: JSONValue) -> [JSONValue] {
+        var seen = Set<String>()
+        return ([selected] + search["prior_displayed_choices"].array + search["displayed_choices"].array).filter { choice in
+            guard (try? ProductChoice(choice)) != nil else { return false }
+            return seen.insert(choice["variant_id"].text).inserted
+        }
+    }
+}

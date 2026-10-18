@@ -366,7 +366,7 @@ class ProductService:
                 "offer": deepcopy(offer), "features": variant.get("features", {}), "source": candidate["source"],
                 "candidate_id": candidate["candidate_id"], "render": render_descriptor(variant["category"], variant["variant_id"])}
 
-    def _verify(self, candidate: dict, search: dict) -> list[dict]:
+    def _verify(self, candidate: dict, search: dict, *, persist_search: bool = True) -> list[dict]:
         candidate_id = candidate["candidate_id"]
         if candidate_id in search["attempted_candidates"]:
             return self._reuse(candidate)
@@ -412,7 +412,8 @@ class ProductService:
         candidate["eligibility"] = "eligible" if not candidate["missing_fields"] else "rejected"
         candidate["rejection_reasons"] = list(dict.fromkeys(candidate["rejection_reasons"]))
         self._put("candidates", candidate_id, candidate)
-        self._put("searches", search["search_id"], search)
+        if persist_search:
+            self._put("searches", search["search_id"], search)
         return choices
 
     def search(self, request: dict, operation_id: str) -> dict:
@@ -484,6 +485,7 @@ class ProductService:
                 choice.update(self.ranker.score(choice, request))
         while pending:
             provisional, comparison = rank_choices(choices + [c for group in pending.values() for c in group], request, allow_stale_offers=True)
+            comparison["room_id"] = search.get("room_id")
             self._put("comparisons", comparison["snapshot_id"], comparison)
             search["comparison_snapshots"].append(comparison["snapshot_id"])
             eligible = [c for c in provisional if choice_eligible(c, request)]
@@ -503,6 +505,7 @@ class ProductService:
         ranked, comparison = rank_choices(choices, request)
         for choice in ranked:
             choice["search_id"] = search_id
+        comparison["room_id"] = search.get("room_id")
         self._put("comparisons", comparison["snapshot_id"], comparison)
         search["comparison_snapshots"].append(comparison["snapshot_id"])
         for source in ("stored", "live"):
@@ -562,11 +565,11 @@ class ProductService:
             candidate = self.store.get("candidates", selected["candidate_id"])
             if candidate is None:
                 raise ProductError("unverified_selection", "Selected Product candidate is not retained")
-            search = {"search_id": stable_id("selection_check", selected), "attempted_candidates": []}
+            search: dict = {"attempted_candidates": []}
             current = self._reuse(candidate)
             constraints = {"approved_ceiling": approved_ceiling, "quantity": selected.get("quantity", 1)}
             if not any(c["offer_id"] == selected["offer_id"] and choice_eligible(c, constraints) for c in current):
-                current = self._verify(candidate, search)
+                current = self._verify(candidate, search, persist_search=False)
             eligible = [c for c in current if c["variant_id"] == selected["variant_id"] and c["offer_id"] == selected["offer_id"]
                         and choice_eligible(c, constraints)]
             if not eligible:
@@ -579,8 +582,51 @@ class ProductService:
             for field in ("search_id", "must_have", "explicit_choice", "requirements_text"):
                 if field in selected:
                     chosen[field] = deepcopy(selected[field])
+            self._selection_ranking(selected, chosen, approved_ceiling)
             verified.append(chosen)
         return verified
+
+    def _selection_ranking(self, selected: dict, chosen: dict, approved_ceiling: str):
+        ranking_fields = ("scores", "reasons", "comparison_snapshot_id", "rule_version", "uncertainty",
+                          "practical_score", "style_score", "practical_reason", "style_reason")
+        basis = {key: deepcopy(selected[key]) for key in ranking_fields if key in selected}
+        chosen.update(basis)
+        changed = (any(selected.get("offer", {}).get(key) != chosen["offer"].get(key)
+                       for key in ("price", "currency", "pack_contents"))
+                   or any(selected.get(key) != chosen.get(key) for key in ("dimensions", "features")))
+        if not changed or not basis:
+            return
+        chosen["historical_ranking"] = {**basis, "evidence_status": "historical"}
+        chosen["scoring_evidence_status"] = "historical"
+        chosen["uncertainty"] = "Historical ranking; purchase evidence changed and its comparison requires refresh"
+        source = self.store.get("searches", selected.get("search_id"))
+        benchmark = self.store.get("comparisons", selected.get("comparison_snapshot_id"))
+        if not source or not benchmark:
+            return
+        request = {**benchmark["context"], "approved_ceiling": approved_ceiling, "quantity": selected.get("quantity", 1)}
+        current = []
+        for prior in [c for group in source["source_shortlists"].values() for c in group]:
+            if prior["variant_id"] == selected["variant_id"]:
+                continue
+            candidate = self.store.get("candidates", prior["candidate_id"])
+            if candidate is None:
+                continue
+            for choice in self._reuse(candidate):
+                if choice["variant_id"] == prior["variant_id"]:
+                    choice.update({key: deepcopy(prior[key]) for key in ranking_fields if key in prior})
+                    if any(choice.get(key) != prior.get(key) for key in ("dimensions", "features")):
+                        choice.update(self.ranker.score(choice, request))
+                    current.append(choice)
+        if any(chosen.get(key) != selected.get(key) for key in ("dimensions", "features")):
+            chosen.update(self.ranker.score(chosen, request))
+        ranked, comparison = rank_choices([*current, chosen], request)
+        refreshed = next((choice for choice in ranked if choice["variant_id"] == chosen["variant_id"]), None)
+        if refreshed is None:
+            raise ProductError("no_verified_match", "Refreshed Product evidence no longer meets the selection requirements")
+        comparison["room_id"] = source.get("room_id")
+        self._put("comparisons", comparison["snapshot_id"], comparison)
+        chosen.update({key: deepcopy(refreshed[key]) for key in ranking_fields if key in refreshed})
+        chosen["scoring_evidence_status"] = "current"
 
     def propose_budget(self, old_ceiling: str, items: list[dict], offers: dict[str, dict],
                        alternatives: list[dict], reason: str, context: dict,

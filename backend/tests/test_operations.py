@@ -75,3 +75,14 @@ def test_budget_approval_is_exact_and_skip_does_not_authorize_money(store):
     with pytest.raises(DomainError): service.answer('device','op',request)
     with pytest.raises(DomainError): service.answer('device','op',{**request,'action':'answer','budget_approval':{**proposal,'new_ceiling':'200.00'}})
     assert service.answer('device','op',{**request,'action':'answer','budget_approval':proposal})['state']=='queued'
+
+
+def test_ordinary_answer_cannot_smuggle_budget_approval(store):
+    room(store)
+    service=OperationService(store)
+    service.submit('device','room','generation',{'operation_id':'op','capture_id':'capture','planning_revision':0,'expected_active_revision':0,'budget':'100.00'})
+    question=service.ask('op',{'kind':'single_choice','text':'Which style?','choices':[{'choice_id':'minimal','label':'Minimal'}]})
+    request={'operation_id':'op','question_id':question['question_id'],'reply_id':'reply','expected_decision_revision':0,'expected_question_revision':1,'action':'answer','choice_ids':['minimal'],'budget_approval':{'new_ceiling':'999999.00'}}
+    with pytest.raises(DomainError) as error: service.answer('device','op',request)
+    assert error.value.code=='unexpected_budget_approval'
+    assert service.get('device','op')['answer_history']==[]

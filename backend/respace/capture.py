@@ -56,7 +56,12 @@ class CaptureService:
         room=self.operations.room(device_id,room_id)
         capture=self.store.get('captures',room['latest_capture_id'])
         op=self.store.get('operations',room.get('current_operation_id')) if room.get('current_operation_id') else None
-        return {'schema_version':1,'room':self.summary(room),'capture_status':capture,'measured_context':capture.get('measured_context'),'raw_export':capture.get('raw_export'),'planning':self.store.get('planning',room_id),'current_operation':op}
+        latest_searches={}
+        for search in sorted(self.store.list('searches',room_id),key=lambda search:search.get('completed_at','')):
+            context=search.get('intended_context',{})
+            if search.get('state') in {'completed','no_match'} and context.get('design_id')==room.get('active_design_id') and context.get('item_id'):
+                latest_searches[context['item_id']]={'search_id':search['search_id'],'design_id':context['design_id'],'item_id':context['item_id'],'completed_at':search.get('completed_at')}
+        return {'schema_version':1,'product_searches':list(latest_searches.values()),'room':self.summary(room),'capture_status':capture,'measured_context':capture.get('measured_context'),'raw_export':capture.get('raw_export'),'planning':self.store.get('planning',room_id),'current_operation':op}
 
     def rename(self, device_id, room_id, request):
         with self.store.transaction():
@@ -76,7 +81,12 @@ class CaptureService:
             prior=self._receipt(device_id,meta['operation_id'],meta,room_id)
             descriptors={d['kind']:d for d in meta['artifacts']}
             require(set(parts)==set(descriptors),'invalid_artifact','Artifact descriptors must match the supplied parts.',422)
-            for kind,data in parts.items(): self.validate_descriptor(descriptors[kind],data,meta['capture_id'])
+            require(len({d['artifact_id'] for d in meta['artifacts']})==len(parts),'artifact_identity_conflict','Each artifact requires its own identity.',409)
+            for kind,data in parts.items():
+                descriptor=descriptors[kind]
+                self.validate_descriptor(descriptor,data,meta['capture_id'])
+                existing=self.store.get('artifacts',descriptor['artifact_id'])
+                require(existing is None or (existing['room_id']==room_id and existing['capture_id']==meta['capture_id'] and existing['descriptor']==descriptor),'artifact_identity_conflict','Artifact identity already belongs to different evidence.',409)
             if prior: return prior['response']
             capture=self.store.get('captures',meta['capture_id'])
             require(capture['state']!='complete','capture_finalized','No new frames may change a completed capture.')

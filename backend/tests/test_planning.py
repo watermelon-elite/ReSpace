@@ -43,3 +43,20 @@ async def test_unrecognized_model_actions_fail_without_executing_any_tool(store)
     await controller.run('op')
     assert ops.get('device','op')['state']=='failed'
     assert store.list('designs','room')==[]
+
+
+def test_budget_proposal_verifies_evidence_above_old_ceiling_without_approving_it(store):
+    from test_discovery import service,hit
+    products,_,_=service(store,[[hit(1)],[],[]])
+    known=products.search({'category':'chair','room_id':'r'},'initial')['displayed_choices'][0]
+    room(store,'r')
+    operations=OperationService(store)
+    operation=operations.submit('device','r','generation',{'operation_id':'op','capture_id':'capture','planning_revision':0,'expected_active_revision':0,'budget':'90.00'})
+    operation['controller']={'initial_products':{'displayed_choices':[known]},'actions':[]}
+    with store.transaction(): store.put('operations','op',operation)
+    controller=PlanningController(store,operations,products,None,None)
+    question=controller._verified_question(operation,{'kind':'budget','text':'Approve the verified required chair?','proposed_selected':[{'variant_id':known['variant_id'],'offer_id':known['offer_id'],'quantity':1}],'alternative_sets':[],'functional_consequences':['Adds one required chair'],'reason':'No verified required chair was found within this ceiling'})
+    assert question['budget_proposal']['old_ceiling']=='90.00'
+    assert question['budget_proposal']['new_ceiling']=='100.00'
+    assert controller.approved_budget(operations.get('device','op'))=='90.00'
+    assert store.get('budget_proposals',question['budget_proposal']['proposal_id'])==question['budget_proposal']

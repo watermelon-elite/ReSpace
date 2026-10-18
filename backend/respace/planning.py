@@ -167,7 +167,7 @@ class PlanningController:
         budget=operation['request']['budget']
         for answer in operation['answer_history']:
             approval=answer['request'].get('budget_approval')
-            if approval: budget=approval['new_ceiling']
+            if approval and answer['question']['kind']=='budget' and answer['request'].get('action','answer')=='answer': budget=approval['new_ceiling']
         return budget
 
     @staticmethod
@@ -188,7 +188,10 @@ class PlanningController:
                 choice['image_url']=next(iter(record.get('variant',{}).get('image_references',[])),None)
         if question.get('kind')=='budget':
             def purchase_inputs(selected):
-                verified=self.products.verify_selection(self._resolve_selected(operation,{'selected':selected}),self.approved_budget(operation))
+                resolved=self._resolve_selected(operation,{'selected':selected})
+                from .products import amount
+                verification_ceiling=amount(max(money(self.approved_budget(operation)),sum((money(record['offer']['price'],positive=True)*record['quantity'] for record in resolved),start=money('0.00'))))
+                verified=self.products.verify_selection(resolved,verification_ceiling)
                 items=[{'id':f"i_{record['selection_id']}_{unit}",'origin':'new','status':'new','variant_id':record['variant_id'],'offer_id':record['offer_id']} for record in verified for unit in range(record['quantity'])]
                 return {'items':items,'offers':{record['offer_id']:record['offer'] for record in verified}}
             if question.get('proposal_id'):
