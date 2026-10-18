@@ -208,6 +208,9 @@ def process_walkthrough(folder:Path,revision:int,inventory_fn=automatic_inventor
     bundle=SceneBundle(capture_id=manifest.capture_id,scene_id=stable_id("scene",manifest.capture_id),
         reconstruction_revision=revision,entities=entities,materials=materials,navigation=navigation,ready=True)
     merge_scene(bundle,output)
+    from .usdz import export_usdz
+    progress("exporting_usdz")
+    usdz_filename=export_usdz(output/"model.obj")
     atomic_json(output/"scene.json",bundle.model_dump())
     names={p.name for p in output.iterdir() if p.is_file()}
     bundle.validate_files(output,names)
@@ -215,6 +218,7 @@ def process_walkthrough(folder:Path,revision:int,inventory_fn=automatic_inventor
     if len(assets)>512 or any(a["byte_length"]>128*1024**2 for a in assets) or sum(a["byte_length"] for a in assets)>512*1024**2:
         raise RuntimeError("The finished room exceeds the mobile asset budget; reduce export detail")
     result={"revision":revision,"status":"succeeded","model_filename":"model.obj","scene_filename":"scene.json",
+        "usdz_filename":usdz_filename,
         "scene_schema_version":2,"assets":assets,"needs_review":False,"error":None,
         "coordinate_system":"arkit_scan_meters_y_up","quality_filename":"quality.json"}
     atomic_json(output/"completion.json",result)

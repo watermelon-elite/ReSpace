@@ -38,7 +38,9 @@ To insert an item, add a uniquely identified entity using a registered category,
 asset/node name, footprint center, base elevation, yaw, oriented size, mount,
 permanence and collision class. Use `mount: tabletop` and `support_id` for an
 object resting on another object, or `mount: wall` and `wall_id`
-for a wall-mounted object. Test its oriented footprint and vertical interval
+for a wall-mounted object. An inset sink uses `mount: inset`, `support_id` for
+its countertop, and `collision_class: tabletop`; its vertical span crosses the
+support plane rather than starting there. Test its oriented footprint and vertical interval
 against other entities, wall protrusions, room boundaries and keep-clear zones.
 An axis-aligned scene box is not the placement footprint.
 
@@ -50,6 +52,11 @@ direction gives inward normal `[-dz, dx] / length`. Opening `offset` is
 measured to the nearer **edge**, not the center. Structural opening records are
 derived from RoomPlan, including unmodeled empty doorways; `node_name` may be null
 for a void with no corresponding mesh node.
+The exporter orders walls end to start in one counterclockwise loop. Both joins
+and the wall loop's agreement with the floor boundary must be within 2 cm.
+Door widths remain measured widths; an opening outside its wall is rejected
+rather than shortened. Missing measured doors remain missing; no guessed door
+position, width or keep-clear region is added.
 
 Door/open doorway keep-clear regions extend 1.2 m inward, with 0.45 m to either
 side, clipped to the floor. Attached fixed entities have per-part wall protrusion
@@ -64,13 +71,33 @@ solver itself is not in this checkout.
 
 Usable tops come from horizontal faces of the exported semantic geometry, not
 the axis-aligned box top or a photographic guess. Narrow upstand tops are omitted;
-parts crossing the work plane are removed from the usable footprint. `holes`
-records any excluded interior regions. `clearance_above` is the conservative
-minimum space over the remaining footprint, limited by another model surface or
-the ceiling; `clearance_limited_by` names it. Missing surfaces remain `[]` rather
-than inventing a worktop. These are dimensions of the generated model, not a
-survey of the real surface. Multi-level, sloped and disconnected floors remain
-outside the reconstruction contract.
+an object's own parts crossing the work plane and inset sink footprints are
+removed. `holes` records excluded interior regions. The sink keeps its own node,
+asset and identity. Ordinary occupants retain their collision geometry without
+deleting the surface that supports them.
+
+Each top is partitioned wherever the lowest overhead limiter changes. A stretch
+under an upper cabinet or light therefore has its own headroom, while an uncovered
+stretch is limited by the ceiling. `clearance_above` is always numeric and
+`clearance_limited_by` always identifies the limiter. A fully occupied region can
+have zero headroom; its physical support contact remains valid, but a new item
+cannot fit there. Missing surfaces remain `[]` rather than inventing a worktop.
+These are dimensions of the generated model, not a survey of the real surface.
+Multi-level, sloped and disconnected floors remain outside the reconstruction contract.
+
+A separately modeled installed countertop resting on floor-standing cabinets or
+appliances also produces one logical `category: counter` support run. It has
+`node_name: null`, `asset: null`, explicit `member_ids`, `mount: floor`, and
+`collision_class: none`. Its bottom-centered bounds enclose those physical members,
+and its surfaces come from the real countertop, including partitioned headroom
+and sink holes. Appliances resting on the countertop reference the run through
+`support_id`. The countertop itself references a real supporting member; inset
+sinks also reference the run. Cabinets, dishwasher and countertop retain their
+own records, nodes and collision geometry. Consumers must skip the logical run
+when loading meshes or testing collisions; its members provide the geometry.
+Groups cannot nest or refer back to themselves, and their bounds and surfaces
+are checked against their members. A complete counter already modeled as one
+floor-standing entity needs no additional run.
 
 ## Categories and permanence
 
@@ -83,9 +110,10 @@ television → `tv`. Unconfirmed identities such as kettles, faucets, grills,
 thermostats, sensors and microwaves use `category: other`, retain their descriptive
 `label`, and have a required `collision_class`: `floor`, `wall`, `tabletop`,
 `ceiling` or `none`. New appliance/electronics category IDs are not invented.
-Mounts use `floor`, `wall`, `tabletop` or `ceiling`. Collision classes normally
-match the mount; rugs use `none` so they can lie underneath furniture. A tabletop
-item must reference another entity with `support_id`.
+Mounts use `floor`, `wall`, `tabletop`, `inset` or `ceiling`. Collision classes
+normally match the mount; inset fixtures use `tabletop`, logical support groups
+and rugs use `none`. Tabletop and inset items must reference another entity
+with `support_id`.
 
 `fixed_in_place` means permanent installation. It is independent of keeping a
 movable item fixed for a particular placement calculation. Wall-mounted items
@@ -96,11 +124,26 @@ does not require an invented wall reference. Generated objects use
 ## Validation and compatibility
 
 Use `respace_reconstruction.room_document.load_room(directory)` to load a result.
-It validates schema, references, categories, closed winding, wall normals, rigid
-transforms, support requirements, openings and zones, then compares actual local
+It requires explicit `node_pivot: bottom_center` and validates schema, references,
+categories, closed winding, wall topology/normals, rigid transforms, support
+requirements, openings and zones, then compares actual local
 OBJ vertices and native node transforms with the JSON. Center, base elevation, pivot and size
 must agree within 1 cm and yaw within 1°. The schema is exported alongside every
 room so consumers can validate before placement.
+
+Floor-mounted entities start within 2 cm of the floor; ceiling-mounted entities
+end within 2 cm of the ceiling, including modeled suspension attachments. A
+tabletop entity's base must be within 2 cm of a support surface and overlap it
+in X/Z. Inset entities instead cross their support plane. Support references
+must exist and be acyclic. Missing support references are inferred only from
+actual horizontal surface contacts; floating geometry is rejected without moving
+the captured object. Inventory contacts are checked before spending on detail
+generation, and detailed objects retain their vertical bounds within 2 cm.
+
+External readers need to accept the nullable asset/node fields for explicit
+support groups, `member_ids`, and the `inset` mount. Previously generated v2
+files can fail the stronger topology or contact checks; regenerate a revision
+to obtain the updated export. Existing result files are not migrated in place.
 
 The proposal references sections and files from another checkout: this repository's
 current `SPEC.md` calls its room contract §6 and does not contain the referenced

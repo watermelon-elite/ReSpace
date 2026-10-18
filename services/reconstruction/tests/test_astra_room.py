@@ -89,11 +89,17 @@ def test_full_generation_is_default_and_assets_are_atomic_reusable_and_navigable
     monkeypatch.setattr(pipeline, "refine_and_texture", lambda *args: pytest.fail("OpenMVS ran"))
     result = pipeline.process(tmp_path, 1)
     output = tmp_path/"results/1"
+    from pxr import Usd, UsdGeom
+    from respace_reconstruction.obj import read_obj
+    assert result["usdz_filename"] == "model.usdz"
+    packaged = Usd.Stage.Open(str(output/result["usdz_filename"]))
+    assert len(UsdGeom.Mesh(packaged.GetPrimAtPath("/Room/Scan")).GetFaceVertexCountsAttr().Get()) == len(read_obj(output/"model.obj").faces)
     bundle = SceneBundle.model_validate_json((output/"scene.json").read_text())
     bundle.validate_files(output, {a["filename"] for a in result["assets"]})
     assert bundle.ready and result["generation_model"] == "gpt-6-sol"
     assert {e.kind for e in bundle.entities} >= {"floor", "ceiling", "wall", "furniture"}
     assert all(digest(output/a["filename"]) == a["sha256"] for a in result["assets"])
+    assert any(a["filename"] == "model.usdz" for a in result["assets"])
     assert not (tmp_path/"results/1.building").exists()
     assert pipeline.process(tmp_path, 1) == result
     assert pipeline.process(tmp_path, 2)["scene_schema_version"] == 2
@@ -139,6 +145,19 @@ def test_invalid_or_incomplete_model_never_publishes(tmp_path, monkeypatch, faul
     assert not (tmp_path/"results/1").exists()
     assert not (tmp_path/"results/1.building").exists()
     assert (tmp_path/"work/astra-room-rejected.json").exists()
+
+
+def test_usdz_export_failure_does_not_publish_an_incomplete_room(tmp_path, monkeypatch):
+    room_capture(tmp_path)
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setattr(astra, "call_astra", lambda *args: response())
+    def fail_export(*args):
+        raise ValueError("Missing USDZ texture")
+    monkeypatch.setattr("respace_reconstruction.usdz.export_usdz", fail_export)
+    with pytest.raises(ValueError, match="Missing USDZ texture"):
+        astra_room.process_astra_room(tmp_path, 1)
+    assert not (tmp_path/"results/1").exists()
+    assert not (tmp_path/"results/1.building").exists()
 
 
 def test_unknown_billing_outcome_blocks_automatic_repayment(tmp_path, monkeypatch):
@@ -269,7 +288,7 @@ def test_ceiling_fixtures_do_not_make_entire_floor_unwalkable(tmp_path, monkeypa
     data = room_plan()
     entity = data["entities"][0]
     entity.update(id="ceiling-light", label="Ceiling light", kind="fixed", category="lighting_fixture")
-    entity["parts"] = [box([0., 2.3, 0.], [3.5, .1, 3.5])]
+    entity["parts"] = [box([0., 2.45, 0.], [3.5, .1, 3.5])]
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
     monkeypatch.setattr(astra, "call_astra", lambda *args: response(data))
     assert astra_room.process_astra_room(tmp_path, 1)["status"] == "succeeded"

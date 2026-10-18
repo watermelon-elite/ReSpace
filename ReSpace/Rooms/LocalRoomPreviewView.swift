@@ -10,6 +10,7 @@ struct LocalRoomPreviewView: View {
     @State private var job: ReconstructionJob?
     @State private var sceneURL: URL?
     @State private var priorSceneURL: URL?
+    @State private var usdzURL: URL?
     @State private var error: String?
     @State private var submitting=false
     @State private var attempt=0
@@ -50,6 +51,11 @@ struct LocalRoomPreviewView: View {
             .navigationTitle(room.name).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement:.cancellationAction) { Button("Done") { dismiss() } } }
             .toolbar {
+                if let usdzURL, sceneURL != nil {
+                    ToolbarItem(placement:.primaryAction) {
+                        ShareLink(item:usdzURL) { Label("Share USDZ",systemImage:"square.and.arrow.up") }
+                    }
+                }
                 if reconstruction != nil {
                     ToolbarItem(placement:.primaryAction) {
                         Button("Generate from scratch") { confirmingRestart=true }
@@ -64,6 +70,14 @@ struct LocalRoomPreviewView: View {
                 Text("Rebuild from the saved scan without reusing earlier generated models. This run can add up to $10 in API charges. Earlier results are kept.")
             }
             .task(id:attempt) { await watch() }
+            .task(id:sceneURL) {
+                usdzURL=nil
+                guard let sceneURL, let reconstruction else { return }
+                do {
+                    let url=try await reconstruction.usdzURL(room.id,repository:repository,allowPrevious:true)
+                    if url?.deletingLastPathComponent()==sceneURL.deletingLastPathComponent() { usdzURL=url }
+                } catch is CancellationError {} catch { self.error=error.localizedDescription }
+            }
         }
     }
     private func submit(fromScratch: Bool = false) async {

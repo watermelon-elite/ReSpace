@@ -77,6 +77,9 @@ entity-local center/yaw; local +Z is front and +X is right. Primitive size is fu
 vertices/triangles are empty. Explicit mesh parts use unit size, zero-based
 indices, shared vertices, outward winding and closed solids. Stay within the
 supplied local bounds with <=10cm tolerance and preserve approximate dimensions.
+Preserve the supplied minimum and maximum local Y bounds within 2 cm and retain
+horizontal support/worktop elevations. These establish floor, ceiling, tabletop
+and inset attachments; added detail must not break those contacts.
 Wall decor stays on its measured support wall.
 
 Use 6-16 parts for a typical detailed object, 2-5 for simple items, at most 20;
@@ -153,6 +156,8 @@ def parse_detail(response, original, evidence, o3d):
     lo, hi, _, _ = bounds(entity, o3d)
     if (lo < np.array(evidence["local_bounds_min"])-.1).any() or (hi > np.array(evidence["local_bounds_max"])+.1).any():
         raise ValueError("Detailed object exceeds the measured object envelope")
+    if abs(lo[1]-evidence["local_bounds_min"][1]) > .02 or abs(hi[1]-evidence["local_bounds_max"][1]) > .02:
+        raise ValueError("Detailed object changed its vertical attachment bounds")
     original_extent = np.array(evidence["local_bounds_max"])-evidence["local_bounds_min"]
     if ((hi-lo) < original_extent*.7).any():
         raise ValueError("Detailed object omitted part of the complete silhouette")
@@ -183,10 +188,15 @@ def generate_detailed(evidence, images, working, shell, manifest, progress):
     from .astra_room import assemble_room, compile_room, validate_shell, navigation
     with TemporaryDirectory(prefix="inventory-check-", dir=working) as temporary:
         composed = assemble_room(shell, inventory)
-        entities, _, meshes, floor, _ = compile_room(composed, {f.id for f in manifest.frames},
+        entities, bindings, meshes, floor, _ = compile_room(composed, {f.id for f in manifest.frames},
                                                     Path(temporary), o3d)
         validate_shell(composed, entities, meshes, floor)
-        navigation(composed, entities, meshes, floor, manifest.frames)
+        nav = navigation(composed, entities, meshes, floor, manifest.frames)
+        from .room_document import export_room
+        from .scene import SceneBundle
+        bundle = SceneBundle(capture_id=manifest.capture_id, scene_id="astra-"+manifest.capture_id,
+                             reconstruction_revision=1, entities=entities, materials=bindings, navigation=nav, ready=True)
+        export_room(bundle, composed, evidence["roomplan"], meshes, Path(temporary))
     # Prioritize large visible furnishings. Every inventory item remains in the
     # finished room; the $10 cap determines which receive a detailed pass.
     def importance(entity):

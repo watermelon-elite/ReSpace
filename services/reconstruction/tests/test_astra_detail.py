@@ -105,7 +105,7 @@ def test_budget_limit_keeps_complete_coarse_object_instead_of_dropping_furniture
     assert any(e["id"] == "chair" for e in scene["entities"])
 
 
-@pytest.mark.parametrize("fault", ["incomplete", "wrong_id", "wrong_pose", "out_of_bounds", "material", "degenerate"])
+@pytest.mark.parametrize("fault", ["incomplete", "wrong_id", "wrong_pose", "out_of_bounds", "vertical_contact", "material", "degenerate"])
 def test_failed_object_does_not_discard_other_paid_work_or_repeat_it(tmp_path, monkeypatch, fault):
     room_capture(tmp_path)
     configure(monkeypatch)
@@ -118,6 +118,9 @@ def test_failed_object_does_not_discard_other_paid_work_or_repeat_it(tmp_path, m
         if fault == "wrong_id": data["entity"]["id"] = "different-object"
         elif fault == "wrong_pose": data["entity"]["position"]["x"] += 1.
         elif fault == "out_of_bounds": data["entity"]["parts"][0]["size"]["x"] = 10.
+        elif fault == "vertical_contact":
+            for part in data["entity"]["parts"]:
+                part["center"]["y"] += .03
         elif fault == "material": data["entity"]["parts"][0]["material_id"] = "missing"
         else:
             data["entity"]["parts"][0] = {
@@ -133,6 +136,20 @@ def test_failed_object_does_not_discard_other_paid_work_or_repeat_it(tmp_path, m
     assert report["objects"][0]["detail"] == "coarse"
     assert astra_room.process_astra_room(tmp_path, 2)["status"] == "succeeded"
     assert len(calls) == 2
+
+
+def test_invalid_inventory_contacts_stop_before_paid_detail_requests(tmp_path, monkeypatch):
+    room_capture(tmp_path)
+    configure(monkeypatch)
+    inventory = room_plan()
+    inventory["entities"][0]["position"]["y"] = .05
+    calls = []
+    monkeypatch.setattr(astra, "call_astra", lambda *args: calls.append(1) or reply(inventory))
+    with pytest.raises(ValueError, match="Floor-mounted"):
+        astra_room.process_astra_room(tmp_path, 1)
+    assert len(calls) == 1
+    assert (tmp_path/"work/sol-v1/inventory/response.json").exists()
+    assert not (tmp_path/"results/1").exists()
 
 
 def test_unknown_billing_stops_room_and_survives_a_processing_retry(tmp_path, monkeypatch):

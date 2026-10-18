@@ -104,6 +104,8 @@ def test_complete_room_publish_has_closed_object_clean_shell_and_verified_assets
     output=tmp_path/"results/1"
     assert not (tmp_path/"results/1.building").exists()
     assert result["status"]=="succeeded" and result["scene_schema_version"]==2
+    assert result["usdz_filename"]=="model.usdz"
+    assert any(a["filename"]=="model.usdz" for a in result["assets"])
     bundle=SceneBundle.model_validate_json((output/"scene.json").read_text())
     assert bundle.ready and len(bundle.entities)==8
     chair=next(e for e in bundle.entities if e.id=="actual-chair")

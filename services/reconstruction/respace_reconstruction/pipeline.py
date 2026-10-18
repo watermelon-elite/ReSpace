@@ -421,11 +421,15 @@ def process_legacy(folder: Path, revision: int):
         o3d.io.write_triangle_mesh(str(output / "inferred.obj"), overlay)
     # Baseline geometry is retained for exact patch provenance and partial-stage inspection.
     shutil.copyfile(baseline, output / "baseline.ply")
+    from .usdz import export_usdz
+    progress("exporting_usdz")
+    usdz_filename = export_usdz(output / model_name)
     assets = [{"filename": p.name, "byte_length": p.stat().st_size, "sha256": digest(p)}
         for p in sorted(output.iterdir()) if p.is_file() and p.name != "completion.json"]
     if any(a["byte_length"] > 128*1024**2 for a in assets) or sum(a["byte_length"] for a in assets) > 512*1024**2:
         raise ValueError("Result exceeds mobile asset budget; inputs and intermediates are retained")
     result = {"revision": revision, "status": "partially_processed" if errors else "succeeded", "model_filename": model_name,
+        "usdz_filename": usdz_filename,
         "assets": assets, "needs_review": report["needs_review"], "error": "; ".join(e["stage"] + ": " + e["message"] for e in errors) or None,
         "coordinate_system": "arkit_scan_meters_y_up", "quality_filename": "quality.json"}
     result["generation_model"] = generation["model"] if generation else None

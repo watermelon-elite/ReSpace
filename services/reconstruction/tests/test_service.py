@@ -77,10 +77,14 @@ def test_assets_are_limited_to_committed_revision(tmp_path, capture):
         path = "/v1/reconstructions/" + manifest.capture_id
         client.put(path, json=manifest.model_dump())
         assert client.get(path + "/results/1/assets/manifest.json").status_code == 404
-        app.state.store.finish(manifest.capture_id, "succeeded", {"revision": 1, "assets": [{"filename": "model.obj"}]})
+        app.state.store.finish(manifest.capture_id, "succeeded", {"revision": 1, "assets": [{"filename": "model.obj"}, {"filename": "model.usdz"}]})
         output = app.state.store.folder(manifest.capture_id) / "results" / "1"
         output.mkdir(parents=True)
         (output / "model.obj").write_text("mesh")
+        (output / "model.usdz").write_bytes(b"packaged-model")
+        package = client.get(path + "/results/1/assets/model.usdz")
+        assert package.content == b"packaged-model"
+        assert package.headers["content-type"] == "model/vnd.usdz+zip"
         assert client.get(path + "/results/1/assets/model.obj").text == "mesh"
         assert client.get(path + "/results/2/assets/model.obj").status_code == 404
         assert client.get(path + "/results/1/assets/worker.log").status_code == 404

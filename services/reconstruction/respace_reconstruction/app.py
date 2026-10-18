@@ -12,7 +12,7 @@ import sys
 import threading
 import uuid
 
-from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Request
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, ConfigDict, ValidationError
 
@@ -164,6 +164,7 @@ def create_app(root: Path | None = None, token: str | None = None, start_worker=
         try:
             yield
         finally:
+            renditions.close()
             if worker:
                 await asyncio.to_thread(worker.close)
             lock_file.close()
@@ -269,7 +270,8 @@ def create_app(root: Path | None = None, token: str | None = None, start_worker=
             raise HTTPException(404, "Unknown result asset")
         if result.get("scene_schema_version")==2 and (job["state"]!="succeeded" or job["revision"]!=revision):
             raise HTTPException(404,"This scene revision is not published")
-        return FileResponse(store.folder(job_id) / "results" / str(revision) / filename)
+        return FileResponse(store.folder(job_id) / "results" / str(revision) / filename,
+                            media_type="model/vnd.usdz+zip" if filename.endswith(".usdz") else None)
 
     def rendition_directory(job_id, revision, key):
         get(job_id)
@@ -283,7 +285,7 @@ def create_app(root: Path | None = None, token: str | None = None, start_worker=
         return directory
 
     @app.post("/v1/reconstructions/{job_id}/results/{revision}/renditions/{key}", dependencies=[Depends(authorize)], status_code=202)
-    async def create_rendition(job_id: str, revision: int, key: str, request: Request, background: BackgroundTasks):
+    async def create_rendition(job_id: str, revision: int, key: str, request: Request):
         directory = rendition_directory(job_id, revision, key)
         encoded = bytearray()
         async for chunk in request.stream():
@@ -292,13 +294,15 @@ def create_app(root: Path | None = None, token: str | None = None, start_worker=
                 raise HTTPException(413, "Room image request is too large")
         try:
             body = RenditionRequest.model_validate_json(bytes(encoded))
-            status, started = renditions.prepare(directory, body, job_id, revision)
+            status, started = renditions.prepare(directory, body, job_id, revision, capture_folder=store.folder(job_id))
+        except OSError:
+            raise HTTPException(409, "Original scan photos are unavailable. Restore the saved capture inputs before generating a room image.")
         except ValueError as exc:
             raise HTTPException(422, str(exc))
         except RuntimeError as exc:
             raise HTTPException(503, str(exc))
         if started:
-            background.add_task(renditions.generate, directory)
+            renditions.start(directory)
         return status
 
     @app.get("/v1/reconstructions/{job_id}/results/{revision}/renditions/{key}", dependencies=[Depends(authorize)])

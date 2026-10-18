@@ -145,47 +145,101 @@ actor ReconstructionClient {
         try receipt(folder: await folder(id, repository: repository))?.job
     }
 
-    nonisolated static func renditionKey(_ scene: WalkthroughBundle) throws -> String {
+    nonisolated static func renditionKey(_ scene: WalkthroughBundle, requestId: UUID? = nil) throws -> String {
         var data = try Wire.encoder().encode(scene)
         data.append(Data(RoomRenditionCamera.viewID.utf8))
+        // A refresh gets its own persisted identity. Reopening or retrying that
+        // same refresh must keep the identity and recover its existing receipt.
+        if let requestId { data.append(Data(requestId.uuidString.lowercased().utf8)) }
         return SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
     }
 
-    func rendition(scene: WalkthroughBundle, image: Data) async throws -> Data {
-        let key = try Self.renditionKey(scene)
-        let path = ["v1", "reconstructions", scene.captureId, "results", String(scene.reconstructionRevision), "renditions", key]
-        func status(_ request: URLRequest) async throws -> RoomRenditionStatus {
-            let (data, response) = try await session.data(for: request)
-            try checked(response, body: data)
-            let result = try Wire.decoder().decode(RoomRenditionStatus.self, from: data)
-            guard ["generating", "succeeded", "failed"].contains(result.state) else { throw ClientError.invalidResponse }
-            return result
+    private func renditionPath(_ scene: WalkthroughBundle, requestId: UUID? = nil) throws -> [String] {
+        ["v1", "reconstructions", scene.captureId, "results", String(scene.reconstructionRevision), "renditions", try Self.renditionKey(scene,requestId:requestId)]
+    }
+
+    private func transientRenditionError(_ error: Error) -> Bool {
+        if let error=error as? URLError {
+            return [.timedOut,.networkConnectionLost,.notConnectedToInternet,.cannotConnectToHost,.cannotFindHost,.dnsLookupFailed].contains(error.code)
         }
+        if case let ReconstructionServiceError.http(code,_)=error { return [408,429,500,502,503,504].contains(code) }
+        return false
+    }
+
+    private func renditionRead(_ request: URLRequest) async throws -> Data {
+        for attempt in 0..<3 {
+            do {
+                let (data,response)=try await session.data(for:request)
+                try checked(response,body:data)
+                return data
+            } catch {
+                guard attempt<2,transientRenditionError(error) else { throw error }
+                try await Task.sleep(for:.seconds(attempt+1))
+            }
+        }
+        throw ClientError.invalidResponse
+    }
+
+    private func renditionStatus(_ request: URLRequest) async throws -> RoomRenditionStatus {
+        let data: Data
+        if request.httpMethod == "GET" { data=try await renditionRead(request) }
+        else {
+            let (body,response)=try await session.data(for:request)
+            try checked(response,body:body);data=body
+        }
+        let result=try Wire.decoder().decode(RoomRenditionStatus.self,from:data)
+        guard ["generating","succeeded","failed"].contains(result.state) else { throw ClientError.invalidResponse }
+        return result
+    }
+
+    /// Reads are safe to retry. This never submits an image-generation request.
+    func existingRendition(scene: WalkthroughBundle, requestId: UUID? = nil) async throws -> RoomRenditionStatus? {
+        var read=try request(renditionPath(scene,requestId:requestId));read.timeoutInterval=30
+        do { return try await renditionStatus(read) }
+        catch ReconstructionServiceError.http(404,_) { return nil }
+    }
+
+    func rendition(scene: WalkthroughBundle, image: Data, requestId: UUID? = nil) async throws -> Data {
+        let path = try renditionPath(scene,requestId:requestId)
         let initial: RoomRenditionStatus
-        do { initial = try await status(request(path)) }
-        catch ReconstructionServiceError.http(404, _) {
+        if let saved=try await existingRendition(scene:scene,requestId:requestId) { initial=saved }
+        else {
             struct Body: Encodable { let imageBase64: String; let scene: WalkthroughBundle }
             var create = try request(path, method: "POST")
             create.setValue("application/json", forHTTPHeaderField: "Content-Type")
             create.httpBody = try Wire.encoder().encode(Body(imageBase64: image.base64EncodedString(), scene: scene))
-            initial = try await status(create)
+            do { initial=try await renditionStatus(create) }
+            catch {
+                guard transientRenditionError(error) else { throw error }
+                // A lost acknowledgement can hide a successful submission.
+                // Recover its receipt with GET; never repeat an ambiguous POST.
+                var recovered: RoomRenditionStatus?
+                for attempt in 0..<3 {
+                    if let saved=try await existingRendition(scene:scene,requestId:requestId) { recovered=saved;break }
+                    try await Task.sleep(for:.seconds(attempt+1))
+                }
+                guard let recovered else {
+                    throw ClientError.storage("The connection was interrupted. Reopen this image to check whether generation started.")
+                }
+                initial=recovered
+            }
         }
         var result = initial
-        let deadline = ContinuousClock.now + .seconds(960)
+        let deadline = ContinuousClock.now + .seconds(3600)
         while result.state == "generating" {
             guard ContinuousClock.now < deadline else {
                 throw ClientError.storage("The image is still processing. Reopen it to check again.")
             }
             try await Task.sleep(for: .seconds(2))
-            result = try await status(request(path))
+            guard let saved=try await existingRendition(scene:scene,requestId:requestId) else { throw ClientError.invalidResponse }
+            result=saved
         }
         guard result.state == "succeeded" else {
             throw ClientError.storage(result.error ?? "The room image could not be generated.")
         }
         guard let size = result.byteLength, (1...16*1024*1024).contains(size),
               let checksum = result.sha256, checksum.count == 64 else { throw ClientError.invalidResponse }
-        let (data, response) = try await session.data(for: request(path + ["image"]))
-        try checked(response, body: data)
+        let data = try await renditionRead(request(path + ["image"]))
         guard data.count == size,
               SHA256.hash(data: data).map({ String(format: "%02x", $0) }).joined() == checksum else {
             throw ClientError.storage("The room image failed its integrity check.")
@@ -217,6 +271,19 @@ actor ReconstructionClient {
         try scene.validate(captureId:id,revision:result.revision,assets:Set(result.assets.map(\.filename)))
         try scene.validateFiles(in:directory,assets:Set(result.assets.map(\.filename)))
         return directory.appendingPathComponent(name)
+    }
+
+    func usdzURL(_ id: String, repository: CaptureRepository, allowPrevious: Bool = false) async throws -> URL? {
+        let folder = try await folder(id, repository: repository)
+        guard let record = try receipt(folder: folder), let job = record.job,
+              let result = job.result, record.downloadedRevision == result.revision,
+              let name = result.usdzFilename else { return nil }
+        if result.sceneSchemaVersion != nil && !job.hasFinalWalkthrough && !allowPrevious { return nil }
+        try result.validate()
+        guard let asset = result.assets.first(where: { $0.filename == name }) else { throw ClientError.invalidResponse }
+        let url = folder.appendingPathComponent("result-\(result.revision)").appendingPathComponent(name)
+        guard try verify(url, asset: asset) else { throw ClientError.invalidResponse }
+        return url
     }
 
     private func retainResult(_ job: ReconstructionJob, retained: ReconstructionReceipt, folder: URL) async throws -> ReconstructionJob {

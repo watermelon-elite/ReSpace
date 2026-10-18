@@ -46,6 +46,7 @@ struct ReconstructionResult: Codable, Sendable {
     var generatedTriangleCount: Int? = nil
     var sceneFilename: String? = nil
     var sceneSchemaVersion: Int? = nil
+    var usdzFilename: String? = nil
 
     var isAIGenerated: Bool { ["gpt-6-astra", "gpt-6-sol"].contains(generationModel ?? "") }
     var isWalkthrough: Bool { status == "succeeded" && sceneSchemaVersion == 2 && sceneFilename != nil }
@@ -59,6 +60,11 @@ struct ReconstructionResult: Codable, Sendable {
               assets.contains(where: { $0.filename == qualityFilename }),
               assets.reduce(0, { $0 + $1.byteLength }) <= 512 * 1024 * 1024 else { throw ClientError.invalidResponse }
         try assets.forEach { try $0.validate() }
+        if let name = usdzFilename {
+            guard name.hasSuffix(".usdz"), assets.contains(where: { $0.filename == name }) else {
+                throw ClientError.invalidResponse
+            }
+        }
         if sceneFilename != nil || sceneSchemaVersion != nil {
             guard isWalkthrough, let name=sceneFilename, WalkthroughBundle.safeName(name), name.hasSuffix(".json"),
                   let scene=assets.first(where: { $0.filename==name }), scene.byteLength<=8*1024*1024 else { throw ClientError.invalidResponse }

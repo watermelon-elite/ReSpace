@@ -165,9 +165,6 @@ private actor WalkthroughLoader {
         design.navigation=source.navigation
         let key=try ReconstructionClient.renditionKey(design)
         let url=directory.appendingPathComponent("rendition-\(key).png")
-        if FileManager.default.fileExists(atPath:url.path) {
-            return RoomRenditionInput(id:key,scene:design,image:Data(),cachedURL:url)
-        }
         let viewCamera=camera.clone()
         viewCamera.camera=camera.camera?.copy() as? SCNCamera
         guard let view=RoomRenditionCamera.cornerView(navigation:source.navigation,entities:design.entities) else {

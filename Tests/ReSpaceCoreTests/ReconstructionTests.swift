@@ -134,6 +134,23 @@ final class ReconstructionTests: XCTestCase {
         XCTAssertNil(decoded.downloadedRevision)
     }
 
+    func testUSDZMetadataIsOptionalButMustReferenceAVerifiedPackageAsset() throws {
+        let checksum = String(repeating:"a",count:64)
+        var result = ReconstructionResult(revision:1,status:"succeeded",modelFilename:"model.obj",
+            assets:[ReconstructionAsset(filename:"model.obj",byteLength:12,sha256:checksum),
+                    ReconstructionAsset(filename:"quality.json",byteLength:12,sha256:checksum)],
+            needsReview:false,coordinateSystem:"arkit_scan_meters_y_up",qualityFilename:"quality.json")
+        try result.validate() // Older service results remain readable.
+        result.usdzFilename="model.usdz"
+        XCTAssertThrowsError(try result.validate())
+        result.assets.append(ReconstructionAsset(filename:"model.usdz",byteLength:12,sha256:checksum))
+        try result.validate()
+        let decoded = try Wire.decoder().decode(ReconstructionResult.self,from:Wire.encoder().encode(result))
+        XCTAssertEqual(decoded.usdzFilename,"model.usdz")
+        result.usdzFilename="model.obj"
+        XCTAssertThrowsError(try result.validate())
+    }
+
     func testAstraResultMetadataAndLegacyUpgrade() throws {
         let checksum = String(repeating: "a", count: 64)
         let data = Data("""
@@ -252,6 +269,8 @@ final class ReconstructionTests: XCTestCase {
         let destination = folder.appendingPathComponent("result-1")
         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         try FileManager.default.copyItem(at: source, to: destination)
+        let packageURL = destination.appendingPathComponent("model.usdz")
+        try Data("portable-package".utf8).write(to:packageURL)
         let files = try FileManager.default.contentsOfDirectory(at: destination, includingPropertiesForKeys: nil)
         let assets = try files.map { url in
             let data = try Data(contentsOf: url)
@@ -260,7 +279,7 @@ final class ReconstructionTests: XCTestCase {
         }
         let result = ReconstructionResult(revision: 1, status: "succeeded", modelFilename: "model.obj", assets: assets,
             needsReview: false, coordinateSystem: "arkit_scan_meters_y_up", qualityFilename: "quality.json",
-            generationModel: "gpt-6-sol", sceneFilename: "scene.json", sceneSchemaVersion: 2)
+            generationModel: "gpt-6-sol", sceneFilename: "scene.json", sceneSchemaVersion: 2, usdzFilename:"model.usdz")
         let job = ReconstructionJob(schemaVersion: 1, id: bundle.captureId, state: "failed", revision: 2,
             stage: "finished", error: "New run failed", result: result, missingArtifactIds: [])
         let receipt = ReconstructionReceipt(origin: origin.absoluteString, job: job, downloadedRevision: 1)
@@ -270,6 +289,15 @@ final class ReconstructionTests: XCTestCase {
         XCTAssertNil(current)
         let previous = try await client.sceneURL(bundle.captureId, repository: repository, allowPrevious: true)
         XCTAssertEqual(previous?.lastPathComponent, "scene.json")
+        let currentPackage = try await client.usdzURL(bundle.captureId,repository:repository)
+        XCTAssertNil(currentPackage)
+        let previousPackage = try await client.usdzURL(bundle.captureId,repository:repository,allowPrevious:true)
+        XCTAssertEqual(previousPackage,packageURL)
+        try Data("corrupted-bytes".utf8).write(to:packageURL)
+        do {
+            _ = try await client.usdzURL(bundle.captureId,repository:repository,allowPrevious:true)
+            XCTFail("Corrupt USDZ bytes must never be shared")
+        } catch { }
     }
 
     func testRenditionReusesServerImageWithoutPostingAnotherPaidRequest() async throws {
@@ -287,6 +315,92 @@ final class ReconstructionTests: XCTestCase {
         let downloaded = try await client.rendition(scene:scene,image:Data())
         XCTAssertEqual(downloaded,image)
         XCTAssertEqual(recorder.requests.count,2)
+    }
+
+    func testRenditionRecoversAnAcceptedRequestAfterTheUploadTimesOut() async throws {
+        let root = try XCTUnwrap(Bundle.module.url(forResource:"Fixtures",withExtension:nil)).appendingPathComponent("Walkthrough")
+        let scene = try Wire.decoder().decode(WalkthroughBundle.self,from:Data(contentsOf:root.appendingPathComponent("scene.json")))
+        let image=Data("completed-corner-image".utf8)
+        let checksum=SHA256.hash(data:image).map { String(format:"%02x",$0) }.joined()
+        var accepted=false
+        let recorder=ReconstructionRequestRecorder { request in
+            if request.url!.path.hasSuffix("/image") { return (200,image) }
+            if request.httpMethod == "POST" {
+                accepted=true
+                throw URLError(.timedOut) // The service kept generating after accepting the upload.
+            }
+            if !accepted { return (404,Data("{\"detail\":\"Unknown rendition\"}".utf8)) }
+            return (200,try JSONSerialization.data(withJSONObject:["state":"succeeded","sha256":checksum,"byte_length":image.count]))
+        }
+        let client=ReconstructionClient(baseURL:URL(string:"http://mac.local:8008")!,token:"test-reconstruction-token",session:recorder.session())
+        let downloaded=try await client.rendition(scene:scene,image:Data("corner-render".utf8))
+        XCTAssertEqual(downloaded,image)
+        XCTAssertEqual(recorder.requests.filter { $0.httpMethod == "POST" }.count,1)
+    }
+
+    func testRefreshHasANewIdentityAndResumesTheSameRequestAfterTimeout() async throws {
+        let root = try XCTUnwrap(Bundle.module.url(forResource:"Fixtures",withExtension:nil)).appendingPathComponent("Walkthrough")
+        let scene = try Wire.decoder().decode(WalkthroughBundle.self,from:Data(contentsOf:root.appendingPathComponent("scene.json")))
+        let refreshId=UUID()
+        let key=try ReconstructionClient.renditionKey(scene,requestId:refreshId)
+        XCTAssertNotEqual(key,try ReconstructionClient.renditionKey(scene))
+        XCTAssertNotEqual(key,try ReconstructionClient.renditionKey(scene,requestId:UUID()))
+        let image=Data("refreshed-photograph".utf8)
+        let checksum=SHA256.hash(data:image).map { String(format:"%02x",$0) }.joined()
+        var accepted=false
+        let recorder=ReconstructionRequestRecorder { request in
+            XCTAssertTrue(request.url!.path.contains("/renditions/"+key))
+            if request.url!.path.hasSuffix("/image") { return (200,image) }
+            if request.httpMethod == "POST" {
+                accepted=true
+                throw URLError(.timedOut)
+            }
+            if !accepted { return (404,Data()) }
+            return (200,try JSONSerialization.data(withJSONObject:["state":"succeeded","sha256":checksum,"byte_length":image.count]))
+        }
+        let client=ReconstructionClient(baseURL:URL(string:"http://mac.local:8008")!,token:"test-reconstruction-token",session:recorder.session())
+        let refreshed=try await client.rendition(scene:scene,image:Data("original-3D-corner-render".utf8),requestId:refreshId)
+        XCTAssertEqual(refreshed,image)
+        // Simulate reopening with the persisted refresh ID, without buying again.
+        let reopened=try await client.rendition(scene:scene,image:Data(),requestId:refreshId)
+        XCTAssertEqual(reopened,image)
+        XCTAssertEqual(recorder.requests.filter { $0.httpMethod == "POST" }.count,1)
+    }
+
+    func testRenditionRetriesStatusAndImageReadsWithoutAnotherGeneration() async throws {
+        let root = try XCTUnwrap(Bundle.module.url(forResource:"Fixtures",withExtension:nil)).appendingPathComponent("Walkthrough")
+        let scene = try Wire.decoder().decode(WalkthroughBundle.self,from:Data(contentsOf:root.appendingPathComponent("scene.json")))
+        let image=Data("completed-corner-image".utf8)
+        let checksum=SHA256.hash(data:image).map { String(format:"%02x",$0) }.joined()
+        var reads=0,downloads=0
+        let recorder=ReconstructionRequestRecorder { request in
+            XCTAssertEqual(request.httpMethod,"GET")
+            if request.url!.path.hasSuffix("/image") {
+                downloads += 1
+                if downloads == 1 { throw URLError(.networkConnectionLost) }
+                return (200,image)
+            }
+            reads += 1
+            if reads == 1 { throw URLError(.timedOut) }
+            return (200,try JSONSerialization.data(withJSONObject:["state":"succeeded","sha256":checksum,"byte_length":image.count]))
+        }
+        let client=ReconstructionClient(baseURL:URL(string:"http://mac.local:8008")!,token:"test-reconstruction-token",session:recorder.session())
+        let downloaded=try await client.rendition(scene:scene,image:Data())
+        XCTAssertEqual(downloaded,image)
+        XCTAssertEqual(reads,2);XCTAssertEqual(downloads,2)
+    }
+
+    func testCheckingAnImageOnReopenDoesNotStartAPaidRequest() async throws {
+        let root = try XCTUnwrap(Bundle.module.url(forResource:"Fixtures",withExtension:nil)).appendingPathComponent("Walkthrough")
+        let scene = try Wire.decoder().decode(WalkthroughBundle.self,from:Data(contentsOf:root.appendingPathComponent("scene.json")))
+        let recorder=ReconstructionRequestRecorder { request in
+            XCTAssertEqual(request.httpMethod,"GET")
+            return (404,Data())
+        }
+        let client=ReconstructionClient(baseURL:URL(string:"http://mac.local:8008")!,token:"test-reconstruction-token",session:recorder.session())
+        let existing=try await client.existingRendition(scene:scene)
+        XCTAssertNil(existing)
+        XCTAssertEqual(recorder.requests.count,1)
     }
 
     func testRenditionPostsOnlyAfterMissingReceiptAndVerifiesReturnedImage() async throws {

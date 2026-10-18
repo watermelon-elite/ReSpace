@@ -25,7 +25,7 @@ from .store import atomic_json, digest
 from .walkthrough import merge_scene
 from .material_library import TextureFamily, PROFILES, export_textures, part_uvs
 
-PROMPT_VERSION = 7
+PROMPT_VERSION = 8
 MAX_TRIANGLES = 200000
 
 
@@ -166,8 +166,14 @@ size=(1,1,1); furniture mesh parts must be closed solids. Prefer primitives.
 For wall_decor, support_id must match a supplied measured wall ID. For an item
 standing on another identified object, use that object's id as support_id;
 otherwise use null. Put floor-standing items on the floor; retain observed heights for items
-on countertops/shelves and for wall/ceiling fixtures. Do not lower a microwave
-or other supported appliance to the floor. evidence_frame_ids must
+on countertops/shelves and for wall/ceiling fixtures. Actual geometry must meet
+its floor, ceiling or supporting object's horizontal surface within 2 cm.
+Include ceiling attachments for hanging fixtures. A wall fixture references
+its measured wall, not a counter below it. Keep sinks as separate category=sink
+entities inset into their countertop and reference that countertop as support_id.
+Model real supporting cabinets/appliances beneath separately modeled countertops;
+do not invent a floating floor-mounted slab or a logical support mesh.
+Do not lower a microwave or other supported appliance to the floor. evidence_frame_ids must
 reference supplied frames; inferred portions must not invent frame IDs. Record
 major completion assumptions and ignored reflections briefly, not every excluded
 clutter item. Materials are observed approximate RGB colors/roughness, not photo
@@ -618,6 +624,9 @@ def process_astra_room(folder: Path, revision: int, detailed=True, generation_id
             report.update(usage_cost(response))
         atomic_json(output/"quality.json", report)
         merge_scene(bundle, output)
+        from .usdz import export_usdz
+        progress("exporting_usdz")
+        usdz_filename = export_usdz(output/"model.obj")
         atomic_json(output/"scene.json", bundle.model_dump())
         names = {p.name for p in output.iterdir() if p.is_file()}
         bundle.validate_files(output, names)
@@ -625,6 +634,7 @@ def process_astra_room(folder: Path, revision: int, detailed=True, generation_id
         if len(assets) > 512 or any(a["byte_length"] > 128*1024**2 for a in assets) or sum(a["byte_length"] for a in assets) > 512*1024**2:
             raise ValueError("Generated room exceeds mobile asset limits")
         result = {"revision": revision, "status": "succeeded", "model_filename": "model.obj",
+                  "usdz_filename": usdz_filename,
                   "scene_filename": "scene.json", "scene_schema_version": 2, "assets": assets,
                   "room_filename": "room.json", "room_schema_version": 2,
                   "needs_review": False, "error": None, "coordinate_system": "arkit_scan_meters_y_up",

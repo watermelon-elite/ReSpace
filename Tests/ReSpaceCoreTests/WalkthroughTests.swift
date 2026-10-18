@@ -123,6 +123,25 @@ final class WalkthroughTests: XCTestCase {
             }
         }
         XCTAssertEqual(count,result.generatedTriangleCount)
+        let packageName=try XCTUnwrap(result.usdzFilename)
+        let package=MDLAsset(url:root.appendingPathComponent(packageName));package.loadTextures()
+        let packagedScene=SCNScene(mdlAsset:package)
+        var packagedTriangles=0,packagedTextures=0
+        packagedScene.rootNode.enumerateHierarchy { node,_ in
+            if let geometry=node.geometry {
+                packagedTriangles += geometry.elements.reduce(0) { $0+$1.primitiveCount }
+                packagedTextures += geometry.materials.filter { material in
+                    guard let contents=material.diffuse.contents else { return false }
+                    return contents is MDLTexture || contents is URL || contents is String || String(reflecting:type(of:contents)).contains("Image")
+                }.count
+            }
+        }
+        XCTAssertEqual(packagedTriangles,count,"USDZ must include every OBJ triangle")
+        XCTAssertGreaterThan(packagedTextures,0,"USDZ must embed the room textures")
+        let bounds=packagedScene.rootNode.boundingBox
+        XCTAssertEqual(Double(bounds.max.x-bounds.min.x),4,accuracy:0.01)
+        XCTAssertEqual(Double(bounds.max.y-bounds.min.y),2.5,accuracy:0.01)
+        XCTAssertEqual(Double(bounds.max.z-bounds.min.z),4,accuracy:0.01)
     }
 
     func testReusableMaterialMapsMustBelongToTheVerifiedAssetSet() throws {

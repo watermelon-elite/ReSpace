@@ -246,6 +246,8 @@ def test_pipeline_generates_served_model_overlay_and_reuses_paid_response(tmp_pa
     assert result["generation_model"] == "gpt-6-sol" and result["generated_triangle_count"] == 1
     assert result["needs_review"]
     output = tmp_path / "results/1"
+    assert result["usdz_filename"] == "astra.usdz"
+    assert any(asset["filename"] == "astra.usdz" for asset in result["assets"])
     assert (output / "inferred.obj").is_file()
     assert len(o3d.io.read_triangle_mesh(str(output / "inferred.obj")).triangles) == 1
     for asset in result["assets"]:

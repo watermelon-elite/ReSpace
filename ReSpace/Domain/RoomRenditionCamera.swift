@@ -2,7 +2,7 @@ import Foundation
 
 /// A repeatable interior photograph, independent of the walkthrough camera.
 struct RoomRenditionCamera: Equatable, Sendable {
-    static let viewID = "corner_room_view_v2"
+    static let viewID = "corner_room_view_v5_iphone_photo_references"
     let position: [Double]
     let target: [Double]
 
