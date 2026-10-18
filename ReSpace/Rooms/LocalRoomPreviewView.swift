@@ -19,7 +19,7 @@ struct LocalRoomPreviewView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if let sceneURL { WalkthroughView(sceneURL:sceneURL) }
+                if let sceneURL { WalkthroughView(sceneURL:sceneURL,reconstruction:reconstruction) }
                 else {
                     VStack(spacing:20) {
                         Image(systemName:"cube.transparent").font(.system(size:64)).foregroundStyle(.secondary)

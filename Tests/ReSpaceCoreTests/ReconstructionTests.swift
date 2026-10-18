@@ -272,6 +272,57 @@ final class ReconstructionTests: XCTestCase {
         XCTAssertEqual(previous?.lastPathComponent, "scene.json")
     }
 
+    func testRenditionReusesServerImageWithoutPostingAnotherPaidRequest() async throws {
+        let root = try XCTUnwrap(Bundle.module.url(forResource:"Fixtures",withExtension:nil)).appendingPathComponent("Walkthrough")
+        let scene = try Wire.decoder().decode(WalkthroughBundle.self,from:Data(contentsOf:root.appendingPathComponent("scene.json")))
+        let image = Data("verified-image-bytes".utf8)
+        let checksum = SHA256.hash(data:image).map { String(format:"%02x",$0) }.joined()
+        let recorder = ReconstructionRequestRecorder { request in
+            XCTAssertEqual(request.httpMethod,"GET")
+            XCTAssertEqual(request.value(forHTTPHeaderField:"Authorization"),"Bearer test-reconstruction-token")
+            if request.url!.path.hasSuffix("/image") { return (200,image) }
+            return (200,try JSONSerialization.data(withJSONObject:["state":"succeeded","sha256":checksum,"byte_length":image.count]))
+        }
+        let client = ReconstructionClient(baseURL:URL(string:"http://mac.local:8008")!,token:"test-reconstruction-token",session:recorder.session())
+        let downloaded = try await client.rendition(scene:scene,image:Data())
+        XCTAssertEqual(downloaded,image)
+        XCTAssertEqual(recorder.requests.count,2)
+    }
+
+    func testRenditionPostsOnlyAfterMissingReceiptAndVerifiesReturnedImage() async throws {
+        let root = try XCTUnwrap(Bundle.module.url(forResource:"Fixtures",withExtension:nil)).appendingPathComponent("Walkthrough")
+        var scene = try Wire.decoder().decode(WalkthroughBundle.self,from:Data(contentsOf:root.appendingPathComponent("scene.json")))
+        let key = try ReconstructionClient.renditionKey(scene)
+        var legacyData=try Wire.encoder().encode(scene)
+        legacyData.append(Data("initial_room_view_v1".utf8))
+        let legacyKey=SHA256.hash(data:legacyData).map { String(format:"%02x",$0) }.joined()
+        XCTAssertNotEqual(key,legacyKey)
+        scene.entities[0].visible=false
+        XCTAssertNotEqual(key,try ReconstructionClient.renditionKey(scene))
+        let image = Data("image-bytes".utf8)
+        let checksum = SHA256.hash(data:image).map { String(format:"%02x",$0) }.joined()
+        let recorder = ReconstructionRequestRecorder { request in
+            if request.url!.path.hasSuffix("/image") { return (200,image) }
+            if request.httpMethod == "GET" { return (404,Data("{\"detail\":\"Unknown rendition\"}".utf8)) }
+            var encoded = request.httpBody ?? Data()
+            if let stream=request.httpBodyStream {
+                stream.open();defer { stream.close() }
+                var buffer=[UInt8](repeating:0,count:4096)
+                while stream.hasBytesAvailable {
+                    let count=stream.read(&buffer,maxLength:buffer.count)
+                    guard count>0 else { break }
+                    encoded.append(contentsOf:buffer.prefix(count))
+                }
+            }
+            let body = try XCTUnwrap(JSONSerialization.jsonObject(with:encoded) as? [String:Any])
+            XCTAssertEqual(body["image_base64"] as? String,Data("source-render".utf8).base64EncodedString())
+            return (202,try JSONSerialization.data(withJSONObject:["state":"succeeded","sha256":checksum,"byte_length":image.count]))
+        }
+        let client = ReconstructionClient(baseURL:URL(string:"http://mac.local:8008")!,token:"test-reconstruction-token",session:recorder.session())
+        let downloaded = try await client.rendition(scene:scene,image:Data("source-render".utf8))
+        XCTAssertEqual(downloaded,image)
+        XCTAssertEqual(recorder.requests.map(\.httpMethod),["GET","POST","GET"])
+    }
 }
 
 private final class ReconstructionRequestRecorder: @unchecked Sendable {

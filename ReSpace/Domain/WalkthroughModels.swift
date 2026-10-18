@@ -58,6 +58,10 @@ struct WalkthroughMaterial: Codable, Sendable {
     var repeatMeters: Double
     var roughness: Double?
     var metallic: Double?
+    var textureFamily: String?
+    var baseColorTexture: String?
+    var roughnessTexture: String?
+    var normalTexture: String?
 }
 
 struct WalkthroughNavigation: Codable, Sendable {
@@ -183,6 +187,9 @@ struct WalkthroughBundle: Codable, Sendable {
                   m.roughness.map({ $0.isFinite && (0...1).contains($0) }) ?? true,
                   m.metallic.map({ $0.isFinite && (0...1).contains($0) }) ?? true,
                   m.repeatMeters.isFinite, (0.01...10).contains(m.repeatMeters) else { throw ClientError.invalidResponse }
+            for texture in [m.baseColorTexture,m.roughnessTexture,m.normalTexture].compactMap({ $0 }) {
+                guard Self.safeName(texture),assets.contains(texture) else { throw ClientError.invalidResponse }
+            }
         }
         let n=navigation
         guard (1...64).contains(n.floorPolygons.count), n.obstacles.count<=4096,
@@ -202,7 +209,7 @@ struct WalkthroughBundle: Codable, Sendable {
             for line in lines {
                 let tokens=line.split(whereSeparator: { $0==" " || $0=="\t" }).map(String.init)
                 guard let tag=tokens.first else { continue }
-                if tag=="mtllib" || tag.lowercased().hasPrefix("map_") || ["bump","disp","decal","refl"].contains(tag.lowercased()) {
+                if tag=="mtllib" || tag.lowercased().hasPrefix("map_") || ["bump","disp","decal","refl","norm"].contains(tag.lowercased()) {
                     guard tokens.count>=2, (tag=="mtllib" || tokens.count==2), tokens.dropFirst().allSatisfy({ Self.safeName($0) && assets.contains($0) }) else { throw ClientError.invalidResponse }
                 }
             }

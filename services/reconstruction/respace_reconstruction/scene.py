@@ -6,6 +6,7 @@ import numpy as np
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .models import SAFE_NAME
+from .material_library import TextureFamily
 
 Identifier = Annotated[str, Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$")]
 Vector3 = Annotated[list[float], Field(min_length=3, max_length=3)]
@@ -47,6 +48,10 @@ class SceneMaterial(SceneContract):
     roughness: float = Field(default=.7, ge=0, le=1)
     metallic: float = Field(default=0., ge=0, le=1)
     repeat_meters: float = Field(default=.25, ge=.01, le=10)
+    texture_family: TextureFamily | None = None
+    base_color_texture: Identifier | None = None
+    roughness_texture: Identifier | None = None
+    normal_texture: Identifier | None = None
 
     @model_validator(mode="after")
     def color(self):
@@ -164,6 +169,7 @@ class SceneBundle(SceneContract):
 
     def validate_files(self, folder: Path, filenames: set[str]):
         required = {e.asset for e in self.entities} | {self.quality_filename, self.provenance_filename}
+        required |= {p for m in self.materials for p in (m.base_color_texture, m.roughness_texture, m.normal_texture) if p is not None}
         if not required <= filenames:
             raise ValueError("Scene references an uncommitted asset")
         for name in filenames:
@@ -180,7 +186,7 @@ class SceneBundle(SceneContract):
                     continue
                 if fields[0] == "mtllib":
                     dependencies = fields[1:]
-                elif fields[0].lower().startswith("map_") or fields[0].lower() in ("bump", "disp", "decal"):
+                elif fields[0].lower().startswith("map_") or fields[0].lower() in ("bump", "disp", "decal", "norm"):
                     # Exporter uses plain filenames; reject option-bearing texture statements.
                     dependencies = fields[1:]
                     if len(dependencies) != 1:

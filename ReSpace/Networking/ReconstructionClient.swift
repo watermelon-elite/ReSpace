@@ -1,6 +1,13 @@
 import CryptoKit
 import Foundation
 
+struct RoomRenditionStatus: Decodable {
+    let state: String
+    let error: String?
+    let sha256: String?
+    let byteLength: Int?
+}
+
 /// Reconstruction is independent of connected room/design mutations. Files and job
 /// identity survive view/app closure; the Mac owns the long-running computation.
 actor ReconstructionClient {
@@ -136,6 +143,54 @@ actor ReconstructionClient {
 
     func cachedJob(_ id: String, repository: CaptureRepository) async throws -> ReconstructionJob? {
         try receipt(folder: await folder(id, repository: repository))?.job
+    }
+
+    nonisolated static func renditionKey(_ scene: WalkthroughBundle) throws -> String {
+        var data = try Wire.encoder().encode(scene)
+        data.append(Data(RoomRenditionCamera.viewID.utf8))
+        return SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+    }
+
+    func rendition(scene: WalkthroughBundle, image: Data) async throws -> Data {
+        let key = try Self.renditionKey(scene)
+        let path = ["v1", "reconstructions", scene.captureId, "results", String(scene.reconstructionRevision), "renditions", key]
+        func status(_ request: URLRequest) async throws -> RoomRenditionStatus {
+            let (data, response) = try await session.data(for: request)
+            try checked(response, body: data)
+            let result = try Wire.decoder().decode(RoomRenditionStatus.self, from: data)
+            guard ["generating", "succeeded", "failed"].contains(result.state) else { throw ClientError.invalidResponse }
+            return result
+        }
+        let initial: RoomRenditionStatus
+        do { initial = try await status(request(path)) }
+        catch ReconstructionServiceError.http(404, _) {
+            struct Body: Encodable { let imageBase64: String; let scene: WalkthroughBundle }
+            var create = try request(path, method: "POST")
+            create.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            create.httpBody = try Wire.encoder().encode(Body(imageBase64: image.base64EncodedString(), scene: scene))
+            initial = try await status(create)
+        }
+        var result = initial
+        let deadline = ContinuousClock.now + .seconds(960)
+        while result.state == "generating" {
+            guard ContinuousClock.now < deadline else {
+                throw ClientError.storage("The image is still processing. Reopen it to check again.")
+            }
+            try await Task.sleep(for: .seconds(2))
+            result = try await status(request(path))
+        }
+        guard result.state == "succeeded" else {
+            throw ClientError.storage(result.error ?? "The room image could not be generated.")
+        }
+        guard let size = result.byteLength, (1...16*1024*1024).contains(size),
+              let checksum = result.sha256, checksum.count == 64 else { throw ClientError.invalidResponse }
+        let (data, response) = try await session.data(for: request(path + ["image"]))
+        try checked(response, body: data)
+        guard data.count == size,
+              SHA256.hash(data: data).map({ String(format: "%02x", $0) }).joined() == checksum else {
+            throw ClientError.storage("The room image failed its integrity check.")
+        }
+        return data
     }
 
     func modelURL(_ id: String, repository: CaptureRepository) async throws -> URL? {

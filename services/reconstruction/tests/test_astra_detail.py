@@ -22,7 +22,7 @@ def reply(data, inputs=1000, outputs=1000):
 
 def detailed_reply():
     entity = copy.deepcopy(room_plan()["entities"][0])
-    entity["evidence_frame_ids"] = ["frame-1"]
+    entity["evidence_frame_ids"] = ["frame-0"]
     entity["parts"][0]["material_id"] = "wood"
     entity["parts"][1]["material_id"] = "cloth"
     # Exercise shaped parts and material slots within the recognition profile.
@@ -31,9 +31,9 @@ def detailed_reply():
         part["center"] = {"x": -.3+i*.04, "y": .2, "z": -.5}
         part["size"] = {"x": .02, "y": .2, "z": .02}
         entity["parts"].append(part)
-    return reply({"objects": [{"entity": entity, "photo_exclusions": [], "materials": [
-        {"id": "wood", "color": {"r": .4, "g": .3, "b": .2}, "roughness": .45, "metallic": 0.},
-        {"id": "cloth", "color": {"r": .8, "g": .15, "b": .1}, "roughness": .9, "metallic": 0.}]}]})
+    return reply({"objects": [{"entity": entity, "materials": [
+        {"id": "wood", "color": {"r": .4, "g": .3, "b": .2}, "roughness": .45, "metallic": 0., "texture_family": "wood"},
+        {"id": "cloth", "color": {"r": .8, "g": .15, "b": .1}, "roughness": .9, "metallic": 0., "texture_family": "fabric"}]}]})
 
 
 def configure(monkeypatch):
@@ -41,7 +41,7 @@ def configure(monkeypatch):
     monkeypatch.setattr(astra_spending, "count_input_tokens", lambda *args: 1000)
 
 
-def test_staged_default_generates_sol_batch_with_photos_materials_and_receipts(tmp_path, monkeypatch):
+def test_staged_default_uses_semantic_models_without_detail_photos_and_keeps_receipts(tmp_path, monkeypatch):
     room_capture(tmp_path)
     configure(monkeypatch)
     calls = []
@@ -59,7 +59,10 @@ def test_staged_default_generates_sol_batch_with_photos_materials_and_receipts(t
     assert all(call["reasoning"]["effort"] == "high" for call in calls)
     assert calls[1]["text"]["format"]["name"] == "respace_object_batch"
     context = json.loads(calls[1]["input"][0]["content"][0]["text"])["objects"][0]
-    assert "observed_mesh_region" in context and "crop_pixels_left_top_right_bottom" in context["selected_photos"][0]
+    assert context["entity"]["model_description"] == room_plan()["entities"][0]["model_description"]
+    assert "selected_photos" not in context and "observed_mesh_region" not in context
+    assert any(c["type"] == "input_image" for c in calls[0]["input"][0]["content"])
+    assert all(c["type"] == "input_text" for c in calls[1]["input"][0]["content"])
     assert quality["budget"]["ceiling_usd"] == 10.
     assert quality["budget"]["known_cost_usd"] == .024
     assert quality["objects"][0]["detail"] == "detailed"
@@ -70,9 +73,12 @@ def test_staged_default_generates_sol_batch_with_photos_materials_and_receipts(t
     chair = next(e for e in bundle.entities if e.id == "chair")
     assert len(chair.material_ids) >= 2
     assert len({m.roughness for m in bundle.materials if m.owner_id == "chair"}) == 2
-    assert quality["photo_textures"][0]["photo_surface_fraction"] > 0
-    assert "map_Kd photo-" in (output/"entity_chair.mtl").read_text()
+    assert quality["geometry_profile"] == "semantic_object_models"
+    assert "map_Kd material-v1-wood-color.png" in (output/"entity_chair.mtl").read_text()
+    assert "map_Kd material-v1-fabric-color.png" in (output/"entity_chair.mtl").read_text()
+    assert quality["material_textures"]["textured_entity_count"] == len(bundle.entities)
     assert "vt " in (output/"entity_chair.obj").read_text()
+    assert not list(output.glob("*.jpg"))
     for asset in result["assets"]:
         assert digest(output/asset["filename"]) == asset["sha256"]
     assert (tmp_path/"work/sol-v1/inventory/response.json").exists()
@@ -170,11 +176,9 @@ def batch_for_request(body):
     objects = []
     for context in contexts:
         entity = copy.deepcopy(context["entity"])
-        entity["evidence_frame_ids"] = [context["selected_photos"][0]["frame_id"]]
         for part in entity["parts"]:
             part["material_id"] = entity["material_id"]
-        objects.append({"entity": entity, "materials": [dict(context["materials"][0], metallic=0.)],
-                        "photo_exclusions": []})
+        objects.append({"entity": entity, "materials": [dict(context["materials"][0], metallic=0.)]})
     return reply({"objects": objects})
 
 
@@ -244,26 +248,26 @@ def test_response_saved_before_crash_can_settle_without_repayment(tmp_path, monk
     assert reused and recovered.report()["known_cost_usd"] == .06
 
 
-def test_photo_exclusions_prevent_clutter_baking_without_removing_geometry(tmp_path, monkeypatch):
-    room_capture(tmp_path)
-    configure(monkeypatch)
+def test_semantic_detail_can_use_twenty_parts_without_source_photo_access(tmp_path, monkeypatch):
+    inventory = astra_room.FurnishingPlan.model_validate(room_plan())
+    original = inventory.entities[0]
+    context = astra_detail.object_evidence(original, inventory, o3d)
     response = detailed_reply()
-    batch_data = json.loads(response["output"][0]["content"][0]["text"])
-    data = batch_data["objects"][0]
-    data["photo_exclusions"] = [{"frame_id": "frame-"+str(i), "polygons": [[
-        {"u": 0., "v": 0.}, {"u": 1., "v": 0.}, {"u": 1., "v": 1.}, {"u": 0., "v": 1.}]]} for i in (1, 2, 3)]
-    response["output"][0]["content"][0]["text"] = json.dumps(batch_data)
-    calls = []
-    monkeypatch.setattr(astra, "call_astra", lambda *args: calls.append(1) or (reply(room_plan()) if len(calls) == 1 else response))
-    assert astra_room.process_astra_room(tmp_path, 1)["status"] == "succeeded"
-    report = json.loads((tmp_path/"results/1/quality.json").read_text())
-    assert report["objects"][0]["detail"] == "detailed"
-    assert report["photo_textures"][0]["photo_surface_fraction"] == 0
-    assert "map_Kd" not in (tmp_path/"results/1/entity_chair.mtl").read_text()
+    data = json.loads(response["output"][0]["content"][0]["text"])["objects"][0]
+    while len(data["entity"]["parts"]) < 20:
+        data["entity"]["parts"].append(copy.deepcopy(data["entity"]["parts"][-1]))
+    parsed = astra_detail.parse_detail(reply(data), original, context, o3d)
+    assert len(parsed.entity.parts) == 20
+    body = astra_detail.detail_body([context])
+    assert len(body["input"][0]["content"]) == 1
+    assert body["max_output_tokens"] == 28000
+    data["entity"]["parts"].append(copy.deepcopy(data["entity"]["parts"][-1]))
+    with pytest.raises(ValueError):
+        astra_detail.parse_detail(reply(data), original, context, o3d)
 
 
 @pytest.mark.parametrize("count", [4, 5, 8])
-def test_multiple_objects_share_calls_and_keep_separate_identity_materials_and_crops(tmp_path, monkeypatch, count):
+def test_multiple_objects_share_text_only_calls_and_keep_separate_identity_and_materials(tmp_path, monkeypatch, count):
     room_capture(tmp_path)
     configure(monkeypatch)
     inventory = inventory_with_objects(count)
@@ -275,8 +279,9 @@ def test_multiple_objects_share_calls_and_keep_separate_identity_materials_and_c
         assert body["model"] == "gpt-6-sol" and body["reasoning"]["effort"] == "high"
         context = json.loads(body["input"][0]["content"][0]["text"])["objects"]
         assert 1 <= len(context) <= 4
-        assert all(1 <= len(item["selected_photos"]) <= 3 for item in context)
-        assert all(max(photo["supplied_image_size"]) <= 1024 for item in context for photo in item["selected_photos"])
+        assert all(item["entity"]["model_description"] for item in context)
+        assert all("selected_photos" not in item for item in context)
+        assert all(c["type"] == "input_text" for c in body["input"][0]["content"])
         response = batch_for_request(body)
         data = json.loads(response["output"][0]["content"][0]["text"])
         data["objects"].reverse()  # IDs, rather than array order, bind results.

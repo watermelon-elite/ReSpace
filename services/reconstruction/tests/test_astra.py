@@ -297,3 +297,23 @@ def test_invalid_geometry_checkpoint_does_not_trap_user_in_failing_retries(tmp_p
     assert not (tmp_path / "work/astra-response.json").exists()
     assert pipeline.process(tmp_path, 2)["model_filename"] == "astra.obj"
     assert not replies
+
+
+def test_room_photo_limit_defaults_to_64_and_selection_can_fill_it(tmp_path, capture, monkeypatch):
+    manifest, _, _, _, _ = setup_evidence(tmp_path, capture)
+    monkeypatch.delenv("RESPACE_ASTRA_IMAGE_LIMIT", raising=False)
+    assert astra.image_limit() == 64
+    frames = []
+    for i in range(70):
+        frame = manifest.frames[0].model_copy(deep=True)
+        frame.id = f"view-{i}"
+        frame.metadata.camera_to_scan_transform[12] = i*.2
+        frames.append(frame)
+    manifest = manifest.model_copy(update={"frames": frames})
+    selected = astra.select_frames(manifest, tmp_path/"inputs", astra.image_limit())
+    assert len(selected) == 64
+    monkeypatch.setenv("RESPACE_ASTRA_IMAGE_LIMIT", "64")
+    assert astra.image_limit() == 64
+    monkeypatch.setenv("RESPACE_ASTRA_IMAGE_LIMIT", "65")
+    with pytest.raises(ValueError, match="between 1 and 64"):
+        astra.image_limit()

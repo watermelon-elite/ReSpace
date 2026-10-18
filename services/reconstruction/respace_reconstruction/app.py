@@ -12,12 +12,13 @@ import sys
 import threading
 import uuid
 
-from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, ConfigDict, ValidationError
 
 from .models import Manifest
 from .store import Store, digest
+from .renditions import Renditions, RenditionRequest
 
 
 class RestartRequest(BaseModel):
@@ -142,6 +143,7 @@ def create_app(root: Path | None = None, token: str | None = None, start_worker=
     root = root or Path(os.environ.get("RESPACE_RECONSTRUCTION_DATA", "./data"))
     secret = token if token is not None else os.environ.get("RESPACE_RECONSTRUCTION_TOKEN", "")
     store = Store(root.resolve())
+    renditions = Renditions(store.root)
     locks: dict[str, asyncio.Lock] = {}
 
     @asynccontextmanager
@@ -155,6 +157,7 @@ def create_app(root: Path | None = None, token: str | None = None, start_worker=
             lock_file.close()
             raise RuntimeError("Run exactly one service process for this data directory")
         store.recover()
+        renditions.recover()
         worker = Worker(store) if start_worker else None
         if worker:
             worker.thread.start()
@@ -267,5 +270,53 @@ def create_app(root: Path | None = None, token: str | None = None, start_worker=
         if result.get("scene_schema_version")==2 and (job["state"]!="succeeded" or job["revision"]!=revision):
             raise HTTPException(404,"This scene revision is not published")
         return FileResponse(store.folder(job_id) / "results" / str(revision) / filename)
+
+    def rendition_directory(job_id, revision, key):
+        get(job_id)
+        try:
+            directory = renditions.directory(store.folder(job_id), revision, key)
+        except ValueError as exc:
+            raise HTTPException(422, str(exc))
+        result = store.folder(job_id)/"results"/str(revision)/"completion.json"
+        if not result.is_file() or json.loads(result.read_text()).get("status") != "succeeded":
+            raise HTTPException(404, "Unknown completed room revision")
+        return directory
+
+    @app.post("/v1/reconstructions/{job_id}/results/{revision}/renditions/{key}", dependencies=[Depends(authorize)], status_code=202)
+    async def create_rendition(job_id: str, revision: int, key: str, request: Request, background: BackgroundTasks):
+        directory = rendition_directory(job_id, revision, key)
+        encoded = bytearray()
+        async for chunk in request.stream():
+            encoded.extend(chunk)
+            if len(encoded) > 6*1024**2:
+                raise HTTPException(413, "Room image request is too large")
+        try:
+            body = RenditionRequest.model_validate_json(bytes(encoded))
+            status, started = renditions.prepare(directory, body, job_id, revision)
+        except ValueError as exc:
+            raise HTTPException(422, str(exc))
+        except RuntimeError as exc:
+            raise HTTPException(503, str(exc))
+        if started:
+            background.add_task(renditions.generate, directory)
+        return status
+
+    @app.get("/v1/reconstructions/{job_id}/results/{revision}/renditions/{key}", dependencies=[Depends(authorize)])
+    def rendition_status(job_id: str, revision: int, key: str):
+        try:
+            return renditions.status(rendition_directory(job_id, revision, key))
+        except FileNotFoundError:
+            raise HTTPException(404, "Unknown rendition")
+
+    @app.get("/v1/reconstructions/{job_id}/results/{revision}/renditions/{key}/image", dependencies=[Depends(authorize)])
+    def rendition_image(job_id: str, revision: int, key: str):
+        directory = rendition_directory(job_id, revision, key)
+        try:
+            status = renditions.status(directory)
+        except FileNotFoundError:
+            raise HTTPException(404, "Unknown rendition")
+        if status["state"] != "succeeded" or not (directory/"image.png").is_file():
+            raise HTTPException(404, "Rendition image is not ready")
+        return FileResponse(directory/"image.png", media_type="image/png")
 
     return app

@@ -40,10 +40,11 @@ def room_plan():
     entities = [entity("chair", "furniture", [box([0., .4, -.5], [.8, .8, .8]),
                     box([0., .9, -.8], [.8, .4, .15], "ellipsoid")])]
     entities[0]["category"] = "seating"
+    entities[0]["model_description"] = "Wooden chair with a red upholstered seat, four legs and a curved backrest"
     return {"schema_version": 1, "coordinate_system": "arkit_scan_meters_y_up",
             "summary": "Furniture only", "assumptions": ["Complete hidden chair back"],
             "ignored_evidence": ["Mirror image is not a second chair"],
-            "materials": [{"id": "wood", "color": {"r": .4, "g": .3, "b": .2}, "roughness": .7}],
+            "materials": [{"id": "wood", "color": {"r": .4, "g": .3, "b": .2}, "roughness": .7, "texture_family": "wood"}],
             "entities": entities}
 
 
