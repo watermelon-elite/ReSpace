@@ -1,0 +1,1825 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "kind": "test_only",
+    "description": "Emitted by real public API and transactional publication using controlled providers and synthetic geometry."
+  },
+  "rooms": {
+    "schema_version": 1,
+    "rooms": [
+      {
+        "schema_version": 1,
+        "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+        "name": "Room 2026-10-18",
+        "metadata_revision": 0,
+        "creation_operation_id": "create",
+        "created_at": "2026-10-18T02:46:05.657502+00:00",
+        "scan_at": "2026-10-18T00:01:00Z",
+        "thumbnail_url": "/v1/rooms/40cf4a08-951d-44ad-9766-3758520b9b59/artifacts/photo0",
+        "capture_state": "complete",
+        "latest_capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+        "latest_snapshot_id": "9006fd3e-7cf5-47fc-b2de-815561221faf",
+        "planning_revision": 0,
+        "active_design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+        "active_revision": 1,
+        "current_operation_id": "pending-generation",
+        "warnings": [],
+        "current_operation_state": "needs_clarification"
+      }
+    ],
+    "next_cursor": null
+  },
+  "room_detail": {
+    "schema_version": 1,
+    "room": {
+      "schema_version": 1,
+      "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+      "name": "Room 2026-10-18",
+      "metadata_revision": 0,
+      "creation_operation_id": "create",
+      "created_at": "2026-10-18T02:46:05.657502+00:00",
+      "scan_at": "2026-10-18T00:01:00Z",
+      "thumbnail_url": "/v1/rooms/40cf4a08-951d-44ad-9766-3758520b9b59/artifacts/photo0",
+      "capture_state": "complete",
+      "latest_capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+      "latest_snapshot_id": "9006fd3e-7cf5-47fc-b2de-815561221faf",
+      "planning_revision": 0,
+      "active_design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+      "active_revision": 1,
+      "current_operation_id": "pending-generation",
+      "warnings": [],
+      "current_operation_state": "needs_clarification"
+    },
+    "capture_status": {
+      "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+      "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+      "state": "complete",
+      "expected_artifacts": 3,
+      "stored_artifacts": 3,
+      "missing_artifacts": 0,
+      "missing_artifact_ids": [],
+      "manifest": {
+        "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+        "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+        "final_export_artifact_id": "export",
+        "frames": [
+          {
+            "frame_id": "frame0",
+            "idx": 0
+          },
+          {
+            "frame_id": "frame1",
+            "idx": 1
+          }
+        ],
+        "artifacts": [
+          {
+            "artifact_id": "photo0",
+            "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+            "frame_id": "frame0",
+            "kind": "jpeg",
+            "format": "image/jpeg",
+            "byte_length": 631,
+            "checksum": "de11d89242d46aa43d48acd70d47826784a48d725e164869671886abd594e050",
+            "w": null,
+            "h": null,
+            "orientation": null
+          },
+          {
+            "artifact_id": "photo1",
+            "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+            "frame_id": "frame1",
+            "kind": "jpeg",
+            "format": "image/jpeg",
+            "byte_length": 631,
+            "checksum": "de11d89242d46aa43d48acd70d47826784a48d725e164869671886abd594e050",
+            "w": null,
+            "h": null,
+            "orientation": null
+          },
+          {
+            "artifact_id": "export",
+            "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+            "frame_id": null,
+            "kind": "roomplan",
+            "format": "application/json",
+            "byte_length": 855,
+            "checksum": "0b65d561e953acb515bd7422b08c2ab5625a0897e1faa3db290a8a7613b93343",
+            "w": null,
+            "h": null,
+            "orientation": null
+          }
+        ],
+        "completion_id": "finalize",
+        "started_at": "2026-10-18T00:00:00Z",
+        "completed_at": "2026-10-18T00:01:00Z"
+      },
+      "raw_export": {
+        "identifier": "native-room",
+        "walls": [
+          {
+            "identifier": "native-wall-0",
+            "category": {
+              "wall": {}
+            },
+            "dimensions": [
+              4.0,
+              2.6,
+              0
+            ],
+            "transform": [
+              1.0,
+              0,
+              0.0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0.0,
+              0,
+              1.0,
+              0,
+              4.0,
+              0.10000000000000009,
+              3.0,
+              1
+            ]
+          },
+          {
+            "identifier": "native-wall-1",
+            "category": {
+              "wall": {}
+            },
+            "dimensions": [
+              3.0,
+              2.6,
+              0
+            ],
+            "transform": [
+              0.0,
+              0,
+              1.0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              -1.0,
+              0,
+              0.0,
+              0,
+              6.0,
+              0.10000000000000009,
+              4.5,
+              1
+            ]
+          },
+          {
+            "identifier": "native-wall-2",
+            "category": {
+              "wall": {}
+            },
+            "dimensions": [
+              4.0,
+              2.6,
+              0
+            ],
+            "transform": [
+              -1.0,
+              0,
+              0.0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0.0,
+              0,
+              -1.0,
+              0,
+              4.0,
+              0.10000000000000009,
+              6.0,
+              1
+            ]
+          },
+          {
+            "identifier": "native-wall-3",
+            "category": {
+              "wall": {}
+            },
+            "dimensions": [
+              3.0,
+              2.6,
+              0
+            ],
+            "transform": [
+              0.0,
+              0,
+              -1.0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1.0,
+              0,
+              0.0,
+              0,
+              2.0,
+              0.10000000000000009,
+              4.5,
+              1
+            ]
+          }
+        ],
+        "objects": [],
+        "doors": [],
+        "windows": [],
+        "openings": [],
+        "floors": [],
+        "version": 1
+      },
+      "measured_context": {
+        "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+        "captured_at": "2026-10-18T00:01:00Z",
+        "source": "roomplan",
+        "units": "meters",
+        "frame": "original_scan_world",
+        "objects": [],
+        "walls": [
+          {
+            "identifier": "native-wall-0",
+            "category": {
+              "wall": {}
+            },
+            "dimensions": [
+              4.0,
+              2.6,
+              0
+            ],
+            "transform": [
+              1.0,
+              0,
+              0.0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0.0,
+              0,
+              1.0,
+              0,
+              4.0,
+              0.10000000000000009,
+              3.0,
+              1
+            ]
+          },
+          {
+            "identifier": "native-wall-1",
+            "category": {
+              "wall": {}
+            },
+            "dimensions": [
+              3.0,
+              2.6,
+              0
+            ],
+            "transform": [
+              0.0,
+              0,
+              1.0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              -1.0,
+              0,
+              0.0,
+              0,
+              6.0,
+              0.10000000000000009,
+              4.5,
+              1
+            ]
+          },
+          {
+            "identifier": "native-wall-2",
+            "category": {
+              "wall": {}
+            },
+            "dimensions": [
+              4.0,
+              2.6,
+              0
+            ],
+            "transform": [
+              -1.0,
+              0,
+              0.0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0.0,
+              0,
+              -1.0,
+              0,
+              4.0,
+              0.10000000000000009,
+              6.0,
+              1
+            ]
+          },
+          {
+            "identifier": "native-wall-3",
+            "category": {
+              "wall": {}
+            },
+            "dimensions": [
+              3.0,
+              2.6,
+              0
+            ],
+            "transform": [
+              0.0,
+              0,
+              -1.0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1.0,
+              0,
+              0.0,
+              0,
+              2.0,
+              0.10000000000000009,
+              4.5,
+              1
+            ]
+          }
+        ],
+        "openings": {
+          "doors": [],
+          "windows": [],
+          "openings": []
+        },
+        "height": null,
+        "extents": null,
+        "uncertainty": "Native measurements have not undergone deferred spatial processing."
+      }
+    },
+    "measured_context": {
+      "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+      "captured_at": "2026-10-18T00:01:00Z",
+      "source": "roomplan",
+      "units": "meters",
+      "frame": "original_scan_world",
+      "objects": [],
+      "walls": [
+        {
+          "identifier": "native-wall-0",
+          "category": {
+            "wall": {}
+          },
+          "dimensions": [
+            4.0,
+            2.6,
+            0
+          ],
+          "transform": [
+            1.0,
+            0,
+            0.0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0.0,
+            0,
+            1.0,
+            0,
+            4.0,
+            0.10000000000000009,
+            3.0,
+            1
+          ]
+        },
+        {
+          "identifier": "native-wall-1",
+          "category": {
+            "wall": {}
+          },
+          "dimensions": [
+            3.0,
+            2.6,
+            0
+          ],
+          "transform": [
+            0.0,
+            0,
+            1.0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            -1.0,
+            0,
+            0.0,
+            0,
+            6.0,
+            0.10000000000000009,
+            4.5,
+            1
+          ]
+        },
+        {
+          "identifier": "native-wall-2",
+          "category": {
+            "wall": {}
+          },
+          "dimensions": [
+            4.0,
+            2.6,
+            0
+          ],
+          "transform": [
+            -1.0,
+            0,
+            0.0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0.0,
+            0,
+            -1.0,
+            0,
+            4.0,
+            0.10000000000000009,
+            6.0,
+            1
+          ]
+        },
+        {
+          "identifier": "native-wall-3",
+          "category": {
+            "wall": {}
+          },
+          "dimensions": [
+            3.0,
+            2.6,
+            0
+          ],
+          "transform": [
+            0.0,
+            0,
+            -1.0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1.0,
+            0,
+            0.0,
+            0,
+            2.0,
+            0.10000000000000009,
+            4.5,
+            1
+          ]
+        }
+      ],
+      "openings": {
+        "doors": [],
+        "windows": [],
+        "openings": []
+      },
+      "height": null,
+      "extents": null,
+      "uncertainty": "Native measurements have not undergone deferred spatial processing."
+    },
+    "raw_export": {
+      "identifier": "native-room",
+      "walls": [
+        {
+          "identifier": "native-wall-0",
+          "category": {
+            "wall": {}
+          },
+          "dimensions": [
+            4.0,
+            2.6,
+            0
+          ],
+          "transform": [
+            1.0,
+            0,
+            0.0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0.0,
+            0,
+            1.0,
+            0,
+            4.0,
+            0.10000000000000009,
+            3.0,
+            1
+          ]
+        },
+        {
+          "identifier": "native-wall-1",
+          "category": {
+            "wall": {}
+          },
+          "dimensions": [
+            3.0,
+            2.6,
+            0
+          ],
+          "transform": [
+            0.0,
+            0,
+            1.0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            -1.0,
+            0,
+            0.0,
+            0,
+            6.0,
+            0.10000000000000009,
+            4.5,
+            1
+          ]
+        },
+        {
+          "identifier": "native-wall-2",
+          "category": {
+            "wall": {}
+          },
+          "dimensions": [
+            4.0,
+            2.6,
+            0
+          ],
+          "transform": [
+            -1.0,
+            0,
+            0.0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0.0,
+            0,
+            -1.0,
+            0,
+            4.0,
+            0.10000000000000009,
+            6.0,
+            1
+          ]
+        },
+        {
+          "identifier": "native-wall-3",
+          "category": {
+            "wall": {}
+          },
+          "dimensions": [
+            3.0,
+            2.6,
+            0
+          ],
+          "transform": [
+            0.0,
+            0,
+            -1.0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1.0,
+            0,
+            0.0,
+            0,
+            2.0,
+            0.10000000000000009,
+            4.5,
+            1
+          ]
+        }
+      ],
+      "objects": [],
+      "doors": [],
+      "windows": [],
+      "openings": [],
+      "floors": [],
+      "version": 1
+    },
+    "planning": {
+      "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+      "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+      "planning_revision": 0,
+      "instructions": []
+    },
+    "current_operation": {
+      "schema_version": 1,
+      "operation_id": "pending-generation",
+      "kind": "generation",
+      "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+      "device_id": "device",
+      "request": {
+        "operation_id": "pending-generation",
+        "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+        "planning_revision": 0,
+        "expected_active_design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+        "expected_active_revision": 1,
+        "budget": "200.00"
+      },
+      "base_context": {
+        "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+        "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+        "snapshot_id": "9006fd3e-7cf5-47fc-b2de-815561221faf",
+        "planning_revision": 0,
+        "active_design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+        "active_revision": 1
+      },
+      "state": "needs_clarification",
+      "phase": "awaiting_answer",
+      "created_at": "2026-10-18T02:46:05.786366+00:00",
+      "updated_at": "2026-10-18T02:46:05.787138+00:00",
+      "decision_revision": 0,
+      "question_revision": 1,
+      "question_history": [
+        {
+          "kind": "single_choice",
+          "text": "What should improve most?",
+          "choices": [
+            {
+              "choice_id": "relax",
+              "label": "Relaxation"
+            },
+            {
+              "choice_id": "work",
+              "label": "Working from home"
+            }
+          ],
+          "allow_skip": true,
+          "allow_delegate": true,
+          "question_id": "d28e18a6-fd5d-4a62-93d3-cbaa981a808a",
+          "operation_id": "pending-generation",
+          "base_context": {
+            "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+            "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+            "snapshot_id": "9006fd3e-7cf5-47fc-b2de-815561221faf",
+            "planning_revision": 0,
+            "active_design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+            "active_revision": 1
+          },
+          "decision_revision": 0,
+          "question_revision": 1,
+          "context": "interview",
+          "min_selections": 1,
+          "max_selections": 1
+        }
+      ],
+      "answer_history": [],
+      "pending_question": {
+        "kind": "single_choice",
+        "text": "What should improve most?",
+        "choices": [
+          {
+            "choice_id": "relax",
+            "label": "Relaxation"
+          },
+          {
+            "choice_id": "work",
+            "label": "Working from home"
+          }
+        ],
+        "allow_skip": true,
+        "allow_delegate": true,
+        "question_id": "d28e18a6-fd5d-4a62-93d3-cbaa981a808a",
+        "operation_id": "pending-generation",
+        "base_context": {
+          "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+          "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+          "snapshot_id": "9006fd3e-7cf5-47fc-b2de-815561221faf",
+          "planning_revision": 0,
+          "active_design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+          "active_revision": 1
+        },
+        "decision_revision": 0,
+        "question_revision": 1,
+        "context": "interview",
+        "min_selections": 1,
+        "max_selections": 1
+      },
+      "outcome": null,
+      "failure": null,
+      "command_message_id": "31fbe9d9-450a-4d52-9de6-3a031b3a52b6"
+    }
+  },
+  "operation": {
+    "schema_version": 1,
+    "operation": {
+      "schema_version": 1,
+      "operation_id": "pending-generation",
+      "kind": "generation",
+      "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+      "request": {
+        "operation_id": "pending-generation",
+        "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+        "planning_revision": 0,
+        "expected_active_design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+        "expected_active_revision": 1,
+        "budget": "200.00"
+      },
+      "base_context": {
+        "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+        "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+        "snapshot_id": "9006fd3e-7cf5-47fc-b2de-815561221faf",
+        "planning_revision": 0,
+        "active_design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+        "active_revision": 1
+      },
+      "state": "needs_clarification",
+      "phase": "awaiting_answer",
+      "created_at": "2026-10-18T02:46:05.786366+00:00",
+      "updated_at": "2026-10-18T02:46:05.787138+00:00",
+      "decision_revision": 0,
+      "question_revision": 1,
+      "question_history": [
+        {
+          "kind": "single_choice",
+          "text": "What should improve most?",
+          "choices": [
+            {
+              "choice_id": "relax",
+              "label": "Relaxation"
+            },
+            {
+              "choice_id": "work",
+              "label": "Working from home"
+            }
+          ],
+          "allow_skip": true,
+          "allow_delegate": true,
+          "question_id": "d28e18a6-fd5d-4a62-93d3-cbaa981a808a",
+          "operation_id": "pending-generation",
+          "base_context": {
+            "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+            "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+            "snapshot_id": "9006fd3e-7cf5-47fc-b2de-815561221faf",
+            "planning_revision": 0,
+            "active_design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+            "active_revision": 1
+          },
+          "decision_revision": 0,
+          "question_revision": 1,
+          "context": "interview",
+          "min_selections": 1,
+          "max_selections": 1
+        }
+      ],
+      "answer_history": [],
+      "pending_question": {
+        "kind": "single_choice",
+        "text": "What should improve most?",
+        "choices": [
+          {
+            "choice_id": "relax",
+            "label": "Relaxation"
+          },
+          {
+            "choice_id": "work",
+            "label": "Working from home"
+          }
+        ],
+        "allow_skip": true,
+        "allow_delegate": true,
+        "question_id": "d28e18a6-fd5d-4a62-93d3-cbaa981a808a",
+        "operation_id": "pending-generation",
+        "base_context": {
+          "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+          "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+          "snapshot_id": "9006fd3e-7cf5-47fc-b2de-815561221faf",
+          "planning_revision": 0,
+          "active_design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+          "active_revision": 1
+        },
+        "decision_revision": 0,
+        "question_revision": 1,
+        "context": "interview",
+        "min_selections": 1,
+        "max_selections": 1
+      },
+      "outcome": null,
+      "failure": null,
+      "command_message_id": "31fbe9d9-450a-4d52-9de6-3a031b3a52b6"
+    }
+  },
+  "design": {
+    "schema_version": 1,
+    "design": {
+      "schema_version": 1,
+      "design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+      "parent_id": null,
+      "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+      "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+      "snapshot_id": "9006fd3e-7cf5-47fc-b2de-815561221faf",
+      "planning_snapshot": {
+        "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+        "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+        "planning_revision": 0,
+        "instructions": []
+      },
+      "decision_snapshot": [],
+      "selection_snapshot": {
+        "schema_version": 1,
+        "selection_snapshot_id": "fb3e4117-9541-4872-9947-acb7a497a49a",
+        "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+        "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+        "decision_revision": 0,
+        "selected": [
+          {
+            "selection_id": "sel",
+            "category": "desk",
+            "variant_id": "v",
+            "offer_id": "o_v",
+            "title": "Measured desk",
+            "dimensions": [
+              1,
+              0.5,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "v",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                1,
+                0.5,
+                0.7
+              ],
+              "source_url": "https://example.com/desk",
+              "verified_at": "2026-10-18T00:00:00Z",
+              "expires_at": "2026-10-25T00:00:00Z",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "value": "1",
+                  "unit": "m"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "value": "0.5",
+                  "unit": "m"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "value": "0.7",
+                  "unit": "m"
+                }
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_v",
+              "variant_id": "v",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "50.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v",
+                    "units": 1,
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "candidate_id": "candidate",
+            "variant": {
+              "variant_id": "v",
+              "title": "Verified desk",
+              "category": "desk",
+              "image_references": [
+                "https://example.com/desk.jpg"
+              ]
+            },
+            "explicit_choice": false,
+            "must_have": false,
+            "requirements_text": "chair"
+          }
+        ],
+        "purchases": {
+          "schema_version": 1,
+          "currency": "USD",
+          "lines": [
+            {
+              "schema_version": 1,
+              "offer_id": "o_v",
+              "variant_id": "v",
+              "offer": {
+                "schema_version": 1,
+                "offer_id": "o_v",
+                "variant_id": "v",
+                "merchant": "Example",
+                "product_url": "https://example.com/chair",
+                "price": "50.00",
+                "currency": "USD",
+                "availability": "in_stock",
+                "exact_variant": true,
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "pack_contents": {
+                  "verified": true,
+                  "components": [
+                    {
+                      "variant_id": "v",
+                      "units": 1,
+                      "dimensions": [
+                        1,
+                        0.5,
+                        0.7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "unit_pack_price": "50.00",
+              "purchased_pack_count": 1,
+              "verified_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v",
+                    "units": 1,
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  }
+                ]
+              },
+              "supplied_unit_count": 1,
+              "placed_unit_count": 1,
+              "placed_item_ids": [
+                "i_sel_0"
+              ],
+              "paid_surplus_count": 0,
+              "line_total": "50.00",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "components": [
+                {
+                  "variant_id": "v",
+                  "units": 1,
+                  "dimensions": [
+                    1,
+                    0.5,
+                    0.7
+                  ],
+                  "supplied_unit_count": 1,
+                  "placed_item_ids": [
+                    "i_sel_0"
+                  ],
+                  "paid_surplus_count": 0
+                }
+              ]
+            }
+          ],
+          "total": "50.00",
+          "approved_ceiling": "200.00",
+          "within_budget": true,
+          "tax_excluded": true,
+          "shipping_excluded": true,
+          "existing_objects_excluded": true,
+          "warnings": []
+        },
+        "approved_ceiling": "200.00",
+        "assumptions": [],
+        "reasons": [],
+        "created_at": "2026-10-18T02:46:05.691997+00:00"
+      },
+      "generation_inputs": {
+        "schema_version": 1,
+        "operation_id": "generate",
+        "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+        "planning_revision": 0,
+        "expected_active_design_id": null,
+        "expected_active_revision": 0,
+        "intent": "add",
+        "styles": [
+          "Match what I have"
+        ],
+        "budget": "200.00",
+        "currency": "USD",
+        "text": "chair"
+      },
+      "plan": {
+        "summary": "Add a desk",
+        "adds": [
+          {
+            "add_id": "a",
+            "action_id": "act",
+            "category": "desk",
+            "priority": 1,
+            "quantity": 1,
+            "anchor": {
+              "type": "against_wall",
+              "wall_id": "w_1",
+              "alignment": "center"
+            },
+            "selection_id": "sel",
+            "reason": "Workspace"
+          }
+        ],
+        "moves": [],
+        "removes": [],
+        "replaces": [],
+        "restores": [],
+        "unlocks": [],
+        "decision_revision": 0,
+        "base": {
+          "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+          "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+          "snapshot_id": null,
+          "planning_revision": 0,
+          "active_design_id": null,
+          "active_revision": 0
+        }
+      },
+      "scene": {
+        "schema_version": 1,
+        "room": {
+          "schema_version": 1,
+          "category_version": 1,
+          "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+          "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+          "height": 2.6,
+          "frame": {
+            "room_from_world": [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              -2.0,
+              1.2,
+              -3.0,
+              1.0
+            ]
+          },
+          "floor": {
+            "polygon": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                4.0,
+                0.0
+              ],
+              [
+                4.0,
+                3.0
+              ],
+              [
+                0.0,
+                3.0
+              ]
+            ],
+            "area": 12.0
+          },
+          "walls": [
+            {
+              "id": "w_1",
+              "a": [
+                0.0,
+                0.0
+              ],
+              "b": [
+                4.0,
+                0.0
+              ],
+              "length": 4.0,
+              "inward_normal": [
+                -0.0,
+                1.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-0"
+              ]
+            },
+            {
+              "id": "w_2",
+              "a": [
+                4.0,
+                0.0
+              ],
+              "b": [
+                4.0,
+                3.0
+              ],
+              "length": 3.0,
+              "inward_normal": [
+                -1.0,
+                0.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-1"
+              ]
+            },
+            {
+              "id": "w_3",
+              "a": [
+                4.0,
+                3.0
+              ],
+              "b": [
+                0.0,
+                3.0
+              ],
+              "length": 4.0,
+              "inward_normal": [
+                -0.0,
+                -1.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-2"
+              ]
+            },
+            {
+              "id": "w_4",
+              "a": [
+                0.0,
+                3.0
+              ],
+              "b": [
+                0.0,
+                0.0
+              ],
+              "length": 3.0,
+              "inward_normal": [
+                1.0,
+                0.0
+              ],
+              "virtual": false,
+              "source_ids": [
+                "native-wall-3"
+              ]
+            }
+          ],
+          "corners": [
+            {
+              "id": "c_1",
+              "position": [
+                0.0,
+                0.0
+              ],
+              "wall_ids": [
+                "w_4",
+                "w_1"
+              ]
+            },
+            {
+              "id": "c_2",
+              "position": [
+                4.0,
+                0.0
+              ],
+              "wall_ids": [
+                "w_1",
+                "w_2"
+              ]
+            },
+            {
+              "id": "c_3",
+              "position": [
+                4.0,
+                3.0
+              ],
+              "wall_ids": [
+                "w_2",
+                "w_3"
+              ]
+            },
+            {
+              "id": "c_4",
+              "position": [
+                0.0,
+                3.0
+              ],
+              "wall_ids": [
+                "w_3",
+                "w_4"
+              ]
+            }
+          ],
+          "openings": [],
+          "objects": [],
+          "wall_features": [],
+          "zones": [],
+          "style_hints": {},
+          "identity_map": {
+            "native-wall-0": {
+              "kind": "wall",
+              "id": "w_1",
+              "ids": [
+                "w_1"
+              ]
+            },
+            "native-wall-1": {
+              "kind": "wall",
+              "id": "w_2",
+              "ids": [
+                "w_2"
+              ]
+            },
+            "native-wall-2": {
+              "kind": "wall",
+              "id": "w_3",
+              "ids": [
+                "w_3"
+              ]
+            },
+            "native-wall-3": {
+              "kind": "wall",
+              "id": "w_4",
+              "ids": [
+                "w_4"
+              ]
+            }
+          },
+          "processing": {
+            "expected_frames": 2,
+            "not_started": 0,
+            "pending": 0,
+            "succeeded": 2,
+            "failed": 0,
+            "outcomes": [
+              {
+                "state": "succeeded",
+                "detections": [],
+                "frame_id": "frame0",
+                "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+                "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a"
+              },
+              {
+                "state": "succeeded",
+                "detections": [],
+                "frame_id": "frame1",
+                "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+                "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a"
+              }
+            ],
+            "lifted": 0
+          },
+          "validity": {
+            "usable": true,
+            "reasons": [],
+            "warnings": []
+          }
+        },
+        "room_snapshot_id": "9006fd3e-7cf5-47fc-b2de-815561221faf",
+        "items": [
+          {
+            "id": "i_a_0",
+            "object_id": null,
+            "add_id": "a",
+            "origin": "new",
+            "status": "new",
+            "category": "desk",
+            "label": "Measured desk",
+            "selection_id": "sel",
+            "variant_id": "v",
+            "offer_id": "o_v",
+            "product": {
+              "selection_id": "sel",
+              "category": "desk",
+              "variant_id": "v",
+              "offer_id": "o_v",
+              "title": "Measured desk",
+              "dimensions": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimension_evidence": {
+                "outcome": "verified",
+                "variant_id": "v",
+                "size_m": [
+                  1,
+                  0.5,
+                  0.7
+                ],
+                "dimensions": [
+                  1,
+                  0.5,
+                  0.7
+                ],
+                "source_url": "https://example.com/desk",
+                "verified_at": "2026-10-18T00:00:00Z",
+                "expires_at": "2026-10-25T00:00:00Z",
+                "original_measurements": [
+                  {
+                    "axis": "width",
+                    "label": "Width",
+                    "value": "1",
+                    "unit": "m"
+                  },
+                  {
+                    "axis": "depth",
+                    "label": "Depth",
+                    "value": "0.5",
+                    "unit": "m"
+                  },
+                  {
+                    "axis": "height",
+                    "label": "Height",
+                    "value": "0.7",
+                    "unit": "m"
+                  }
+                ]
+              },
+              "offer": {
+                "schema_version": 1,
+                "offer_id": "o_v",
+                "variant_id": "v",
+                "merchant": "Example",
+                "product_url": "https://example.com/chair",
+                "price": "50.00",
+                "currency": "USD",
+                "availability": "in_stock",
+                "exact_variant": true,
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "pack_contents": {
+                  "verified": true,
+                  "components": [
+                    {
+                      "variant_id": "v",
+                      "units": 1,
+                      "dimensions": [
+                        1,
+                        0.5,
+                        0.7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "render": {
+                "kind": "standin",
+                "category": "desk",
+                "scaling_mode": "normalized",
+                "authored_bounds": [
+                  1,
+                  1,
+                  1
+                ],
+                "units": "meters",
+                "pivot": "bottom_center",
+                "forward_axis": "+Z"
+              },
+              "quantity": 1,
+              "candidate_id": "candidate",
+              "variant": {
+                "variant_id": "v",
+                "title": "Verified desk",
+                "category": "desk",
+                "image_references": [
+                  "https://example.com/desk.jpg"
+                ]
+              },
+              "explicit_choice": false,
+              "must_have": false,
+              "requirements_text": "chair"
+            },
+            "instruction": "decide",
+            "anchor": {
+              "type": "against_wall",
+              "wall_id": "w_1",
+              "alignment": "center"
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "reason": "Workspace",
+            "original_placement": null,
+            "fixed_in_place": false,
+            "placement": {
+              "position": [
+                2.0,
+                0,
+                0.3
+              ],
+              "yaw": -0.0,
+              "size": [
+                1,
+                0.5,
+                0.7
+              ],
+              "mount": "floor",
+              "wall_id": "w_1"
+            },
+            "last_valid_placement": {
+              "position": [
+                2.0,
+                0,
+                0.3
+              ],
+              "yaw": -0.0,
+              "size": [
+                1,
+                0.5,
+                0.7
+              ],
+              "mount": "floor",
+              "wall_id": "w_1"
+            }
+          }
+        ],
+        "products": [
+          {
+            "selection_id": "sel",
+            "category": "desk",
+            "variant_id": "v",
+            "offer_id": "o_v",
+            "title": "Measured desk",
+            "dimensions": [
+              1,
+              0.5,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "v",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                1,
+                0.5,
+                0.7
+              ],
+              "source_url": "https://example.com/desk",
+              "verified_at": "2026-10-18T00:00:00Z",
+              "expires_at": "2026-10-25T00:00:00Z",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "value": "1",
+                  "unit": "m"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "value": "0.5",
+                  "unit": "m"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "value": "0.7",
+                  "unit": "m"
+                }
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_v",
+              "variant_id": "v",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "50.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v",
+                    "units": 1,
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "candidate_id": "candidate",
+            "variant": {
+              "variant_id": "v",
+              "title": "Verified desk",
+              "category": "desk",
+              "image_references": [
+                "https://example.com/desk.jpg"
+              ]
+            },
+            "explicit_choice": false,
+            "must_have": false,
+            "requirements_text": "chair"
+          }
+        ],
+        "purchase_summary": {
+          "schema_version": 1,
+          "currency": "USD",
+          "lines": [
+            {
+              "schema_version": 1,
+              "offer_id": "o_v",
+              "variant_id": "v",
+              "offer": {
+                "schema_version": 1,
+                "offer_id": "o_v",
+                "variant_id": "v",
+                "merchant": "Example",
+                "product_url": "https://example.com/chair",
+                "price": "50.00",
+                "currency": "USD",
+                "availability": "in_stock",
+                "exact_variant": true,
+                "checked_at": "2026-10-18T00:00:00+00:00",
+                "pack_contents": {
+                  "verified": true,
+                  "components": [
+                    {
+                      "variant_id": "v",
+                      "units": 1,
+                      "dimensions": [
+                        1,
+                        0.5,
+                        0.7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "unit_pack_price": "50.00",
+              "purchased_pack_count": 1,
+              "verified_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v",
+                    "units": 1,
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  }
+                ]
+              },
+              "supplied_unit_count": 1,
+              "placed_unit_count": 1,
+              "placed_item_ids": [
+                "i_a_0"
+              ],
+              "paid_surplus_count": 0,
+              "line_total": "50.00",
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "components": [
+                {
+                  "variant_id": "v",
+                  "units": 1,
+                  "dimensions": [
+                    1,
+                    0.5,
+                    0.7
+                  ],
+                  "supplied_unit_count": 1,
+                  "placed_item_ids": [
+                    "i_a_0"
+                  ],
+                  "paid_surplus_count": 0
+                }
+              ]
+            }
+          ],
+          "total": "50.00",
+          "approved_ceiling": "200.00",
+          "within_budget": true,
+          "tax_excluded": true,
+          "shipping_excluded": true,
+          "existing_objects_excluded": true,
+          "warnings": []
+        },
+        "summary": "Add a desk",
+        "warnings": [],
+        "design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+        "parent_id": null,
+        "action_outcomes": [
+          {
+            "action_id": "act",
+            "type": "add",
+            "outcome": "applied",
+            "affected_item_ids": [
+              "i_a_0"
+            ],
+            "code": "placed",
+            "reason": "Addition placed."
+          }
+        ],
+        "selections": {
+          "sel": {
+            "selection_id": "sel",
+            "category": "desk",
+            "variant_id": "v",
+            "offer_id": "o_v",
+            "title": "Measured desk",
+            "dimensions": [
+              1,
+              0.5,
+              0.7
+            ],
+            "dimension_evidence": {
+              "outcome": "verified",
+              "variant_id": "v",
+              "size_m": [
+                1,
+                0.5,
+                0.7
+              ],
+              "dimensions": [
+                1,
+                0.5,
+                0.7
+              ],
+              "source_url": "https://example.com/desk",
+              "verified_at": "2026-10-18T00:00:00Z",
+              "expires_at": "2026-10-25T00:00:00Z",
+              "original_measurements": [
+                {
+                  "axis": "width",
+                  "label": "Width",
+                  "value": "1",
+                  "unit": "m"
+                },
+                {
+                  "axis": "depth",
+                  "label": "Depth",
+                  "value": "0.5",
+                  "unit": "m"
+                },
+                {
+                  "axis": "height",
+                  "label": "Height",
+                  "value": "0.7",
+                  "unit": "m"
+                }
+              ]
+            },
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "o_v",
+              "variant_id": "v",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair",
+              "price": "50.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v",
+                    "units": 1,
+                    "dimensions": [
+                      1,
+                      0.5,
+                      0.7
+                    ]
+                  }
+                ]
+              }
+            },
+            "render": {
+              "kind": "standin",
+              "category": "desk",
+              "scaling_mode": "normalized",
+              "authored_bounds": [
+                1,
+                1,
+                1
+              ],
+              "units": "meters",
+              "pivot": "bottom_center",
+              "forward_axis": "+Z"
+            },
+            "quantity": 1,
+            "candidate_id": "candidate",
+            "variant": {
+              "variant_id": "v",
+              "title": "Verified desk",
+              "category": "desk",
+              "image_references": [
+                "https://example.com/desk.jpg"
+              ]
+            },
+            "explicit_choice": false,
+            "must_have": false,
+            "requirements_text": "chair"
+          }
+        }
+      },
+      "created_at": "2026-10-18T02:46:05.768179+00:00"
+    }
+  }
+}

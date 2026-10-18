@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "kind": "synthetic",
+    "description": "Native Codable shape; deliberately controlled geometry, not a target-device capture."
+  },
+  "raw_export": {
+    "identifier": "native-room",
+    "walls": [
+      {
+        "identifier": "native-wall-0",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          4.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          1.0,
+          0,
+          0.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0.0,
+          0,
+          1.0,
+          0,
+          4.0,
+          0.10000000000000009,
+          3.0,
+          1
+        ]
+      },
+      {
+        "identifier": "native-wall-1",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          3.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          0.0,
+          0,
+          1.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          -1.0,
+          0,
+          0.0,
+          0,
+          6.0,
+          0.10000000000000009,
+          4.5,
+          1
+        ]
+      }
+    ],
+    "objects": [],
+    "doors": [],
+    "windows": [],
+    "openings": [],
+    "floors": [],
+    "version": 1
+  },
+  "snapshot": {
+    "schema_version": 1,
+    "snapshot_id": "snapshot-invalid_boundary",
+    "revision": 1,
+    "room_id": "room-fixture",
+    "capture_id": "capture-fixture",
+    "created_at": "2026-10-18T00:00:00Z",
+    "room": {
+      "schema_version": 1,
+      "category_version": 1,
+      "room_id": "room-fixture",
+      "capture_id": "capture-fixture",
+      "height": 0,
+      "frame": {
+        "room_from_world": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "floor": {
+        "polygon": [],
+        "area": 0
+      },
+      "walls": [],
+      "corners": [],
+      "openings": [],
+      "objects": [],
+      "wall_features": [],
+      "zones": [],
+      "style_hints": {},
+      "identity_map": {},
+      "processing": {
+        "expected_frames": 0,
+        "not_started": 0,
+        "pending": 0,
+        "succeeded": 0,
+        "failed": 0,
+        "lifted": 0,
+        "completed": 0
+      },
+      "validity": {
+        "usable": false,
+        "reasons": [
+          {
+            "code": "insufficient_boundary",
+            "message": "At least three measured wall segments are required."
+          }
+        ],
+        "warnings": []
+      }
+    },
+    "identity_map": {},
+    "validity": {
+      "usable": false,
+      "reasons": [
+        {
+          "code": "insufficient_boundary",
+          "message": "At least three measured wall segments are required."
+        }
+      ],
+      "warnings": []
+    },
+    "processing": {
+      "expected_frames": 0,
+      "not_started": 0,
+      "pending": 0,
+      "succeeded": 0,
+      "failed": 0,
+      "lifted": 0,
+      "completed": 0
+    }
+  }
+}

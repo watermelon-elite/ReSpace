@@ -19,4 +19,6 @@ Verified facts, each claim tagged confirmed or inferred with its source URL. Rea
 - [`specs/H2-research/perceptron-facts.md`](specs/H2-research/perceptron-facts.md): Perceptron API and SDK, model IDs, `annotation_format`, the 0–1000 coordinate grid vs `/v1/detect` pixels, limits and pricing. For any Mk1 call or parsing.
 
 ### Code
-- [`ReSpace/`](ReSpace/), [`ReSpace.xcodeproj/`](ReSpace.xcodeproj/): the iOS app (H1). Currently the Xcode template skeleton.
+- [`ReSpace/`](ReSpace/), [`ReSpace.xcodeproj/`](ReSpace.xcodeproj/): the iOS capture, Room review, planning and immutable design client.
+- [`backend/`](backend/): versioned API, durable state, Product verification, perception and deterministic placement; contract and behavior tests are under `backend/tests/`.
+- [`assets/`](assets/): versioned render assets and offline conversion; [`Kenney license`](assets/sources/kenney/LICENSE.txt) records the retained source license.

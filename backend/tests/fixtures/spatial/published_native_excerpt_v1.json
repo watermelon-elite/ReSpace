@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "kind": "published_native_excerpt",
+    "source_url": "https://qiita.com/kitanote/items/efcc3f03cf1a84703e6c",
+    "coverage": "iOS16 wall-only JSONEncoder excerpt; insufficient to establish a valid room. Target-device door/window/attribute/facing verification remains required."
+  },
+  "raw_export": {
+    "walls": [
+      {
+        "category": {
+          "wall": {}
+        },
+        "confidence": {
+          "high": {}
+        },
+        "dimensions": [
+          3.4638471603393555,
+          2.3485732078552246,
+          0
+        ],
+        "completedEdges": [],
+        "parentIdentifier": null,
+        "identifier": "3EFAE2ED-4537-4E74-B9B8-50DA8645184A",
+        "curve": null,
+        "transform": [
+          0.4371742904186249,
+          0,
+          -0.8993767499923706,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0.8993766903877258,
+          0,
+          0.4371742904186249,
+          0,
+          -1.9961872100830078,
+          -0.15500573813915253,
+          0.18577753007411957,
+          1
+        ]
+      }
+    ]
+  }
+}

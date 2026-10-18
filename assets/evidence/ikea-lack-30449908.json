@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "evidence_origin": "actual production Playwright browser capture; manually mapped published structured measurements; no model estimate",
+  "captured_at": "2026-10-18T02:47:35.611129+00:00",
+  "source_url": "https://www.ikea.com/us/en/p/lack-side-table-white-30449908/",
+  "published_product_fields": {
+    "name": "LACK Side table - white 21 5/8x21 5/8 \"",
+    "sku": "304.499.08",
+    "mpn": "304.499.08",
+    "color": "white",
+    "width": "21 5/8 \"",
+    "depth": "21 5/8 \"",
+    "height": "17 3/4 \""
+  },
+  "source_structured_sha256": "b339ea3af0e2b6a510753258d4575d733faae20f72d04fcc111035b2cc8f03ca",
+  "variant": {
+    "schema_version": 1,
+    "variant_id": "v_3f6cf5ccd885777cb60a840c",
+    "title": "LACK Side table - white 21 5/8x21 5/8 \"",
+    "category": "side_table",
+    "options": {
+      "color": "white",
+      "size": "21 5/8 \" x 21 5/8 \""
+    },
+    "identity": {
+      "manufacturer": "IKEA",
+      "mpn": "304.499.08",
+      "identity_verified": true,
+      "options": {
+        "color": "white",
+        "size": "21 5/8 \" x 21 5/8 \""
+      }
+    },
+    "image_references": [
+      "https://www.ikea.com/us/en/images/products/lack-side-table-white__0702210_pe724345_s5.jpg",
+      "https://www.ikea.com/us/en/images/products/lack-side-table-white__1057263_pe848812_s5.jpg",
+      "https://www.ikea.com/us/en/images/products/lack-side-table-white__0702212_pe724346_s5.jpg",
+      "https://www.ikea.com/us/en/images/products/lack-side-table-white__0702207_pe724342_s5.jpg",
+      "https://www.ikea.com/us/en/images/products/lack-side-table-white__1083778_pe859098_s5.jpg",
+      "https://www.ikea.com/us/en/images/products/lack-side-table-white__0702066_pe724306_s5.jpg"
+    ],
+    "features": {},
+    "dimension_evidence_id": "dim_02d32d786011f9841db6a1de"
+  },
+  "dimension_evidence": {
+    "schema_version": 1,
+    "evidence_id": "dim_02d32d786011f9841db6a1de",
+    "variant_id": "v_3f6cf5ccd885777cb60a840c",
+    "source_url": "https://www.ikea.com/us/en/p/lack-side-table-white-30449908/",
+    "original_measurements": [
+      {
+        "axis": "width",
+        "label": "width",
+        "value": "21 5/8",
+        "unit": "\"",
+        "source_field": "width"
+      },
+      {
+        "axis": "depth",
+        "label": "depth",
+        "value": "21 5/8",
+        "unit": "\"",
+        "source_field": "depth"
+      },
+      {
+        "axis": "height",
+        "label": "height",
+        "value": "17 3/4",
+        "unit": "\"",
+        "source_field": "height"
+      }
+    ],
+    "classification": "item",
+    "verified_at": "2026-10-18T02:47:35.611129+00:00",
+    "expires_at": "2026-10-25T02:47:35.611129+00:00",
+    "dimensions": [
+      0.549275,
+      0.549275,
+      0.45085
+    ],
+    "outcome": "verified"
+  },
+  "offer": {
+    "schema_version": 1,
+    "offer_id": "offer_a3644ba70d329a947fe48ce8",
+    "variant_id": "v_3f6cf5ccd885777cb60a840c",
+    "merchant": "IKEA",
+    "product_url": "https://www.ikea.com/us/en/p/lack-side-table-white-30449908/",
+    "price": "16.99",
+    "currency": "USD",
+    "availability": "in_stock",
+    "exact_variant": true,
+    "checked_at": "2026-10-18T02:47:35.611129+00:00",
+    "pack_contents": {
+      "verified": false,
+      "components": []
+    },
+    "rejection_reasons": [
+      "Published structured data does not explicitly establish supplied pack count."
+    ]
+  },
+  "eligibility": "incomplete_pack_evidence",
+  "catalog_mesh": null,
+  "native_validation": "pending"
+}

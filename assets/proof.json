@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-18T02:47:35.611129+00:00",
+  "standin": {
+    "source": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0-1.0",
+    "manifest_revision": "kenney-chair-67d8cb9ab6c620bb",
+    "pipeline": "assets/prepare.py",
+    "glb_to_usdz": "passed",
+    "bounds_pivot_reopen": "passed",
+    "asymmetric_forward_axis": "algorithm verified; RealityKit device visual validation pending"
+  },
+  "catalog": {
+    "source_url": "https://www.ikea.com/us/en/p/lack-side-table-white-30449908/",
+    "evidence_record": "evidence/ikea-lack-30449908.json",
+    "dimensions": "verified from actual exact-variant published fields",
+    "offer_pack_contents": "unverified; remains ineligible",
+    "mesh": "not generated"
+  },
+  "spar3d": {
+    "source": "https://github.com/Stability-AI/stable-point-aware-3d",
+    "model": "https://huggingface.co/stabilityai/stable-point-aware-3d",
+    "license": "Stability AI Community License; user/entity eligibility and any registration not established",
+    "anonymous_weight_access_http_status": 401,
+    "configured_hf_token_present": false,
+    "runtime": "not installed or measured; official README gives conflicting VRAM figures, so no validated runtime claim"
+  },
+  "providers": {
+    "serpapi_key_present": false,
+    "local_merchant_browser": "IKEA actual page reached using DNS-pinned public HTTPS requests",
+    "cloud_browser": "not deployed/verified",
+    "gemini_2_5_flash": "404 retired for new users",
+    "gemini_3_8_flash": "429 daily request quota exhausted",
+    "gemini_3_1_pro_preview": "429 free-tier limit 0",
+    "key_source_file": "/Users/humaid/.zshenv"
+  },
+  "acceptance": "partial; ticket 27 is not complete"
+}

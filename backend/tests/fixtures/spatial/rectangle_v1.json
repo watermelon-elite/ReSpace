@@ -1,0 +1,411 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "kind": "synthetic",
+    "description": "Native Codable shape; deliberately controlled geometry, not a target-device capture."
+  },
+  "raw_export": {
+    "identifier": "native-room",
+    "walls": [
+      {
+        "identifier": "native-wall-0",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          4.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          1.0,
+          0,
+          0.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0.0,
+          0,
+          1.0,
+          0,
+          4.0,
+          0.10000000000000009,
+          3.0,
+          1
+        ]
+      },
+      {
+        "identifier": "native-wall-1",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          3.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          0.0,
+          0,
+          1.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          -1.0,
+          0,
+          0.0,
+          0,
+          6.0,
+          0.10000000000000009,
+          4.5,
+          1
+        ]
+      },
+      {
+        "identifier": "native-wall-2",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          4.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          -1.0,
+          0,
+          0.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0.0,
+          0,
+          -1.0,
+          0,
+          4.0,
+          0.10000000000000009,
+          6.0,
+          1
+        ]
+      },
+      {
+        "identifier": "native-wall-3",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          3.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          0.0,
+          0,
+          -1.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          1.0,
+          0,
+          0.0,
+          0,
+          2.0,
+          0.10000000000000009,
+          4.5,
+          1
+        ]
+      }
+    ],
+    "objects": [],
+    "doors": [],
+    "windows": [],
+    "openings": [],
+    "floors": [],
+    "version": 1
+  },
+  "snapshot": {
+    "schema_version": 1,
+    "snapshot_id": "snapshot-rectangle",
+    "revision": 1,
+    "room_id": "room-fixture",
+    "capture_id": "capture-fixture",
+    "created_at": "2026-10-18T00:00:00Z",
+    "room": {
+      "schema_version": 1,
+      "category_version": 1,
+      "room_id": "room-fixture",
+      "capture_id": "capture-fixture",
+      "height": 2.6,
+      "frame": {
+        "room_from_world": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          -2.0,
+          1.2,
+          -3.0,
+          1.0
+        ]
+      },
+      "floor": {
+        "polygon": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            4.0,
+            0.0
+          ],
+          [
+            4.0,
+            3.0
+          ],
+          [
+            0.0,
+            3.0
+          ]
+        ],
+        "area": 12.0
+      },
+      "walls": [
+        {
+          "id": "w_1",
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            4.0,
+            0.0
+          ],
+          "length": 4.0,
+          "inward_normal": [
+            -0.0,
+            1.0
+          ],
+          "virtual": false,
+          "source_ids": [
+            "native-wall-0"
+          ]
+        },
+        {
+          "id": "w_2",
+          "a": [
+            4.0,
+            0.0
+          ],
+          "b": [
+            4.0,
+            3.0
+          ],
+          "length": 3.0,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": [
+            "native-wall-1"
+          ]
+        },
+        {
+          "id": "w_3",
+          "a": [
+            4.0,
+            3.0
+          ],
+          "b": [
+            0.0,
+            3.0
+          ],
+          "length": 4.0,
+          "inward_normal": [
+            -0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": [
+            "native-wall-2"
+          ]
+        },
+        {
+          "id": "w_4",
+          "a": [
+            0.0,
+            3.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "length": 3.0,
+          "inward_normal": [
+            1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": [
+            "native-wall-3"
+          ]
+        }
+      ],
+      "corners": [
+        {
+          "id": "c_1",
+          "position": [
+            0.0,
+            0.0
+          ],
+          "wall_ids": [
+            "w_4",
+            "w_1"
+          ]
+        },
+        {
+          "id": "c_2",
+          "position": [
+            4.0,
+            0.0
+          ],
+          "wall_ids": [
+            "w_1",
+            "w_2"
+          ]
+        },
+        {
+          "id": "c_3",
+          "position": [
+            4.0,
+            3.0
+          ],
+          "wall_ids": [
+            "w_2",
+            "w_3"
+          ]
+        },
+        {
+          "id": "c_4",
+          "position": [
+            0.0,
+            3.0
+          ],
+          "wall_ids": [
+            "w_3",
+            "w_4"
+          ]
+        }
+      ],
+      "openings": [],
+      "objects": [],
+      "wall_features": [],
+      "zones": [],
+      "style_hints": {},
+      "identity_map": {
+        "native-wall-0": {
+          "kind": "wall",
+          "id": "w_1",
+          "ids": [
+            "w_1"
+          ]
+        },
+        "native-wall-1": {
+          "kind": "wall",
+          "id": "w_2",
+          "ids": [
+            "w_2"
+          ]
+        },
+        "native-wall-2": {
+          "kind": "wall",
+          "id": "w_3",
+          "ids": [
+            "w_3"
+          ]
+        },
+        "native-wall-3": {
+          "kind": "wall",
+          "id": "w_4",
+          "ids": [
+            "w_4"
+          ]
+        }
+      },
+      "processing": {
+        "expected_frames": 0,
+        "not_started": 0,
+        "pending": 0,
+        "succeeded": 0,
+        "failed": 0,
+        "lifted": 0,
+        "completed": 0
+      },
+      "validity": {
+        "usable": true,
+        "reasons": [],
+        "warnings": []
+      }
+    },
+    "identity_map": {
+      "native-wall-0": {
+        "kind": "wall",
+        "id": "w_1",
+        "ids": [
+          "w_1"
+        ]
+      },
+      "native-wall-1": {
+        "kind": "wall",
+        "id": "w_2",
+        "ids": [
+          "w_2"
+        ]
+      },
+      "native-wall-2": {
+        "kind": "wall",
+        "id": "w_3",
+        "ids": [
+          "w_3"
+        ]
+      },
+      "native-wall-3": {
+        "kind": "wall",
+        "id": "w_4",
+        "ids": [
+          "w_4"
+        ]
+      }
+    },
+    "validity": {
+      "usable": true,
+      "reasons": [],
+      "warnings": []
+    },
+    "processing": {
+      "expected_frames": 0,
+      "not_started": 0,
+      "pending": 0,
+      "succeeded": 0,
+      "failed": 0,
+      "lifted": 0,
+      "completed": 0
+    }
+  }
+}

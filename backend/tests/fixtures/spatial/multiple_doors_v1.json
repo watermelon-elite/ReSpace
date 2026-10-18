@@ -1,0 +1,566 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "kind": "synthetic",
+    "description": "Native Codable shape; deliberately controlled geometry, not a target-device capture."
+  },
+  "raw_export": {
+    "identifier": "native-room",
+    "walls": [
+      {
+        "identifier": "native-wall-0",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          6.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          1.0,
+          0,
+          0.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0.0,
+          0,
+          1.0,
+          0,
+          5.0,
+          0.10000000000000009,
+          3.0,
+          1
+        ]
+      },
+      {
+        "identifier": "native-wall-1",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          5.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          0.0,
+          0,
+          1.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          -1.0,
+          0,
+          0.0,
+          0,
+          8.0,
+          0.10000000000000009,
+          5.5,
+          1
+        ]
+      },
+      {
+        "identifier": "native-wall-2",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          6.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          -1.0,
+          0,
+          0.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0.0,
+          0,
+          -1.0,
+          0,
+          5.0,
+          0.10000000000000009,
+          8.0,
+          1
+        ]
+      },
+      {
+        "identifier": "native-wall-3",
+        "category": {
+          "wall": {}
+        },
+        "dimensions": [
+          5.0,
+          2.6,
+          0
+        ],
+        "transform": [
+          0.0,
+          0,
+          -1.0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          1.0,
+          0,
+          0.0,
+          0,
+          2.0,
+          0.10000000000000009,
+          5.5,
+          1
+        ]
+      }
+    ],
+    "objects": [],
+    "doors": [
+      {
+        "identifier": "native-door-0",
+        "parentIdentifier": "native-wall-0",
+        "category": {
+          "door": {
+            "isOpen": false
+          }
+        },
+        "dimensions": [
+          1,
+          2,
+          0
+        ],
+        "transform": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          3.0,
+          -0.2,
+          3,
+          1
+        ]
+      },
+      {
+        "identifier": "native-door-1",
+        "parentIdentifier": "native-wall-0",
+        "category": {
+          "door": {
+            "isOpen": false
+          }
+        },
+        "dimensions": [
+          1,
+          2,
+          0
+        ],
+        "transform": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          6.5,
+          -0.2,
+          3,
+          1
+        ]
+      }
+    ],
+    "windows": [],
+    "openings": [],
+    "floors": [],
+    "version": 1
+  },
+  "snapshot": {
+    "schema_version": 1,
+    "snapshot_id": "snapshot-multiple_doors",
+    "revision": 1,
+    "room_id": "room-fixture",
+    "capture_id": "capture-fixture",
+    "created_at": "2026-10-18T00:00:00Z",
+    "room": {
+      "schema_version": 1,
+      "category_version": 1,
+      "room_id": "room-fixture",
+      "capture_id": "capture-fixture",
+      "height": 2.6,
+      "frame": {
+        "room_from_world": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          -2.0,
+          1.2,
+          -3.0,
+          1.0
+        ]
+      },
+      "floor": {
+        "polygon": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            6.0,
+            0.0
+          ],
+          [
+            6.0,
+            5.0
+          ],
+          [
+            0.0,
+            5.0
+          ]
+        ],
+        "area": 30.0
+      },
+      "walls": [
+        {
+          "id": "w_1",
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            6.0,
+            0.0
+          ],
+          "length": 6.0,
+          "inward_normal": [
+            -0.0,
+            1.0
+          ],
+          "virtual": false,
+          "source_ids": [
+            "native-wall-0"
+          ]
+        },
+        {
+          "id": "w_2",
+          "a": [
+            6.0,
+            0.0
+          ],
+          "b": [
+            6.0,
+            5.0
+          ],
+          "length": 5.0,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": [
+            "native-wall-1"
+          ]
+        },
+        {
+          "id": "w_3",
+          "a": [
+            6.0,
+            5.0
+          ],
+          "b": [
+            0.0,
+            5.0
+          ],
+          "length": 6.0,
+          "inward_normal": [
+            -0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": [
+            "native-wall-2"
+          ]
+        },
+        {
+          "id": "w_4",
+          "a": [
+            0.0,
+            5.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "length": 5.0,
+          "inward_normal": [
+            1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": [
+            "native-wall-3"
+          ]
+        }
+      ],
+      "corners": [
+        {
+          "id": "c_1",
+          "position": [
+            0.0,
+            0.0
+          ],
+          "wall_ids": [
+            "w_4",
+            "w_1"
+          ]
+        },
+        {
+          "id": "c_2",
+          "position": [
+            6.0,
+            0.0
+          ],
+          "wall_ids": [
+            "w_1",
+            "w_2"
+          ]
+        },
+        {
+          "id": "c_3",
+          "position": [
+            6.0,
+            5.0
+          ],
+          "wall_ids": [
+            "w_2",
+            "w_3"
+          ]
+        },
+        {
+          "id": "c_4",
+          "position": [
+            0.0,
+            5.0
+          ],
+          "wall_ids": [
+            "w_3",
+            "w_4"
+          ]
+        }
+      ],
+      "openings": [
+        {
+          "id": "door_1",
+          "type": "door",
+          "wall_id": "w_1",
+          "offset": 0.5,
+          "width": 1.0,
+          "bottom": 0.0,
+          "height": 2.0,
+          "source_ids": [
+            "native-door-0"
+          ]
+        },
+        {
+          "id": "door_2",
+          "type": "door",
+          "wall_id": "w_1",
+          "offset": 4.0,
+          "width": 1.0,
+          "bottom": 0.0,
+          "height": 2.0,
+          "source_ids": [
+            "native-door-1"
+          ]
+        }
+      ],
+      "objects": [],
+      "wall_features": [],
+      "zones": [
+        {
+          "id": "z_door_1",
+          "type": "keep_clear",
+          "reason": "door",
+          "opening_id": "door_1",
+          "polygon": [
+            [
+              0.35,
+              0.0
+            ],
+            [
+              0.35,
+              1.0
+            ],
+            [
+              1.65,
+              1.0
+            ],
+            [
+              1.65,
+              0.0
+            ]
+          ]
+        },
+        {
+          "id": "z_door_2",
+          "type": "keep_clear",
+          "reason": "door",
+          "opening_id": "door_2",
+          "polygon": [
+            [
+              3.85,
+              0.0
+            ],
+            [
+              3.85,
+              1.0
+            ],
+            [
+              5.15,
+              1.0
+            ],
+            [
+              5.15,
+              0.0
+            ]
+          ]
+        }
+      ],
+      "style_hints": {},
+      "identity_map": {
+        "native-wall-0": {
+          "kind": "wall",
+          "id": "w_1",
+          "ids": [
+            "w_1"
+          ]
+        },
+        "native-wall-1": {
+          "kind": "wall",
+          "id": "w_2",
+          "ids": [
+            "w_2"
+          ]
+        },
+        "native-wall-2": {
+          "kind": "wall",
+          "id": "w_3",
+          "ids": [
+            "w_3"
+          ]
+        },
+        "native-wall-3": {
+          "kind": "wall",
+          "id": "w_4",
+          "ids": [
+            "w_4"
+          ]
+        },
+        "native-door-0": {
+          "kind": "opening",
+          "id": "door_1"
+        },
+        "native-door-1": {
+          "kind": "opening",
+          "id": "door_2"
+        }
+      },
+      "processing": {
+        "expected_frames": 0,
+        "not_started": 0,
+        "pending": 0,
+        "succeeded": 0,
+        "failed": 0,
+        "lifted": 0,
+        "completed": 0
+      },
+      "validity": {
+        "usable": true,
+        "reasons": [],
+        "warnings": []
+      }
+    },
+    "identity_map": {
+      "native-wall-0": {
+        "kind": "wall",
+        "id": "w_1",
+        "ids": [
+          "w_1"
+        ]
+      },
+      "native-wall-1": {
+        "kind": "wall",
+        "id": "w_2",
+        "ids": [
+          "w_2"
+        ]
+      },
+      "native-wall-2": {
+        "kind": "wall",
+        "id": "w_3",
+        "ids": [
+          "w_3"
+        ]
+      },
+      "native-wall-3": {
+        "kind": "wall",
+        "id": "w_4",
+        "ids": [
+          "w_4"
+        ]
+      },
+      "native-door-0": {
+        "kind": "opening",
+        "id": "door_1"
+      },
+      "native-door-1": {
+        "kind": "opening",
+        "id": "door_2"
+      }
+    },
+    "validity": {
+      "usable": true,
+      "reasons": [],
+      "warnings": []
+    },
+    "processing": {
+      "expected_frames": 0,
+      "not_started": 0,
+      "pending": 0,
+      "succeeded": 0,
+      "failed": 0,
+      "lifted": 0,
+      "completed": 0
+    }
+  }
+}

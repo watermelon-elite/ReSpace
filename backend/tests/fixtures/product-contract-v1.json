@@ -1,0 +1,1790 @@
+{
+  "schema_version": 1,
+  "fixture_time": "2026-10-18T00:00:00+00:00",
+  "selection": {
+    "schema_version": 1,
+    "variant_id": "v_35a0d77c01f7836b372dcef0",
+    "offer_id": "offer_7025316634ea6a31275a5cca",
+    "title": "Chair 1",
+    "category": "chair",
+    "variant": {
+      "schema_version": 1,
+      "variant_id": "v_35a0d77c01f7836b372dcef0",
+      "title": "Chair 1",
+      "category": "chair",
+      "options": {
+        "color": "1"
+      },
+      "image_references": [
+        "https://example.com/chair/1.jpg"
+      ],
+      "features": {},
+      "identity": {
+        "gtin": null,
+        "manufacturer": null,
+        "mpn": null,
+        "identity_verified": false,
+        "identity_quote": null
+      },
+      "dimension_evidence_id": "dim_6f2ec48042952b72ee8fe9f6"
+    },
+    "dimension_evidence": {
+      "schema_version": 1,
+      "evidence_id": "dim_6f2ec48042952b72ee8fe9f6",
+      "variant_id": "v_35a0d77c01f7836b372dcef0",
+      "source_url": "https://example.com/chair/1",
+      "original_measurements": [
+        {
+          "axis": "width",
+          "label": "Width",
+          "value": "50",
+          "unit": "cm",
+          "quote": "Width 50 cm"
+        },
+        {
+          "axis": "depth",
+          "label": "Depth",
+          "value": "50",
+          "unit": "cm",
+          "quote": "Depth 50 cm"
+        },
+        {
+          "axis": "height",
+          "label": "Height",
+          "value": "80",
+          "unit": "cm",
+          "quote": "Height 80 cm"
+        }
+      ],
+      "classification": "item",
+      "verified_at": "2026-10-18T00:00:00+00:00",
+      "expires_at": "2026-10-25T00:00:00+00:00",
+      "dimensions": [
+        0.5,
+        0.5,
+        0.8
+      ],
+      "outcome": "verified"
+    },
+    "dimensions": [
+      0.5,
+      0.5,
+      0.8
+    ],
+    "offer": {
+      "schema_version": 1,
+      "offer_id": "offer_7025316634ea6a31275a5cca",
+      "variant_id": "v_35a0d77c01f7836b372dcef0",
+      "merchant": "Example",
+      "product_url": "https://example.com/chair/1",
+      "price": "100.00",
+      "currency": "USD",
+      "availability": "in_stock",
+      "exact_variant": true,
+      "checked_at": "2026-10-18T00:00:00+00:00",
+      "pack_contents": {
+        "verified": true,
+        "components": [
+          {
+            "variant_id": "v_35a0d77c01f7836b372dcef0",
+            "units": 2,
+            "dimensions": [
+              0.5,
+              0.5,
+              0.8
+            ]
+          }
+        ]
+      },
+      "evidence": {
+        "variant_quote": "Chair 1",
+        "price_quote": "USD 100.00",
+        "availability_quote": "In stock",
+        "pack_quote": "Contains two identical chairs"
+      }
+    },
+    "features": {},
+    "source": "stored",
+    "candidate_id": "fixture_candidate_1",
+    "render": {
+      "kind": "standin",
+      "category": "chair",
+      "asset_id": "kenney-chair",
+      "asset_revision": "67d8cb9ab6c620bb",
+      "asset_url": "/v1/catalog/assets/kenney-chair/67d8cb9ab6c620bb",
+      "tint": "#B9ADA0",
+      "texture_url": null,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "scaling_mode": "normalized",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y"
+    },
+    "practical_score": 80,
+    "style_score": 80,
+    "practical_reason": "Matches requested function",
+    "style_reason": "Matches requested style",
+    "offers": [
+      {
+        "schema_version": 1,
+        "offer_id": "offer_7025316634ea6a31275a5cca",
+        "variant_id": "v_35a0d77c01f7836b372dcef0",
+        "merchant": "Example",
+        "product_url": "https://example.com/chair/1",
+        "price": "100.00",
+        "currency": "USD",
+        "availability": "in_stock",
+        "exact_variant": true,
+        "checked_at": "2026-10-18T00:00:00+00:00",
+        "pack_contents": {
+          "verified": true,
+          "components": [
+            {
+              "variant_id": "v_35a0d77c01f7836b372dcef0",
+              "units": 2,
+              "dimensions": [
+                0.5,
+                0.5,
+                0.8
+              ]
+            }
+          ]
+        },
+        "evidence": {
+          "variant_quote": "Chair 1",
+          "price_quote": "USD 100.00",
+          "availability_quote": "In stock",
+          "pack_quote": "Contains two identical chairs"
+        }
+      }
+    ],
+    "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+    "rule_version": "practical60-style30-value10-v1",
+    "scores": {
+      "practical": 80,
+      "style": 80,
+      "value": 50.0,
+      "overall": 77.0
+    },
+    "reasons": {
+      "practical": "Matches requested function",
+      "style": "Matches requested style",
+      "value": "Price relative to the median of comparable discoveries"
+    },
+    "uncertainty": null,
+    "selection_id": "selection_fixture_1",
+    "quantity": 3,
+    "search_id": "search_fixture_1"
+  },
+  "search": {
+    "schema_version": 1,
+    "search_id": "search_fixture_1",
+    "operation_id": "operation_fixture_1",
+    "room_id": "room_fixture_1",
+    "intended_context": {
+      "design_id": "design_fixture_1",
+      "item_id": "i_add_1_0",
+      "active_revision": 1
+    },
+    "request_fingerprint": "fixture",
+    "created_at": "2026-10-18T00:00:00+00:00",
+    "state": "completed",
+    "phase": "completed",
+    "source_candidate_pools": {
+      "stored": [
+        "fixture_candidate_1",
+        "fixture_candidate_3"
+      ],
+      "live": [
+        "fixture_candidate_2",
+        "fixture_candidate_4"
+      ]
+    },
+    "source_shortlists": {
+      "stored": [
+        {
+          "schema_version": 1,
+          "variant_id": "v_35a0d77c01f7836b372dcef0",
+          "offer_id": "offer_7025316634ea6a31275a5cca",
+          "title": "Chair 1",
+          "category": "chair",
+          "variant": {
+            "schema_version": 1,
+            "variant_id": "v_35a0d77c01f7836b372dcef0",
+            "title": "Chair 1",
+            "category": "chair",
+            "options": {
+              "color": "1"
+            },
+            "image_references": [
+              "https://example.com/chair/1.jpg"
+            ],
+            "features": {},
+            "identity": {
+              "gtin": null,
+              "manufacturer": null,
+              "mpn": null,
+              "identity_verified": false,
+              "identity_quote": null
+            },
+            "dimension_evidence_id": "dim_6f2ec48042952b72ee8fe9f6"
+          },
+          "dimension_evidence": {
+            "schema_version": 1,
+            "evidence_id": "dim_6f2ec48042952b72ee8fe9f6",
+            "variant_id": "v_35a0d77c01f7836b372dcef0",
+            "source_url": "https://example.com/chair/1",
+            "original_measurements": [
+              {
+                "axis": "width",
+                "label": "Width",
+                "value": "50",
+                "unit": "cm",
+                "quote": "Width 50 cm"
+              },
+              {
+                "axis": "depth",
+                "label": "Depth",
+                "value": "50",
+                "unit": "cm",
+                "quote": "Depth 50 cm"
+              },
+              {
+                "axis": "height",
+                "label": "Height",
+                "value": "80",
+                "unit": "cm",
+                "quote": "Height 80 cm"
+              }
+            ],
+            "classification": "item",
+            "verified_at": "2026-10-18T00:00:00+00:00",
+            "expires_at": "2026-10-25T00:00:00+00:00",
+            "dimensions": [
+              0.5,
+              0.5,
+              0.8
+            ],
+            "outcome": "verified"
+          },
+          "dimensions": [
+            0.5,
+            0.5,
+            0.8
+          ],
+          "offer": {
+            "schema_version": 1,
+            "offer_id": "offer_7025316634ea6a31275a5cca",
+            "variant_id": "v_35a0d77c01f7836b372dcef0",
+            "merchant": "Example",
+            "product_url": "https://example.com/chair/1",
+            "price": "100.00",
+            "currency": "USD",
+            "availability": "in_stock",
+            "exact_variant": true,
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "pack_contents": {
+              "verified": true,
+              "components": [
+                {
+                  "variant_id": "v_35a0d77c01f7836b372dcef0",
+                  "units": 2,
+                  "dimensions": [
+                    0.5,
+                    0.5,
+                    0.8
+                  ]
+                }
+              ]
+            },
+            "evidence": {
+              "variant_quote": "Chair 1",
+              "price_quote": "USD 100.00",
+              "availability_quote": "In stock",
+              "pack_quote": "Contains two identical chairs"
+            }
+          },
+          "features": {},
+          "source": "stored",
+          "candidate_id": "fixture_candidate_1",
+          "render": {
+            "kind": "standin",
+            "category": "chair",
+            "asset_id": "kenney-chair",
+            "asset_revision": "67d8cb9ab6c620bb",
+            "asset_url": "/v1/catalog/assets/kenney-chair/67d8cb9ab6c620bb",
+            "tint": "#B9ADA0",
+            "texture_url": null,
+            "authored_bounds": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "units": "meters",
+            "scaling_mode": "normalized",
+            "pivot": "bottom_center",
+            "forward_axis": "+Z",
+            "up_axis": "+Y"
+          },
+          "practical_score": 80,
+          "style_score": 80,
+          "practical_reason": "Matches requested function",
+          "style_reason": "Matches requested style",
+          "offers": [
+            {
+              "schema_version": 1,
+              "offer_id": "offer_7025316634ea6a31275a5cca",
+              "variant_id": "v_35a0d77c01f7836b372dcef0",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair/1",
+              "price": "100.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v_35a0d77c01f7836b372dcef0",
+                    "units": 2,
+                    "dimensions": [
+                      0.5,
+                      0.5,
+                      0.8
+                    ]
+                  }
+                ]
+              },
+              "evidence": {
+                "variant_quote": "Chair 1",
+                "price_quote": "USD 100.00",
+                "availability_quote": "In stock",
+                "pack_quote": "Contains two identical chairs"
+              }
+            }
+          ],
+          "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+          "rule_version": "practical60-style30-value10-v1",
+          "scores": {
+            "practical": 80,
+            "style": 80,
+            "value": 50.0,
+            "overall": 77.0
+          },
+          "reasons": {
+            "practical": "Matches requested function",
+            "style": "Matches requested style",
+            "value": "Price relative to the median of comparable discoveries"
+          },
+          "uncertainty": null
+        },
+        {
+          "schema_version": 1,
+          "variant_id": "v_df7477cc487ed7399bedceeb",
+          "offer_id": "offer_0cf76999d8d8a1870bf9ae80",
+          "title": "Chair 3",
+          "category": "chair",
+          "variant": {
+            "schema_version": 1,
+            "variant_id": "v_df7477cc487ed7399bedceeb",
+            "title": "Chair 3",
+            "category": "chair",
+            "options": {
+              "color": "3"
+            },
+            "image_references": [
+              "https://example.com/chair/3.jpg"
+            ],
+            "features": {},
+            "identity": {
+              "gtin": null,
+              "manufacturer": null,
+              "mpn": null,
+              "identity_verified": false,
+              "identity_quote": null
+            },
+            "dimension_evidence_id": "dim_fc31066a46997cf366965ce1"
+          },
+          "dimension_evidence": {
+            "schema_version": 1,
+            "evidence_id": "dim_fc31066a46997cf366965ce1",
+            "variant_id": "v_df7477cc487ed7399bedceeb",
+            "source_url": "https://example.com/chair/3",
+            "original_measurements": [
+              {
+                "axis": "width",
+                "label": "Width",
+                "value": "50",
+                "unit": "cm",
+                "quote": "Width 50 cm"
+              },
+              {
+                "axis": "depth",
+                "label": "Depth",
+                "value": "50",
+                "unit": "cm",
+                "quote": "Depth 50 cm"
+              },
+              {
+                "axis": "height",
+                "label": "Height",
+                "value": "80",
+                "unit": "cm",
+                "quote": "Height 80 cm"
+              }
+            ],
+            "classification": "item",
+            "verified_at": "2026-10-18T00:00:00+00:00",
+            "expires_at": "2026-10-25T00:00:00+00:00",
+            "dimensions": [
+              0.5,
+              0.5,
+              0.8
+            ],
+            "outcome": "verified"
+          },
+          "dimensions": [
+            0.5,
+            0.5,
+            0.8
+          ],
+          "offer": {
+            "schema_version": 1,
+            "offer_id": "offer_0cf76999d8d8a1870bf9ae80",
+            "variant_id": "v_df7477cc487ed7399bedceeb",
+            "merchant": "Example",
+            "product_url": "https://example.com/chair/3",
+            "price": "100.00",
+            "currency": "USD",
+            "availability": "in_stock",
+            "exact_variant": true,
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "pack_contents": {
+              "verified": true,
+              "components": [
+                {
+                  "variant_id": "v_df7477cc487ed7399bedceeb",
+                  "units": 2,
+                  "dimensions": [
+                    0.5,
+                    0.5,
+                    0.8
+                  ]
+                }
+              ]
+            },
+            "evidence": {
+              "variant_quote": "Chair 3",
+              "price_quote": "USD 100.00",
+              "availability_quote": "In stock",
+              "pack_quote": "Contains two identical chairs"
+            }
+          },
+          "features": {},
+          "source": "stored",
+          "candidate_id": "fixture_candidate_3",
+          "render": {
+            "kind": "standin",
+            "category": "chair",
+            "asset_id": "kenney-chair",
+            "asset_revision": "67d8cb9ab6c620bb",
+            "asset_url": "/v1/catalog/assets/kenney-chair/67d8cb9ab6c620bb",
+            "tint": "#B9ADA0",
+            "texture_url": null,
+            "authored_bounds": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "units": "meters",
+            "scaling_mode": "normalized",
+            "pivot": "bottom_center",
+            "forward_axis": "+Z",
+            "up_axis": "+Y"
+          },
+          "practical_score": 80,
+          "style_score": 80,
+          "practical_reason": "Matches requested function",
+          "style_reason": "Matches requested style",
+          "offers": [
+            {
+              "schema_version": 1,
+              "offer_id": "offer_0cf76999d8d8a1870bf9ae80",
+              "variant_id": "v_df7477cc487ed7399bedceeb",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair/3",
+              "price": "100.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v_df7477cc487ed7399bedceeb",
+                    "units": 2,
+                    "dimensions": [
+                      0.5,
+                      0.5,
+                      0.8
+                    ]
+                  }
+                ]
+              },
+              "evidence": {
+                "variant_quote": "Chair 3",
+                "price_quote": "USD 100.00",
+                "availability_quote": "In stock",
+                "pack_quote": "Contains two identical chairs"
+              }
+            }
+          ],
+          "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+          "rule_version": "practical60-style30-value10-v1",
+          "scores": {
+            "practical": 80,
+            "style": 80,
+            "value": 50.0,
+            "overall": 77.0
+          },
+          "reasons": {
+            "practical": "Matches requested function",
+            "style": "Matches requested style",
+            "value": "Price relative to the median of comparable discoveries"
+          },
+          "uncertainty": null
+        }
+      ],
+      "live": [
+        {
+          "schema_version": 1,
+          "variant_id": "v_3a151080b269c29a90cb8ca2",
+          "offer_id": "offer_801268f406ead6cee70ce9cc",
+          "title": "Chair 4",
+          "category": "chair",
+          "variant": {
+            "schema_version": 1,
+            "variant_id": "v_3a151080b269c29a90cb8ca2",
+            "title": "Chair 4",
+            "category": "chair",
+            "options": {
+              "color": "4"
+            },
+            "image_references": [
+              "https://example.com/chair/4.jpg"
+            ],
+            "features": {},
+            "identity": {
+              "gtin": null,
+              "manufacturer": null,
+              "mpn": null,
+              "identity_verified": false,
+              "identity_quote": null
+            },
+            "dimension_evidence_id": "dim_8668faa0df194b32c7e8d1e0"
+          },
+          "dimension_evidence": {
+            "schema_version": 1,
+            "evidence_id": "dim_8668faa0df194b32c7e8d1e0",
+            "variant_id": "v_3a151080b269c29a90cb8ca2",
+            "source_url": "https://example.com/chair/4",
+            "original_measurements": [
+              {
+                "axis": "width",
+                "label": "Width",
+                "value": "50",
+                "unit": "cm",
+                "quote": "Width 50 cm"
+              },
+              {
+                "axis": "depth",
+                "label": "Depth",
+                "value": "50",
+                "unit": "cm",
+                "quote": "Depth 50 cm"
+              },
+              {
+                "axis": "height",
+                "label": "Height",
+                "value": "80",
+                "unit": "cm",
+                "quote": "Height 80 cm"
+              }
+            ],
+            "classification": "item",
+            "verified_at": "2026-10-18T00:00:00+00:00",
+            "expires_at": "2026-10-25T00:00:00+00:00",
+            "dimensions": [
+              0.5,
+              0.5,
+              0.8
+            ],
+            "outcome": "verified"
+          },
+          "dimensions": [
+            0.5,
+            0.5,
+            0.8
+          ],
+          "offer": {
+            "schema_version": 1,
+            "offer_id": "offer_801268f406ead6cee70ce9cc",
+            "variant_id": "v_3a151080b269c29a90cb8ca2",
+            "merchant": "Example",
+            "product_url": "https://example.com/chair/4",
+            "price": "100.00",
+            "currency": "USD",
+            "availability": "in_stock",
+            "exact_variant": true,
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "pack_contents": {
+              "verified": true,
+              "components": [
+                {
+                  "variant_id": "v_3a151080b269c29a90cb8ca2",
+                  "units": 2,
+                  "dimensions": [
+                    0.5,
+                    0.5,
+                    0.8
+                  ]
+                }
+              ]
+            },
+            "evidence": {
+              "variant_quote": "Chair 4",
+              "price_quote": "USD 100.00",
+              "availability_quote": "In stock",
+              "pack_quote": "Contains two identical chairs"
+            }
+          },
+          "features": {},
+          "source": "live",
+          "candidate_id": "fixture_candidate_4",
+          "render": {
+            "kind": "standin",
+            "category": "chair",
+            "asset_id": "kenney-chair",
+            "asset_revision": "67d8cb9ab6c620bb",
+            "asset_url": "/v1/catalog/assets/kenney-chair/67d8cb9ab6c620bb",
+            "tint": "#B9ADA0",
+            "texture_url": null,
+            "authored_bounds": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "units": "meters",
+            "scaling_mode": "normalized",
+            "pivot": "bottom_center",
+            "forward_axis": "+Z",
+            "up_axis": "+Y"
+          },
+          "practical_score": 80,
+          "style_score": 80,
+          "practical_reason": "Matches requested function",
+          "style_reason": "Matches requested style",
+          "offers": [
+            {
+              "schema_version": 1,
+              "offer_id": "offer_801268f406ead6cee70ce9cc",
+              "variant_id": "v_3a151080b269c29a90cb8ca2",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair/4",
+              "price": "100.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v_3a151080b269c29a90cb8ca2",
+                    "units": 2,
+                    "dimensions": [
+                      0.5,
+                      0.5,
+                      0.8
+                    ]
+                  }
+                ]
+              },
+              "evidence": {
+                "variant_quote": "Chair 4",
+                "price_quote": "USD 100.00",
+                "availability_quote": "In stock",
+                "pack_quote": "Contains two identical chairs"
+              }
+            }
+          ],
+          "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+          "rule_version": "practical60-style30-value10-v1",
+          "scores": {
+            "practical": 80,
+            "style": 80,
+            "value": 50.0,
+            "overall": 77.0
+          },
+          "reasons": {
+            "practical": "Matches requested function",
+            "style": "Matches requested style",
+            "value": "Price relative to the median of comparable discoveries"
+          },
+          "uncertainty": null
+        },
+        {
+          "schema_version": 1,
+          "variant_id": "v_ffd567ef918cd1f83a447826",
+          "offer_id": "offer_f44f79432b21218cceb4a9c5",
+          "title": "Chair 2",
+          "category": "chair",
+          "variant": {
+            "schema_version": 1,
+            "variant_id": "v_ffd567ef918cd1f83a447826",
+            "title": "Chair 2",
+            "category": "chair",
+            "options": {
+              "color": "2"
+            },
+            "image_references": [
+              "https://example.com/chair/2.jpg"
+            ],
+            "features": {},
+            "identity": {
+              "gtin": null,
+              "manufacturer": null,
+              "mpn": null,
+              "identity_verified": false,
+              "identity_quote": null
+            },
+            "dimension_evidence_id": "dim_b162c8adb38a0ac53ab37b14"
+          },
+          "dimension_evidence": {
+            "schema_version": 1,
+            "evidence_id": "dim_b162c8adb38a0ac53ab37b14",
+            "variant_id": "v_ffd567ef918cd1f83a447826",
+            "source_url": "https://example.com/chair/2",
+            "original_measurements": [
+              {
+                "axis": "width",
+                "label": "Width",
+                "value": "50",
+                "unit": "cm",
+                "quote": "Width 50 cm"
+              },
+              {
+                "axis": "depth",
+                "label": "Depth",
+                "value": "50",
+                "unit": "cm",
+                "quote": "Depth 50 cm"
+              },
+              {
+                "axis": "height",
+                "label": "Height",
+                "value": "80",
+                "unit": "cm",
+                "quote": "Height 80 cm"
+              }
+            ],
+            "classification": "item",
+            "verified_at": "2026-10-18T00:00:00+00:00",
+            "expires_at": "2026-10-25T00:00:00+00:00",
+            "dimensions": [
+              0.5,
+              0.5,
+              0.8
+            ],
+            "outcome": "verified"
+          },
+          "dimensions": [
+            0.5,
+            0.5,
+            0.8
+          ],
+          "offer": {
+            "schema_version": 1,
+            "offer_id": "offer_f44f79432b21218cceb4a9c5",
+            "variant_id": "v_ffd567ef918cd1f83a447826",
+            "merchant": "Example",
+            "product_url": "https://example.com/chair/2",
+            "price": "100.00",
+            "currency": "USD",
+            "availability": "in_stock",
+            "exact_variant": true,
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "pack_contents": {
+              "verified": true,
+              "components": [
+                {
+                  "variant_id": "v_ffd567ef918cd1f83a447826",
+                  "units": 2,
+                  "dimensions": [
+                    0.5,
+                    0.5,
+                    0.8
+                  ]
+                }
+              ]
+            },
+            "evidence": {
+              "variant_quote": "Chair 2",
+              "price_quote": "USD 100.00",
+              "availability_quote": "In stock",
+              "pack_quote": "Contains two identical chairs"
+            }
+          },
+          "features": {},
+          "source": "live",
+          "candidate_id": "fixture_candidate_2",
+          "render": {
+            "kind": "standin",
+            "category": "chair",
+            "asset_id": "kenney-chair",
+            "asset_revision": "67d8cb9ab6c620bb",
+            "asset_url": "/v1/catalog/assets/kenney-chair/67d8cb9ab6c620bb",
+            "tint": "#B9ADA0",
+            "texture_url": null,
+            "authored_bounds": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "units": "meters",
+            "scaling_mode": "normalized",
+            "pivot": "bottom_center",
+            "forward_axis": "+Z",
+            "up_axis": "+Y"
+          },
+          "practical_score": 80,
+          "style_score": 80,
+          "practical_reason": "Matches requested function",
+          "style_reason": "Matches requested style",
+          "offers": [
+            {
+              "schema_version": 1,
+              "offer_id": "offer_f44f79432b21218cceb4a9c5",
+              "variant_id": "v_ffd567ef918cd1f83a447826",
+              "merchant": "Example",
+              "product_url": "https://example.com/chair/2",
+              "price": "100.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {
+                "verified": true,
+                "components": [
+                  {
+                    "variant_id": "v_ffd567ef918cd1f83a447826",
+                    "units": 2,
+                    "dimensions": [
+                      0.5,
+                      0.5,
+                      0.8
+                    ]
+                  }
+                ]
+              },
+              "evidence": {
+                "variant_quote": "Chair 2",
+                "price_quote": "USD 100.00",
+                "availability_quote": "In stock",
+                "pack_quote": "Contains two identical chairs"
+              }
+            }
+          ],
+          "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+          "rule_version": "practical60-style30-value10-v1",
+          "scores": {
+            "practical": 80,
+            "style": 80,
+            "value": 50.0,
+            "overall": 77.0
+          },
+          "reasons": {
+            "practical": "Matches requested function",
+            "style": "Matches requested style",
+            "value": "Price relative to the median of comparable discoveries"
+          },
+          "uncertainty": null
+        }
+      ]
+    },
+    "queries": [
+      {
+        "query": "chair reading",
+        "fresh_requested": true,
+        "market": "US",
+        "currency": "USD",
+        "source_exhausted": false
+      },
+      {
+        "query": "compact chair furniture",
+        "fresh_requested": true,
+        "market": "US",
+        "currency": "USD",
+        "source_exhausted": false
+      },
+      {
+        "query": "chair alternative materials",
+        "fresh_requested": true,
+        "market": "US",
+        "currency": "USD",
+        "source_exhausted": false
+      }
+    ],
+    "comparison_snapshots": [
+      "comparison_de3b0dcfe6d80f390b88ba57"
+    ],
+    "displayed_choices": [
+      {
+        "schema_version": 1,
+        "variant_id": "v_35a0d77c01f7836b372dcef0",
+        "offer_id": "offer_7025316634ea6a31275a5cca",
+        "title": "Chair 1",
+        "category": "chair",
+        "variant": {
+          "schema_version": 1,
+          "variant_id": "v_35a0d77c01f7836b372dcef0",
+          "title": "Chair 1",
+          "category": "chair",
+          "options": {
+            "color": "1"
+          },
+          "image_references": [
+            "https://example.com/chair/1.jpg"
+          ],
+          "features": {},
+          "identity": {
+            "gtin": null,
+            "manufacturer": null,
+            "mpn": null,
+            "identity_verified": false,
+            "identity_quote": null
+          },
+          "dimension_evidence_id": "dim_6f2ec48042952b72ee8fe9f6"
+        },
+        "dimension_evidence": {
+          "schema_version": 1,
+          "evidence_id": "dim_6f2ec48042952b72ee8fe9f6",
+          "variant_id": "v_35a0d77c01f7836b372dcef0",
+          "source_url": "https://example.com/chair/1",
+          "original_measurements": [
+            {
+              "axis": "width",
+              "label": "Width",
+              "value": "50",
+              "unit": "cm",
+              "quote": "Width 50 cm"
+            },
+            {
+              "axis": "depth",
+              "label": "Depth",
+              "value": "50",
+              "unit": "cm",
+              "quote": "Depth 50 cm"
+            },
+            {
+              "axis": "height",
+              "label": "Height",
+              "value": "80",
+              "unit": "cm",
+              "quote": "Height 80 cm"
+            }
+          ],
+          "classification": "item",
+          "verified_at": "2026-10-18T00:00:00+00:00",
+          "expires_at": "2026-10-25T00:00:00+00:00",
+          "dimensions": [
+            0.5,
+            0.5,
+            0.8
+          ],
+          "outcome": "verified"
+        },
+        "dimensions": [
+          0.5,
+          0.5,
+          0.8
+        ],
+        "offer": {
+          "schema_version": 1,
+          "offer_id": "offer_7025316634ea6a31275a5cca",
+          "variant_id": "v_35a0d77c01f7836b372dcef0",
+          "merchant": "Example",
+          "product_url": "https://example.com/chair/1",
+          "price": "100.00",
+          "currency": "USD",
+          "availability": "in_stock",
+          "exact_variant": true,
+          "checked_at": "2026-10-18T00:00:00+00:00",
+          "pack_contents": {
+            "verified": true,
+            "components": [
+              {
+                "variant_id": "v_35a0d77c01f7836b372dcef0",
+                "units": 2,
+                "dimensions": [
+                  0.5,
+                  0.5,
+                  0.8
+                ]
+              }
+            ]
+          },
+          "evidence": {
+            "variant_quote": "Chair 1",
+            "price_quote": "USD 100.00",
+            "availability_quote": "In stock",
+            "pack_quote": "Contains two identical chairs"
+          }
+        },
+        "features": {},
+        "source": "stored",
+        "candidate_id": "fixture_candidate_1",
+        "render": {
+          "kind": "standin",
+          "category": "chair",
+          "asset_id": "kenney-chair",
+          "asset_revision": "67d8cb9ab6c620bb",
+          "asset_url": "/v1/catalog/assets/kenney-chair/67d8cb9ab6c620bb",
+          "tint": "#B9ADA0",
+          "texture_url": null,
+          "authored_bounds": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "units": "meters",
+          "scaling_mode": "normalized",
+          "pivot": "bottom_center",
+          "forward_axis": "+Z",
+          "up_axis": "+Y"
+        },
+        "practical_score": 80,
+        "style_score": 80,
+        "practical_reason": "Matches requested function",
+        "style_reason": "Matches requested style",
+        "offers": [
+          {
+            "schema_version": 1,
+            "offer_id": "offer_7025316634ea6a31275a5cca",
+            "variant_id": "v_35a0d77c01f7836b372dcef0",
+            "merchant": "Example",
+            "product_url": "https://example.com/chair/1",
+            "price": "100.00",
+            "currency": "USD",
+            "availability": "in_stock",
+            "exact_variant": true,
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "pack_contents": {
+              "verified": true,
+              "components": [
+                {
+                  "variant_id": "v_35a0d77c01f7836b372dcef0",
+                  "units": 2,
+                  "dimensions": [
+                    0.5,
+                    0.5,
+                    0.8
+                  ]
+                }
+              ]
+            },
+            "evidence": {
+              "variant_quote": "Chair 1",
+              "price_quote": "USD 100.00",
+              "availability_quote": "In stock",
+              "pack_quote": "Contains two identical chairs"
+            }
+          }
+        ],
+        "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+        "rule_version": "practical60-style30-value10-v1",
+        "scores": {
+          "practical": 80,
+          "style": 80,
+          "value": 50.0,
+          "overall": 77.0
+        },
+        "reasons": {
+          "practical": "Matches requested function",
+          "style": "Matches requested style",
+          "value": "Price relative to the median of comparable discoveries"
+        },
+        "uncertainty": null
+      },
+      {
+        "schema_version": 1,
+        "variant_id": "v_3a151080b269c29a90cb8ca2",
+        "offer_id": "offer_801268f406ead6cee70ce9cc",
+        "title": "Chair 4",
+        "category": "chair",
+        "variant": {
+          "schema_version": 1,
+          "variant_id": "v_3a151080b269c29a90cb8ca2",
+          "title": "Chair 4",
+          "category": "chair",
+          "options": {
+            "color": "4"
+          },
+          "image_references": [
+            "https://example.com/chair/4.jpg"
+          ],
+          "features": {},
+          "identity": {
+            "gtin": null,
+            "manufacturer": null,
+            "mpn": null,
+            "identity_verified": false,
+            "identity_quote": null
+          },
+          "dimension_evidence_id": "dim_8668faa0df194b32c7e8d1e0"
+        },
+        "dimension_evidence": {
+          "schema_version": 1,
+          "evidence_id": "dim_8668faa0df194b32c7e8d1e0",
+          "variant_id": "v_3a151080b269c29a90cb8ca2",
+          "source_url": "https://example.com/chair/4",
+          "original_measurements": [
+            {
+              "axis": "width",
+              "label": "Width",
+              "value": "50",
+              "unit": "cm",
+              "quote": "Width 50 cm"
+            },
+            {
+              "axis": "depth",
+              "label": "Depth",
+              "value": "50",
+              "unit": "cm",
+              "quote": "Depth 50 cm"
+            },
+            {
+              "axis": "height",
+              "label": "Height",
+              "value": "80",
+              "unit": "cm",
+              "quote": "Height 80 cm"
+            }
+          ],
+          "classification": "item",
+          "verified_at": "2026-10-18T00:00:00+00:00",
+          "expires_at": "2026-10-25T00:00:00+00:00",
+          "dimensions": [
+            0.5,
+            0.5,
+            0.8
+          ],
+          "outcome": "verified"
+        },
+        "dimensions": [
+          0.5,
+          0.5,
+          0.8
+        ],
+        "offer": {
+          "schema_version": 1,
+          "offer_id": "offer_801268f406ead6cee70ce9cc",
+          "variant_id": "v_3a151080b269c29a90cb8ca2",
+          "merchant": "Example",
+          "product_url": "https://example.com/chair/4",
+          "price": "100.00",
+          "currency": "USD",
+          "availability": "in_stock",
+          "exact_variant": true,
+          "checked_at": "2026-10-18T00:00:00+00:00",
+          "pack_contents": {
+            "verified": true,
+            "components": [
+              {
+                "variant_id": "v_3a151080b269c29a90cb8ca2",
+                "units": 2,
+                "dimensions": [
+                  0.5,
+                  0.5,
+                  0.8
+                ]
+              }
+            ]
+          },
+          "evidence": {
+            "variant_quote": "Chair 4",
+            "price_quote": "USD 100.00",
+            "availability_quote": "In stock",
+            "pack_quote": "Contains two identical chairs"
+          }
+        },
+        "features": {},
+        "source": "live",
+        "candidate_id": "fixture_candidate_4",
+        "render": {
+          "kind": "standin",
+          "category": "chair",
+          "asset_id": "kenney-chair",
+          "asset_revision": "67d8cb9ab6c620bb",
+          "asset_url": "/v1/catalog/assets/kenney-chair/67d8cb9ab6c620bb",
+          "tint": "#B9ADA0",
+          "texture_url": null,
+          "authored_bounds": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "units": "meters",
+          "scaling_mode": "normalized",
+          "pivot": "bottom_center",
+          "forward_axis": "+Z",
+          "up_axis": "+Y"
+        },
+        "practical_score": 80,
+        "style_score": 80,
+        "practical_reason": "Matches requested function",
+        "style_reason": "Matches requested style",
+        "offers": [
+          {
+            "schema_version": 1,
+            "offer_id": "offer_801268f406ead6cee70ce9cc",
+            "variant_id": "v_3a151080b269c29a90cb8ca2",
+            "merchant": "Example",
+            "product_url": "https://example.com/chair/4",
+            "price": "100.00",
+            "currency": "USD",
+            "availability": "in_stock",
+            "exact_variant": true,
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "pack_contents": {
+              "verified": true,
+              "components": [
+                {
+                  "variant_id": "v_3a151080b269c29a90cb8ca2",
+                  "units": 2,
+                  "dimensions": [
+                    0.5,
+                    0.5,
+                    0.8
+                  ]
+                }
+              ]
+            },
+            "evidence": {
+              "variant_quote": "Chair 4",
+              "price_quote": "USD 100.00",
+              "availability_quote": "In stock",
+              "pack_quote": "Contains two identical chairs"
+            }
+          }
+        ],
+        "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+        "rule_version": "practical60-style30-value10-v1",
+        "scores": {
+          "practical": 80,
+          "style": 80,
+          "value": 50.0,
+          "overall": 77.0
+        },
+        "reasons": {
+          "practical": "Matches requested function",
+          "style": "Matches requested style",
+          "value": "Price relative to the median of comparable discoveries"
+        },
+        "uncertainty": null
+      },
+      {
+        "schema_version": 1,
+        "variant_id": "v_df7477cc487ed7399bedceeb",
+        "offer_id": "offer_0cf76999d8d8a1870bf9ae80",
+        "title": "Chair 3",
+        "category": "chair",
+        "variant": {
+          "schema_version": 1,
+          "variant_id": "v_df7477cc487ed7399bedceeb",
+          "title": "Chair 3",
+          "category": "chair",
+          "options": {
+            "color": "3"
+          },
+          "image_references": [
+            "https://example.com/chair/3.jpg"
+          ],
+          "features": {},
+          "identity": {
+            "gtin": null,
+            "manufacturer": null,
+            "mpn": null,
+            "identity_verified": false,
+            "identity_quote": null
+          },
+          "dimension_evidence_id": "dim_fc31066a46997cf366965ce1"
+        },
+        "dimension_evidence": {
+          "schema_version": 1,
+          "evidence_id": "dim_fc31066a46997cf366965ce1",
+          "variant_id": "v_df7477cc487ed7399bedceeb",
+          "source_url": "https://example.com/chair/3",
+          "original_measurements": [
+            {
+              "axis": "width",
+              "label": "Width",
+              "value": "50",
+              "unit": "cm",
+              "quote": "Width 50 cm"
+            },
+            {
+              "axis": "depth",
+              "label": "Depth",
+              "value": "50",
+              "unit": "cm",
+              "quote": "Depth 50 cm"
+            },
+            {
+              "axis": "height",
+              "label": "Height",
+              "value": "80",
+              "unit": "cm",
+              "quote": "Height 80 cm"
+            }
+          ],
+          "classification": "item",
+          "verified_at": "2026-10-18T00:00:00+00:00",
+          "expires_at": "2026-10-25T00:00:00+00:00",
+          "dimensions": [
+            0.5,
+            0.5,
+            0.8
+          ],
+          "outcome": "verified"
+        },
+        "dimensions": [
+          0.5,
+          0.5,
+          0.8
+        ],
+        "offer": {
+          "schema_version": 1,
+          "offer_id": "offer_0cf76999d8d8a1870bf9ae80",
+          "variant_id": "v_df7477cc487ed7399bedceeb",
+          "merchant": "Example",
+          "product_url": "https://example.com/chair/3",
+          "price": "100.00",
+          "currency": "USD",
+          "availability": "in_stock",
+          "exact_variant": true,
+          "checked_at": "2026-10-18T00:00:00+00:00",
+          "pack_contents": {
+            "verified": true,
+            "components": [
+              {
+                "variant_id": "v_df7477cc487ed7399bedceeb",
+                "units": 2,
+                "dimensions": [
+                  0.5,
+                  0.5,
+                  0.8
+                ]
+              }
+            ]
+          },
+          "evidence": {
+            "variant_quote": "Chair 3",
+            "price_quote": "USD 100.00",
+            "availability_quote": "In stock",
+            "pack_quote": "Contains two identical chairs"
+          }
+        },
+        "features": {},
+        "source": "stored",
+        "candidate_id": "fixture_candidate_3",
+        "render": {
+          "kind": "standin",
+          "category": "chair",
+          "asset_id": "kenney-chair",
+          "asset_revision": "67d8cb9ab6c620bb",
+          "asset_url": "/v1/catalog/assets/kenney-chair/67d8cb9ab6c620bb",
+          "tint": "#B9ADA0",
+          "texture_url": null,
+          "authored_bounds": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "units": "meters",
+          "scaling_mode": "normalized",
+          "pivot": "bottom_center",
+          "forward_axis": "+Z",
+          "up_axis": "+Y"
+        },
+        "practical_score": 80,
+        "style_score": 80,
+        "practical_reason": "Matches requested function",
+        "style_reason": "Matches requested style",
+        "offers": [
+          {
+            "schema_version": 1,
+            "offer_id": "offer_0cf76999d8d8a1870bf9ae80",
+            "variant_id": "v_df7477cc487ed7399bedceeb",
+            "merchant": "Example",
+            "product_url": "https://example.com/chair/3",
+            "price": "100.00",
+            "currency": "USD",
+            "availability": "in_stock",
+            "exact_variant": true,
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "pack_contents": {
+              "verified": true,
+              "components": [
+                {
+                  "variant_id": "v_df7477cc487ed7399bedceeb",
+                  "units": 2,
+                  "dimensions": [
+                    0.5,
+                    0.5,
+                    0.8
+                  ]
+                }
+              ]
+            },
+            "evidence": {
+              "variant_quote": "Chair 3",
+              "price_quote": "USD 100.00",
+              "availability_quote": "In stock",
+              "pack_quote": "Contains two identical chairs"
+            }
+          }
+        ],
+        "comparison_snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57",
+        "rule_version": "practical60-style30-value10-v1",
+        "scores": {
+          "practical": 80,
+          "style": 80,
+          "value": 50.0,
+          "overall": 77.0
+        },
+        "reasons": {
+          "practical": "Matches requested function",
+          "style": "Matches requested style",
+          "value": "Price relative to the median of comparable discoveries"
+        },
+        "uncertainty": null
+      }
+    ],
+    "prior_displayed_choices": [],
+    "previously_seen_identities": [
+      "v_35a0d77c01f7836b372dcef0"
+    ],
+    "selected_variant_id": "v_35a0d77c01f7836b372dcef0",
+    "source_failures": [],
+    "no_match_reason": null,
+    "completed_at": "2026-10-18T00:00:00+00:00"
+  },
+  "comparison_snapshot": {
+    "schema_version": 1,
+    "rule_version": "practical60-style30-value10-v1",
+    "created_at": "2026-10-18T00:00:00+00:00",
+    "context": {
+      "category": "chair"
+    },
+    "members": [
+      {
+        "variant_id": "v_35a0d77c01f7836b372dcef0",
+        "offer_id": "offer_7025316634ea6a31275a5cca",
+        "unit_price": "50.00",
+        "checked_at": "2026-10-18T00:00:00+00:00",
+        "inclusion_reason": "Same type/function, approximate size/capacity, known material/features and condition"
+      },
+      {
+        "variant_id": "v_3a151080b269c29a90cb8ca2",
+        "offer_id": "offer_801268f406ead6cee70ce9cc",
+        "unit_price": "50.00",
+        "checked_at": "2026-10-18T00:00:00+00:00",
+        "inclusion_reason": "Same type/function, approximate size/capacity, known material/features and condition"
+      },
+      {
+        "variant_id": "v_df7477cc487ed7399bedceeb",
+        "offer_id": "offer_0cf76999d8d8a1870bf9ae80",
+        "unit_price": "50.00",
+        "checked_at": "2026-10-18T00:00:00+00:00",
+        "inclusion_reason": "Same type/function, approximate size/capacity, known material/features and condition"
+      },
+      {
+        "variant_id": "v_ffd567ef918cd1f83a447826",
+        "offer_id": "offer_f44f79432b21218cceb4a9c5",
+        "unit_price": "50.00",
+        "checked_at": "2026-10-18T00:00:00+00:00",
+        "inclusion_reason": "Same type/function, approximate size/capacity, known material/features and condition"
+      }
+    ],
+    "sample_count": 4,
+    "comparisons": {
+      "v_35a0d77c01f7836b372dcef0": {
+        "members": [
+          "v_3a151080b269c29a90cb8ca2",
+          "v_df7477cc487ed7399bedceeb",
+          "v_ffd567ef918cd1f83a447826"
+        ],
+        "sample_count": 3,
+        "median": "50.00",
+        "uncertainty": null
+      },
+      "v_ffd567ef918cd1f83a447826": {
+        "members": [
+          "v_35a0d77c01f7836b372dcef0",
+          "v_3a151080b269c29a90cb8ca2",
+          "v_df7477cc487ed7399bedceeb"
+        ],
+        "sample_count": 3,
+        "median": "50.00",
+        "uncertainty": null
+      },
+      "v_df7477cc487ed7399bedceeb": {
+        "members": [
+          "v_35a0d77c01f7836b372dcef0",
+          "v_3a151080b269c29a90cb8ca2",
+          "v_ffd567ef918cd1f83a447826"
+        ],
+        "sample_count": 3,
+        "median": "50.00",
+        "uncertainty": null
+      },
+      "v_3a151080b269c29a90cb8ca2": {
+        "members": [
+          "v_35a0d77c01f7836b372dcef0",
+          "v_df7477cc487ed7399bedceeb",
+          "v_ffd567ef918cd1f83a447826"
+        ],
+        "sample_count": 3,
+        "median": "50.00",
+        "uncertainty": null
+      }
+    },
+    "snapshot_id": "comparison_de3b0dcfe6d80f390b88ba57"
+  },
+  "purchase_summary": {
+    "schema_version": 1,
+    "currency": "USD",
+    "lines": [
+      {
+        "schema_version": 1,
+        "offer_id": "offer_7025316634ea6a31275a5cca",
+        "variant_id": "v_35a0d77c01f7836b372dcef0",
+        "offer": {
+          "schema_version": 1,
+          "offer_id": "offer_7025316634ea6a31275a5cca",
+          "variant_id": "v_35a0d77c01f7836b372dcef0",
+          "merchant": "Example",
+          "product_url": "https://example.com/chair/1",
+          "price": "100.00",
+          "currency": "USD",
+          "availability": "in_stock",
+          "exact_variant": true,
+          "checked_at": "2026-10-18T00:00:00+00:00",
+          "pack_contents": {
+            "verified": true,
+            "components": [
+              {
+                "variant_id": "v_35a0d77c01f7836b372dcef0",
+                "units": 2,
+                "dimensions": [
+                  0.5,
+                  0.5,
+                  0.8
+                ]
+              }
+            ]
+          },
+          "evidence": {
+            "variant_quote": "Chair 1",
+            "price_quote": "USD 100.00",
+            "availability_quote": "In stock",
+            "pack_quote": "Contains two identical chairs"
+          }
+        },
+        "unit_pack_price": "100.00",
+        "purchased_pack_count": 2,
+        "verified_contents": {
+          "verified": true,
+          "components": [
+            {
+              "variant_id": "v_35a0d77c01f7836b372dcef0",
+              "units": 2,
+              "dimensions": [
+                0.5,
+                0.5,
+                0.8
+              ]
+            }
+          ]
+        },
+        "supplied_unit_count": 4,
+        "placed_unit_count": 3,
+        "placed_item_ids": [
+          "i_add_1_0",
+          "i_add_1_1",
+          "i_add_1_2"
+        ],
+        "paid_surplus_count": 1,
+        "line_total": "200.00",
+        "checked_at": "2026-10-18T00:00:00+00:00",
+        "components": [
+          {
+            "variant_id": "v_35a0d77c01f7836b372dcef0",
+            "units": 2,
+            "dimensions": [
+              0.5,
+              0.5,
+              0.8
+            ],
+            "supplied_unit_count": 4,
+            "placed_item_ids": [
+              "i_add_1_0",
+              "i_add_1_1",
+              "i_add_1_2"
+            ],
+            "paid_surplus_count": 1
+          }
+        ]
+      }
+    ],
+    "total": "200.00",
+    "approved_ceiling": "150.00",
+    "within_budget": false,
+    "tax_excluded": true,
+    "shipping_excluded": true,
+    "existing_objects_excluded": true,
+    "warnings": []
+  },
+  "budget_proposal": {
+    "schema_version": 1,
+    "old_ceiling": "150.00",
+    "new_ceiling": "200.00",
+    "currency": "USD",
+    "resulting_total": "200.00",
+    "ceiling_increase": "50.00",
+    "affected_purchases": [
+      {
+        "schema_version": 1,
+        "offer_id": "offer_7025316634ea6a31275a5cca",
+        "variant_id": "v_35a0d77c01f7836b372dcef0",
+        "offer": {
+          "schema_version": 1,
+          "offer_id": "offer_7025316634ea6a31275a5cca",
+          "variant_id": "v_35a0d77c01f7836b372dcef0",
+          "merchant": "Example",
+          "product_url": "https://example.com/chair/1",
+          "price": "100.00",
+          "currency": "USD",
+          "availability": "in_stock",
+          "exact_variant": true,
+          "checked_at": "2026-10-18T00:00:00+00:00",
+          "pack_contents": {
+            "verified": true,
+            "components": [
+              {
+                "variant_id": "v_35a0d77c01f7836b372dcef0",
+                "units": 2,
+                "dimensions": [
+                  0.5,
+                  0.5,
+                  0.8
+                ]
+              }
+            ]
+          },
+          "evidence": {
+            "variant_quote": "Chair 1",
+            "price_quote": "USD 100.00",
+            "availability_quote": "In stock",
+            "pack_quote": "Contains two identical chairs"
+          }
+        },
+        "unit_pack_price": "100.00",
+        "purchased_pack_count": 2,
+        "verified_contents": {
+          "verified": true,
+          "components": [
+            {
+              "variant_id": "v_35a0d77c01f7836b372dcef0",
+              "units": 2,
+              "dimensions": [
+                0.5,
+                0.5,
+                0.8
+              ]
+            }
+          ]
+        },
+        "supplied_unit_count": 4,
+        "placed_unit_count": 3,
+        "placed_item_ids": [
+          "i_add_1_0",
+          "i_add_1_1",
+          "i_add_1_2"
+        ],
+        "paid_surplus_count": 1,
+        "line_total": "200.00",
+        "checked_at": "2026-10-18T00:00:00+00:00",
+        "components": [
+          {
+            "variant_id": "v_35a0d77c01f7836b372dcef0",
+            "units": 2,
+            "dimensions": [
+              0.5,
+              0.5,
+              0.8
+            ],
+            "supplied_unit_count": 4,
+            "placed_item_ids": [
+              "i_add_1_0",
+              "i_add_1_1",
+              "i_add_1_2"
+            ],
+            "paid_surplus_count": 1
+          }
+        ]
+      }
+    ],
+    "checked_alternatives": [],
+    "functional_consequences": [
+      "Three chairs placed; one purchased spare"
+    ],
+    "explanation": "Three required chairs need two whole packs.",
+    "requires_explicit_approval": true
+  },
+  "rejected_dimension_evidence": {
+    "schema_version": 1,
+    "evidence_id": "dim_0398ba9e427b861d930d482a",
+    "variant_id": "v_3a151080b269c29a90cb8ca2",
+    "source_url": "https://example.com/chair/4",
+    "original_measurements": [
+      {
+        "axis": "width",
+        "label": "Width",
+        "value": "50",
+        "unit": "cm",
+        "quote": "Width 50 cm"
+      },
+      {
+        "axis": "depth",
+        "label": "Depth",
+        "value": "50",
+        "unit": "cm",
+        "quote": "Depth 50 cm"
+      }
+    ],
+    "classification": "item",
+    "verified_at": "2026-10-18T00:00:00+00:00",
+    "expires_at": "2026-10-25T00:00:00+00:00",
+    "dimensions": null,
+    "outcome": "missing_dimensions"
+  }
+}
