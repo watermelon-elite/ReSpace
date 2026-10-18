@@ -1,0 +1,8 @@
+{
+  "device": "mps",
+  "torch": "2.14.1",
+  "texture_res": 1024,
+  "model_load_s": 7.3,
+  "host": "JNMBP-124.local",
+  "started": "2026-10-18T09:10:02+00:00"
+}

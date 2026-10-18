@@ -1,0 +1,260 @@
+[
+  {
+    "procs": 1,
+    "batch": 1,
+    "ok": true,
+    "products": 8,
+    "wall_s": 92.12,
+    "per_product_s": 11.52,
+    "throughput_per_min": 5.2,
+    "model_load_s": 7.09,
+    "peak_rss_gb": 15.26,
+    "mps_driver_gb": 12.15,
+    "workers": [
+      {
+        "tag": "p1-b1-w0",
+        "slugs": [
+          "armchair_herr\u00e5kra_40535547",
+          "armchair_morabo_s59318327",
+          "armchair_\u00e5rsunda_30535897",
+          "chair_bergmund_s09471699",
+          "chair_lisabo_00457235",
+          "chair_skogsta_50544867",
+          "desk_betesh\u00e4st_80619804",
+          "desk_l\u00e4ngdhopp_30587080"
+        ],
+        "model_load_s": 7.09,
+        "busy_s": 83.05,
+        "peak_rss_gb": 15.26,
+        "mps_allocated_gb": 7.7,
+        "mps_driver_gb": 12.15,
+        "chunks": [
+          {
+            "size": 1,
+            "infer_s": 9.52,
+            "export_s": 0.02
+          },
+          {
+            "size": 1,
+            "infer_s": 9.98,
+            "export_s": 0.02
+          },
+          {
+            "size": 1,
+            "infer_s": 10.36,
+            "export_s": 0.02
+          },
+          {
+            "size": 1,
+            "infer_s": 10.49,
+            "export_s": 0.01
+          },
+          {
+            "size": 1,
+            "infer_s": 10.56,
+            "export_s": 0.01
+          },
+          {
+            "size": 1,
+            "infer_s": 10.46,
+            "export_s": 0.03
+          },
+          {
+            "size": 1,
+            "infer_s": 10.77,
+            "export_s": 0.02
+          },
+          {
+            "size": 1,
+            "infer_s": 10.75,
+            "export_s": 0.02
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "procs": 1,
+    "batch": 2,
+    "ok": true,
+    "products": 8,
+    "wall_s": 90.5,
+    "per_product_s": 11.31,
+    "throughput_per_min": 5.3,
+    "model_load_s": 7.67,
+    "peak_rss_gb": 15.26,
+    "mps_driver_gb": 13.14,
+    "workers": [
+      {
+        "tag": "p1-b2-w0",
+        "slugs": [
+          "armchair_herr\u00e5kra_40535547",
+          "armchair_morabo_s59318327",
+          "armchair_\u00e5rsunda_30535897",
+          "chair_bergmund_s09471699",
+          "chair_lisabo_00457235",
+          "chair_skogsta_50544867",
+          "desk_betesh\u00e4st_80619804",
+          "desk_l\u00e4ngdhopp_30587080"
+        ],
+        "model_load_s": 7.67,
+        "busy_s": 80.72,
+        "peak_rss_gb": 15.26,
+        "mps_allocated_gb": 7.7,
+        "mps_driver_gb": 13.14,
+        "chunks": [
+          {
+            "size": 2,
+            "infer_s": 19.77,
+            "export_s": 0.02
+          },
+          {
+            "size": 2,
+            "infer_s": 20.3,
+            "export_s": 0.02
+          },
+          {
+            "size": 2,
+            "infer_s": 20.11,
+            "export_s": 0.02
+          },
+          {
+            "size": 2,
+            "infer_s": 20.47,
+            "export_s": 0.02
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "procs": 1,
+    "batch": 4,
+    "ok": true,
+    "products": 8,
+    "wall_s": 111.48,
+    "per_product_s": 13.94,
+    "throughput_per_min": 4.3,
+    "model_load_s": 7.71,
+    "peak_rss_gb": 15.26,
+    "mps_driver_gb": 13.13,
+    "workers": [
+      {
+        "tag": "p1-b4-w0",
+        "slugs": [
+          "armchair_herr\u00e5kra_40535547",
+          "armchair_morabo_s59318327",
+          "armchair_\u00e5rsunda_30535897",
+          "chair_bergmund_s09471699",
+          "chair_lisabo_00457235",
+          "chair_skogsta_50544867",
+          "desk_betesh\u00e4st_80619804",
+          "desk_l\u00e4ngdhopp_30587080"
+        ],
+        "model_load_s": 7.71,
+        "busy_s": 101.56,
+        "peak_rss_gb": 15.26,
+        "mps_allocated_gb": 7.7,
+        "mps_driver_gb": 13.13,
+        "chunks": [
+          {
+            "size": 4,
+            "infer_s": 49.02,
+            "export_s": 0.02
+          },
+          {
+            "size": 4,
+            "infer_s": 52.52,
+            "export_s": 0.01
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "procs": 2,
+    "batch": 1,
+    "ok": true,
+    "products": 8,
+    "wall_s": 108.37,
+    "per_product_s": 13.55,
+    "throughput_per_min": 4.4,
+    "model_load_s": 8.06,
+    "peak_rss_gb": 30.52,
+    "mps_driver_gb": 24.26,
+    "workers": [
+      {
+        "tag": "p2-b1-w0",
+        "slugs": [
+          "armchair_herr\u00e5kra_40535547",
+          "armchair_morabo_s59318327",
+          "armchair_\u00e5rsunda_30535897",
+          "chair_bergmund_s09471699"
+        ],
+        "model_load_s": 8.06,
+        "busy_s": 98.01,
+        "peak_rss_gb": 15.26,
+        "mps_allocated_gb": 7.7,
+        "mps_driver_gb": 12.13,
+        "chunks": [
+          {
+            "size": 1,
+            "infer_s": 27.32,
+            "export_s": 0.02
+          },
+          {
+            "size": 1,
+            "infer_s": 24.99,
+            "export_s": 0.02
+          },
+          {
+            "size": 1,
+            "infer_s": 24.91,
+            "export_s": 0.02
+          },
+          {
+            "size": 1,
+            "infer_s": 20.72,
+            "export_s": 0.01
+          }
+        ]
+      },
+      {
+        "tag": "p2-b1-w1",
+        "slugs": [
+          "chair_lisabo_00457235",
+          "chair_skogsta_50544867",
+          "desk_betesh\u00e4st_80619804",
+          "desk_l\u00e4ngdhopp_30587080"
+        ],
+        "model_load_s": 7.98,
+        "busy_s": 92.8,
+        "peak_rss_gb": 15.26,
+        "mps_allocated_gb": 7.7,
+        "mps_driver_gb": 12.13,
+        "chunks": [
+          {
+            "size": 1,
+            "infer_s": 20.88,
+            "export_s": 0.04
+          },
+          {
+            "size": 1,
+            "infer_s": 21.97,
+            "export_s": 0.01
+          },
+          {
+            "size": 1,
+            "infer_s": 24.42,
+            "export_s": 0.02
+          },
+          {
+            "size": 1,
+            "infer_s": 25.42,
+            "export_s": 0.03
+          }
+        ]
+      }
+    ]
+  }
+]

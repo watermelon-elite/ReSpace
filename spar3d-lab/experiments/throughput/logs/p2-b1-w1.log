@@ -1,0 +1,10 @@
+/Users/jnaok/spar3d-lab/.venv/lib/python3.11/site-packages/albumentations/__init__.py:13: UserWarning: A new version of Albumentations is available: 2.0.8 (you have 1.4.15). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
+  check_for_updates()
+/Users/jnaok/spar3d-lab/.venv/lib/python3.11/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/Users/jnaok/spar3d-lab/.venv/lib/python3.11/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+WARNING:root:Could not import gpytoolbox. Triangle remeshing functionality will be disabled. Install via `pip install gpytoolbox`
+WARNING:root:Could not import pynanoinstantmeshes. Quad remeshing functionality will be disabled. Install via `pip install pynanoinstantmeshes==0.0.3`
+/Users/jnaok/spar3d-lab/.venv/lib/python3.11/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+  warnings.warn(

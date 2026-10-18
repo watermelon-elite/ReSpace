@@ -1,0 +1,602 @@
+[
+  {
+    "slug": "armchair_herr\u00e5kra_40535547",
+    "category": "armchair",
+    "name": "HERR\u00c5KRA",
+    "type": "Armchair",
+    "vertices": 21755,
+    "tilt_before": 6.0,
+    "pitch_degrees": 4.2,
+    "pitch_reason": "ok",
+    "tilt_after": 8.5,
+    "ok": true,
+    "bytes": 1656001,
+    "under_3_mb": true,
+    "triangles": 36316,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "armchair_morabo_s59318327",
+    "category": "armchair",
+    "name": "MORABO",
+    "type": "Armchair",
+    "vertices": 32215,
+    "tilt_before": 34.4,
+    "pitch_degrees": -7.7,
+    "pitch_reason": "ok",
+    "tilt_after": 31.3,
+    "ok": true,
+    "bytes": 2031145,
+    "under_3_mb": true,
+    "triangles": 50624,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "armchair_\u00e5rsunda_30535897",
+    "category": "armchair",
+    "name": "\u00c5RSUNDA",
+    "type": "Armchair",
+    "vertices": 20877,
+    "tilt_before": 10.7,
+    "pitch_degrees": 3.1,
+    "pitch_reason": "ok",
+    "tilt_after": 8.8,
+    "ok": true,
+    "bytes": 1659410,
+    "under_3_mb": true,
+    "triangles": 31844,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "chair_bergmund_s09471699",
+    "category": "chair",
+    "name": "BERGMUND",
+    "type": "Chair",
+    "vertices": 12073,
+    "tilt_before": 6.8,
+    "pitch_degrees": 0.0,
+    "pitch_reason": "base too narrow to define a plane",
+    "tilt_after": 6.8,
+    "ok": true,
+    "bytes": 1037689,
+    "under_3_mb": true,
+    "triangles": 19236,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "chair_lisabo_00457235",
+    "category": "chair",
+    "name": "LISABO",
+    "type": "Chair",
+    "vertices": 12125,
+    "tilt_before": 4.6,
+    "pitch_degrees": 0.0,
+    "pitch_reason": "base too narrow to define a plane",
+    "tilt_after": 4.6,
+    "ok": true,
+    "bytes": 1192365,
+    "under_3_mb": true,
+    "triangles": 17896,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "chair_skogsta_50544867",
+    "category": "chair",
+    "name": "SKOGSTA",
+    "type": "Chair",
+    "vertices": 12998,
+    "tilt_before": 4.8,
+    "pitch_degrees": 0.0,
+    "pitch_reason": "base too narrow to define a plane",
+    "tilt_after": 4.8,
+    "ok": true,
+    "bytes": 1336397,
+    "under_3_mb": true,
+    "triangles": 17100,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "desk_betesh\u00e4st_80619804",
+    "category": "desk",
+    "name": "BETESH\u00c4ST",
+    "type": "Desk",
+    "vertices": 24722,
+    "tilt_before": 27.1,
+    "pitch_degrees": 9.3,
+    "pitch_reason": "ok",
+    "tilt_after": 22.7,
+    "ok": true,
+    "bytes": 1914952,
+    "under_3_mb": true,
+    "triangles": 32544,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "desk_l\u00e4ngdhopp_30587080",
+    "category": "desk",
+    "name": "L\u00c4NGDHOPP",
+    "type": "Pull-out desk",
+    "vertices": 26206,
+    "tilt_before": 11.4,
+    "pitch_degrees": 11.2,
+    "pitch_reason": "ok",
+    "tilt_after": 4.1,
+    "ok": true,
+    "bytes": 1855704,
+    "under_3_mb": true,
+    "triangles": 42908,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "desk_trotten_s39621923",
+    "category": "desk",
+    "name": "TROTTEN",
+    "type": "Desk",
+    "vertices": 11780,
+    "tilt_before": 34.5,
+    "pitch_degrees": 0.0,
+    "pitch_reason": "base too narrow to define a plane",
+    "tilt_after": 34.5,
+    "ok": true,
+    "bytes": 1109209,
+    "under_3_mb": true,
+    "triangles": 19064,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "lamp_akterspring_60591655",
+    "category": "lamp",
+    "name": "AKTERSPRING",
+    "type": "Table lamp",
+    "vertices": 17377,
+    "tilt_before": 9.8,
+    "pitch_degrees": 12.8,
+    "pitch_reason": "ok",
+    "tilt_after": 3.8,
+    "ok": true,
+    "bytes": 1497370,
+    "under_3_mb": true,
+    "triangles": 27804,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "lamp_flygh\u00f6jd_00543846",
+    "category": "lamp",
+    "name": "FLYGH\u00d6JD",
+    "type": "Floor lamp",
+    "vertices": 3709,
+    "tilt_before": 10.8,
+    "pitch_degrees": 10.3,
+    "pitch_reason": "ok",
+    "tilt_after": 2.2,
+    "ok": true,
+    "bytes": 701346,
+    "under_3_mb": true,
+    "triangles": 5608,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "lamp_kinnahult_20559266",
+    "category": "lamp",
+    "name": "KINNAHULT",
+    "type": "Floor lamp",
+    "vertices": 4444,
+    "tilt_before": 8.5,
+    "pitch_degrees": 10.5,
+    "pitch_reason": "ok",
+    "tilt_after": 1.1,
+    "ok": true,
+    "bytes": 708950,
+    "under_3_mb": true,
+    "triangles": 6724,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "lamp_simrishamn_50437773",
+    "category": "lamp",
+    "name": "SIMRISHAMN",
+    "type": "Floor lamp",
+    "vertices": 5208,
+    "tilt_before": 1.8,
+    "pitch_degrees": 14.1,
+    "pitch_reason": "ok",
+    "tilt_after": 11.9,
+    "ok": true,
+    "bytes": 837752,
+    "under_3_mb": true,
+    "triangles": 6140,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "lamp_stockholm-2025_30586226",
+    "category": "lamp",
+    "name": "STOCKHOLM 2025",
+    "type": "Table lamp",
+    "vertices": 32336,
+    "tilt_before": 1.8,
+    "pitch_degrees": 18.5,
+    "pitch_reason": "ok",
+    "tilt_after": 7.3,
+    "ok": true,
+    "bytes": 2221187,
+    "under_3_mb": true,
+    "triangles": 51952,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "lamp_\u00e5rstid_80321380",
+    "category": "lamp",
+    "name": "\u00c5RSTID",
+    "type": "Table lamp",
+    "vertices": 8865,
+    "tilt_before": 9.6,
+    "pitch_degrees": 5.8,
+    "pitch_reason": "ok",
+    "tilt_after": 4.6,
+    "ok": true,
+    "bytes": 1177778,
+    "under_3_mb": true,
+    "triangles": 14064,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "plant_fejka_10508456",
+    "category": "plant",
+    "name": "FEJKA",
+    "type": "Artificial potted plant with pot",
+    "vertices": 15185,
+    "tilt_before": 10.5,
+    "pitch_degrees": 9.5,
+    "pitch_reason": "ok",
+    "tilt_after": 2.8,
+    "ok": true,
+    "bytes": 1603499,
+    "under_3_mb": true,
+    "triangles": 24116,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "plant_fejka_10615244",
+    "category": "plant",
+    "name": "FEJKA",
+    "type": "Artificial potted plant",
+    "vertices": 25743,
+    "tilt_before": 10.0,
+    "pitch_degrees": 11.0,
+    "pitch_reason": "ok",
+    "tilt_after": 10.9,
+    "ok": true,
+    "bytes": 2027646,
+    "under_3_mb": true,
+    "triangles": 27712,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "plant_fejka_10615258",
+    "category": "plant",
+    "name": "FEJKA",
+    "type": "Artificial potted plant",
+    "vertices": 17838,
+    "tilt_before": 3.7,
+    "pitch_degrees": 0.0,
+    "pitch_reason": "refused, 69.4 deg exceeds the 30 deg limit",
+    "tilt_after": 3.7,
+    "ok": true,
+    "bytes": 1741699,
+    "under_3_mb": true,
+    "triangles": 15256,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "shelf_billy_80525278",
+    "category": "shelf",
+    "name": "BILLY",
+    "type": "Height extension unit",
+    "vertices": 22242,
+    "tilt_before": 16.6,
+    "pitch_degrees": 2.2,
+    "pitch_reason": "ok",
+    "tilt_after": 25.7,
+    "ok": true,
+    "bytes": 1782262,
+    "under_3_mb": true,
+    "triangles": 35976,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "shelf_billy_s49580093",
+    "category": "shelf",
+    "name": "BILLY",
+    "type": "Bookcase",
+    "vertices": 19046,
+    "tilt_before": 4.8,
+    "pitch_degrees": 16.5,
+    "pitch_reason": "ok",
+    "tilt_after": 10.0,
+    "ok": true,
+    "bytes": 1824057,
+    "under_3_mb": true,
+    "triangles": 33516,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "shelf_billy_s89581509",
+    "category": "shelf",
+    "name": "BILLY",
+    "type": "Bookcase",
+    "vertices": 5853,
+    "tilt_before": 3.1,
+    "pitch_degrees": -2.9,
+    "pitch_reason": "ok",
+    "tilt_after": 5.8,
+    "ok": true,
+    "bytes": 796612,
+    "under_3_mb": true,
+    "triangles": 10276,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "sofa_ekholma_s39537401",
+    "category": "sofa",
+    "name": "EKHOLMA",
+    "type": "Loveseat",
+    "vertices": 19282,
+    "tilt_before": 33.9,
+    "pitch_degrees": 0.0,
+    "pitch_reason": "base too narrow to define a plane",
+    "tilt_after": 33.9,
+    "ok": true,
+    "bytes": 1513546,
+    "under_3_mb": true,
+    "triangles": 32168,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "sofa_gullvalla_40618509",
+    "category": "sofa",
+    "name": "GULLVALLA",
+    "type": "Loveseat",
+    "vertices": 17931,
+    "tilt_before": 39.2,
+    "pitch_degrees": 0.0,
+    "pitch_reason": "base too narrow to define a plane",
+    "tilt_after": 39.2,
+    "ok": true,
+    "bytes": 1467307,
+    "under_3_mb": true,
+    "triangles": 30672,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "sofa_saltsj\u00f6baden_s29656588",
+    "category": "sofa",
+    "name": "SALTSJ\u00d6BADEN",
+    "type": "Loveseat",
+    "vertices": 18411,
+    "tilt_before": 34.1,
+    "pitch_degrees": 0.0,
+    "pitch_reason": "base too narrow to define a plane",
+    "tilt_after": 34.1,
+    "ok": true,
+    "bytes": 1519613,
+    "under_3_mb": true,
+    "triangles": 31428,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "table_borgeby_80619880",
+    "category": "table",
+    "name": "BORGEBY",
+    "type": "Side table",
+    "vertices": 27533,
+    "tilt_before": 9.4,
+    "pitch_degrees": 11.4,
+    "pitch_reason": "ok",
+    "tilt_after": 14.4,
+    "ok": true,
+    "bytes": 2121639,
+    "under_3_mb": true,
+    "triangles": 45388,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "table_olser\u00f6d_20525356",
+    "category": "table",
+    "name": "OLSER\u00d6D",
+    "type": "Side table",
+    "vertices": 20042,
+    "tilt_before": 8.3,
+    "pitch_degrees": 8.8,
+    "pitch_reason": "ok",
+    "tilt_after": 6.6,
+    "ok": true,
+    "bytes": 1689667,
+    "under_3_mb": true,
+    "triangles": 29012,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "table_vittsj\u00f6_00250249",
+    "category": "table",
+    "name": "VITTSJ\u00d6",
+    "type": "Laptop stand",
+    "vertices": 13868,
+    "tilt_before": 13.8,
+    "pitch_degrees": 9.3,
+    "pitch_reason": "ok",
+    "tilt_after": 14.0,
+    "ok": true,
+    "bytes": 1359161,
+    "under_3_mb": true,
+    "triangles": 18792,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "table_vittsj\u00f6_80215332",
+    "category": "table",
+    "name": "VITTSJ\u00d6",
+    "type": "Nesting tables, set of 2",
+    "vertices": 31400,
+    "tilt_before": 39.1,
+    "pitch_degrees": 0.0,
+    "pitch_reason": "base too narrow to define a plane",
+    "tilt_after": 39.1,
+    "ok": true,
+    "bytes": 2097489,
+    "under_3_mb": true,
+    "triangles": 37116,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "table_\u00f6rtr\u00e4sk_30635849",
+    "category": "table",
+    "name": "\u00d6RTR\u00c4SK",
+    "type": "Coffee table",
+    "vertices": 17307,
+    "tilt_before": 46.3,
+    "pitch_degrees": 5.1,
+    "pitch_reason": "ok",
+    "tilt_after": 49.1,
+    "ok": true,
+    "bytes": 1365743,
+    "under_3_mb": true,
+    "triangles": 30344,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  },
+  {
+    "slug": "table_\u00f6stavall_40534152",
+    "category": "table",
+    "name": "\u00d6STAVALL",
+    "type": "Adjustable coffee table",
+    "vertices": 25346,
+    "tilt_before": 25.5,
+    "pitch_degrees": 0.0,
+    "pitch_reason": "base too narrow to define a plane",
+    "tilt_after": 25.5,
+    "ok": true,
+    "bytes": 1808123,
+    "under_3_mb": true,
+    "triangles": 41676,
+    "textured": true,
+    "package": [
+      "model.usdc",
+      "0/texture0.png"
+    ]
+  }
+]
