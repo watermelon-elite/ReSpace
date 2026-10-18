@@ -70,6 +70,10 @@ def collect_evidence(manifest, inputs, mesh):
         room = json.loads((inputs/manifest.room_export.filename).read_text())
     except (UnicodeError, ValueError):
         room = {"unavailable": "RoomPlan export is not JSON; infer layout from LiDAR, mesh and photos"}
+    if isinstance(room, dict) and "unavailable" not in room:
+        # Opaque coreModel exports are neither useful text evidence nor furniture
+        # geometry. Retain only calibrated semantic records, not binary strings.
+        room = {key: room.get(key, []) for key in ("walls", "floors", "doors", "windows", "openings", "objects")}
     vertices = np.asarray(mesh.vertices)
     evidence = {"schema_version": 1, "coordinate_system": "arkit_scan_meters_y_up",
                 "capture_id": manifest.capture_id,

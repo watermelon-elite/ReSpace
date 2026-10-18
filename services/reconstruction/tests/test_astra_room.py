@@ -29,19 +29,12 @@ def room_plan():
         return {"id": identifier, "label": identifier, "kind": kind, "material_id": "wood",
                 "position": vector(), "yaw": 0., "parts": parts, "support_id": None,
                 "evidence_frame_ids": ["frame-0"], "observed_fraction": .8}
-    entities = [entity("floor", "floor", [box([0., -.025, 0.], [4., .05, 4.])]),
-                entity("ceiling", "ceiling", [box([0., 2.525, 0.], [4., .05, 4.])])]
-    for i, (center, size) in enumerate([
-        ([0., 1.25, -2.], [4., 2.5, .08]), ([0., 1.25, 2.], [4., 2.5, .08]),
-        ([-2., 1.25, 0.], [.08, 2.5, 4.]), ([2., 1.25, 0.], [.08, 2.5, 4.])]):
-        entities.append(entity("wall"+str(i), "wall", [box(center, size)]))
-    entities.append(entity("chair", "furniture", [box([0., .4, -.5], [.8, .8, .8]),
-                    box([0., .9, -.8], [.8, .4, .15], "ellipsoid")]))
+    entities = [entity("chair", "furniture", [box([0., .4, -.5], [.8, .8, .8]),
+                    box([0., .9, -.8], [.8, .4, .15], "ellipsoid")])]
+    entities[0]["category"] = "seating"
     return {"schema_version": 1, "coordinate_system": "arkit_scan_meters_y_up",
-            "summary": "A complete synthetic room", "assumptions": ["Complete hidden chair back"],
+            "summary": "Furniture only", "assumptions": ["Complete hidden chair back"],
             "ignored_evidence": ["Mirror image is not a second chair"],
-            "floor_polygon": [{"x": x, "z": z} for x, z in [(-2., -2.), (2., -2.), (2., 2.), (-2., 2.)]],
-            "floor_height": 0., "ceiling_height": 2.5,
             "materials": [{"id": "wood", "color": {"r": .4, "g": .3, "b": .2}, "roughness": .7}],
             "entities": entities}
 
@@ -56,9 +49,14 @@ def response(plan=None):
 
 def test_all_lidar_frames_contribute_even_when_only_one_photo_is_selected(tmp_path, monkeypatch):
     manifest, _ = room_capture(tmp_path)
+    room_file = tmp_path/"inputs"/manifest.room_export.filename
+    room = json.loads(room_file.read_text())
+    room["coreModel"] = "opaque-binary-payload-not-useful-as-text"
+    room_file.write_text(json.dumps(room))
     monkeypatch.setenv("RESPACE_ASTRA_IMAGE_LIMIT", "1")
     mesh = read_scan(tmp_path/"inputs"/manifest.scene_mesh.filename, manifest.capture_id, o3d)
     evidence, images = collect_evidence(manifest, tmp_path/"inputs", mesh)
+    assert "coreModel" not in evidence["roomplan"]
     assert len(images) == len(evidence["selected_photos"]) == 1
     assert len(evidence["frames"]) == len(manifest.frames) == 5
     assert all(f["valid_depth_pixels"] > 0 for f in evidence["frames"])
@@ -103,14 +101,14 @@ def test_full_generation_is_default_and_assets_are_atomic_reusable_and_navigable
         assert len(imported.triangles) > 0
 
 
-@pytest.mark.parametrize("fault", ["missing_ceiling", "missing_walls", "bad_index", "open_mesh", "unknown_frame", "unknown_material", "outside", "duplicate", "no_spawn"])
+@pytest.mark.parametrize("fault", ["architecture", "clutter", "bad_index", "open_mesh", "unknown_frame", "unknown_material", "outside", "duplicate", "no_spawn"])
 def test_invalid_or_incomplete_model_never_publishes(tmp_path, monkeypatch, fault):
     room_capture(tmp_path)
     plan = copy.deepcopy(room_plan())
-    if fault == "missing_ceiling":
-        plan["entities"] = [e for e in plan["entities"] if e["kind"] != "ceiling"]
-    elif fault == "missing_walls":
-        plan["entities"] = [e for e in plan["entities"] if e["id"] != "wall0"]
+    if fault == "architecture":
+        plan["entities"][0]["kind"] = "wall"
+    elif fault == "clutter":
+        plan["entities"][0]["category"] = "dish_soap"
     elif fault in ("bad_index", "open_mesh"):
         plan["entities"][-1]["parts"] = [{"shape": "mesh", "center": vector(), "size": vector(1., 1., 1.),
             "yaw": 0., "vertices": [vector(), vector(1., 0., 0.), vector(0., 1., 0.)],
@@ -122,7 +120,7 @@ def test_invalid_or_incomplete_model_never_publishes(tmp_path, monkeypatch, faul
     elif fault == "outside":
         plan["entities"][-1]["position"]["x"] = 50.
     elif fault == "duplicate":
-        plan["entities"][-1]["id"] = "floor"
+        plan["entities"] *= 2
     else:
         plan["entities"][-1]["parts"] = [box([0., .5, 0.], [4., 1., 4.])]
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
@@ -183,3 +181,48 @@ def test_pricing_includes_reasoning_and_long_context_rates():
     result["usage"]["input_tokens"] = 300000
     assert astra_room.usage_cost(result)["estimated_cost_usd"] == 7.5
     assert astra_room.usage_cost({})["estimated_cost_usd"] is None
+    result["usage"] = {"input_tokens": 218518, "output_tokens": 48000,
+                       "input_tokens_details": {"cache_write_tokens": 218515, "cached_tokens": 0}}
+    assert astra_room.usage_cost(result)["estimated_cost_usd"] == pytest.approx(5.1314675, abs=.000001)
+
+
+def test_empty_room_does_not_require_invented_furniture(tmp_path, monkeypatch):
+    room_capture(tmp_path)
+    plan = room_plan()
+    plan["entities"] = []
+    plan["materials"] = []
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setattr(astra, "call_astra", lambda *args: response(plan))
+    result = astra_room.process_astra_room(tmp_path, 1)
+    scene = SceneBundle.model_validate_json((tmp_path/"results/1/scene.json").read_text())
+    assert result["status"] == "succeeded"
+    assert {e.kind for e in scene.entities} == {"wall", "floor", "ceiling"}
+
+
+def test_small_intentional_decor_remains_eligible_and_detail_is_bounded(tmp_path):
+    manifest, _ = room_capture(tmp_path)
+    evidence = {"roomplan": json.loads((tmp_path/"inputs"/manifest.room_export.filename).read_text())}
+    shell = astra_room.measured_structure(evidence)
+    plan = room_plan()
+    plan["entities"][0]["label"] = "Small decorative vase"
+    plan["entities"][0]["category"] = "decorative_vase"
+    furnishings = astra_room.FurnishingPlan.model_validate(plan)
+    assert astra_room.assemble_room(shell, furnishings).entities[-1].category == "decorative_vase"
+    plan["entities"] = [dict(plan["entities"][0], id="item"+str(i),
+                             parts=[plan["entities"][0]["parts"][0]]*12) for i in range(14)]
+    with pytest.raises(ValueError, match="160-part"):
+        astra_room.assemble_room(shell, astra_room.FurnishingPlan.model_validate(plan))
+
+
+def test_bad_measured_shell_fails_before_any_paid_generation(tmp_path, monkeypatch):
+    room_capture(tmp_path)
+    from respace_reconstruction.instances import RescanRequired
+    monkeypatch.setattr(astra_room, "collect_evidence", lambda *args: ({"roomplan": {}}, []))
+    monkeypatch.setattr(astra_room, "generate", lambda *args: pytest.fail("Paid generation preceded shell checks"))
+    with pytest.raises(RescanRequired):
+        astra_room.process_astra_room(tmp_path, 1)
+
+
+def test_incomplete_response_reports_output_budget_reason():
+    with pytest.raises(ValueError, match="max_output_tokens"):
+        astra_room.parse_response({"status": "incomplete", "incomplete_details": {"reason": "max_output_tokens"}})
