@@ -1,0 +1,2330 @@
+[
+  {
+    "id": "E001",
+    "name": "Two independent image streams converge into one shared board",
+    "category": "Interface choreography",
+    "film_rank": 1,
+    "source_url": "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+    "source_version": "YouTube upload hehaJGC9NJQ",
+    "time_range": "00:05.125–00:06.000; 00:08.250–00:09.125",
+    "evidence": [
+      "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/report.md",
+      "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/analysis-full.quote-redacted.md",
+      "specs/launch-research/editing-audit/rank-01-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "Two inspiration interfaces flank the centrally seated couple. Cards show different palettes, then the separate boards converge into a shared preview with two profile avatars. The occupants and room remain the visual anchor. The fresh pass reports outward panel scaling before convergence; the earlier full pass additionally describes vertical scrolling. The exact intermediate card trajectories are not frame-verified.",
+    "sound": "Prior full-film pass reports scrolling texture and a snap at the shared-board assembly; the fresh clip did not assess sound.",
+    "purpose": "Creative inference: The animation turns negotiation into an observable operation: separate tastes become a shared object. Its feeling is cooperative and playful, with convergence providing a small resolution before the physical makeover.",
+    "recipe": [
+      "Compose two equally weighted card groups around a stable central subject; leave faces unobstructed.",
+      "Give each group its own coherent color/material selection and a short independent browsing movement.",
+      "Choose a clear trigger for convergence; move selected cards toward one shared destination rather than shrinking every card indiscriminately.",
+      "Resolve into a readable board with both authors represented; pause before the next transformation.",
+      "Use one restrained assembly accent at the resolved state; reduce secondary card motion during the hold."
+    ],
+    "assets": "Room plate, cutout or clean UI cards, avatar images, simple selection/assembly sound.",
+    "difficulty": "Moderate: 2D motion design; live-action tracking optional.",
+    "failure": "If both feeds remain busy during convergence, the shared result becomes a third competing interface.",
+    "reuse": "Collaboration, combining preferences, consolidating research, merging branches or comparing two approaches."
+  },
+  {
+    "id": "E002",
+    "name": "A digital selection changes one architectural surface",
+    "category": "Surface reveal",
+    "film_rank": 1,
+    "source_url": "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+    "source_version": "YouTube upload hehaJGC9NJQ",
+    "time_range": "00:11.625–00:12.125",
+    "evidence": [
+      "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/report.md",
+      "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/analysis-full.quote-redacted.md",
+      "specs/launch-research/editing-audit/rank-01-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "A formerly plain wall changes color and an orange arch-shaped treatment appears behind the sofa while the people retain their position. The fresh audit labels this a match-cut/composite-layer transition; the image alone does not distinguish a practical replacement from a digital mask. Earlier analysis connects the room change with a saved inspiration card.",
+    "sound": "Prior full pass reports a UI acknowledgement followed by a heavier physical accent across the early room manifestations. No exact sound-to-wall frame alignment is verified.",
+    "purpose": "Creative inference: A tiny screen action acquires a room-sized consequence. Localizing the change to one surface preserves geography and makes the transformation feel decisive without forcing a cut to a new location.",
+    "recipe": [
+      "Shoot a stable room plate with locked exposure and an unobstructed target wall.",
+      "Prepare an aligned alternate surface or render; reproduce the wall perspective and preserve existing shadows.",
+      "Place the choice card where it does not cover the target surface, and show selection before the change.",
+      "Reveal only the architectural treatment with a clean mask or matched replacement; keep performers and nearby furniture continuous.",
+      "Let the changed surface remain visible long enough to compare against the remembered original."
+    ],
+    "assets": "Room plate, alternate wall artwork, perspective mask, UI selection graphic.",
+    "difficulty": "Moderate; harder with moving camera or foreground occlusion.",
+    "failure": "Changing lighting, framing and furniture simultaneously makes the surface result difficult to identify.",
+    "reuse": "Paint, theme changes, layout previews, website customization, staged transformations; label fantasy realization when appropriate."
+  },
+  {
+    "id": "E003",
+    "name": "Wallpaper travels along the room rather than appearing as a flat card",
+    "category": "Environment-following wipe",
+    "film_rank": 1,
+    "source_url": "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+    "source_version": "YouTube upload hehaJGC9NJQ",
+    "time_range": "00:16.375–00:20.875",
+    "evidence": [
+      "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/report.md",
+      "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/analysis-full.quote-redacted.md",
+      "specs/launch-research/editing-audit/rank-01-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "The fresh pass reports room paneling wrapping via scrolling wipe motion while shelves and plants accumulate from successive saved cards. Earlier coverage separately reports wallpaper rolling down the back wall. Both support a surface-bound reveal; they do not establish one exact direction or a specific VFX technique throughout the whole range.",
+    "sound": "The prior full pass reports swishing or rolling texture for wall treatment and leaf rustle for plants; fresh output contains no audio observations.",
+    "purpose": "Creative inference: A conventional wipe becomes part of the represented world: decoration appears to cover actual architecture. The effect feels material and expansive because it respects corners and depth rather than sliding a rectangle over the entire film.",
+    "recipe": [
+      "Define the wall planes and corners before animating the reveal.",
+      "Create texture layers for each plane with a shared progression parameter.",
+      "Reveal successive surfaces with perspective-correct masks; offset their timing so the movement seems to travel through the room.",
+      "Keep people, shelves and front objects above the surface layer with clean occlusion masks.",
+      "Add a material-specific sound only while the covering advances; stop it when the surface settles."
+    ],
+    "assets": "Clean plate, wall textures, corner masks, foreground mattes, rolling or brushing sound.",
+    "difficulty": "Moderate to high depending on camera movement and occlusion.",
+    "failure": "A screen-wide linear wipe ignores architecture and resembles a presentation transition.",
+    "reuse": "Wallpaper, paint, map coverage, building layers, data progressively filling a spatial surface."
+  },
+  {
+    "id": "E004",
+    "name": "Rug rollout makes the actors move",
+    "category": "Body-coupled transformation",
+    "film_rank": 1,
+    "source_url": "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+    "source_version": "YouTube upload hehaJGC9NJQ",
+    "time_range": "00:22.000–00:25.375",
+    "evidence": [
+      "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/report.md",
+      "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/analysis-full.quote-redacted.md",
+      "specs/launch-research/editing-audit/rank-01-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "A rug rolls into the floor area beneath the couple. The prior full-film pass describes both people raising their feet as it arrives; the fresh pass confirms the automatic rollout from under the sofa. Coffee-table choices then appear above the room before a selected table settles into the foreground. Treat the feet reaction and rollout as the central mechanism, separate from the later choice display.",
+    "sound": "Prior pass identifies rug friction and later table-settle accents. The fresh pass does not provide sound verification.",
+    "purpose": "Creative inference: The actors acknowledge the impossible event physically. This makes the effect playful and locates it in shared space; the transformation changes behavior instead of remaining an untouched overlay.",
+    "recipe": [
+      "Block the actors with a visible gap between their feet and the intended moving object.",
+      "Rehearse the foot lift to a repeatable cue, keeping eye-lines consistent with the object path.",
+      "Capture a clean floor plate and the actor performance from the same camera position.",
+      "Composite or practically introduce the rug beneath the raised feet; use contact shadows and correct foreground occlusion.",
+      "Hold the actors settling back into the new environment before introducing another major change."
+    ],
+    "assets": "Locked room plates, actor reaction take, rug asset or practical rollout, floor-contact shadow, friction sound.",
+    "difficulty": "High for convincing deforming rug; moderate with a simpler rigid object.",
+    "failure": "An actor reacts too early or an object crosses through shoes, revealing the compositing disconnect.",
+    "reuse": "Any imaginary object that should affect posture, balance, reach, avoidance or eye-line."
+  },
+  {
+    "id": "E005",
+    "name": "A whole lifestyle changes on one visual jump",
+    "category": "Simultaneous state substitution",
+    "film_rank": 1,
+    "source_url": "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+    "source_version": "YouTube upload hehaJGC9NJQ",
+    "time_range": "00:25.167–00:28.400",
+    "evidence": [
+      "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/report.md",
+      "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/analysis-full.quote-redacted.md"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The prior full-film pass identifies a sudden change in room styling, clothing and lighting, followed by the couple celebrating in the completed space. The same recognizable room and people connect the two states. The audit clip ends at 00:29 but its fresh report omits this event, so this entry relies on the earlier full-film audiovisual evidence rather than claiming a fresh confirmation.",
+    "sound": "The prior pass describes music carrying across the lifestyle change and gaining celebratory energy. Exact musical instruments and vocal content are not independently verified.",
+    "purpose": "Creative inference: Changing several established variables together creates a finale larger than the individual earlier transformations. The feeling is release: the collection of choices becomes an occasion that people inhabit.",
+    "recipe": [
+      "Establish the original arrangement in a repeatable wide composition.",
+      "Plan the final lighting, wardrobe and furnishings as one coordinated state rather than unrelated upgrades.",
+      "Record both states with matching actor positions or a shared physical gesture.",
+      "Cut at the strongest common pose or rhythmic accent; retain at least one unmistakable architectural anchor.",
+      "Hold the completed state for interaction and reaction instead of immediately stacking another transition."
+    ],
+    "assets": "Two matching room states, wardrobe/lighting plan, performer continuity references, continuous music bed.",
+    "difficulty": "High production burden; simple costume/lighting-only variants are cheaper.",
+    "failure": "If geography changes completely, the transition reads as an unrelated party scene rather than the payoff.",
+    "reuse": "End-of-process celebration, seasonal change, character reinvention, completed creation, time passing."
+  },
+  {
+    "id": "E006",
+    "name": "A face breaks into competing pieces",
+    "category": "Fragmented identity metaphor",
+    "film_rank": 2,
+    "source_url": "https://www.youtube.com/watch?v=OcdxW2XF0v8",
+    "source_version": "YouTube upload OcdxW2XF0v8",
+    "time_range": "01:41.000–01:41.750",
+    "evidence": [
+      "specs/launch-research/deep/rank-02-remarkable-get-your-brain-back/report.md",
+      "specs/launch-research/deep/rank-02-remarkable-get-your-brain-back/raw-full.md",
+      "specs/launch-research/editing-audit/rank-02-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "A solid facial profile becomes a segmented, splintering plane while its orientation and eye direction remain recognizable. The fresh pass reports slight lateral movement and a morph/cut combination; the earlier full pass describes fragments pulled toward competing digital demands. Exact shard trajectories and production method are not established.",
+    "sound": "The fresh pass reports a low metallic-strain texture; treat that descriptor as model-heard rather than a verified sound-source identification.",
+    "purpose": "Creative inference: Fragmentation externalizes divided attention by damaging the subject rather than merely adding alerts around them. The feeling is uncomfortable and vulnerable, making the consequence of competing demands visibly personal.",
+    "recipe": [
+      "Start with a strongly readable face or recognizable object in a stable pose.",
+      "Divide a duplicate image or model into irregular sections while retaining an eye or other identifying feature as an anchor.",
+      "Offset sections toward a small number of clearly motivated competing destinations.",
+      "Let gaps appear gradually before increasing displacement, keeping the initial silhouette readable.",
+      "Use a restrained strain or separation texture; give the subsequent cut a different density so the fracture has a consequence."
+    ],
+    "assets": "Face artwork or clean plate, segmentation mattes or model, competing destination graphics, strain texture.",
+    "difficulty": "High for naturalistic face fragments; moderate for flat illustration.",
+    "failure": "Random shards resemble an explosion and lose the idea of attention being pulled in different directions.",
+    "reuse": "Divided focus, conflicting roles, version divergence, a system splitting across incompatible demands."
+  },
+  {
+    "id": "E007",
+    "name": "Notification badges become circling predators",
+    "category": "Interface-to-threat metaphor",
+    "film_rank": 2,
+    "source_url": "https://www.youtube.com/watch?v=OcdxW2XF0v8",
+    "source_version": "YouTube upload OcdxW2XF0v8",
+    "time_range": "01:47.000–01:51.999; 01:52.000–01:57.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-02-remarkable-get-your-brain-back/report.md",
+      "specs/launch-research/deep/rank-02-remarkable-get-your-brain-back/raw-full.md"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The prior full-film report describes a person balancing on a floating document while fin-like forms carrying notification badges circle beneath, then strike the document. The fresh 01:46.750–01:49.000 observation confirms the document/ocean transition and fragment motion but is less explicit about predator anatomy. The fin construction therefore retains prior full-film verification.",
+    "sound": "Fresh audit reports low bass and high digital flutter during the transition into this environment. It does not isolate each circling or striking accent.",
+    "purpose": "Creative inference: A familiar UI badge inherits the behavior of a physical threat. Turning an abstract count into something with a path and intention creates anticipation before impact, rather than relying solely on a sudden visual burst.",
+    "recipe": [
+      "Choose one interface symbol whose original meaning remains recognizable at small scale.",
+      "Attach it to a simple moving silhouette with an unmistakable behavior, such as circling or stalking.",
+      "Place the subject on a visibly fragile support connected to the underlying problem.",
+      "Show the approach path before contact so the audience can anticipate the event.",
+      "Reserve the strongest movement and sound for the contact, then change the environment or subject state."
+    ],
+    "assets": "Animated character, document platform, water/grid environment, badge-fin assets, layered atmospheric audio.",
+    "difficulty": "High; graphic 2D treatment reduces the simulation burden.",
+    "failure": "Unrelated monsters replace the software metaphor and turn the scene into generic danger.",
+    "reuse": "Deadlines, mounting requests, queue pressure or invasive messages; unsuitable for neutral feature explanation."
+  },
+  {
+    "id": "E008",
+    "name": "A zoom through an eye becomes a drawn eye",
+    "category": "Motif bridge across media",
+    "film_rank": 2,
+    "source_url": "https://www.youtube.com/watch?v=OcdxW2XF0v8",
+    "source_version": "YouTube upload OcdxW2XF0v8",
+    "time_range": "02:03.750–02:04.875; 02:04.875–02:06.375; 02:06.375–02:09.875; 02:09.875–02:11.125; 02:11.125–02:13.875",
+    "evidence": [
+      "specs/launch-research/deep/rank-02-remarkable-get-your-brain-back/report.md",
+      "specs/launch-research/deep/rank-02-remarkable-get-your-brain-back/raw-full.md",
+      "specs/launch-research/editing-audit/rank-02-clip-1.txt",
+      "specs/launch-research/editing-audit/rank-02-clip-2.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "The targeted second audit resolves the sequence into separate states: a close-up eye opens; the view moves into its dark pupil; a textured grey pattern follows; that pattern resolves into a drawn eye; a zoom outward reveals a hand completing a diagram around it. The bridge contains distinct transitions, so it should not be called one proven continuous morph. The full tablet/table setting becomes unmistakably photographic at the returned 02:13.875–02:15.875 interval.",
+    "sound": "The second targeted audit returned no audio observations. The first fresh pass reports a swell followed by silence; earlier full-film coverage reports pen texture later. Exact silence duration remains unmeasured.",
+    "purpose": "Creative inference: The next medium feels discovered inside the preceding image. Retaining the eye motif connects emotional state and creative action, giving the product arrival narrative continuity rather than a detached announcement.",
+    "recipe": [
+      "Choose an image motif present in both outgoing and incoming scenes.",
+      "Frame its dark or simple region as the destination for an inward move.",
+      "Prepare an incoming macro image of the same motif in the new material or medium.",
+      "Bridge through a brief visually simple interval, matching position and contrast before revealing the new context.",
+      "Reduce the outgoing sound field and introduce the new material’s texture as it becomes legible."
+    ],
+    "assets": "Outgoing eye animation, incoming drawn-eye macro/hand footage, matched framing, tonal bridge.",
+    "difficulty": "High for a continuous optical illusion; moderate using darkness to hide a cut.",
+    "failure": "The viewer cannot recognize the shared motif, so the transition becomes a decorative tunnel.",
+    "reuse": "Animated-to-live-action transitions, concept-to-making, imagination-to-material, screen-to-paper."
+  },
+  {
+    "id": "E009",
+    "name": "The film changes material when the product arrives",
+    "category": "Sensory reset",
+    "film_rank": 2,
+    "source_url": "https://www.youtube.com/watch?v=OcdxW2XF0v8",
+    "source_version": "YouTube upload OcdxW2XF0v8",
+    "time_range": "02:12.000–02:22.799",
+    "evidence": [
+      "specs/launch-research/deep/rank-02-remarkable-get-your-brain-back/report.md",
+      "specs/launch-research/deep/rank-02-remarkable-get-your-brain-back/raw-full.md",
+      "specs/launch-research/editing-audit/rank-02-clip-1.txt",
+      "specs/launch-research/editing-audit/rank-02-clip-2.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "Dense animated crisis gives way to a drawn-eye bridge and photographic product use. The short recheck reports an eye sketch resolving, a hand completing a diagram, and the full tablet on a wooden table becoming unmistakably photographic at 02:13.875–02:15.875. Earlier passes disagree on the exact first live-action boundary; the verified transferable change is the shift from animated overload into sustained tactile use, not a particular first photographic frame.",
+    "sound": "The first fresh pass and earlier full-film coverage describe a thinner sound field and pen/pencil-like scratching around the product section. Instrument identity and literal silence are not established.",
+    "purpose": "Creative inference: The product benefit is expressed through the editing itself: fewer competing events, tangible surfaces and sustained action suggest focus. This is an aesthetic argument, not evidence of a medical or cognitive outcome.",
+    "recipe": [
+      "Define the problem section’s recurring sensory pressures: competing overlays, motion, harsh texture or interruptions.",
+      "Choose a solution shot with one hand, one tool and one readable task.",
+      "Cut to a materially different image system while retaining a motif or action connection.",
+      "Remove most secondary sounds, allowing the contact sound to carry detail.",
+      "Hold the operation long enough to read its result before introducing another use case."
+    ],
+    "assets": "Busy outgoing sequence, tactile product close-ups, clean task recording, isolated contact sounds.",
+    "difficulty": "Moderate; depends more on contrasting editorial systems than expensive effects.",
+    "failure": "A merely slower shot with equally crowded overlays does not deliver a convincing reset.",
+    "reuse": "Focus tools, workflow simplification, restoration, quiet craftsmanship, a change from analysis to making."
+  },
+  {
+    "id": "E010",
+    "name": "A wider reverse shot reveals the absurd partner",
+    "category": "Delayed information reveal",
+    "film_rank": 3,
+    "source_url": "https://www.youtube.com/watch?v=9KqGpxtsawc",
+    "source_version": "YouTube upload 9KqGpxtsawc",
+    "time_range": "00:00.000–00:02.000; 00:02.000–00:04.375; 00:04.375–00:07.125",
+    "evidence": [
+      "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/report.md",
+      "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/raw-full.md",
+      "specs/launch-research/editing-audit/rank-03-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "The opening isolates a woman on a sofa, cuts to the therapist, then reveals the woman beside a man with an oversized keyboard. The visual punchline is withheld by framing until the conversational premise has been established. Fresh analysis calls the keyboard held in his lap; prior analysis calls it wearable. Only its unmistakably oversized physical presence is required for this mechanism.",
+    "sound": "Dialogue and room ambience carry the reveal. The fresh pass reports no overlay in the two-shot, so the absurd physical object has little graphic competition.",
+    "purpose": "Creative inference: The cut revises the meaning of a scene the viewer thought they understood. The feeling is comic surprise produced by withheld spatial information, not by a random special effect.",
+    "recipe": [
+      "Write a setup that remains intelligible when the surprising object or person is outside the frame.",
+      "Shoot the first speaker tight enough to conceal the critical adjacent space.",
+      "Use a reverse angle to establish a normal conversational rhythm before the reveal.",
+      "Cut wider to include both the original speaker and the previously hidden absurd element in the same geography.",
+      "Hold for a small physical action or reaction; avoid explaining the visual joke with additional graphics."
+    ],
+    "assets": "Three matching coverage angles, oversized or unexpected prop, consistent performance and eye-lines.",
+    "difficulty": "Low to moderate; strong blocking matters more than compositing.",
+    "failure": "An early wide shot or reflection exposes the surprise before the intended reveal.",
+    "reuse": "Personified tools, hidden collaborators, unexpected workspace constraints, understated absurdity."
+  },
+  {
+    "id": "E011",
+    "name": "Typed errors get an abrasive sound verdict",
+    "category": "Input-synchronized interruption",
+    "film_rank": 3,
+    "source_url": "https://www.youtube.com/watch?v=9KqGpxtsawc",
+    "source_version": "YouTube upload 9KqGpxtsawc",
+    "time_range": "00:07.125–00:13.750; 00:13.750–00:20.125; 00:20.125–00:21.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/report.md",
+      "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/raw-full.md",
+      "specs/launch-research/editing-audit/rank-03-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "A floating text box appears beside a woman attempting to type, and an error buzzer interrupts the attempt. Cuts to the keyboard character delivering criticism and back to her reaction make the interface frustration interpersonal. The fresh report erroneously calls this speech-to-text in places; earlier reviewed coverage establishes that it depicts typing errors, not product dictation.",
+    "sound": "An abrasive buzzer punctuates the failed input. Spoken exchanges and quiet domestic ambience surround it; the precise waveform and duration of the buzz are not measured.",
+    "purpose": "Creative inference: The interruption makes a small input failure feel disproportionately judgmental. A repeated sound becomes the antagonist’s punctuation, allowing an ordinary software problem to support a comic rhythm.",
+    "recipe": [
+      "Show enough of the incomplete entry that the viewer can recognize an attempt before failure.",
+      "Animate text in deliberate chunks rather than revealing an entire paragraph instantaneously.",
+      "Align one harsh interruption to the visible wrong state; leave a fraction of readable hold after it.",
+      "Cut to the obstructive character or system response, then return to the user’s reaction.",
+      "Repeat once with a changed attempt or stronger reaction; reserve a contrasting sound treatment for later success."
+    ],
+    "assets": "Actor typing plate, legible text box, failed-entry states, reaction coverage, error sound.",
+    "difficulty": "Low to moderate.",
+    "failure": "Frequent buzzes without visible causes become annoying decoration; illegible text hides the joke.",
+    "reuse": "Validation failures, broken forms, repeated manual tasks, antagonistic tools, a contrast later resolved by fluent input."
+  },
+  {
+    "id": "E012",
+    "name": "The same three situations return as successful demonstrations",
+    "category": "Matched scenario reprise",
+    "film_rank": 3,
+    "source_url": "https://www.youtube.com/watch?v=9KqGpxtsawc",
+    "source_version": "YouTube upload 9KqGpxtsawc",
+    "time_range": "00:06.333–00:35.200; 00:52.167–01:14.667",
+    "evidence": [
+      "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/report.md",
+      "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/raw-full.md"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The film first establishes spelling, tone and a colleague-name problem in domestic work settings. After the product explanation, it revisits those problems in corresponding contexts with successful output. The reviewed evidence supports recurring settings and tasks, not frame-identical camera angles. The later name example retains the old keyboard character’s disagreement as a background joke.",
+    "sound": "Earlier failures use abrasive error accents; the solution is carried by speech and a supportive music bed. Claims that every success transition is literally silent are excluded.",
+    "purpose": "Creative inference: Repetition makes the proof economical: the audience already understands what each task means. The feeling is earned resolution, because each output answers a remembered failure rather than an arbitrary feature checklist.",
+    "recipe": [
+      "Choose a small number of visibly different tasks and record the failure conditions clearly.",
+      "Keep props, locations and task identifiers available for a later return.",
+      "After the product bridge, revisit each task in the same order or an unmistakable motivated order.",
+      "Show the corresponding input and corrected output with enough reading time to verify the difference.",
+      "Allow one reaction or recurring character to close the emotional loop after the functional result."
+    ],
+    "assets": "Paired problem/proof coverage, consistent props, actual input/output captures, recurring character or sound motif.",
+    "difficulty": "Moderate planning burden; low effect complexity.",
+    "failure": "Adding new tasks during the payoff forces viewers to learn a second set of stakes.",
+    "reuse": "Product reliability, automation, editing tools, compatibility, better decisions in familiar circumstances."
+  },
+  {
+    "id": "E013",
+    "name": "The obsolete tool physically moves out",
+    "category": "Metaphor closure",
+    "film_rank": 3,
+    "source_url": "https://www.youtube.com/watch?v=9KqGpxtsawc",
+    "source_version": "YouTube upload 9KqGpxtsawc",
+    "time_range": "01:14.833–01:17.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/report.md",
+      "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/raw-full.md"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "After the successful demonstrations, the keyboard character leaves carrying packed boxes and the oversized keyboard. This physical departure concludes the relationship metaphor introduced in the opening. The earlier full-film pass places continuing off-screen grumbling across the preceding proof and departure, maintaining the character beyond his visible usefulness.",
+    "sound": "The prior pass reports the rejected character’s muttering near the ending. No exact mix position, stereo placement or volume is established.",
+    "purpose": "Creative inference: The film gives its metaphor an ending rather than abandoning it when software appears. The feeling is comic closure and restored agency, with a short character beat preventing the final section from becoming only a sales card.",
+    "recipe": [
+      "Establish the obstructive tool or process as a recurring physical presence earlier in the film.",
+      "Complete the product proof before staging the departure, so the exit follows a visible reason.",
+      "Reuse the character’s defining prop in a simple exit action that can be understood without speech.",
+      "Keep the departure short and leave the successful user or completed task as the story’s implied center.",
+      "Carry a final small character sound or gesture into the cut, then clear the frame for the call to action."
+    ],
+    "assets": "Recurring character/prop, doorway or exit route, packed-object gag, clean ending card.",
+    "difficulty": "Low if the character and location already exist.",
+    "failure": "A long exit sketch steals time from the demonstrated result or creates a second climax.",
+    "reuse": "Retiring an old workflow, replacement products, migration stories, finally completing an unresolved task."
+  },
+  {
+    "id": "E014",
+    "name": "Message cards accumulate until the worker is visually crowded",
+    "category": "Layer accumulation",
+    "film_rank": 7,
+    "source_url": "https://www.youtube.com/watch?v=B6zVzWU95Sw",
+    "source_version": "YouTube upload B6zVzWU95Sw",
+    "time_range": "00:30–00:35",
+    "evidence": [
+      "specs/launch-research/deep/rank-07-slack-so-yeah/report.md",
+      "specs/launch-research/deep/rank-07-slack-so-yeah/analysis-full.quote-redacted.md",
+      "specs/launch-research/editing-audit/rank-07-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "The fresh focused pass reports a moving desk shot in which digital notification cards cascade around a typing worker and fill the workspace. Earlier reviewed coverage gives the broader 00:29.833–00:35.667 range and describes a frustrated reaction at the peak. The visual overload is established; exact tracking software and production equipment are not.",
+    "sound": "The fresh pass supplies no audio detail. Prior full-film coverage identifies notification-like accents, dialogue and music, but does not reliably isolate a sound for every card.",
+    "purpose": "Creative inference: The viewer can see the communication problem grow rather than merely hear someone describe it. Accumulation feels invasive because each new card takes away space from the person already on screen.",
+    "recipe": [
+      "Start with a readable worker and one message layer rather than a full screen of clutter.",
+      "Introduce additional cards from distinct sources in staged waves with small timing offsets.",
+      "Use depth order and selective overlap to narrow the remaining breathing space while protecting essential facial reaction.",
+      "Increase secondary activity only after the initial rule is understood.",
+      "Stop the accumulation on a clear reaction or decision, then cut to a substantially simpler composition."
+    ],
+    "assets": "Worker plate, several distinct message cards, perspective/occlusion masks where needed, notification accents.",
+    "difficulty": "Moderate; static camera version is straightforward.",
+    "failure": "Cards become unreadable confetti before their competing meanings are established.",
+    "reuse": "Fragmented communication, research overload, multi-tool workflows, mounting requests or duplicate information."
+  },
+  {
+    "id": "E015",
+    "name": "A clean identity card separates two information systems",
+    "category": "Graphic-density reset",
+    "film_rank": 7,
+    "source_url": "https://www.youtube.com/watch?v=B6zVzWU95Sw",
+    "source_version": "YouTube upload B6zVzWU95Sw",
+    "time_range": "00:35.833; 00:36.500; 00:37.833–00:44.200",
+    "evidence": [
+      "specs/launch-research/deep/rank-07-slack-so-yeah/report.md",
+      "specs/launch-research/deep/rank-07-slack-so-yeah/analysis-full.quote-redacted.md",
+      "specs/launch-research/editing-audit/rank-07-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "The fresh clip confirms the minimalist logo interval at 00:35–00:37 and a return to workplace footage with messages near employees at 00:37–00:44. Earlier corrected coverage refines the card to 00:35.833 and the production credit to 00:36.500. This is a formal density reset, not the earliest brand mention; the product was already named in speech and an email.",
+    "sound": "The prior report describes an instrumental bed and dialogue bridging the overall film. No verified total music stop at the card is claimed.",
+    "purpose": "Creative inference: The card briefly removes the accumulated visual problem, then the return to the office demonstrates a new organizing rule. Its feeling is relief through contrast; the logo occupies a meaningful boundary rather than serving as an arbitrary interruption.",
+    "recipe": [
+      "Build a short but legible example of competing information before the reset.",
+      "End that sequence on a decision or reaction that motivates change.",
+      "Use a sparse identity or concept card with one reading target and stable alignment.",
+      "Return to familiar geography with fewer, more organized graphics so the comparison is immediate.",
+      "Keep the same people and work context, allowing the information arrangement to carry the difference."
+    ],
+    "assets": "Before/after workplace plates, sparse title card, coherent organized message system.",
+    "difficulty": "Low to moderate.",
+    "failure": "If the post-card scene is equally crowded, the transition promises clarity the pictures do not deliver.",
+    "reuse": "New workflow, consolidation, chapter turns, a product reveal after demonstrated friction."
+  },
+  {
+    "id": "E016",
+    "name": "Integration logos stream past a continuing interview",
+    "category": "Graphic list as performance partner",
+    "film_rank": 7,
+    "source_url": "https://www.youtube.com/watch?v=B6zVzWU95Sw",
+    "source_version": "YouTube upload B6zVzWU95Sw",
+    "time_range": "01:15.334–01:22.000; 01:28.500–01:32.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-07-slack-so-yeah/report.md",
+      "specs/launch-research/deep/rank-07-slack-so-yeah/analysis-full.quote-redacted.md"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "A seated speaker lists connected services while their logos animate beside and around the interview composition. A later rapid burst returns to this setup for additional services. The full-film report describes logos passing the speaker’s head; precise paths and count per second are not verified. The important device is the interview and graphic list sharing one stage.",
+    "sound": "Prior coverage reports dialogue, instrumental backing and transition accents. It does not reliably assign a separate whoosh to each logo.",
+    "purpose": "Creative inference: The list acquires rhythm without requiring a succession of unrelated product screenshots. Keeping the speaker visible gives the stream a human scale and preserves continuity through potentially abstract names.",
+    "recipe": [
+      "Frame the speaker with a reserved graphic corridor and avoid essential facial or hand gestures in that zone.",
+      "Prepare marks with consistent apparent size and contrast despite different original proportions.",
+      "Introduce each mark at its corresponding spoken or conceptual beat, retaining a predictable entry route.",
+      "Limit simultaneous logos; remove older marks before the next phrase becomes dense.",
+      "Interrupt the list with one concrete integration demonstration, then return briefly if further breadth is necessary."
+    ],
+    "assets": "Interview plate, licensed service marks, timed dialogue, one concrete integration capture.",
+    "difficulty": "Low to moderate motion design.",
+    "failure": "A logo cloud proves neither how an integration works nor whether it is available; pair breadth with one inspectable example.",
+    "reuse": "Compatibility, import sources, supported formats, ecosystem breadth, a playful enumeration."
+  },
+  {
+    "id": "E017",
+    "name": "A card pulled from a phone punctuates digital continuity",
+    "category": "Physical impossibility beside software proof",
+    "film_rank": 7,
+    "source_url": "https://www.youtube.com/watch?v=B6zVzWU95Sw",
+    "source_version": "YouTube upload B6zVzWU95Sw",
+    "time_range": "01:40.800–01:46.834",
+    "evidence": [
+      "specs/launch-research/deep/rank-07-slack-so-yeah/report.md",
+      "specs/launch-research/deep/rank-07-slack-so-yeah/analysis-full.quote-redacted.md"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The full-film pass describes a phone/card trick accompanying an explanation of keeping one’s place between devices. A playing card is pulled from a smartphone in a desk scenario. The evidence supports the visible gag and its placement beside continuity discussion, not the assertion that it was achieved entirely in camera or without digital assistance.",
+    "sound": "Prior coverage reports dialogue and the general music bed. The specific card-reveal accent and any deliberate music dip are not independently verified.",
+    "purpose": "Creative inference: The impossible physical action adds a brief surprise to a relatively abstract synchronization feature. It creates a playful association with continuity, while the actual interface demonstration must still carry the functional claim.",
+    "recipe": [
+      "Choose a physical object associated with the feature’s idea, such as something apparently transferring between places.",
+      "Show the relevant device or interface context before the trick so the prop is motivated.",
+      "Stage the impossible action in a clean composition with hands and object silhouette readable.",
+      "Keep the reveal short, then return to a real screen state or human reaction.",
+      "Use rehearsal, a practical trick or compositing as appropriate; do not imply the theatrical gag is actual product behavior."
+    ],
+    "assets": "Phone prop, playing card or substitute object, actor hands, matching device state captures.",
+    "difficulty": "Moderate; method depends on selected trick.",
+    "failure": "The trick is memorable but its connection to the feature remains unclear, replacing rather than supporting explanation.",
+    "reuse": "Cross-device continuity, transfer, synchronization, portability, disappearing manual work."
+  },
+  {
+    "id": "E018",
+    "name": "A presenter’s route becomes the edit structure",
+    "category": "Moving argument",
+    "film_rank": 9,
+    "source_url": "https://www.youtube.com/watch?v=ZUG9qYTJMsI",
+    "source_version": "YouTube upload ZUG9qYTJMsI",
+    "time_range": "00:48; 00:57; 01:07; 01:12",
+    "evidence": [
+      "specs/launch-research/deep/rank-09-dollar-shave-club/report.md",
+      "specs/launch-research/deep/rank-09-dollar-shave-club/analysis-full.quote-redacted.md",
+      "specs/launch-research/editing-audit/rank-09-clip-2.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "The fresh clip reports a presenter moving among a packing station, a wagon carrying a worker, and a raised warehouse route, with distinct cuts at 00:48, 00:57 and 01:07. A fast cut/camera movement accompanies a jump down at 01:12. His continuing address and travel organize multiple stations into one forward-moving argument. This is edited continuity, not evidence of one uninterrupted take.",
+    "sound": "The fresh pass gives no audio detail. The prior focused pass reports clear deadpan speech, brief worker responses, wheel movement and a steady rhythmic music bed, with no dramatic density shift at each gag.",
+    "purpose": "Creative inference: Physical travel supplies novelty while one person keeps the argument organized. The feeling is informal momentum: each stop contributes another point without requiring a separate presenter introduction or elaborate graphic chapter.",
+    "recipe": [
+      "Map a short safe route with one distinct visual station for each argument beat.",
+      "Keep the presenter’s relationship to lens and travel direction consistent across connected takes.",
+      "Place the next prop or supporting person where the presenter naturally arrives at the relevant sentence.",
+      "Record overlapping walking and dialogue handles so cuts can preserve forward motion.",
+      "Use a continuous low-level music or room-tone bed, but let each location’s specific action remain audible."
+    ],
+    "assets": "One location with several stations, presenter, supporting performer, movable prop, dialogue recording.",
+    "difficulty": "Moderate to high rehearsal and sound coordination; low graphic complexity.",
+    "failure": "Walking with no new visual information feels aimless; calling an edited route a one-take misdescribes the method.",
+    "reuse": "Founder explanations, process tours, fulfillment stories, a product whose benefits can be tied to physical stations."
+  },
+  {
+    "id": "E019",
+    "name": "A prop interruption whips into an absurd reaction",
+    "category": "Practical punctuation and reaction cut",
+    "film_rank": 9,
+    "source_url": "https://www.youtube.com/watch?v=ZUG9qYTJMsI",
+    "source_version": "YouTube upload ZUG9qYTJMsI",
+    "time_range": "00:52; 00:53; prior recheck 00:51.000–00:54.200; 00:54.200–00:57.300",
+    "evidence": [
+      "specs/launch-research/deep/rank-09-dollar-shave-club/report.md",
+      "specs/launch-research/deep/rank-09-dollar-shave-club/analysis-full.quote-redacted.md",
+      "specs/launch-research/editing-audit/rank-09-clip-2.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "The fresh clip reports a packing-table prop swipe at 00:52, followed by a quick pan across warehouse shelving that reveals a bear-costumed figure holding a box at 00:53. The prior targeted pass confirms the disruption and mascot sequence but places the mascot later. Retain both timestamp accounts as approximate navigation; do not claim a precise cut frame or hidden-cut method.",
+    "sound": "The targeted pass reports swishing and impact accents during the disruption. Alleged bear vocalizations are not accepted because the reviewed report excludes them as unreliable.",
+    "purpose": "Creative inference: A punctuation mark becomes a staged event. The unexpected action adds comic force to a spoken point, while the following mascot shot gives the event an afterbeat rather than immediately burying it under more information.",
+    "recipe": [
+      "Choose one argument beat that can tolerate a brief physical interruption without losing its meaning.",
+      "Prepare a safe breakaway or lightweight prop arrangement and rehearse the action separately from dialogue.",
+      "Keep the presenter’s vocal tone controlled as the visual action becomes exaggerated.",
+      "Pan or cut promptly to a short reaction or supporting character in the same environment, letting the revealed figure become the next visual punctuation mark.",
+      "Resume the argument promptly; reserve impact sounds for actual contacts rather than every movement."
+    ],
+    "assets": "Safe lightweight props, controlled action zone, presenter take, supporting reaction insert, swish/impact recordings.",
+    "difficulty": "Moderate production choreography; safety planning essential for any swung prop.",
+    "failure": "An unmotivated stunt overwhelms the offer or creates unsafe production demands that add nothing to the point.",
+    "reuse": "Comic rejection of complexity, clearing an obstacle, dismissing an old process, exaggerated punctuation."
+  },
+  {
+    "id": "E020",
+    "name": "The controlled presenter releases into a crowded finale",
+    "category": "Ensemble spectacle payoff",
+    "film_rank": 9,
+    "source_url": "https://www.youtube.com/watch?v=ZUG9qYTJMsI",
+    "source_version": "YouTube upload ZUG9qYTJMsI",
+    "time_range": "01:16; 01:17",
+    "evidence": [
+      "specs/launch-research/deep/rank-09-dollar-shave-club/report.md",
+      "specs/launch-research/deep/rank-09-dollar-shave-club/analysis-full.quote-redacted.md",
+      "specs/launch-research/editing-audit/rank-09-clip-2.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "The fresh clip reports a static wide at 01:16 with the presenter, mascot and employee before an American flag; airborne bills and a visible leaf blower enter the payoff at 01:17. The composition increases active figures and moving foreground material after the presenter-led route. Visible equipment is an observation, but the currency material and complete effects method remain unverified.",
+    "sound": "The fresh pass supplies no audio description. Prior full-film coverage reports increased musical energy during the finish; exact instruments and individual machinery sounds remain unverified.",
+    "purpose": "Creative inference: The finale spends a greater amount of visual energy after a comparatively controlled delivery. The feeling is deliberately excessive celebration; recurring participants make the spectacle belong to the same comic world rather than an unrelated stock party.",
+    "recipe": [
+      "Save the busiest composition for after the core offer has been repeated clearly.",
+      "Reintroduce recognizable supporting characters or props from earlier beats.",
+      "Use foreground motion, central performer action and background design as separate depth layers.",
+      "Keep one dominant focal point even as the supporting activity increases.",
+      "Cut from the peak to a spare identity or destination card, allowing the next action to remain readable."
+    ],
+    "assets": "Wide location, recurring cast/props, safe lightweight moving material, controlled music finish, simple CTA card.",
+    "difficulty": "Moderate to high staging; a smaller cast and paper movement can achieve the same principle.",
+    "failure": "A spectacle introduced before the offer is understood becomes the entire memory of the film.",
+    "reuse": "Comic launches, completed milestones, team celebration, an intentional maximum-energy ending."
+  },
+  {
+    "id": "E021",
+    "name": "Reaction portraits close as circular shutters",
+    "category": "Iris / ensemble transition",
+    "film_rank": 4,
+    "source_url": "https://sandwich.co/work/descript-video/",
+    "source_version": "Wistia2rb6egpph3,166.083s",
+    "time_range": "00:30.200–00:32.700",
+    "evidence": [
+      "specs/launch-research/deep/rank-04-descript/report.md",
+      "specs/launch-research/deep/rank-04-descript/av-report.md",
+      "specs/launch-research/deep/rank-04-descript/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "Before: individual actors occupy their color-coded environments. Action: successive reaction portraits are enclosed by shrinking circular iris mattes, reducing the visible picture to a circle and then closing it. After: the film can leave the ensemble and enter the product introduction. The prior report identifies sequential iris closures, not one continuously moving camera. Exact circle centers and number of intermediate frames were not measured.",
+    "sound": "The prior AV report associates mechanical shutter-like accents with the closures; the editorial correction cautions against treating alleged total silence or exact instrument identity as measured.",
+    "purpose": "Creative inference: each character receives a miniature punctuation mark. A chain of shrinking windows compresses several objections into a shared pause, creating expectation for a new visual world.",
+    "recipe": [
+      "Proposed remake: shoot or select three distinct reaction portraits with a clear face silhouette.",
+      "Place each portrait inside its own circular matte; start with enough radius to reveal its setting.",
+      "Animate the radius inward, retaining the expression until late in the closure.",
+      "Sequence closures across successive portraits, then use the fully covered frame for the next scene.",
+      "Try a short mechanical accent at closure; adjust spacing around the last reaction rather than imposing equal durations."
+    ],
+    "assets": "Portrait clips, clean background plates or colored fields, circular masks, short closure sounds.",
+    "difficulty": "Low–medium: 2D compositing.",
+    "failure": "Closing too early hides the reaction; arbitrary moving circles can become a decorative slideshow.",
+    "reuse": "Useful for a chorus of users, multiple objections, or a reset before a reveal."
+  },
+  {
+    "id": "E022",
+    "name": "Rewind reverses the explanatory direction",
+    "category": "Analog glitch / conceptual pivot",
+    "film_rank": 4,
+    "source_url": "https://sandwich.co/work/descript-video/",
+    "source_version": "Wistia2rb6egpph3,166.083s",
+    "time_range": "01:15.800; prior sequence01:15.500–01:21.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-04-descript/report.md",
+      "specs/launch-research/deep/rank-04-descript/av-report.md",
+      "specs/launch-research/deep/rank-04-descript/coverage.json",
+      "specs/launch-research/editing-audit/rank-04-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "Before: the film has demonstrated a relationship between spoken media and written text. Action: a VHS-style rewind/glitch interrupts the clean image. After: the explanation proceeds in the reverse conceptual direction, leading toward text changing spoken media. The fresh clip explicitly locates the rewind at01:15.800 and an illuminated audio graphic at01:16.100; it does not supply frame-accurate distortion parameters.",
+    "sound": "Prior AV describes tape-rewind/static-like sound; the terse fresh pass does not independently describe the audio. Treat the sonic identification as lower confidence than the visible glitch.",
+    "purpose": "Creative inference: the editorial device makes reversing a relationship feel intuitive. The disruption has a semantic reason, so the analog damage reads as a joke about reversal rather than random fashionable noise.",
+    "recipe": [
+      "Proposed remake: establish the original input-to-output relationship first.",
+      "Build an original graphic showing that direction without copying source typography.",
+      "At the reversal, briefly reverse motion and add horizontal displacement or tracking interference.",
+      "Resolve immediately into a clean graphic showing the opposite relationship.",
+      "Cut to a concrete example proving the reverse operation, keeping the noisy transition shorter than the explanation."
+    ],
+    "assets": "Clean relationship graphic, reversed movement layer, displacement/noise treatment, optional rewind sound.",
+    "difficulty": "Medium.",
+    "failure": "Overlong distortion obscures the idea; using a rewind to bridge unrelated subjects makes the gesture meaningless.",
+    "reuse": "Use when reversing a workflow, correcting a misconception, revisiting an earlier mistake, or showing an inverse capability."
+  },
+  {
+    "id": "E023",
+    "name": "An astonished face stays grounded while its room becomes space",
+    "category": "Subject-held environment substitution",
+    "film_rank": 4,
+    "source_url": "https://sandwich.co/work/descript-video/",
+    "source_version": "Wistia2rb6egpph3,166.083s",
+    "time_range": "01:34.000; prior sequence01:33.200–01:35.600",
+    "evidence": [
+      "specs/launch-research/deep/rank-04-descript/report.md",
+      "specs/launch-research/deep/rank-04-descript/av-report.md",
+      "specs/launch-research/deep/rank-04-descript/coverage.json",
+      "specs/launch-research/editing-audit/rank-04-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "Before: a woman sits at the mint-colored desk after the voice-replacement demonstration. Action: the background gives way to an expansive animated starfield while her reaction remains the center of attention. After: the everyday office becomes a cosmic expression of astonishment. Fresh observation confirms the star background change at01:34.000; the report calls it chroma key, but actual production method is not established by footage.",
+    "sound": "Prior AV reports a low celestial/shimmering accent. Fresh clip does not isolate audio; neither the sound source nor exact musical treatment is verified.",
+    "purpose": "Creative inference: a literal environment expansion externalizes a character’s mental reaction. Holding the person stable gives the impossible background change an immediate visual anchor and keeps the joke about their response.",
+    "recipe": [
+      "Proposed remake: film the reaction with a stable camera and clean separation from the background.",
+      "Prepare a tracked matte or rotoscope of the person and any foreground desk elements.",
+      "Replace the wall with an original slow-moving star or abstract scale field.",
+      "Keep subject size and screen position unchanged through the transformation.",
+      "Hold the surprised expression briefly, then cut back to the real world before the effect becomes the whole scene."
+    ],
+    "assets": "Reaction footage, subject matte, original cosmic plate, optional desk holdout, atmosphere accent.",
+    "difficulty": "Medium–high depending on hair and reflective surfaces.",
+    "failure": "An inaccurate matte or changing face scale exposes the composite; excessive spectacle steals attention from the product proof.",
+    "reuse": "Use for a comic realization, sudden possibility, or a subjective inner-world insert."
+  },
+  {
+    "id": "E024",
+    "name": "Unwanted words become a percussion instrument",
+    "category": "Kinetic typography / destructive rhythm",
+    "film_rank": 4,
+    "source_url": "https://sandwich.co/work/descript-video/",
+    "source_version": "Wistia2rb6egpph3,166.083s",
+    "time_range": "01:55–01:57;01:57–01:59",
+    "evidence": [
+      "specs/launch-research/deep/rank-04-descript/report.md",
+      "specs/launch-research/deep/rank-04-descript/av-report.md",
+      "specs/launch-research/deep/rank-04-descript/coverage.json",
+      "specs/launch-research/editing-audit/rank-04-clip-2.txt",
+      "specs/launch-research/editing-audit/rank-04-visual-crosscheck.txt",
+      "specs/launch-research/editing-audit/rank-04-strikes-contact-sheet.jpg"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "Before: a software menu identifies redundant speech. Action: oversized words receive contrasting horizontal strokes: yellow type/teal stroke on black, then white type/purple stroke on cyan. The treatment moves onto the live actor: several rotated white tokens accumulate around his face, each crossed by magenta, before a reaction cut. After: a keypress insert returns to the edited document. A fresh 2fps contact sheet independently confirms the colors and graphic-to-live-action extension; no exact beat subdivision or specific keyboard key is asserted.",
+    "sound": "The prior full-film AV associates percussive hits with strike-through events. The fresh pass supplies no detailed audio observation; a fixed musical subdivision or exact instrument is not established.",
+    "purpose": "Creative inference: deletion becomes satisfying physical action. The graphic passage turns a tedious cleanup task into an energetic purge, then earns that sensation through the audible cleaned result.",
+    "recipe": [
+      "Proposed remake: select genuine unwanted tokens or clutter fragments from the demonstration.",
+      "Build oversized cards with one token and a single high-contrast stroke; align strokes to chosen accents.",
+      "After establishing the graphic rule, place several rotated tokens around a real reaction shot, leaving the eyes and mouth readable.",
+      "Apply the same stroke treatment to those overlays so the graphic world appears to invade the live action.",
+      "Return to the actual interface and a clear cleaned result; let proof resolve the exaggeration."
+    ],
+    "assets": "Original token typography, animated strokes, real before/after capture, optional reaction footage and percussion.",
+    "difficulty": "Low–medium.",
+    "failure": "If the operation is unclear before the montage, viewers see arbitrary crossed-out words; excessive marks make reading impossible.",
+    "reuse": "Useful for cleanup, deduplication, distraction removal, or any feature with a visible subtraction."
+  },
+  {
+    "id": "E025",
+    "name": "Recurring paper-plane bridge between title chapters",
+    "category": "Motif-led title transition",
+    "film_rank": 10,
+    "source_url": "https://www.youtube.com/watch?v=54l-1NfXnX8",
+    "source_version": "YouTube54l-1NfXnX8,60s",
+    "time_range": "00:00.000–00:02.125;00:03.875–00:06.125",
+    "evidence": [
+      "specs/launch-research/deep/rank-10-notion-mail/report.md",
+      "specs/launch-research/deep/rank-10-notion-mail/raw-full.md",
+      "specs/launch-research/deep/rank-10-notion-mail/coverage.json",
+      "specs/launch-research/editing-audit/rank-10-clip-2.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "Before: a sparse white field has room for oversized type. Action: a line-art paper airplane enters from the left, loops and settles above the introduction; it returns around a later benefit card and exits toward the lower right. After: the film alternates those graphic passages with functional interface footage. Fresh AV identifies cuts into the cards and recurring airplane motion, but does not verify that the airplane physically wipes the letters on; any reveal-mask recipe below is a proposed adaptation.",
+    "sound": "Continuous upbeat instrumental accompanies the motif; prior AV suggests light paper-like accents, but exact Foley identity is uncertain.",
+    "purpose": "Creative inference: one compact object makes unrelated product chapters feel authored by the same film. Because the airplane relates to sending mail, its motion can carry the viewer between ideas without an unrelated transition preset.",
+    "recipe": [
+      "Proposed remake: choose one original product-related object with a readable silhouette.",
+      "Design a short path that crosses the text area without blocking the final phrase.",
+      "Reveal or replace the text near the object’s passage using a simple matte.",
+      "Return to the same object at later chapter boundaries with limited variation.",
+      "Resolve movement before the UI demonstration starts so the viewer knows where to look next."
+    ],
+    "assets": "Original vector motif, title layouts, path animation and mattes, optional tactile accent.",
+    "difficulty": "Medium.",
+    "failure": "An unrelated mascot becomes branding clutter; a busy flight path competes with reading.",
+    "reuse": "Use to connect multiple benefit chapters with a single repeatable motion signature."
+  },
+  {
+    "id": "E026",
+    "name": "A written rule propagates across an existing inbox",
+    "category": "UI demonstration choreography / distributed row update",
+    "film_rank": 10,
+    "source_url": "https://www.youtube.com/watch?v=54l-1NfXnX8",
+    "source_version": "YouTube54l-1NfXnX8,60s",
+    "time_range": "00:13.000–00:20.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-10-notion-mail/report.md",
+      "specs/launch-research/deep/rank-10-notion-mail/raw-full.md",
+      "specs/launch-research/deep/rank-10-notion-mail/coverage.json",
+      "specs/launch-research/editing-audit/rank-10-clip-2.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "Before: a close interface view exposes an automatic-labeling control in the upper-right toolbar. Action: clicking opens a text popover, a short rule is entered, then a cut reveals the message list refreshing with category labels. After: the inbox has an inspectable organizing layer. Fresh AV confirms the cut between input and refreshed list, so this is edited cause-and-result, not evidence of instantaneous continuous processing.",
+    "sound": "The instrumental continues through the operation. Specific label-pop effects are not independently verified.",
+    "purpose": "Creative inference: distributed state change makes one small instruction feel consequential. Keeping familiar email rows visible allows the audience to compare before and after without memorizing a separate screen.",
+    "recipe": [
+      "Proposed remake: capture a readable before-state with a manageable number of rows or objects.",
+      "Enlarge the rule input while retaining enough background context to identify the affected material.",
+      "Let the viewer finish reading the instruction before showing execution.",
+      "Reveal the new labels in their actual positions, preserving the original row geometry.",
+      "End with a short hold or one filtered view that makes the resulting organization unmistakable."
+    ],
+    "assets": "Before/input/after product captures, optional crop framing and callout, clean cursor path.",
+    "difficulty": "Low–medium.",
+    "failure": "Inventing labels or hiding the original items makes the change feel staged; a long rule creates a reading bottleneck.",
+    "reuse": "Use for bulk categorization, document tagging, multi-object operations, or an instruction affecting several visible items."
+  },
+  {
+    "id": "E027",
+    "name": "Template placeholders become personalized content in place",
+    "category": "UI demonstration choreography / local token substitution",
+    "film_rank": 10,
+    "source_url": "https://www.youtube.com/watch?v=54l-1NfXnX8",
+    "source_version": "YouTube54l-1NfXnX8,60s",
+    "time_range": "00:28.500–00:33.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-10-notion-mail/report.md",
+      "specs/launch-research/deep/rank-10-notion-mail/raw-full.md",
+      "specs/launch-research/deep/rank-10-notion-mail/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "Before: an email composer contains an insertion point. Action: a slash-command menu opens, a reusable snippet is chosen, and placeholder fields are customized within the inserted text. After: the generic template becomes a specific message while the composer remains the visual anchor. The source shows menu selection and field replacement; exact cursor velocity and interpolation are not measured.",
+    "sound": "The same instrumental bed continues. No spoken explanation is reported; meaningful UI text therefore carries the instructional load.",
+    "purpose": "Creative inference: the transformation feels economical because the film changes only the small parts that need human specificity. The fixed paragraph gives viewers a stable reference and makes the replacement more legible than a fresh generated page.",
+    "recipe": [
+      "Proposed remake: prepare a short template with two visibly distinguishable fields.",
+      "Capture the trigger and compact option menu at a readable scale.",
+      "Keep the composer framing unchanged as the snippet arrives.",
+      "Select and replace one field at a time, allowing each completed value to register.",
+      "Finish on the personalized paragraph long enough to see that the surrounding content stayed intact."
+    ],
+    "assets": "Actual template UI, short original message, field states, readable crop or recreated editorial magnification.",
+    "difficulty": "Low.",
+    "failure": "Rapid typing across a dense paragraph makes the operation indistinguishable from ordinary typing; too many fields weaken the point.",
+    "reuse": "Use for customization, saved settings, reusable workflows, mail merge or document assembly."
+  },
+  {
+    "id": "E028",
+    "name": "A temporary scheduling grid becomes an object inside the message",
+    "category": "UI demonstration choreography / secondary-panel excursion and return",
+    "film_rank": 10,
+    "source_url": "https://www.youtube.com/watch?v=54l-1NfXnX8",
+    "source_version": "YouTube54l-1NfXnX8,60s",
+    "time_range": "00:34.333–00:38.167",
+    "evidence": [
+      "specs/launch-research/deep/rank-10-notion-mail/report.md",
+      "specs/launch-research/deep/rank-10-notion-mail/raw-full.md",
+      "specs/launch-research/deep/rank-10-notion-mail/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "Before: the viewer is inside the email composer. Action: a scheduling command opens a calendar interaction, the user selects availability, and scheduling information is incorporated into the message. After: a separate coordination task has become part of the artifact being composed. Prior AV identifies an embedded calendar widget; exact panel entrance direction and final animation path are not established.",
+    "sound": "Instrumental continuity sustains the chapter; individual dropdown or selection sounds are not confidently distinguished.",
+    "purpose": "Creative inference: briefly opening a second workspace inside the first conveys integration without showing a confusing tour of multiple applications. Returning to the same message closes the small visual excursion.",
+    "recipe": [
+      "Proposed remake: establish the message and its insertion point.",
+      "Show the actual control that opens the secondary task.",
+      "Enlarge the grid enough for one availability selection to be readable.",
+      "Show the chosen block and the resulting embedded message content in a connected sequence.",
+      "Return to the original composer scale and hold the resulting object as the proof."
+    ],
+    "assets": "Composer capture, calendar interaction, selected-state and inserted-result footage, optional restrained emphasis.",
+    "difficulty": "Low–medium.",
+    "failure": "A floating calendar disconnected from the email suggests a separate app; unreadable date grids become texture.",
+    "reuse": "Use for embedded bookings, attachments, payment requests, data tables, or any secondary tool that produces a primary-document object."
+  },
+  {
+    "id": "E029",
+    "name": "Dive through the display raster into the title",
+    "category": "Microtexture portal / scale discontinuity",
+    "film_rank": 14,
+    "source_url": "https://www.youtube.com/watch?v=HdF3CnFvxg4",
+    "source_version": "YouTubeHdF3CnFvxg4,123s",
+    "time_range": "00:03.333–00:05.333",
+    "evidence": [
+      "specs/launch-research/deep/rank-14-playdate/report.md",
+      "specs/launch-research/deep/rank-14-playdate/raw-full.md",
+      "specs/launch-research/deep/rank-14-playdate/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "Before: the yellow device and its monochrome screen have been established. Action: a macro pass enters the screen’s dot-matrix texture and transitions into a clean typographic identity card. After: screen imagery and full-frame brand graphics share one visual language. Prior AV calls this a match-cut zoom; the exact optical continuity through the intermediate raster is sampled rather than frame-exhaustively verified.",
+    "sound": "The passage is associated with the musical brand motif. Exact vocal notes or source lyrics are unnecessary for the editing mechanism.",
+    "purpose": "Creative inference: an ordinary surface becomes a doorway between product and graphics. The scale jump feels motivated because the film has already taught viewers to recognize the screen’s pixel material.",
+    "recipe": [
+      "Proposed remake: begin with a product close-up where a distinctive surface is visible.",
+      "Create or capture a high-resolution macro of that surface.",
+      "Move toward it until the texture fills the composition.",
+      "Match a texture element to a graphic element of similar shape, then reveal the title.",
+      "Keep the final title still enough to read after the acceleration."
+    ],
+    "assets": "Product detail, macro texture or original CG raster, matching title layout, short musical reveal.",
+    "difficulty": "Medium–high.",
+    "failure": "Low-resolution screen enlargement exposes pixels unintentionally; an unmatched graphic shape turns the portal into a random zoom.",
+    "reuse": "Useful for displays, woven material, perforations, grids, maps or product textures with a recognizable pattern."
+  },
+  {
+    "id": "E030",
+    "name": "The floating product drops into a real hand",
+    "category": "Scale proof / simulated-to-physical handoff",
+    "film_rank": 14,
+    "source_url": "https://www.youtube.com/watch?v=HdF3CnFvxg4",
+    "source_version": "YouTubeHdF3CnFvxg4,123s",
+    "time_range": "00:28.000–00:29.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-14-playdate/report.md",
+      "specs/launch-research/deep/rank-14-playdate/raw-full.md",
+      "specs/launch-research/deep/rank-14-playdate/coverage.json",
+      "specs/launch-research/editing-audit/rank-14-clip-2.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "Before: a top-down device view sits on a yellow field. Action: a hard cut reveals an upturned human hand against blue, then the yellow console drops vertically from above into the palm. After: the object rests in the hand at an instantly understandable human scale. Fresh AV distinguishes the cut into the hand setup from the drop itself and explicitly leaves practical versus composited production uncertain.",
+    "sound": "Prior observation associates a soft impact or catch accent with the landing; actual Foley provenance is unknown.",
+    "purpose": "Creative inference: the hand is both a measuring reference and a destination. A simple gravity-based movement replaces a specification about size with an immediately understood physical relationship.",
+    "recipe": [
+      "Proposed remake: shoot a hand held in the final catch position with controlled lighting.",
+      "Capture a safe practical catch, or create a product layer matching that lens and light.",
+      "Align the product’s trajectory with the center of the palm; preserve plausible contact and occlusion.",
+      "Let the fingers respond after contact rather than remain completely frozen.",
+      "Hold the caught object briefly so viewers can register scale and grip."
+    ],
+    "assets": "Hand/catch plate, product footage or model, contact shadow/holdout if composited, restrained impact sound.",
+    "difficulty": "Medium–high.",
+    "failure": "Incorrect contact shadow or fingers passing through the product destroys weight; a rushed cut prevents scale registration.",
+    "reuse": "Use for handheld devices, packaging, tools, compact objects or any abstract product needing a human measure."
+  },
+  {
+    "id": "E031",
+    "name": "One rotating action crosses unrelated machines",
+    "category": "Associative action-match montage",
+    "film_rank": 14,
+    "source_url": "https://www.youtube.com/watch?v=HdF3CnFvxg4",
+    "source_version": "YouTubeHdF3CnFvxg4,123s",
+    "time_range": "00:42.250–00:43.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-14-playdate/report.md",
+      "specs/launch-research/deep/rank-14-playdate/raw-full.md",
+      "specs/launch-research/deep/rank-14-playdate/coverage.json",
+      "specs/launch-research/editing-audit/rank-14-clip-2.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "Before: a player turns the console crank to move the on-screen character. Action: hard cuts insert other rotating mechanisms—a large industrial wheel, sailboat winch and pasta roller—before returning to the console. After: the unfamiliar controller is grounded in familiar hand-powered rotation. Fresh AV confirms hard-transition montage rather than a continuous morph; its estimated quarter-second shots are not treated as measured timing, and identical angular phase across cuts is not established.",
+    "sound": "Tactile mechanical accents and the score support the analogy. Do not assume every insert uses its own location sound or that the clicks are precisely synchronized.",
+    "purpose": "Creative inference: the montage explains a new interaction through bodily knowledge. It also creates humor by placing a tiny game control in the same family as much larger practical mechanisms.",
+    "recipe": [
+      "Proposed remake: choose three objects that genuinely share the interaction being explained.",
+      "Shoot or source tight views with the active hand and moving part clearly visible.",
+      "Choose comparable phases of action and similar subject scale where possible.",
+      "Cut rapidly across the analogies without introducing their full environments.",
+      "Return to the original product and show its output so the analogy resolves into proof."
+    ],
+    "assets": "Original interaction footage, two or three analog-action inserts, matching crops, optional tactile accents.",
+    "difficulty": "Low–medium.",
+    "failure": "A resemblance in shape alone can misexplain the function; too many analogies become a stock-footage detour.",
+    "reuse": "Use for turning, dragging, folding, sorting, snapping, focusing, stretching or other embodied interaction."
+  },
+  {
+    "id": "E032",
+    "name": "A download is staged as an unwrapped present",
+    "category": "In-screen theatrical reveal",
+    "film_rank": 14,
+    "source_url": "https://www.youtube.com/watch?v=HdF3CnFvxg4",
+    "source_version": "YouTubeHdF3CnFvxg4,123s",
+    "time_range": "01:24.000–01:31.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-14-playdate/report.md",
+      "specs/launch-research/deep/rank-14-playdate/raw-full.md",
+      "specs/launch-research/deep/rank-14-playdate/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "Before: a physical console rests in a tabletop composition. Action: its small display presents a wrapped-package animation that opens into game imagery. After: the new software feels like an arrival with anticipation and payoff, while the external device remains the stable frame. Prior AV describes digital wrapping opening; precise tear direction and individual wrapping fragments were not independently measured.",
+    "sound": "The report associates paper-ripping-like Foley and celebratory/game accents with the reveal. Exact sounds and their origin remain uncertain.",
+    "purpose": "Creative inference: the edit borrows the emotional sequence of receiving and opening a gift to explain an otherwise invisible distribution system. Keeping the transformation inside the screen preserves the relationship between delivery and playable object.",
+    "recipe": [
+      "Proposed remake: establish a real or cleanly rendered device screen.",
+      "Design an original package graphic consistent with the product’s visual language.",
+      "Give the unopened state a small anticipation hold.",
+      "Animate the package opening to reveal the actual new content or result.",
+      "Continue into usable content rather than cutting away as soon as the wrapping disappears."
+    ],
+    "assets": "Device/tabletop plate, tracked screen replacement or native UI animation, package and result graphics, tactile reveal sound.",
+    "difficulty": "Medium.",
+    "failure": "A long unwrapping delays utility; ornamental animation can suggest that processing is entertainment without delivering anything.",
+    "reuse": "Useful for content releases, delivered reports, unlocked tools, saved results or any recurring arrival."
+  },
+  {
+    "id": "E033",
+    "name": "The typing caret becomes a compact brand mark",
+    "category": "Typography-to-symbol compression",
+    "film_rank": 17,
+    "source_url": "https://player.vimeo.com/video/948907406",
+    "source_version": "Original selected Vimeo948907406,52.053s",
+    "time_range": "00:00.000–00:04.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-17-granola/report.md",
+      "specs/launch-research/deep/rank-17-granola/av-report.md",
+      "specs/launch-research/deep/rank-17-granola/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "Before: a green field is almost empty. Action: a caret enters and becomes the writing gesture for the brand word; the prior AV then describes the word contracting to an initial and the composition expanding into a white field. After: a familiar text-editing action has introduced both identity and the film’s graphic transition language. The precise outlines of the morph were not freshly rechecked.",
+    "sound": "Typing-like clicks accompany the opening over an electronic groove in the prior AV; the statement that every keystroke is perfectly synchronized is not independently supported.",
+    "purpose": "Creative inference: this is a logo introduction built from the product’s own action. Compression from word to small mark makes the identity available as a reusable component rather than requiring a separate ornamental logo sting.",
+    "recipe": [
+      "Proposed remake: choose a real action associated with the product’s core task.",
+      "Build the full wordmark through that action using original type.",
+      "Select a letter or shape that can remain recognizable when the word compresses.",
+      "Animate the remaining shape into the next composition’s anchor or matte.",
+      "Keep the transformation brief and show useful product material immediately afterward."
+    ],
+    "assets": "Original wordmark, caret or equivalent task symbol, shape masks, simple action sound.",
+    "difficulty": "Medium.",
+    "failure": "A difficult-to-read brand or arbitrary morph can spend the opening on a puzzle with no value proposition.",
+    "reuse": "Use for text tools, drawing products, code editors or brands with a strong task-derived graphic gesture."
+  },
+  {
+    "id": "E034",
+    "name": "A notification opens the story’s working context",
+    "category": "OS notification as chapter bridge",
+    "film_rank": 17,
+    "source_url": "https://player.vimeo.com/video/948907406",
+    "source_version": "Original selected Vimeo948907406,52.053s",
+    "time_range": "00:15.000–00:20.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-17-granola/report.md",
+      "specs/launch-research/deep/rank-17-granola/av-report.md",
+      "specs/launch-research/deep/rank-17-granola/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "Before: large kinetic typography has identified the product. Action: floating meeting notifications enter; a cursor selects the meeting-entry action. After: the film enters the paired call-and-notepad environment. The notification serves as the hinge between abstract explanation and a specific situation. Prior AV identifies the banners and cursor interaction but does not verify their exact stacking offsets or entrance direction.",
+    "sound": "Prior AV identifies notification/chime and click-like accents; the underlying electronic music continues. Exact OS alert samples are not established.",
+    "purpose": "Creative inference: an everyday interruption supplies a natural reason to enter the demo. It reduces the need for a narrator to announce an artificial tour and makes the use case immediately recognizable.",
+    "recipe": [
+      "Proposed remake: introduce one familiar event that genuinely triggers product use.",
+      "Show a compact notification with only the necessary context.",
+      "Move the cursor or finger to the actual action control.",
+      "Cut or transition on that action into the working environment.",
+      "Keep a shared meeting title or other identifier visible long enough to connect the notification and destination."
+    ],
+    "assets": "Notification graphic or actual capture, clean cursor action, destination UI, optional alert and click sounds.",
+    "difficulty": "Low.",
+    "failure": "Multiple unreadable banners become decorative UI confetti; a nonexistent integration would misstate the workflow.",
+    "reuse": "Use for meetings, reminders, deliveries, imports, approvals or other events that naturally initiate a task."
+  },
+  {
+    "id": "E035",
+    "name": "Concurrent panes show quiet background assistance",
+    "category": "Parallel activity / persistent context",
+    "film_rank": 17,
+    "source_url": "https://player.vimeo.com/video/948907406",
+    "source_version": "Original selected Vimeo948907406,52.053s",
+    "time_range": "00:20.000–00:29.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-17-granola/report.md",
+      "specs/launch-research/deep/rank-17-granola/av-report.md",
+      "specs/launch-research/deep/rank-17-granola/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "Before: the viewer has entered a meeting. Action: a call grid sits on the left while a notepad occupies the right; waveform activity and small speech indicators suggest ongoing listening as notes accumulate. After: the viewer understands the assistant’s role without losing the social context. Prior AV supports the split arrangement and waveform; exact semantic content of every small pill is not reliable.",
+    "sound": "The prior pass detects music and interface/activity accents, with no spoken voiceover. It does not establish that a real meeting’s intelligible audio is present.",
+    "purpose": "Creative inference: simultaneous panes explain a background process more clearly than alternating disconnected full screens. The call remains present while the notepad changes, communicating accompaniment rather than interruption.",
+    "recipe": [
+      "Proposed remake: choose one primary activity and one supporting output.",
+      "Compose both with stable relative positions and enough scale to read the active output.",
+      "Keep the primary activity visually restrained while the assistant updates.",
+      "Use one small activity indicator to connect the two areas, avoiding repeated cross-screen arrows.",
+      "Hold the arrangement through at least one meaningful output change before isolating the next control."
+    ],
+    "assets": "Call/context footage or permitted mock content, note UI, waveform/activity animation, coherent screen layout.",
+    "difficulty": "Medium.",
+    "failure": "If both panes move rapidly, attention splits; tiny unreadable notes make the assistant look like an unexplained dashboard.",
+    "reuse": "Use for transcription, monitoring, live collaboration, background processing or assistive workflows."
+  },
+  {
+    "id": "E036",
+    "name": "A note unfolds downward into structured sections",
+    "category": "Accordion document transformation",
+    "film_rank": 17,
+    "source_url": "https://player.vimeo.com/video/948907406",
+    "source_version": "Original selected Vimeo948907406,52.053s",
+    "time_range": "00:34.000–00:41.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-17-granola/report.md",
+      "specs/launch-research/deep/rank-17-granola/av-report.md",
+      "specs/launch-research/deep/rank-17-granola/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "Before: a short notepad document and enhancement control have been established. Action: the document expands with new headings and bullet groups, building a longer structured result in place. After: the formerly sparse note is a more organized artifact. Prior AV describes accordion expansion; exact line-by-line timing and whether every original phrase remains at a fixed coordinate were not independently measured.",
+    "sound": "A rising electronic musical gesture is reported during expansion. Exact instrument and per-section chimes are unverified.",
+    "purpose": "Creative inference: expanding the artifact itself makes added value visible as structure rather than a claim. The controlled unfolding gives the viewer a path through a longer result without requiring them to read every sentence.",
+    "recipe": [
+      "Proposed remake: prepare a concise before document and an authentic resulting document.",
+      "Keep the title or first line as a stable identity anchor.",
+      "Reveal one heading group at a time, allowing the page container to grow with it.",
+      "Move the viewing crop only when necessary to keep the newest group readable.",
+      "End on an overview or selected high-value section that makes the transformation understandable."
+    ],
+    "assets": "Before/after document, grouped text layers or real capture, page masks and optional camera crop.",
+    "difficulty": "Low–medium.",
+    "failure": "Fast scrolling plus simultaneous text growth produces visual noise; invented outputs would turn proof into animation.",
+    "reuse": "Use for notes, reports, plans, outlines, structured summaries or any expansion from rough input to organized output."
+  },
+  {
+    "id": "E037",
+    "name": "A tiny icon click cuts to a full-field expressive face",
+    "category": "Interactive brand activation",
+    "film_rank": 20,
+    "source_url": "https://www.youtube.com/watch?v=S92KX8-Hmlc",
+    "source_version": "YouTubeS92KX8-Hmlc,57s",
+    "time_range": "00:00.000–00:01.000;00:01.000–00:02.500",
+    "evidence": [
+      "specs/launch-research/deep/rank-20-notion-ai/report.md",
+      "specs/launch-research/deep/rank-20-notion-ai/raw-full.md",
+      "specs/launch-research/deep/rank-20-notion-ai/coverage.json",
+      "specs/launch-research/editing-audit/rank-20-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "Before: a small isometric brand cube sits on a minimal pale field. Action: a cursor approaches and clicks; the composition switches to a blue field with a white circular face. After: the face blinks and changes expression, turning a static software icon into a playful character. Fresh AV confirms this progression but contradicts the prior report’s cursor approach direction, so no travel direction is asserted here.",
+    "sound": "Fresh AV identifies a soft chime and an instrumental build. Exact sound source and the boundary between a click sound and musical accent are not independently verified.",
+    "purpose": "Creative inference: the click acts like waking something up. The large change in scale and color gives a tiny action an outsized response while the facial motion establishes personality before the utility sequence.",
+    "recipe": [
+      "Proposed remake: place one small original icon in generous negative space.",
+      "Make the initiating pointer or touch clear and purposeful.",
+      "Change the field on the activation into a contrasting character or expressive graphic.",
+      "Use one or two simple expression changes rather than a long character scene.",
+      "Cut into the product proposition while the initial interaction is still memorable."
+    ],
+    "assets": "Original icon, cursor/touch layer, contrasting field, expression states, activation accent.",
+    "difficulty": "Low–medium.",
+    "failure": "An unrelated mascot can feel like an extra product; overlong expression animation delays comprehension.",
+    "reuse": "Use for onboarding, assistant launches, tool activation or a restrained character introduction."
+  },
+  {
+    "id": "E038",
+    "name": "Capability pills swap while the sentence holds its place",
+    "category": "Anchored sentence / motion-blurred substitution",
+    "film_rank": 20,
+    "source_url": "https://www.youtube.com/watch?v=S92KX8-Hmlc",
+    "source_version": "YouTubeS92KX8-Hmlc,57s",
+    "time_range": "00:04.375–00:09.125",
+    "evidence": [
+      "specs/launch-research/deep/rank-20-notion-ai/report.md",
+      "specs/launch-research/deep/rank-20-notion-ai/raw-full.md",
+      "specs/launch-research/deep/rank-20-notion-ai/coverage.json",
+      "specs/launch-research/editing-audit/rank-20-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "Before: a sparse introduction has established the tool. Action: short capability pills replace one another with rapid horizontal, motion-blurred swaps while the surrounding proposition gives them context. After: the changing list resolves into a stable summary and tool identity. Fresh AV specifically identifies horizontal pill/text swaps; exact per-pill duration, easing and which intermediate words are fully readable are unmeasured.",
+    "sound": "Fresh AV reports percussive hits accompanying the swaps. This is an observed association, not a measured assertion that every cut sits on a particular musical subdivision.",
+    "purpose": "Creative inference: the stable sentence supplies grammar while the moving slot supplies breadth. The viewer understands a family of capabilities without experiencing a sequence of entirely new title layouts.",
+    "recipe": [
+      "Proposed remake: write a short sentence with a single replaceable slot.",
+      "Limit the slot to brief, parallel capability phrases.",
+      "Animate replacements along one consistent horizontal path with restrained directional blur.",
+      "Keep the sentence baseline and surrounding layout fixed.",
+      "Stop on the most important or summarizing item and hold it longer than the passing examples."
+    ],
+    "assets": "Original typography, pill shapes, parallel short phrases, position/opacity animation and optional motion blur.",
+    "difficulty": "Low–medium.",
+    "failure": "Long labels turn the sequence into unreadable noise; switching the whole layout removes the stable grammatical anchor.",
+    "reuse": "Use for breadth, supported formats, roles, search sources or multiple tasks sharing one interaction."
+  },
+  {
+    "id": "E039",
+    "name": "A moving partition introduces mascot and working UI together",
+    "category": "Moving-divider entrance / staged split-screen",
+    "film_rank": 20,
+    "source_url": "https://www.youtube.com/watch?v=S92KX8-Hmlc",
+    "source_version": "YouTubeS92KX8-Hmlc,57s",
+    "time_range": "00:12.375–00:17.000;00:17.000–00:21.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-20-notion-ai/report.md",
+      "specs/launch-research/deep/rank-20-notion-ai/raw-full.md",
+      "specs/launch-research/deep/rank-20-notion-ai/coverage.json",
+      "specs/launch-research/editing-audit/rank-20-clip-1.txt"
+    ],
+    "verification": "fresh clip audit",
+    "observed": "Before: a centered proposition and application icons occupy a sparse graphic field. Action: a vertical blue partition sweeps into a right-hand mascot panel while a chat interface occupies the left. After: the question and growing answer remain on the left as the face reacts on the right. Fresh AV observes this dual-pane construction; it does not establish the exact width ratio or whether all movement uses one continuous mask.",
+    "sound": "Fresh AV reports typing/activity sounds followed by a completion-like accent under the instrumental. Sound-layer provenance remains uncertain.",
+    "purpose": "Creative inference: the split design separates functional reading from emotional personality. A color field supplies continuity with the opening mascot while the UI introduces a denser visual texture.",
+    "recipe": [
+      "Proposed remake: define a functional panel large enough for the important input and result.",
+      "Reserve a smaller or visually quieter companion panel for a character, presenter or contextual image.",
+      "Use one moving partition to introduce the division instead of popping in several unrelated windows.",
+      "Animate the companion subtly while the user reads the main panel.",
+      "Reduce companion activity at the moment the critical result appears."
+    ],
+    "assets": "Actual UI capture, original companion graphic or presenter plate, colored panel, animated divider mask.",
+    "difficulty": "Medium.",
+    "failure": "Constant mascot motion can distract from the answer; equal visual weight is unsuitable when one panel requires reading.",
+    "reuse": "Use for narrated demos, assistant personality, presenter-plus-product compositions or context-preserving explanations."
+  },
+  {
+    "id": "E040",
+    "name": "A desktop chapter resets into a tall mobile stage",
+    "category": "Composition device / desktop-to-mobile format reset",
+    "film_rank": 20,
+    "source_url": "https://www.youtube.com/watch?v=S92KX8-Hmlc",
+    "source_version": "YouTubeS92KX8-Hmlc,57s",
+    "time_range": "00:45.000–00:50.250",
+    "evidence": [
+      "specs/launch-research/deep/rank-20-notion-ai/report.md",
+      "specs/launch-research/deep/rank-20-notion-ai/raw-full.md",
+      "specs/launch-research/deep/rank-20-notion-ai/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "Before: previous demonstrations have used wider document and desktop compositions. Action: a later chapter switches to a yellow-accented tall mobile mockup containing the same prompt-to-response pattern. After: the interaction remains familiar while the frame shape and surrounding color change substantially. Prior AV describes the mobile composition but does not establish a literal morph from desktop hardware into phone hardware.",
+    "sound": "The instrumental continues with reported tap-like accents. The absence of spoken narration means the interface and chapter text remain the main explanation.",
+    "purpose": "Creative inference: a format shift refreshes the eye without introducing a new conceptual workflow. Portrait space within a landscape film creates a strong contrast after repeated wide UI scenes and conveys another context of use.",
+    "recipe": [
+      "Proposed remake: complete the desktop example before changing formats.",
+      "Introduce a tall device or tall capture with a deliberately different surrounding color.",
+      "Keep the new task’s input and output grammar consistent with the previous example.",
+      "Crop or enlarge the mobile interface so the key content remains readable at feed size.",
+      "Hold the finished response before moving into the closing invitation."
+    ],
+    "assets": "Desktop and mobile captures of equivalent supported behavior, device frame if desired, color field, tap accents.",
+    "difficulty": "Low–medium.",
+    "failure": "A decorative phone too small to read becomes a logo prop; a gratuitous spinning-device morph can obscure the format change.",
+    "reuse": "Use to show mobile availability, compact layouts or the same operation in another real usage context."
+  },
+  {
+    "id": "E041",
+    "name": "A touched tabletop elongates while its surroundings stay credible",
+    "category": "Spatial deformation",
+    "film_rank": 5,
+    "source_url": "https://vimeo.com/821121634",
+    "source_version": "Selected 233.621-second Vimeo upload, not asserted original campaign upload",
+    "time_range": "01:13.000–01:17.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-05-homepod/report.md",
+      "specs/launch-research/deep/rank-05-homepod/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-05-homepod/coverage.json",
+      "specs/launch-research/deep/rank-05-homepod/raw-opening-recheck.md",
+      "specs/launch-research/deep/rank-05-homepod/frames-later-sequence.jpg"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The seated performer reaches toward the coffee table; its surface and objects elongate impossibly. This surprise precedes the larger colored-room expansion. The corrected recheck establishes that order; the full pass incorrectly combines them. The unchanged person and sofa supply scale against which the altered object reads.",
+    "sound": "The focused recheck reports musical continuity across the table transformation. Do not adopt its contradictory earlier song-onset claims or invent a specific stretch sound.",
+    "purpose": "Creative inference: A small tactile anomaly makes a large fantasy easier to accept. The effect feels discovered by the character rather than imposed by a title card.",
+    "recipe": [
+      "Film a locked or repeatable view containing hand, table edge and sofa.",
+      "Keep the performer on a separate protected plate; extend only the tabletop region or use an equivalent3D surface.",
+      "Start the extension at hand contact and preserve the near edge to maintain depth.",
+      "Let one recognizable tabletop object deform or travel with the surface.",
+      "Hold the performer’s reaction before escalating the room. These are remake steps, not a claim about original technique."
+    ],
+    "assets": "Actor plate, clean room plate, table mask or model, contact shadow and surface texture.",
+    "difficulty": "High; contact and perspective continuity are the hard parts.",
+    "failure": "Uniformly scaling the entire image stretches the actor and removes the physical impossibility. Starting with wall movement loses the small discovery.",
+    "reuse": "Apply to a menu, desk, folder or other familiar surface that opens into a larger world."
+  },
+  {
+    "id": "E042",
+    "name": "Stripes turn a room into a depth tunnel",
+    "category": "Spatial extrusion",
+    "film_rank": 5,
+    "source_url": "https://vimeo.com/821121634",
+    "source_version": "Selected 233.621-second Vimeo upload, not asserted original campaign upload",
+    "time_range": "02:03.000–02:12.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-05-homepod/report.md",
+      "specs/launch-research/deep/rank-05-homepod/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-05-homepod/coverage.json",
+      "specs/launch-research/deep/rank-05-homepod/raw-opening-recheck.md",
+      "specs/launch-research/deep/rank-05-homepod/frames-later-sequence.jpg"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The performer runs and turns inside an elongated room. Multicolored horizontal bands on the walls and ceiling converge toward the distant end, exaggerating the corridor’s length. The character remains a human-sized anchor against the receding architecture. Source contact sheets confirm a striped tunnel and strongly converging lines; the broad returned interval is not a precise cut list.",
+    "sound": "The dance passage is carried by continuous rhythmic music with vocals. No isolated wall-motion stem or exact downbeat alignment has been verified.",
+    "purpose": "Creative inference: Perspective itself becomes the energetic effect: freedom feels larger because the visible distance expands, even when the viewer can still understand the room’s axis.",
+    "recipe": [
+      "Choose a clear corridor vanishing point and keep the subject near its axis.",
+      "Build repeated bands across side walls and ceiling, respecting their perspective.",
+      "Animate depth extension or move the camera through a prepared corridor.",
+      "Choreograph a run or turn that reveals additional distance rather than merely moving sideways.",
+      "Keep lighting gradients and shadows consistent across the extension."
+    ],
+    "assets": "Repeatable performance, corridor model or prepared plates, perspective tracking, striped textures.",
+    "difficulty": "High; camera and scene geometry must agree.",
+    "failure": "Random decorative stripes without convergence create noise. An unmotivated wide-angle zoom can look like a lens gimmick instead of space responding.",
+    "reuse": "Use a corridor, shelf aisle, data tunnel or modular workspace to express expansion without explanatory copy."
+  },
+  {
+    "id": "E043",
+    "name": "A reflection becomes a partner",
+    "category": "Duplicate performance",
+    "film_rank": 5,
+    "source_url": "https://vimeo.com/821121634",
+    "source_version": "Selected 233.621-second Vimeo upload, not asserted original campaign upload",
+    "time_range": "02:30.000–03:13.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-05-homepod/report.md",
+      "specs/launch-research/deep/rank-05-homepod/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-05-homepod/coverage.json",
+      "specs/launch-research/deep/rank-05-homepod/raw-opening-recheck.md",
+      "specs/launch-research/deep/rank-05-homepod/frames-later-sequence.jpg"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "A wall mirror frames the performer and the striped corridor. The later sequence develops two versions of the same performer facing one another and exchanging coordinated gestures. Source sheets corroborate the progression from mirror composition to dual presence. The precise instant when reflection logic breaks is unresolved; this entry does not claim a particular invisible cut or split-screen boundary.",
+    "sound": "The music-led choreography continues. The evidence does not identify a special audio cue at the reflection’s first independent movement.",
+    "purpose": "Creative inference: An initially familiar visual rule—reflection—creates an expectation that can be broken. A private emotional experience gains a relationship without introducing a new character.",
+    "recipe": [
+      "Establish an ordinary mirrored action with clear matching limbs and spatial symmetry.",
+      "Record two timed performances or use two performers with controlled identity treatment.",
+      "Keep the first independent gesture small enough to be noticed as a rule change.",
+      "Widen or reframe to let both figures occupy believable space.",
+      "Plan crossings, eyelines and contact before choosing masks or compositing. This is an adaptation recipe only."
+    ],
+    "assets": "Mirror set or replacement surface, synchronized performances, clean plates, eyeline markers.",
+    "difficulty": "High; timing and shared space matter more than the software.",
+    "failure": "Beginning immediately with two copies removes the discovery. Poor eyelines make the encounter read as a split-screen trick rather than interaction.",
+    "reuse": "Useful for past/future self, competing ideas, inner critic or a playful product persona; establish the visual rule first."
+  },
+  {
+    "id": "E044",
+    "name": "Impossible space resolves back to the original sofa",
+    "category": "Spatial callback",
+    "film_rank": 5,
+    "source_url": "https://vimeo.com/821121634",
+    "source_version": "Selected 233.621-second Vimeo upload, not asserted original campaign upload",
+    "time_range": "03:13.000–03:45.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-05-homepod/report.md",
+      "specs/launch-research/deep/rank-05-homepod/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-05-homepod/coverage.json",
+      "specs/launch-research/deep/rank-05-homepod/raw-opening-recheck.md",
+      "specs/launch-research/deep/rank-05-homepod/frames-later-sequence.jpg"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The late sequence includes solo movement in a dark open space, then returns to the ordinary apartment and the performer resting on the sofa. The later source sheet confirms the dark-space passage, sofa return and familiar room. The full pass’s claim of ensemble choreography is corrected: this should not imply a group cast. The evidence does not establish that the return is one continuous morph.",
+    "sound": "The musical sequence resolves toward a quieter ending; exact stem removals and crossfade durations are not documented.",
+    "purpose": "Creative inference: The spectacular detour gains emotional meaning because it returns to a place the viewer remembers. The surroundings can be unchanged while the performer’s posture communicates a different experience.",
+    "recipe": [
+      "Record a distinctive opening room master and an ending master with matching geography.",
+      "Carry one recognizable movement or posture out of the abstract sequence.",
+      "Cut or transition into the resting position with compatible screen direction.",
+      "Reduce motion and visual density after arrival.",
+      "Hold a human response before the brand close; avoid an extra effects crescendo."
+    ],
+    "assets": "Opening and closing room plates, performance continuity, abstract interlude if desired, music edit.",
+    "difficulty": "Medium for an editorial match; high for a seamless spatial transformation.",
+    "failure": "A completely new final room loses the callback. Overexplaining the metaphor can weaken the relief provided by stillness.",
+    "reuse": "Use after any fantasy, simulation or demonstration to reconnect a sophisticated effect to ordinary lived experience."
+  },
+  {
+    "id": "E045",
+    "name": "One person, several props, one fixed composition",
+    "category": "Prop-swap jump cuts",
+    "film_rank": 6,
+    "source_url": "https://vimeo.com/926031195",
+    "source_version": "Exact selected 15.019-second Home Office film",
+    "time_range": "00:00.000–00:01.333",
+    "evidence": [
+      "specs/launch-research/deep/rank-06-ikea-kreativ/report.md",
+      "specs/launch-research/deep/rank-06-ikea-kreativ/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-06-ikea-kreativ/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The man holds successive hobby objects in closely related medium framing against the same shelving background. His outfit and location remain stable while the object changes; the montage conveys several interests before the room-wide problem appears. The old pass names individual props, but the transferable mechanism depends on repeated framing and changing silhouettes rather than their exact inventory.",
+    "sound": "The prior AV pass reports percussive accents around the swaps. Precise one-hit-per-cut synchronization was not independently measured.",
+    "purpose": "Creative inference: The stable person provides continuity while each new shape supplies a small surprise. Multiple interests become a compressed visual biography rather than a spoken list.",
+    "recipe": [
+      "Lock lens, camera height and actor foot position.",
+      "Capture each prop at a comparable torso height with a readable silhouette.",
+      "Cut between settled poses or compatible hand gestures.",
+      "Keep the background stable enough that the eye notices the changed object first.",
+      "Use selected rhythmic accents and follow with a wider contextual reveal."
+    ],
+    "assets": "One actor, three or four meaningful props, locked camera and repeatable light.",
+    "difficulty": "Low to medium; performance and prop continuity carry it.",
+    "failure": "Tiny similar objects become unreadable at this speed. Excessive actor position drift makes the edit look accidental instead of controlled.",
+    "reuse": "Use for occupations, hobbies, input formats, product variants or several jobs handled by one tool."
+  },
+  {
+    "id": "E046",
+    "name": "Pull the metaphor back into its spatial consequence",
+    "category": "Context-reveal cut",
+    "film_rank": 6,
+    "source_url": "https://vimeo.com/926031195",
+    "source_version": "Exact selected 15.019-second Home Office film",
+    "time_range": "00:00.000–00:03.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-06-ikea-kreativ/report.md",
+      "specs/launch-research/deep/rank-06-ikea-kreativ/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-06-ikea-kreativ/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The close sequence of the man’s hobby possessions gives way to a wider room containing bulky belongings and a woman working at a desk. The opening’s objects are no longer isolated visual jokes: the wider composition reveals that they compete with another activity for space. This is an editorial scale change, not evidence of a digital zoom or hidden transition.",
+    "sound": "The rhythmic bed continues into the wider room. A unique reveal impact is not independently established.",
+    "purpose": "Creative inference: The second image changes the meaning of the first. What seemed like personality becomes a legible spatial problem without needing a paragraph of problem narration.",
+    "recipe": [
+      "Choose details that can be recognized again within a wider environment.",
+      "Shoot tight compositions that initially withhold the practical consequence.",
+      "Stage the wide so a human activity and obstructing objects occupy distinct readable areas.",
+      "Cut to the wide before the prop gag becomes repetitive.",
+      "Allow a short comprehension hold before moving into the product interaction."
+    ],
+    "assets": "Tight prop takes, one well-blocked room master, shared light and recurring objects.",
+    "difficulty": "Low; good staging matters more than postproduction.",
+    "failure": "If none of the details recur, the wider shot feels like unrelated B-roll. Too many simultaneous obstacles make the intended conflict ambiguous.",
+    "reuse": "Useful for inbox overload, a crowded desk, wardrobe choice, a creative workshop or any problem best understood through context."
+  },
+  {
+    "id": "E047",
+    "name": "Outline the clutter before erasing it",
+    "category": "Selection-to-transformation graphics",
+    "film_rank": 6,
+    "source_url": "https://vimeo.com/926031195",
+    "source_version": "Exact selected 15.019-second Home Office film",
+    "time_range": "00:05.000–00:08.667",
+    "evidence": [
+      "specs/launch-research/deep/rank-06-ikea-kreativ/report.md",
+      "specs/launch-research/deep/rank-06-ikea-kreativ/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-06-ikea-kreativ/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The phone-framed room receives colored vector-like outlines around belongings. Objects clear away, and a new arrangement with storage, plants and a desk appears within recognizable room geometry. The outlines make the targeted objects visible before the larger change. This is the film’s stylized depiction of the operation, not an independent verification of detection accuracy or literal physical removal.",
+    "sound": "The prior AV pass describes scanning-like sound and an uplifting musical progression; exact sound sources and synchronization are unverified.",
+    "purpose": "Creative inference: The viewer gets a causal sequence: these are the selected things, this is what changes, this is the result. A small graphic stage makes a large transformation easier to follow.",
+    "recipe": [
+      "Begin with an unobstructed view of the original room.",
+      "Track only the relevant object boundaries, keeping line weight readable at delivery size.",
+      "Give the outline a brief lead before removal or replacement.",
+      "Reveal the revised arrangement while preserving walls and viewpoint.",
+      "Fade the selection graphics once the result can speak for itself."
+    ],
+    "assets": "Before and after plates or renders, object masks, camera tracking, limited outline palette.",
+    "difficulty": "Medium to high depending on camera movement.",
+    "failure": "Persistent outlines over every surface compete with the result. Instant physical erasure can overpromise functionality unless identified as visualization.",
+    "reuse": "Adapt to selection, cleanup, replacement, annotation or comparison whenever viewers need to see precisely what an action affects."
+  },
+  {
+    "id": "E048",
+    "name": "A reaction shot acts as a buffer between preview and payoff",
+    "category": "Preview–reaction–room relay",
+    "film_rank": 6,
+    "source_url": "https://vimeo.com/926031195",
+    "source_version": "Exact selected 15.019-second Home Office film",
+    "time_range": "00:08.667–00:12.167",
+    "evidence": [
+      "specs/launch-research/deep/rank-06-ikea-kreativ/report.md",
+      "specs/launch-research/deep/rank-06-ikea-kreativ/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-06-ikea-kreativ/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The film leaves the redesigned phone view, shows the man holding and lowering the phone with a satisfied reaction, then cuts to the physical-looking room matching the planned arrangement. His response sits between the virtual preview and the wide result. This is a sequence of views; the evidence does not justify calling it a seamless screen-portal effect.",
+    "sound": "The prior AV review reports musical resolution through the reaction and a bright accent with the final room. Exact beat timing remains unmeasured.",
+    "purpose": "Creative inference: The face gives the audience an emotional interpretation while the brief separation lets the edit jump from proposal to imagined outcome without explaining every intermediate step.",
+    "recipe": [
+      "Show the result clearly on the device first.",
+      "Record a restrained reaction looking toward the same room direction.",
+      "Use the lowering phone to end the device-focused beat.",
+      "Cut to a room master with comparable anchors and placement.",
+      "Identify imagined outcomes when the product does not literally change the physical room."
+    ],
+    "assets": "Device insert, actor reaction, matching room result or render, continuity notes.",
+    "difficulty": "Low for ordinary cutting; medium for composited result footage.",
+    "failure": "An exaggerated reaction can look like testimonial acting. A mismatched room forces the viewer to reconstruct geography and weakens the payoff.",
+    "reuse": "Use after previews, simulations, photo edits or design choices when the human consequence matters as much as the output."
+  },
+  {
+    "id": "E049",
+    "name": "Suspend many objects, then give each a destination",
+    "category": "Directed levitation",
+    "film_rank": 11,
+    "source_url": "https://player.vimeo.com/video/713330048?h=9345467d00",
+    "source_version": "27.008-second Bedroom film from credited Soundery page; not asserted byte-identical to originally selected705647639",
+    "time_range": "00:00.000–00:06.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-11-tylko/report.md",
+      "specs/launch-research/deep/rank-11-tylko/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-11-tylko/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "Clothes, pillows and belongings hover in a bedroom. Subsequent views move over the bed and follow garments toward open storage; clothing enters a wardrobe. The sequence progresses from spatial suspension to destination rather than simply displaying floating objects indefinitely. Furniture is already visible at the opening, so this is not a delayed product reveal.",
+    "sound": "The prior AV pass reports instrumental music, soft motion sounds and settling accents. The credited sound account describes a warm organic intention, not verified isolated stems.",
+    "purpose": "Creative inference: Weightlessness creates curiosity; directional arrival provides satisfaction. The furniture becomes the answer to a visual question about where the possessions belong.",
+    "recipe": [
+      "Lay out final destinations before animating or filming any floating object.",
+      "Use a small number of readable silhouettes at different depths.",
+      "Keep initial movement slow enough to establish suspension.",
+      "Give each object a clear curved path toward a visible storage opening.",
+      "Cut closer for arrival and let the motion settle rather than stop abruptly."
+    ],
+    "assets": "Object models or suspended-object plates, room scene, shadows, arrival details.",
+    "difficulty": "High for many convincing objects; medium for a small controlled set.",
+    "failure": "Random drifting has no payoff. Intersecting paths and incorrect occlusion reveal the effect and make the room hard to understand.",
+    "reuse": "Use for organization, imports, asset gathering, modular systems or a collection finding its final structure."
+  },
+  {
+    "id": "E050",
+    "name": "Tiny objects land in an overhead composition",
+    "category": "Surface choreography",
+    "film_rank": 11,
+    "source_url": "https://player.vimeo.com/video/713330048?h=9345467d00",
+    "source_version": "27.008-second Bedroom film from credited Soundery page; not asserted byte-identical to originally selected705647639",
+    "time_range": "00:06.000–00:10.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-11-tylko/report.md",
+      "specs/launch-research/deep/rank-11-tylko/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-11-tylko/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The film moves into bedside details and an overhead view as small belongings settle on a blue unit. It then returns to a fuller view of the organized bedside arrangement. The overhead angle makes spacing between objects readable; the wider return establishes how this miniature composition belongs beside the bed. Fine branding on the objects is unreliable at360p.",
+    "sound": "The prior AV report describes gentle landing and closure accents beneath a continuous instrumental track. Do not assign a specific material sound to every object.",
+    "purpose": "Creative inference: Small precise arrivals make an abstract organization claim feel tactile. The top-down view temporarily turns everyday possessions into a clean graphic arrangement.",
+    "recipe": [
+      "Build the final overhead arrangement with intentionally different object shapes.",
+      "Record or animate each arrival separately so spacing remains controlled.",
+      "Stagger arrivals rather than moving everything at the same instant.",
+      "Use soft contact shadows and a modest settling motion.",
+      "Cut back to the bedside wide once the composition is complete."
+    ],
+    "assets": "Top-down plate or render, individual object layers, surface shadows, room-wide matching view.",
+    "difficulty": "Medium; precision is achievable with a small object count.",
+    "failure": "Excessive bounce makes heavy objects feel like toys. Omitting the wider return leaves the effect disconnected from the furniture’s use.",
+    "reuse": "Useful for a desk kit, feature bundle, shopping selection, toolkit or any small collection that benefits from visible order."
+  },
+  {
+    "id": "E051",
+    "name": "Hold the furniture silhouette while finishes change",
+    "category": "Registered material variants",
+    "film_rank": 11,
+    "source_url": "https://player.vimeo.com/video/713330048?h=9345467d00",
+    "source_version": "27.008-second Bedroom film from credited Soundery page; not asserted byte-identical to originally selected705647639",
+    "time_range": "00:12.833–00:14.333",
+    "evidence": [
+      "specs/launch-research/deep/rank-11-tylko/report.md",
+      "specs/launch-research/deep/rank-11-tylko/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-11-tylko/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The bedside unit cycles through color variants in closely related framing. The stable form allows the changing finish to become the principal event. The prior AV describes blue, white and dark red variations, but fine material properties are not resolved by the low-resolution source. Do not interpret this advertising sequence as evidence of an interactive software material editor.",
+    "sound": "The continuous instrumental underlies the short variant sequence. Exact accents on individual color changes are not verified.",
+    "purpose": "Creative inference: Choice feels abundant without introducing a new environment for every option. Holding the silhouette reduces the effort required to compare the variants.",
+    "recipe": [
+      "Fix camera, geometry and lighting for every version.",
+      "Prepare separate material passes with the same object coordinates.",
+      "Change finish on a deliberate rhythmic pattern while preserving texture scale.",
+      "Hold the preferred or most distinctive version longer at the end.",
+      "If using live action, match the product’s edges before applying any finishing transition."
+    ],
+    "assets": "Registered render passes or carefully matched product plates; finish masks and shared lighting.",
+    "difficulty": "Low to medium for renders, higher for physical furniture.",
+    "failure": "Changing light or camera position along with color prevents comparison. Flat hue replacement can destroy highlights and make the material look painted over.",
+    "reuse": "Use for product colors, themes, surface treatments, branding variants or collections where form should remain the visual anchor."
+  },
+  {
+    "id": "E052",
+    "name": "Reveal the internal order, then close the outer shell",
+    "category": "Compartment payoff",
+    "film_rank": 11,
+    "source_url": "https://player.vimeo.com/video/713330048?h=9345467d00",
+    "source_version": "27.008-second Bedroom film from credited Soundery page; not asserted byte-identical to originally selected705647639",
+    "time_range": "00:14.333–00:22.833",
+    "evidence": [
+      "specs/launch-research/deep/rank-11-tylko/report.md",
+      "specs/launch-research/deep/rank-11-tylko/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-11-tylko/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "A larger storage unit is followed by an organized drawer close-up, changing contents, objects settling on its top, luggage entering wardrobe storage and doors closing. The sequence alternates outer form with internal capacity. The exact first frame of every action is not independently verified; these are navigation ranges from the complete AV pass.",
+    "sound": "Soft movement and closure accents accompany the continuous instrumental. The evidence supports a tactile relationship, not a measured assertion that every closure lands on a beat.",
+    "purpose": "Creative inference: The edit lets viewers see that the clean exterior has a meaningful interior. Closing becomes a payoff because the organizational work has already been shown.",
+    "recipe": [
+      "Start with the storage object’s recognizable exterior.",
+      "Cut inside to a compartment with a readable gap waiting for an object.",
+      "Show the item arriving and occupying that gap.",
+      "Return to the exterior and complete a door or drawer closure.",
+      "Let the last closure settle into a wider finished composition."
+    ],
+    "assets": "Exterior and interior views, organized contents, controlled opening/closing motion, restrained Foley.",
+    "difficulty": "Medium; a practical drawer can deliver a smaller version.",
+    "failure": "Closing before viewers see the contents turns the action into decorative movement. Implausible capacity or intersections can undermine the physical promise.",
+    "reuse": "Use for storage, packaging, app containers, collections or processes where internal organization should explain a clean final appearance."
+  },
+  {
+    "id": "E053",
+    "name": "Packaging material bridges moving home and installing a product",
+    "category": "Material continuity",
+    "film_rank": 12,
+    "source_url": "https://vimeo.com/156330951",
+    "source_version": "Exact selected 60.096-second Sonos / Apple Music film",
+    "time_range": "00:15.000–00:21.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-12-sonos/report.md",
+      "specs/launch-research/deep/rank-12-sonos/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-12-sonos/coverage.json",
+      "specs/launch-research/editing-audit/rank-12-visual-recheck.md",
+      "specs/launch-research/editing-audit/rank-12-setup-contact-sheet.jpg",
+      "specs/launch-research/editing-audit/rank-12-clip-2.txt",
+      "specs/launch-research/editing-audit/rank-12-clip-2.log"
+    ],
+    "verification": "fresh clip audit plus prior full-film AV; sound remains prior AV",
+    "observed": "Moving boxes and wrapping surround a person; the edit narrows toward handling packaging and lifting a product box. Fresh sampled source frames confirm crinkled wrapping and a lid/box lifted to expose its contents, followed by another household handling a long speaker. This is a material link across shots and people, not a single continuous unboxing.",
+    "sound": "The prior AV report describes rustling packaging under speech and music. Fresh visual review supplies no new audio validation, so a particular rustle-to-cut alignment remains uncertain.",
+    "purpose": "Creative inference: The technology joins an existing life event. The repeated packaging makes the product entrance feel physically motivated instead of an inserted studio advertisement.",
+    "recipe": [
+      "Establish the everyday material in a wider human situation.",
+      "Record a closer action with the same material around the product.",
+      "Cut on a clear lift, peel or hand movement.",
+      "Keep enough environmental detail to preserve the domestic setting.",
+      "Continue into use rather than ending on the revealed object alone."
+    ],
+    "assets": "Wide lifestyle footage, packaging close-ups, hands/product action, clean but recognizable room sound.",
+    "difficulty": "Low; straightforward coverage and thoughtful sequencing.",
+    "failure": "Overly pristine isolated unboxing may break the documentary tone. Do not imply the two households are one continuous action.",
+    "reuse": "Use recurring paper, fabric, bags, cables or tools to connect an emotional setup with a product’s first appearance.",
+    "time_basis": "Source navigation range from prior full-film report. Fresh clip2 reports clip-relative times; source offset is18 seconds. E053 corroborated clip00:00.000–00:03.000; E054 clip00:03.000–00:07.875; E055 partly corroborated clip00:10.000–00:15.000."
+  },
+  {
+    "id": "E054",
+    "name": "Hand, device, speaker, listener form a causal relay",
+    "category": "Physical–digital shot chain",
+    "film_rank": 12,
+    "source_url": "https://vimeo.com/156330951",
+    "source_version": "Exact selected 60.096-second Sonos / Apple Music film",
+    "time_range": "00:18.833–00:28.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-12-sonos/report.md",
+      "specs/launch-research/deep/rank-12-sonos/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-12-sonos/coverage.json",
+      "specs/launch-research/editing-audit/rank-12-visual-recheck.md",
+      "specs/launch-research/editing-audit/rank-12-setup-contact-sheet.jpg",
+      "specs/launch-research/editing-audit/rank-12-clip-2.txt",
+      "specs/launch-research/editing-audit/rank-12-clip-2.log"
+    ],
+    "verification": "fresh clip audit plus prior full-film AV; sound remains prior AV",
+    "observed": "Fresh source frames show a speaker handled and placed near a foreground plant, an angled phone in a hand, a finger selecting a music service, a speaker-front view and a listening reaction. Each cut changes the scale of attention while maintaining the conceptual action: install, select, emit, receive. The sequence crosses households and is not a continuous camera move or literal matched transformation.",
+    "sound": "The prior AV pass reports music, conversation and interface-like accents. The precise point at which music becomes diegetic rather than score cannot be settled from the sampled frames.",
+    "purpose": "Creative inference: Invisible software causality becomes visible through a chain of physical consequences. The listener prevents the interface from becoming the end of the demonstration.",
+    "recipe": [
+      "Film the physical setup with an environmental anchor.",
+      "Show one legible input on the actual device.",
+      "Cut to the output object or changed state.",
+      "Finish with a person responding through a small observable action.",
+      "Keep the sequence short enough that the initiating input is still remembered."
+    ],
+    "assets": "Hands/setup shot, readable screen insert, output detail, listener reaction.",
+    "difficulty": "Low to medium; phone exposure and action clarity are the main challenges.",
+    "failure": "Too many intermediate screens break the causal memory. A reaction without an observable output can feel like unsupported praise.",
+    "reuse": "Adapt to send/receive, scan/result, command/action, payment/receipt or any software effect with a physical consequence.",
+    "time_basis": "Source navigation range from prior full-film report. Fresh clip2 reports clip-relative times; source offset is18 seconds. E053 corroborated clip00:00.000–00:03.000; E054 clip00:03.000–00:07.875; E055 partly corroborated clip00:10.000–00:15.000."
+  },
+  {
+    "id": "E055",
+    "name": "Ordinary chores acquire a common movement rhythm",
+    "category": "Routine-to-dance montage",
+    "film_rank": 12,
+    "source_url": "https://vimeo.com/156330951",
+    "source_version": "Exact selected 60.096-second Sonos / Apple Music film",
+    "time_range": "00:28.000–00:40.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-12-sonos/report.md",
+      "specs/launch-research/deep/rank-12-sonos/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-12-sonos/coverage.json",
+      "specs/launch-research/editing-audit/rank-12-visual-recheck.md",
+      "specs/launch-research/editing-audit/rank-12-setup-contact-sheet.jpg",
+      "specs/launch-research/editing-audit/rank-12-clip-2.txt",
+      "specs/launch-research/editing-audit/rank-12-clip-2.log"
+    ],
+    "verification": "fresh clip audit plus prior full-film AV; sound remains prior AV",
+    "observed": "Bathroom and kitchen routines lead into playful movement and dancing across different rooms. Fresh whole-source frames corroborate brushing teeth, washing activity, children and adults moving, packaging removal and phone controls within the larger montage. They do not establish a single family’s before/after transformation or frame-perfect matches between gestures.",
+    "sound": "The earlier AV review describes an increasing rhythmic music bed and household activity sounds. Exact music onset and percussive cut alignment are not independently measured.",
+    "purpose": "Creative inference: Everyday actions become the raw material for energy. The product’s emotional world extends beyond a posed performance while recurring movement keeps separate households related.",
+    "recipe": [
+      "Collect ordinary actions containing clear repetitions: scrub, lift, step, shake or turn.",
+      "Order shots so the scale of bodily movement gradually increases.",
+      "Match a few broad motion directions without forcing every cut into a match.",
+      "Interleave one relevant control shot to retain the product connection.",
+      "Preserve recognizably spontaneous gestures and imperfections."
+    ],
+    "assets": "Routine B-roll, movement-focused performance footage, one product-control insert, continuous music.",
+    "difficulty": "Medium; variety needs editorial selection rather than expensive effects.",
+    "failure": "Unrelated dancing can become generic stock montage. Claiming the product caused every emotional change overstates what a montage demonstrates.",
+    "reuse": "Useful for films about creativity, music, exercise, learning or tools whose value is expressed through activity.",
+    "time_basis": "Source navigation range from prior full-film report. Fresh clip2 reports clip-relative times; source offset is18 seconds. E053 corroborated clip00:00.000–00:03.000; E054 clip00:03.000–00:07.875; E055 partly corroborated clip00:10.000–00:15.000."
+  },
+  {
+    "id": "E056",
+    "name": "End the energetic montage on close human stillness",
+    "category": "Density-release ending",
+    "film_rank": 12,
+    "source_url": "https://vimeo.com/156330951",
+    "source_version": "Exact selected 60.096-second Sonos / Apple Music film",
+    "time_range": "00:48.400–00:59.083",
+    "evidence": [
+      "specs/launch-research/deep/rank-12-sonos/report.md",
+      "specs/launch-research/deep/rank-12-sonos/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-12-sonos/coverage.json",
+      "specs/launch-research/editing-audit/rank-12-visual-recheck.md",
+      "specs/launch-research/editing-audit/rank-12-setup-contact-sheet.jpg"
+    ],
+    "verification": "prior full-film AV; fresh sampled source-frame visual check",
+    "observed": "The later montage includes play, photos and movement, followed by close adult/child contact and a candlelit dinner image with brand identities. Fresh source sampling confirms that the ending reduces motion and narrows attention to personal contact. The raw report’s specific gender claim for the adult in the child scene is not adopted.",
+    "sound": "The full AV review describes a gentler ending with musical decay and domestic ambience. New source-frame checks cannot verify breathing, silence or individual mix automation.",
+    "purpose": "Creative inference: Energy has somewhere to land. A quieter physical gesture can make the close feel intimate and memorable without adding another spectacle or spoken benefit list.",
+    "recipe": [
+      "Build a short sequence of increasingly active human moments.",
+      "Choose a close detail with a clear reduction in motion.",
+      "Give the calmer shot longer perceptual space than the preceding fragments.",
+      "Allow the score to resolve instead of introducing another rhythmic build.",
+      "Place branding where it does not obscure the human contact."
+    ],
+    "assets": "Active montage coverage, intimate closing take, music ending and environmental sound.",
+    "difficulty": "Low; selecting and holding the right performance is the main work.",
+    "failure": "Artificially sentimental acting can feel manipulative. Dropping sound to absolute silence without a narrative reason can appear like a playback fault.",
+    "reuse": "Use to close energetic launch films, event recaps or emotional product stories with a human consequence."
+  },
+  {
+    "id": "E057",
+    "name": "A geometric shape survives changes of medium",
+    "category": "Shape-governed hard-cut chain",
+    "film_rank": 15,
+    "source_url": "https://vimeo.com/142497378",
+    "source_version": "Exact selected 60.117333-second Creative Freedom film",
+    "time_range": "00:00.000–00:12.333",
+    "evidence": [
+      "specs/launch-research/deep/rank-15-dropbox/report.md",
+      "specs/launch-research/deep/rank-15-dropbox/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-15-dropbox/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The film begins on a blank rectangular page and cuts to a memory card, then moves through creative objects, framed images, animation and other media. The shared compositional geometry keeps unlike subjects related. The director’s credited interview describes a hard-cut rule and a progression from rectangle toward circle; that production account supports the design principle without making every individual cut an exact match.",
+    "sound": "The AV pass reports voiceover and a rhythmic music bed. Beat-perfect synchronization across all cuts was not measured and should not be assumed.",
+    "purpose": "Creative inference: Variety feels authored because one visual property stays consistent. The viewer discovers connections rather than needing a fancy transition to explain each change.",
+    "recipe": [
+      "Choose one dominant shape and screen position before sourcing footage.",
+      "Select shots whose natural subjects already contain it.",
+      "Crop or stage the subjects to a comparable size without distorting them.",
+      "Use clean hard cuts so the image relationship does the transition work.",
+      "Gradually evolve the governing shape only when the larger argument changes."
+    ],
+    "assets": "Mixed-media clips, composition reference grid, consistent crop and palette guide.",
+    "difficulty": "Medium; curation is more demanding than the edit operation.",
+    "failure": "Artificial masks over unrelated subjects can look like a template. If position and scale vary wildly, the geometric thread disappears.",
+    "reuse": "Use across disciplines, features, customer types or manufacturing stages when breadth should still feel like one film."
+  },
+  {
+    "id": "E058",
+    "name": "A technical drawing is physically crumpled into a new shape",
+    "category": "Material rupture",
+    "film_rank": 15,
+    "source_url": "https://vimeo.com/142497378",
+    "source_version": "Exact selected 60.117333-second Creative Freedom film",
+    "time_range": "00:19.167–00:22.500",
+    "evidence": [
+      "specs/launch-research/deep/rank-15-dropbox/report.md",
+      "specs/launch-research/deep/rank-15-dropbox/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-15-dropbox/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "Hands grasp a technical drawing and crumple it into a tight paper ball. The action interrupts the surrounding rapid creative imagery and changes a flat rectangular artifact into a volumetric rounded object. The prior editorial review treats this as a tactile turning point; it does not identify a seamless morph or establish the original fabrication method.",
+    "sound": "The AV pass reports audible paper crumpling among the material effects. The exact waveform onset relative to the cut has not been checked.",
+    "purpose": "Creative inference: A familiar gesture introduces imperfection and revision while visibly advancing the film’s geometry. Destruction becomes a constructive transition rather than an arbitrary glitch.",
+    "recipe": [
+      "Begin with a readable flat drawing or document in a controlled overhead composition.",
+      "Record hands entering and visibly compressing the material.",
+      "Keep the evolving shape within a stable central region.",
+      "Let the crumple sound briefly become prominent against the bed.",
+      "Use the final rounded form to motivate a subsequent circular composition."
+    ],
+    "assets": "Printed document, practical hand performance, overhead camera, close paper Foley.",
+    "difficulty": "Low; a strong practical action supplies the effect.",
+    "failure": "Cutting away before the shape resolves loses the bridge. Using destructive imagery for a product promising preservation can communicate the wrong value.",
+    "reuse": "Useful for iteration, discarded assumptions, changing direction, playful failure or moving from rigid plans to possibilities."
+  },
+  {
+    "id": "E059",
+    "name": "A real launch cuts to a miniature launch",
+    "category": "Scale-and-material substitution",
+    "film_rank": 15,
+    "source_url": "https://vimeo.com/142497378",
+    "source_version": "Exact selected 60.117333-second Creative Freedom film",
+    "time_range": "00:46.000–00:47.333",
+    "evidence": [
+      "specs/launch-research/deep/rank-15-dropbox/report.md",
+      "specs/launch-research/deep/rank-15-dropbox/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-15-dropbox/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "The prior full AV pass records a large rocket lifting through smoke followed by a toy-like rocket against a light background with cotton-like clouds. Both images share the upward launch idea while their materials and scale change. The timing is a broad returned scene range, not a measured matched-motion boundary; exact alignment of the two rockets is unverified.",
+    "sound": "The AV review includes rocket-like rumble within the sound palette, but it does not verify whether that sound bridges this particular cut.",
+    "purpose": "Creative inference: A monumental event becomes playful and attainable. The cut links professional ambition and handmade creativity through the same action rather than through explanatory words.",
+    "recipe": [
+      "Choose an action recognizable at both large and miniature scales.",
+      "Match broad travel direction and approximate subject placement.",
+      "Cut near a comparable action phase while retaining the obvious material difference.",
+      "Keep the miniature treatment deliberately tactile rather than disguising it as full scale.",
+      "Optionally carry a shared sound across the cut; that is a proposed remake choice."
+    ],
+    "assets": "Licensed large-scale footage, miniature practical or animated shot, matching movement direction.",
+    "difficulty": "Medium; the concept is simple but matching usable footage takes care.",
+    "failure": "If action or orientation differs too much, the cut reads as unrelated montage. Overpolishing the miniature removes the pleasure of the material switch.",
+    "reuse": "Use for prototypes becoming products, ambitious ideas, physical/digital counterparts or creative processes at different scales."
+  },
+  {
+    "id": "E060",
+    "name": "The recurring circle finally becomes a completion symbol",
+    "category": "Motif-to-interface resolution",
+    "film_rank": 15,
+    "source_url": "https://vimeo.com/142497378",
+    "source_version": "Exact selected 60.117333-second Creative Freedom film",
+    "time_range": "00:47.333–00:54.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-15-dropbox/report.md",
+      "specs/launch-research/deep/rank-15-dropbox/raw-full-lite-1.md",
+      "specs/launch-research/deep/rank-15-dropbox/coverage.json"
+    ],
+    "verification": "prior full-film AV",
+    "observed": "A dense succession of circular diagrams and objects leads into a blue rotating syncing/loading-like symbol, which resolves into a green completion mark. The visual shape that connected the montage now has a product-associated function. The director’s shape framework corroborates the conceptual progression; the raw AV’s tiny shot timings are not an exhaustive edit decision list.",
+    "sound": "The AV pass reports rhythmic build and a resolving musical close with interface-like punctuation. A precise completion chime or timing relationship is not independently verified.",
+    "purpose": "Creative inference: The abstract montage earns a destination. The viewer can retrospectively understand why circles kept appearing, and the final stable mark supplies release after visual density.",
+    "recipe": [
+      "Establish circular subjects across several earlier shots.",
+      "Tighten their position and scale as the montage approaches its peak.",
+      "Cut to an actual interface symbol with comparable geometry.",
+      "Let the symbol complete a meaningful state change.",
+      "Hold the resolved state before entering sparse branding or explanatory text."
+    ],
+    "assets": "Circular imagery bank, matching UI graphic, state-change animation, resolving sound design.",
+    "difficulty": "Medium; the payoff depends on earlier setup more than complex animation.",
+    "failure": "A loading symbol without a real narrative destination can imply waiting rather than completion. Never use it to fabricate a successful product operation.",
+    "reuse": "Use for syncing, publishing, exporting, organizing, approvals or other workflows whose completion has a recognizable visual state."
+  },
+  {
+    "id": "E061",
+    "name": "A window lights up before the film goes inside",
+    "category": "In-frame state change",
+    "film_rank": 8,
+    "source_url": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "00:12.630–00:15.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-08-ikea-make-room/report.md",
+      "specs/launch-research/deep/rank-08-ikea-make-room/coverage.json",
+      "specs/launch-research/editing-audit/rank-08-clip-1.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "A hard cut replaces an angular modern facade with an older brick house at dusk. Warm window lights come on while the exterior composition holds. The following floor-level interior activity converts the window from a patch of architecture into a hint of occupied life. The fresh report calls its times clip-relative but returns source-range values; these are navigation values, not verified edit points.",
+    "sound": "The music continues through the exterior and interior sequence. A precisely synchronized light-switch click is not established.",
+    "purpose": "Creative inference: A small change inside an otherwise still frame creates anticipation. The warmth promises an interior world before the edit admits the viewer into it.",
+    "recipe": [
+      "Record a stable exterior with an identifiable window and useful contrast between room light and surroundings.",
+      "Capture light-off and light-on states without altering exposure, framing or white balance.",
+      "Hold the dark state before changing only the window area; preserve reflections and facade texture.",
+      "Cut to an interior action after the illuminated window has registered; keep the musical phrase continuous."
+    ],
+    "assets": "Exterior plate, controlled room lighting or matched lit window plate, corresponding interior footage.",
+    "difficulty": "Low with access to a controllable window; moderate for composite.",
+    "failure": "An exposure jump brightens the entire image and makes the intended local change indistinct.",
+    "reuse": "Opening a hidden world, introducing a household, activating a building, signaling a human presence."
+  },
+  {
+    "id": "E062",
+    "name": "A footfall upstairs earns a reaction downstairs",
+    "category": "Causal cut across unseen space",
+    "film_rank": 8,
+    "source_url": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "00:15.000–00:19.974",
+    "evidence": [
+      "specs/launch-research/deep/rank-08-ikea-make-room/report.md",
+      "specs/launch-research/deep/rank-08-ikea-make-room/coverage.json",
+      "specs/launch-research/editing-audit/rank-08-clip-1.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "Low floor-level coverage of running legs and a jump onto a yellow ottoman is followed by a darker bedroom where a person looks upward and raises a broom toward the ceiling. The shared building geography is inferred through action and reaction rather than established by a literal floor plan.",
+    "sound": "Continuous music underlies the sequence. Footsteps are reported in the focused pass; an isolated ceiling-impact stem was not verified.",
+    "purpose": "Creative inference: The cut makes separate rooms feel connected and gives energetic domestic behavior a comic consequence. It constructs a world through cause and response rather than an explanatory map.",
+    "recipe": [
+      "Shoot the initiating action with a clear moment of impact or disturbance.",
+      "Record a reaction angle that points toward the implied direction of the source.",
+      "Cut after the cause becomes identifiable but before its energy dissipates.",
+      "Carry the disturbance sound briefly into the reaction room, then let that room’s response take over; this overlap is a proposed mix choice."
+    ],
+    "assets": "Two room angles, actor reaction, consistent upward/downward cues, impact and room-tone recordings.",
+    "difficulty": "Low; geography and timing are the main work.",
+    "failure": "A reaction precedes the visible cause, or the eye-line points sideways and suggests an unrelated event.",
+    "reuse": "Neighbor stories, distributed teams, one action affecting another user, linked spaces."
+  },
+  {
+    "id": "E063",
+    "name": "A hush gesture launches movement without stopping the music",
+    "category": "Visual counterpoint",
+    "film_rank": 8,
+    "source_url": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "00:58.900–01:00.000; 01:00.100",
+    "evidence": [
+      "specs/launch-research/deep/rank-08-ikea-make-room/report.md",
+      "specs/launch-research/deep/rank-08-ikea-make-room/coverage.json",
+      "specs/launch-research/editing-audit/rank-08-clip-3.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "A child’s finger-to-lips gesture in a blanket fort precedes a cut to dancing feet and a more kinetic run of domestic activity. The exact boundary differs between sampled passes; these are the earlier dedicated sound-recheck navigation times. Both rechecks support a hush-to-movement contrast, not a silent pause followed by a musical drop.",
+    "sound": "The beat, bass and melodic music remain continuous. The earlier 10fps sound check hears a soft whisper accent near 01:00.000; the newer pass does not isolate it. Do not fabricate full silence.",
+    "purpose": "Creative inference: The picture briefly asks for quiet while the soundtrack maintains momentum. The next shot playfully contradicts that request and releases the visual restraint.",
+    "recipe": [
+      "Establish a compact, low-motion frame with a clearly readable quieting gesture.",
+      "Prepare a contrasting shot with immediate movement at a different camera height.",
+      "Cut once the gesture can be recognized, without inserting an explanatory title.",
+      "Keep the music continuous; if adding a whisper, make it a small foreground detail rather than an obligatory full-track mute."
+    ],
+    "assets": "Quiet gesture coverage, dance/action insert, continuous music bed, optional recorded whisper.",
+    "difficulty": "Low.",
+    "failure": "A stock riser and exaggerated bass drop turn the contrast into a different, louder mechanism.",
+    "reuse": "Playful contradiction, concealed activity, a short intake before montage, controlled misdirection."
+  },
+  {
+    "id": "E064",
+    "name": "Pull away from one room until the building carries the ending",
+    "category": "Architectural scale reveal",
+    "film_rank": 8,
+    "source_url": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "01:19.250–01:19.625; 01:21.000–01:22.000; 01:24.000–01:24.500",
+    "evidence": [
+      "specs/launch-research/deep/rank-08-ikea-make-room/report.md",
+      "specs/launch-research/deep/rank-08-ikea-make-room/coverage.json",
+      "specs/launch-research/editing-audit/rank-08-clip-4.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "The ending moves from an intimate interior toward a wider nighttime building view, followed by title and brand graphics over the facade. The focused pass describes a window-crossing pullback, but whether that bridge is continuous, stitched or a cut is not established. The reliable effect is the scale progression and the building remaining visible beneath the ending graphics.",
+    "sound": "Music continues into the wide exterior and resolves with the closing graphics. Exact city sounds, punctuation frames and music-stem changes are uncertain.",
+    "purpose": "Creative inference: One private moment becomes part of a larger inhabited world. A contextual end frame preserves the emotional setting while giving the brand a larger canvas.",
+    "recipe": [
+      "Choose an interior window that can be identified in the exterior composition.",
+      "Plan interior and exterior frames with matching window proportions and travel direction.",
+      "Bridge them with a cut or a separately built camera transition; use a simple cut if a stitched move cannot preserve perspective.",
+      "Place the final type where the building supports legibility, then let the exterior movement settle before the final hold."
+    ],
+    "assets": "Interior and exterior plates, window reference measurements, end typography, optional camera projection.",
+    "difficulty": "Moderate for scale cuts; high for a convincing continuous window pullback.",
+    "failure": "A floating title drifts against the architecture, or the camera pulls away so fast that the human ending vanishes before it is felt.",
+    "reuse": "Closing a local story with broader scope, community products, real places as brand surfaces."
+  },
+  {
+    "id": "E065",
+    "name": "The screen changes while its material setting holds",
+    "category": "Tactile content substitution",
+    "film_rank": 13,
+    "source_url": "https://sandwich.co/work/not-like-the-others/",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "00:00.000–00:04.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-13-daylight/report.md",
+      "specs/launch-research/deep/rank-13-daylight/coverage.json",
+      "specs/launch-research/editing-audit/rank-13-clip-1.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "A tablet rests on textured stone in sunlight. Botanical illustrations cycle on its display while the device frame, stone and surrounding foliage remain visually stable. The film changes the content inside a credible physical object instead of opening on a floating interface.",
+    "sound": "The fresh pass reports continuous music and outdoor ambience; it does not establish an audible click for every page change.",
+    "purpose": "Creative inference: The static material world makes the changing display feel tangible. Matching the illustrated subject to the surrounding natural textures creates coherence without requiring a literal morph.",
+    "recipe": [
+      "Choose a surface and nearby objects whose texture complements the content.",
+      "Lock the camera and exposure; record a clean display reference with visible glass and edge details.",
+      "Change only the screen content, either practically or through a corner-pinned replacement that retains reflections.",
+      "Hold at least one complete content state before cutting to a hand interaction, so the viewer understands the object."
+    ],
+    "assets": "Device, stone/wood/textile surface, related content sequence, screen mask if replacement is needed.",
+    "difficulty": "Low practical; moderate for reflective screen replacement.",
+    "failure": "Perfectly bright pasted-on UI ignores shadows and makes the device look like a flat mockup.",
+    "reuse": "Creative tools, digital paper, catalogs, maps, books, hardware with a strong material identity."
+  },
+  {
+    "id": "E066",
+    "name": "Sunlight provides the backdrop for a wordmark reveal",
+    "category": "Environmental light punctuation",
+    "film_rank": 13,
+    "source_url": "https://sandwich.co/work/not-like-the-others/",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "00:06.875–00:09.125",
+    "evidence": [
+      "specs/launch-research/deep/rank-13-daylight/report.md",
+      "specs/launch-research/deep/rank-13-daylight/coverage.json",
+      "specs/launch-research/editing-audit/rank-13-clip-1.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "A low-angle canopy shot moves toward sunlight breaking through branches. A centered wordmark appears over the luminous natural image before the film cuts to a person in the forest. The fresh pass does not prove that the flare masks a hidden edit or that the original used a synthetic flare.",
+    "sound": "Music and outdoor ambience continue; no exact brand-sound synchronization is confirmed.",
+    "purpose": "Creative inference: The brand enters through an image that already expresses its character. Natural brightness provides an arrival point without a separate blank title card.",
+    "recipe": [
+      "Find a backlit location with enough leaf or architectural detail to retain depth around the light.",
+      "Record a restrained camera move and several exposure options; avoid destroying the entire frame with clipping.",
+      "Fade a simple wordmark into the most legible part of the shot near the light’s visual peak.",
+      "Exit to a human or product action in the same environmental family, so the reveal leads somewhere."
+    ],
+    "assets": "Backlit plate, clean wordmark, optional subtle light-wrap treatment.",
+    "difficulty": "Low to moderate.",
+    "failure": "A large stock flare hides the wordmark, or an unrelated nature shot feels like decorative stock footage.",
+    "reuse": "Brand names tied to light, openness, outdoors, clarity or a material environment."
+  },
+  {
+    "id": "E067",
+    "name": "Separate faces become a single shared-frame lighting comparison",
+    "category": "Comparison reveal",
+    "film_rank": 13,
+    "source_url": "https://sandwich.co/work/not-like-the-others/",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "01:09.450–01:09.600; 01:11.900–01:12.100",
+    "evidence": [
+      "specs/launch-research/deep/rank-13-daylight/report.md",
+      "specs/launch-research/deep/rank-13-daylight/coverage.json",
+      "specs/launch-research/editing-audit/rank-13-clip-2.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "Close views separately establish a warmly lit reader and a more coolly lit reader. A wider sofa shot then reveals them side by side in the same dark room. Fresh contact-sheet inspection confirms the shared space and contrasting face illumination. The sequence is a close-to-wide reveal, not a proven graphic match between identical contours.",
+    "sound": "A continuous restrained music bed bridges the separate portraits and wider comparison. Specific instrument names are not relied on.",
+    "purpose": "Creative inference: The wide reveal retrospectively connects images that could have been unrelated. Showing the contrast simultaneously reduces the viewer’s dependence on remembering a previous shot.",
+    "recipe": [
+      "Stage both subjects in one credible environment with intentional, distinct light contributions.",
+      "Shoot close coverage that does not initially expose the full two-person arrangement.",
+      "Cut from the separate portraits to a wide that clearly preserves both people and their light sources.",
+      "Hold the comparison without extra animated arrows unless the difference is difficult to locate."
+    ],
+    "assets": "Two subjects, sofa or shared setting, controlled screen/practical lighting, close and wide coverage.",
+    "difficulty": "Moderate; exposure and skin-tone continuity matter.",
+    "failure": "Grading the comparison to exaggerate product performance can imply a test the footage does not establish.",
+    "reuse": "Contrast between approaches, habits or experiences; only make performance claims supported independently."
+  },
+  {
+    "id": "E068",
+    "name": "A recurring text structure persists across changing sensory macros",
+    "category": "Typographic argument montage",
+    "film_rank": 13,
+    "source_url": "https://sandwich.co/work/not-like-the-others/",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "01:16.000–01:28.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-13-daylight/report.md",
+      "specs/launch-research/deep/rank-13-daylight/coverage.json",
+      "specs/launch-research/editing-audit/rank-13-clip-2.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "Short benefit statements accompany close images of a screen-lit face, a hand using a phone, an eye and a finger at a display. Direct inspection of 1fps frames confirms recurring left-side type and replacement statements over changing images. The fresh model’s description of a multi-line stack sliding vertically is not confirmed and is not part of this entry.",
+    "sound": "The underlying music continues across the macro images. A different accent for every text replacement is not verified.",
+    "purpose": "Creative inference: The repeated sentence shape supplies continuity while the imagery changes the sensory emphasis. The argument accumulates without making the viewer learn a new graphic system each time.",
+    "recipe": [
+      "Build a short set of claims with a recurring grammatical structure and comparable line lengths.",
+      "Choose one concrete visual subject for each statement; do not ask the image to prove an unsupported health claim.",
+      "Keep type alignment and hierarchy consistent while cutting the picture underneath.",
+      "Allow each replacement to become fully readable before changing both text and image again."
+    ],
+    "assets": "Macro or portrait coverage, consistent typography template, substantiated short copy.",
+    "difficulty": "Low to moderate.",
+    "failure": "Excessive moving type competes with macro detail; repeated assertions may look evidential without actually demonstrating anything.",
+    "reuse": "Concise manifesto, feature families, coordinated benefits, campaign principles."
+  },
+  {
+    "id": "E069",
+    "name": "A stable protagonist travels through rapidly replaced worlds",
+    "category": "Character-anchored environment change",
+    "film_rank": 16,
+    "source_url": "https://www.youtube.com/watch?v=CS76mK58urI",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "00:00.000–00:09.000; focused boundaries 00:03.500–00:03.625 and 00:05.625–00:05.750",
+    "evidence": [
+      "specs/launch-research/deep/rank-16-headspace/report.md",
+      "specs/launch-research/deep/rank-16-headspace/coverage.json",
+      "specs/launch-research/editing-audit/rank-16-clip-1.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "The same blue animated character carries the opening from crowded traffic into work and then a bedroom. The fresh pass describes a central push into the driver followed later by a horizontal shift from office to bedroom. Its claim of a literally continuous shot is not verified; the dependable mechanism is retaining character identity and a clear focal position while changing environments.",
+    "sound": "Music and scene sounds continue across the changes. The central character is calm amid surrounding pressure; the earlier editorial correction rejects a stressed-protagonist interpretation.",
+    "purpose": "Creative inference: A viewer can follow one person across several benefits without repeatedly locating a new subject. Environmental changes communicate scope while identity provides continuity.",
+    "recipe": [
+      "Create a consistent character silhouette, palette and focal position across scenes.",
+      "Build each environment with a clear destination for the next move: a centered face or a shared floorline.",
+      "Use a fast push or lateral replacement to change the world while preserving the character’s readable pose.",
+      "Settle briefly in each new activity before moving again; avoid three transitions with no readable state between them."
+    ],
+    "assets": "Layered illustrated scenes, reusable character rig, consistent virtual camera and palette.",
+    "difficulty": "Moderate animation.",
+    "failure": "Changing the character’s scale, position and pose unpredictably makes each location feel like a new story.",
+    "reuse": "One person across contexts, benefit montages, onboarding, repeat daily activities."
+  },
+  {
+    "id": "E070",
+    "name": "One character becomes the center of an expanding population grid",
+    "category": "Anchored mosaic growth",
+    "film_rank": 16,
+    "source_url": "https://www.youtube.com/watch?v=CS76mK58urI",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "00:11.875–00:13.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-16-headspace/report.md",
+      "specs/launch-research/deep/rank-16-headspace/coverage.json",
+      "specs/launch-research/editing-audit/rank-16-clip-1.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "The central blue character remains in place while colored rectangular panels populate around it. Different characters animate within the additional panels until the grid fills the image. The expansion happens around an existing subject rather than cutting straight to a finished collage.",
+    "sound": "The music remains continuous. Individual panel-pop sound effects are not established.",
+    "purpose": "Creative inference: An individual story visibly expands into a larger population. Staggering the additions allows the viewer to register growth instead of confronting an instantly crowded wall.",
+    "recipe": [
+      "Design the final grid before animation and reserve a stable center cell.",
+      "Show the center character alone or with only a few surrounding panels.",
+      "Reveal neighboring cells in an organized outward sequence using masks, position or scale.",
+      "Reduce motion in already revealed cells as new cells enter, then allow a short full-grid hold."
+    ],
+    "assets": "Character portraits or footage tiles, grid template, staggered animation controller.",
+    "difficulty": "Low to moderate.",
+    "failure": "Every tile animates independently at full intensity, making the focal subject disappear.",
+    "reuse": "Community, varied users, multiple contributors, geographic reach, growing participation."
+  },
+  {
+    "id": "E071",
+    "name": "An abstract mental task becomes a small physical exercise",
+    "category": "Literalized concept vignette",
+    "film_rank": 16,
+    "source_url": "https://www.youtube.com/watch?v=CS76mK58urI",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "00:21.000–00:25.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-16-headspace/report.md",
+      "specs/launch-research/deep/rank-16-headspace/coverage.json"
+    ],
+    "verification": "prior full-film AV and existing visual review",
+    "observed": "A personified mind character performs a weight-lifting exercise within the illustrated world. The earlier full-film review identifies the physical-training metaphor. The fresh pass calls the preceding mind reveal a brand logo, which is incorrect: this is a concept character, not the Headspace logo.",
+    "sound": "The earlier review identifies playful cartoon vocalizations and light transition sounds. A particular weight-impact sound or exact synchronization is not verified.",
+    "purpose": "Creative inference: A hard-to-picture concept acquires weight, effort and personality. A short, self-contained physical action can explain a metaphor more efficiently than a diagram.",
+    "recipe": [
+      "Choose a single abstract idea and one physical action with a familiar cause-and-effect structure.",
+      "Give the concept a restrained character design that remains legible at small size.",
+      "Animate anticipation, effort and recovery rather than just looping motion.",
+      "Cut back to the practical context once the metaphor is understood; do not turn it into an unrelated side story."
+    ],
+    "assets": "Simple character, exercise prop, short animation cycle, optional effort/contact sounds.",
+    "difficulty": "Moderate; low with simple 2D shapes.",
+    "failure": "Ambiguous metaphor needs verbal explanation longer than the original concept.",
+    "reuse": "Training, capacity, balance, sorting, resilience and other abstract processes; avoid literal health promises."
+  },
+  {
+    "id": "E072",
+    "name": "A busy illustrated world closes into the brand’s circle",
+    "category": "World-to-mark iris",
+    "film_rank": 16,
+    "source_url": "https://www.youtube.com/watch?v=CS76mK58urI",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "01:10.125–01:10.625",
+    "evidence": [
+      "specs/launch-research/deep/rank-16-headspace/report.md",
+      "specs/launch-research/deep/rank-16-headspace/coverage.json",
+      "specs/launch-research/editing-audit/rank-16-clip-2.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "A park panorama containing many activities contracts through a centered circular aperture. The visible world becomes a small orange circle against white, leading into the brand ending. The fresh pass identifies the aperture’s focal area around a bench interaction. Exact easing and whether all scenery scales uniformly are not frame-verified.",
+    "sound": "The music moves toward its ending while park ambience recedes according to the focused audit. Exact fade lengths are not measured.",
+    "purpose": "Creative inference: The logo appears to contain the world the viewer just explored. A single shape connects story resolution and brand recognition instead of inserting an unrelated end slate.",
+    "recipe": [
+      "Choose a final scene whose main subject can survive a circular crop.",
+      "Center the important interaction before shrinking the visible aperture.",
+      "Scale or mask the surrounding world toward the brand’s geometric form; preserve the focal subject until it becomes too small to read.",
+      "Replace the final textured circle with the clean mark at a visually compatible size and color, then resolve the wordmark."
+    ],
+    "assets": "Layered wide scene, circular matte, vector brandmark, controlled end music.",
+    "difficulty": "Moderate motion design.",
+    "failure": "The iris closes on empty space or chops off the emotional subject before its action resolves.",
+    "reuse": "Brands with simple geometric marks, community stories, an ecosystem resolving to one identity."
+  },
+  {
+    "id": "E073",
+    "name": "A person walks through a precisely arranged field of parts",
+    "category": "Human-scale knolling",
+    "film_rank": 18,
+    "source_url": "https://vimeo.com/359619840",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "00:58.667–01:03.000; 01:03.000–01:17.500",
+    "evidence": [
+      "specs/launch-research/deep/rank-18-floyd/report.md",
+      "specs/launch-research/deep/rank-18-floyd/coverage.json"
+    ],
+    "verification": "prior full-film AV and existing visual review",
+    "observed": "Furniture components are arranged in orderly overhead compositions. A person walks among the separated pieces, turning the arrangement into a space that can be occupied. This combines a parts diagram with physical human scale; it is not merely a still product flat lay.",
+    "sound": "The earlier full-film review describes a warmer rhythmic passage here. Individual footstep or component accents were not separately verified.",
+    "purpose": "Creative inference: The scene makes modularity understandable and human-sized. Order suggests that a seemingly large object can be understood as a manageable set of parts.",
+    "recipe": [
+      "Lay out components in a clear system with enough negative space for a person’s route.",
+      "Use an overhead camera or carefully matched high angle that retains the full arrangement.",
+      "Rehearse the walk so it crosses informative gaps without obscuring every important part.",
+      "Cut from the arranged pieces to a carried or assembled object so the diagram has a functional payoff."
+    ],
+    "assets": "Parts or representative props, large clean floor, safe overhead rig, performer, assembled-result footage.",
+    "difficulty": "Moderate production; low post complexity.",
+    "failure": "A decorative arrangement has no visible relationship to the assembled object, so the diagram teaches nothing.",
+    "reuse": "Modular products, kits, systems, assembly, inventories, explaining scale without dimensions."
+  },
+  {
+    "id": "E074",
+    "name": "A modular object changes configuration inside a fixed view",
+    "category": "Configuration replacement",
+    "film_rank": 18,
+    "source_url": "https://vimeo.com/359619840",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "02:03.334–02:12.834",
+    "evidence": [
+      "specs/launch-research/deep/rank-18-floyd/report.md",
+      "specs/launch-research/deep/rank-18-floyd/coverage.json"
+    ],
+    "verification": "prior full-film AV and existing visual review",
+    "observed": "The shelving arrangement changes between configurations while the broad room view remains consistent. The earlier review describes a stop-motion-style result; that appearance does not establish whether the original was stop motion, composited plates or another method. Unlike a catalog carousel, the identity of one modular system persists while its configuration changes.",
+    "sound": "The full-film music continues. A sound for each shelf change is not sufficiently verified to specify as observed.",
+    "purpose": "Creative inference: The edit demonstrates adaptability through repeated visible states. The room acts as a measuring frame, making each changed arrangement easier to compare.",
+    "recipe": [
+      "Choose a fixed camera view that exposes the object’s modular structure.",
+      "Photograph multiple valid configurations with locked lighting, focus and exposure.",
+      "Align room edges and unchanged modules before replacing states.",
+      "Sequence changes from simple to complex, then hold the final useful arrangement rather than ending mid-cycle."
+    ],
+    "assets": "Consistent room plates, several configurations, alignment references, clean masks if people remain in frame.",
+    "difficulty": "Low to moderate for static plates.",
+    "failure": "Changing unrelated props and light in every state obscures which parts of the system actually adapt.",
+    "reuse": "Modular furniture, configurable dashboards, tool kits, reusable components, changing a workspace."
+  },
+  {
+    "id": "E075",
+    "name": "A record-player insert turns listening into a physical ritual",
+    "category": "Music-source insert",
+    "film_rank": 18,
+    "source_url": "https://vimeo.com/359619840",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "01:34.500–01:37.000; 01:36.667–01:38.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-18-floyd/report.md",
+      "specs/launch-research/deep/rank-18-floyd/coverage.json"
+    ],
+    "verification": "prior full-film AV and existing visual review",
+    "observed": "Record selection is followed by a close view of the record-player needle, within a sequence of inhabited domestic scenes. The visible action gives listening a material presence. The old raw report’s impossible 03:36.667 needle timestamp is rejected; the detailed timeline places it at 01:36.667.",
+    "sound": "The review describes a music bed and tactile sounds, but does not prove that the existing score starts exactly when the needle lands. A diegetic-to-score handoff is a recreation option, not a verified original mix.",
+    "purpose": "Creative inference: Music becomes something a person chooses and handles, making the interior feel lived in. A small source insert can personalize a continuous soundtrack without stopping the story.",
+    "recipe": [
+      "Film the selection gesture and a close view of the playback action.",
+      "Maintain hand and object continuity between the wider setup and the detail.",
+      "Use the physical action as a short punctuation inside the lifestyle sequence.",
+      "Optionally begin with localized speaker sound and expand to the full mix; label this as a new mix decision rather than copying an assumed original."
+    ],
+    "assets": "Record player or other visible music source, handling inserts, licensed music and source-room recording.",
+    "difficulty": "Low.",
+    "failure": "An oversized scratch or needle effect creates a comic interruption when the intended tone is quiet and personal.",
+    "reuse": "Personal rituals, music products, domestic atmosphere, grounding an otherwise invisible soundtrack."
+  },
+  {
+    "id": "E076",
+    "name": "Moving leaf shadows keep a minimal end card alive",
+    "category": "Living-texture end frame",
+    "film_rank": 18,
+    "source_url": "https://vimeo.com/359619840",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "03:17.000–03:19.834",
+    "evidence": [
+      "specs/launch-research/deep/rank-18-floyd/report.md",
+      "specs/launch-research/deep/rank-18-floyd/coverage.json"
+    ],
+    "verification": "prior full-film AV and existing visual review",
+    "observed": "Leaf shadows move across a wall beneath the closing title. The end image is sparse but retains irregular environmental movement. It is an observed material backdrop, not evidence of a particular film stock or projection technique.",
+    "sound": "The earlier review describes a quiet musical resolution; specific instruments and exact reverb tails are not verified.",
+    "purpose": "Creative inference: The ending stays connected to the film’s natural materials and interiors. Subtle motion supplies life without demanding a new narrative action while the title is read.",
+    "recipe": [
+      "Record a plain surface with moving plant shadows and enough stable space for typography.",
+      "Keep exposure and camera position steady while allowing the light pattern to change naturally.",
+      "Place a simple title away from the strongest shadow edges.",
+      "Hold the full composition through the musical resolution; resist adding a second animated logo system."
+    ],
+    "assets": "Wall or textured surface, plant/light source, title artwork, ending audio.",
+    "difficulty": "Low.",
+    "failure": "Fast flickering shadows reduce readability or compete with the final message.",
+    "reuse": "Quiet conclusions, material brands, environmental stories, restrained credits and calls to action."
+  },
+  {
+    "id": "E077",
+    "name": "Different objects occupy exactly the same floor anchor",
+    "category": "Anchored object audition",
+    "film_rank": 19,
+    "source_url": "https://www.youtube.com/watch?v=UudV1VdFtuQ",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "00:07.000–00:11.875",
+    "evidence": [
+      "specs/launch-research/deep/rank-19-ikea-place/report.md",
+      "specs/launch-research/deep/rank-19-ikea-place/coverage.json",
+      "specs/launch-research/editing-audit/rank-19-clip-1.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "A series of chairs, a table and seating options replace one another on the same round rug while the room and camera remain fixed. Each new object inherits the same stage. Whether individual objects were practical or composited cannot be established from the advertisement.",
+    "sound": "Music continues under the replacements and narration. Exact per-object click or impact accents are not established.",
+    "purpose": "Creative inference: Variation becomes immediately comparable because the surroundings do not change. The rhythm suggests easy exploration and choice without requiring the viewer to navigate a menu.",
+    "recipe": [
+      "Lock a camera on a strong shared placement anchor such as a rug or plinth.",
+      "Prepare objects at consistent scale and plausible contact height within that anchor.",
+      "Swap only the object layer or matched plate at each edit, retaining shadows where needed.",
+      "End on one selected object and hold it before cutting into the process or interface that produced the choice."
+    ],
+    "assets": "Room plate, multiple object images/renders or practical states, floor masks and contact shadows.",
+    "difficulty": "Moderate; low with practical locked plates.",
+    "failure": "Objects drift, resize arbitrarily or float, turning comparison into a distracting collage.",
+    "reuse": "Catalog choice, style alternatives, models, product colors, rapid concept exploration."
+  },
+  {
+    "id": "E078",
+    "name": "One stationary word binds a rapid montage of places",
+    "category": "Type-anchored geography montage",
+    "film_rank": 19,
+    "source_url": "https://www.youtube.com/watch?v=UudV1VdFtuQ",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "00:39.625–00:45.000",
+    "evidence": [
+      "specs/launch-research/deep/rank-19-ikea-place/report.md",
+      "specs/launch-research/deep/rank-19-ikea-place/coverage.json",
+      "specs/launch-research/editing-audit/rank-19-clip-2.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "Different building exteriors and environments cut rapidly beneath the same large centered white word. The typography’s position and apparent scale stay fixed while architecture, weather and location change. The word is the stable screen-space reference, not a label tracked to each building.",
+    "sound": "A continuous musical passage carries the montage. The fresh report hears rhythmic cutting but no frame-accurate beat analysis was performed.",
+    "purpose": "Creative inference: A repeated concept connects disparate places instantly. The stationary word gives the eye a resting point while the changing backgrounds create breadth and momentum.",
+    "recipe": [
+      "Select shots with visual variety but enough central contrast for the same type treatment.",
+      "Build the typography once in the master composition rather than re-positioning it in each shot.",
+      "Cut the backgrounds to a coherent musical phrase; vary shot duration if a complex image needs more recognition time.",
+      "Remove the word cleanly when returning to a specific person or product, making the scale change obvious."
+    ],
+    "assets": "Varied exterior footage, one typography layer, consistent grade and music.",
+    "difficulty": "Low post complexity; footage sourcing can dominate.",
+    "failure": "The word becomes unreadable over bright backgrounds, or every shot is cropped so aggressively that the places lose their character.",
+    "reuse": "Universal themes, geographic reach, a repeated verb, varied use cases united by one idea."
+  },
+  {
+    "id": "E079",
+    "name": "The handheld device remains the visual anchor across different rooms",
+    "category": "Device-framed use montage",
+    "film_rank": 19,
+    "source_url": "https://www.youtube.com/watch?v=UudV1VdFtuQ",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "00:49.000–00:52.500",
+    "evidence": [
+      "specs/launch-research/deep/rank-19-ikea-place/report.md",
+      "specs/launch-research/deep/rank-19-ikea-place/coverage.json",
+      "specs/launch-research/editing-audit/rank-19-clip-2.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "Hard cuts move among hands holding phones and tablets in different interiors, with furniture placement visible through the devices. The common device-and-room relationship supplies continuity. The fresh inspection confirms repeated framing, not exact pixel-aligned device bezels; describe it as a device-anchored montage rather than a seamless geometric match cut.",
+    "sound": "The rhythmic music continues. Individual taps and room tones are not isolated in the focused report.",
+    "purpose": "Creative inference: The product’s way of seeing the world repeats across different users and rooms. Keeping a familiar framing structure makes several examples feel like one transferable capability.",
+    "recipe": [
+      "Define a common device position and approximate screen size in frame before filming each location.",
+      "Capture the same stage of the interaction in several settings with legible screens.",
+      "Trim around recognizable device poses and preserve the general movement direction.",
+      "Use short holds between cuts; avoid zooms that demand a new search for the screen each time."
+    ],
+    "assets": "Device-use footage across locations, comparable UI states, screen replacements only where necessary.",
+    "difficulty": "Low to moderate.",
+    "failure": "Alternating random screen scales or orientations makes the viewer repeatedly reacquire the interface.",
+    "reuse": "Cross-context tools, user diversity, repeated workflows, adoption montage."
+  },
+  {
+    "id": "E080",
+    "name": "Return to the opening composition after the viewer understands the mechanism",
+    "category": "Delayed visual bookend",
+    "film_rank": 19,
+    "source_url": "https://www.youtube.com/watch?v=UudV1VdFtuQ",
+    "source_version": "Exact source version recorded in the linked coverage file.",
+    "time_range": "00:00.000–00:03.833; 00:52.333–00:54.333",
+    "evidence": [
+      "specs/launch-research/deep/rank-19-ikea-place/report.md",
+      "specs/launch-research/deep/rank-19-ikea-place/coverage.json",
+      "specs/launch-research/editing-audit/rank-19-clip-2.txt"
+    ],
+    "verification": "fresh clip audit, with editorial corrections",
+    "observed": "The film returns to the opening room and round-rug composition near the end, now in a warmer presentation with seating. The focused pass describes a final furniture appearance; the earlier corrected review establishes the distant opening/ending relationship. It is not an immediate app-screen-to-physical-room match cut.",
+    "sound": "The final music resolves under the room and branding; the exact chime claimed by one model pass is not independently verified.",
+    "purpose": "Creative inference: The opening image gains meaning retrospectively. Returning to a remembered empty stage gives the demonstration closure and allows the result to be felt without explaining the entire process again.",
+    "recipe": [
+      "Capture the opening and ending from the same repeatable camera position.",
+      "Keep a recognizable anchor such as a rug, doorway or wall junction visible in both.",
+      "Use the middle of the film to establish the transformation’s mechanism and stakes.",
+      "Return to the changed state near the end and allow a quieter hold; distinguish a digital proposal from a physically completed change when that matters."
+    ],
+    "assets": "Matched before/after plates, continuity references, restrained closing typography.",
+    "difficulty": "Low to moderate depending on transformation.",
+    "failure": "The ending composition differs so much that the audience cannot recognize the return.",
+    "reuse": "Before/after stories, empty-to-created work, a question answered visually, emotional closure."
+  }
+]

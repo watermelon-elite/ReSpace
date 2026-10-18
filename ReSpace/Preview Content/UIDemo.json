@@ -1,0 +1,406 @@
+{
+  "room": {
+    "schema_version": 1,
+    "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+    "name": "Living room",
+    "metadata_revision": 0,
+    "creation_operation_id": "create",
+    "created_at": "2026-10-18T02:46:05.657502+00:00",
+    "scan_at": "2026-10-18T00:01:00Z",
+    "thumbnail_url": "demo-room",
+    "capture_state": "complete",
+    "latest_capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+    "latest_snapshot_id": "9006fd3e-7cf5-47fc-b2de-815561221faf",
+    "planning_revision": 0,
+    "active_design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+    "active_revision": 1,
+    "current_operation_id": null,
+    "warnings": [],
+    "source_scene_sha256": null
+  },
+  "design": {
+    "schema_version": 1,
+    "design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+    "parent_id": null,
+    "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+    "scene": {
+      "ui_demo_image": "RoomInspiration",
+      "schema_version": 1,
+      "design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+      "room": {
+        "floor": {"polygon": [[0.0, 0.0], [4.0, 0.0], [4.0, 3.0], [0.0, 3.0]], "area": 12.0},
+        "walls": [
+          {"id": "w_1", "a": [0.0, 0.0], "b": [4.0, 0.0], "length": 4.0, "inward_normal": [-0.0, 1.0], "virtual": false, "source_ids": ["native-wall-0"]},
+          {"id": "w_2", "a": [4.0, 0.0], "b": [4.0, 3.0], "length": 3.0, "inward_normal": [-1.0, 0.0], "virtual": false, "source_ids": ["native-wall-1"]},
+          {"id": "w_3", "a": [4.0, 3.0], "b": [0.0, 3.0], "length": 4.0, "inward_normal": [-0.0, -1.0], "virtual": false, "source_ids": ["native-wall-2"]},
+          {"id": "w_4", "a": [0.0, 3.0], "b": [0.0, 0.0], "length": 3.0, "inward_normal": [1.0, 0.0], "virtual": false, "source_ids": ["native-wall-3"]}
+        ],
+        "height": 2.6,
+        "openings": []
+      },
+      "items": [
+        {
+          "id": "sofa",
+          "label": "Linen sofa",
+          "category": "sofa",
+          "origin": "new",
+          "status": "new",
+          "selection_id": "sofa",
+          "placement": {"position": [1.5, 0, 0.7], "size": [2.1, 0.9, 0.8], "yaw": 0, "mount": "floor"},
+          "last_valid_placement": {"position": [1.5, 0, 0.7], "size": [2.1, 0.9, 0.8], "yaw": 0, "mount": "floor"},
+          "render": {
+            "kind": "standin",
+            "category": "sofa",
+            "scaling_mode": "normalized",
+            "authored_bounds": [1, 1, 1],
+            "units": "meters",
+            "pivot": "bottom_center",
+            "forward_axis": "+Z",
+            "tint": "#C3B8A4"
+          },
+          "reason": "A warm, natural finish for your room."
+        },
+        {
+          "id": "table",
+          "label": "Oak coffee table",
+          "category": "table",
+          "origin": "new",
+          "status": "new",
+          "selection_id": "table",
+          "placement": {"position": [1.8, 0, 1.7], "size": [1.1, 0.6, 0.42], "yaw": 0, "mount": "floor"},
+          "last_valid_placement": {"position": [1.8, 0, 1.7], "size": [1.1, 0.6, 0.42], "yaw": 0, "mount": "floor"},
+          "render": {
+            "kind": "standin",
+            "category": "table",
+            "scaling_mode": "normalized",
+            "authored_bounds": [1, 1, 1],
+            "units": "meters",
+            "pivot": "bottom_center",
+            "forward_axis": "+Z",
+            "tint": "#B88D65"
+          },
+          "reason": "A warm, natural finish for your room."
+        },
+        {
+          "id": "lamp",
+          "label": "Paper floor lamp",
+          "category": "lamp",
+          "origin": "new",
+          "status": "new",
+          "selection_id": "lamp",
+          "placement": {"position": [3.3, 0, 0.6], "size": [0.4, 0.4, 1.5], "yaw": 0, "mount": "floor"},
+          "last_valid_placement": {"position": [3.3, 0, 0.6], "size": [0.4, 0.4, 1.5], "yaw": 0, "mount": "floor"},
+          "render": {
+            "kind": "standin",
+            "category": "lamp",
+            "scaling_mode": "normalized",
+            "authored_bounds": [1, 1, 1],
+            "units": "meters",
+            "pivot": "bottom_center",
+            "forward_axis": "+Z",
+            "tint": "#EEE4CD"
+          },
+          "reason": "A warm, natural finish for your room."
+        }
+      ],
+      "selections": {
+        "sofa": {
+          "dimension_evidence": {
+            "outcome": "verified",
+            "variant_id": "sofa",
+            "size_m": [1, 0.5, 0.7],
+            "dimensions": [2.1, 0.9, 0.8],
+            "source_url": "https://example.com/sofa",
+            "verified_at": "2026-10-18T00:00:00Z",
+            "expires_at": "2026-10-25T00:00:00Z",
+            "original_measurements": []
+          },
+          "offer": {
+            "schema_version": 1,
+            "offer_id": "sofa",
+            "variant_id": "sofa",
+            "merchant": "Sample Studio",
+            "product_url": "https://example.com/sofa",
+            "price": "699.00",
+            "currency": "USD",
+            "availability": "in_stock",
+            "exact_variant": true,
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "pack_contents": {"verified": true, "components": [{"variant_id": "sofa", "units": 1, "dimensions": [2.1, 0.9, 0.8]}]}
+          },
+          "variant": {"variant_id": "sofa", "title": "Linen sofa", "category": "sofa", "image_references": []},
+          "render": {
+            "kind": "standin",
+            "category": "sofa",
+            "scaling_mode": "normalized",
+            "authored_bounds": [1, 1, 1],
+            "units": "meters",
+            "pivot": "bottom_center",
+            "forward_axis": "+Z",
+            "tint": "#C3B8A4"
+          },
+          "selection_id": "sofa",
+          "variant_id": "sofa",
+          "offer_id": "sofa",
+          "title": "Linen sofa",
+          "category": "sofa",
+          "dimensions": [2.1, 0.9, 0.8],
+          "quantity": 1,
+          "reason": "A warm, natural finish for your room."
+        },
+        "table": {
+          "dimension_evidence": {
+            "outcome": "verified",
+            "variant_id": "table",
+            "size_m": [1, 0.5, 0.7],
+            "dimensions": [1.1, 0.6, 0.42],
+            "source_url": "https://example.com/table",
+            "verified_at": "2026-10-18T00:00:00Z",
+            "expires_at": "2026-10-25T00:00:00Z",
+            "original_measurements": []
+          },
+          "offer": {
+            "schema_version": 1,
+            "offer_id": "table",
+            "variant_id": "table",
+            "merchant": "Sample Studio",
+            "product_url": "https://example.com/table",
+            "price": "149.00",
+            "currency": "USD",
+            "availability": "in_stock",
+            "exact_variant": true,
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "pack_contents": {"verified": true, "components": [{"variant_id": "table", "units": 1, "dimensions": [1.1, 0.6, 0.42]}]}
+          },
+          "variant": {"variant_id": "table", "title": "Oak coffee table", "category": "table", "image_references": []},
+          "render": {
+            "kind": "standin",
+            "category": "table",
+            "scaling_mode": "normalized",
+            "authored_bounds": [1, 1, 1],
+            "units": "meters",
+            "pivot": "bottom_center",
+            "forward_axis": "+Z",
+            "tint": "#B88D65"
+          },
+          "selection_id": "table",
+          "variant_id": "table",
+          "offer_id": "table",
+          "title": "Oak coffee table",
+          "category": "table",
+          "dimensions": [1.1, 0.6, 0.42],
+          "quantity": 1,
+          "reason": "A warm, natural finish for your room."
+        },
+        "lamp": {
+          "dimension_evidence": {
+            "outcome": "verified",
+            "variant_id": "lamp",
+            "size_m": [1, 0.5, 0.7],
+            "dimensions": [0.4, 0.4, 1.5],
+            "source_url": "https://example.com/lamp",
+            "verified_at": "2026-10-18T00:00:00Z",
+            "expires_at": "2026-10-25T00:00:00Z",
+            "original_measurements": []
+          },
+          "offer": {
+            "schema_version": 1,
+            "offer_id": "lamp",
+            "variant_id": "lamp",
+            "merchant": "Sample Studio",
+            "product_url": "https://example.com/lamp",
+            "price": "79.00",
+            "currency": "USD",
+            "availability": "in_stock",
+            "exact_variant": true,
+            "checked_at": "2026-10-18T00:00:00+00:00",
+            "pack_contents": {"verified": true, "components": [{"variant_id": "lamp", "units": 1, "dimensions": [0.4, 0.4, 1.5]}]}
+          },
+          "variant": {"variant_id": "lamp", "title": "Paper floor lamp", "category": "lamp", "image_references": []},
+          "render": {
+            "kind": "standin",
+            "category": "lamp",
+            "scaling_mode": "normalized",
+            "authored_bounds": [1, 1, 1],
+            "units": "meters",
+            "pivot": "bottom_center",
+            "forward_axis": "+Z",
+            "tint": "#EEE4CD"
+          },
+          "selection_id": "lamp",
+          "variant_id": "lamp",
+          "offer_id": "lamp",
+          "title": "Paper floor lamp",
+          "category": "lamp",
+          "dimensions": [0.4, 0.4, 1.5],
+          "quantity": 1,
+          "reason": "A warm, natural finish for your room."
+        }
+      },
+      "purchase_summary": {
+        "currency": "USD",
+        "lines": [
+          {
+            "offer_id": "sofa",
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "sofa",
+              "variant_id": "sofa",
+              "merchant": "Sample Studio",
+              "product_url": "https://example.com/sofa",
+              "price": "699.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {"verified": true, "components": [{"variant_id": "sofa", "units": 1, "dimensions": [2.1, 0.9, 0.8]}]}
+            },
+            "purchased_pack_count": 1,
+            "supplied_unit_count": 1,
+            "paid_surplus_count": 0,
+            "line_total": "699.00"
+          },
+          {
+            "offer_id": "table",
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "table",
+              "variant_id": "table",
+              "merchant": "Sample Studio",
+              "product_url": "https://example.com/table",
+              "price": "149.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {"verified": true, "components": [{"variant_id": "table", "units": 1, "dimensions": [1.1, 0.6, 0.42]}]}
+            },
+            "purchased_pack_count": 1,
+            "supplied_unit_count": 1,
+            "paid_surplus_count": 0,
+            "line_total": "149.00"
+          },
+          {
+            "offer_id": "lamp",
+            "offer": {
+              "schema_version": 1,
+              "offer_id": "lamp",
+              "variant_id": "lamp",
+              "merchant": "Sample Studio",
+              "product_url": "https://example.com/lamp",
+              "price": "79.00",
+              "currency": "USD",
+              "availability": "in_stock",
+              "exact_variant": true,
+              "checked_at": "2026-10-18T00:00:00+00:00",
+              "pack_contents": {"verified": true, "components": [{"variant_id": "lamp", "units": 1, "dimensions": [0.4, 0.4, 1.5]}]}
+            },
+            "purchased_pack_count": 1,
+            "supplied_unit_count": 1,
+            "paid_surplus_count": 0,
+            "line_total": "79.00"
+          }
+        ],
+        "total": "927.00",
+        "approved_ceiling": "1200.00"
+      },
+      "summary": "A softer place to unwind, with warm lighting and natural textures.",
+      "warnings": []
+    }
+  },
+  "raw_export": {
+    "ui_demo_image": "RoomInspiration",
+    "identifier": "native-room",
+    "walls": [
+      {
+        "identifier": "native-wall-0",
+        "category": {"wall": {}},
+        "dimensions": [4.0, 2.6, 0],
+        "transform": [1.0, 0, 0.0, 0, 0, 1, 0, 0, 0.0, 0, 1.0, 0, 4.0, 0.10000000000000009, 3.0, 1]
+      },
+      {
+        "identifier": "native-wall-1",
+        "category": {"wall": {}},
+        "dimensions": [3.0, 2.6, 0],
+        "transform": [0.0, 0, 1.0, 0, 0, 1, 0, 0, -1.0, 0, 0.0, 0, 6.0, 0.10000000000000009, 4.5, 1]
+      },
+      {
+        "identifier": "native-wall-2",
+        "category": {"wall": {}},
+        "dimensions": [4.0, 2.6, 0],
+        "transform": [-1.0, 0, 0.0, 0, 0, 1, 0, 0, 0.0, 0, -1.0, 0, 4.0, 0.10000000000000009, 6.0, 1]
+      },
+      {
+        "identifier": "native-wall-3",
+        "category": {"wall": {}},
+        "dimensions": [3.0, 2.6, 0],
+        "transform": [0.0, 0, -1.0, 0, 0, 1, 0, 0, 1.0, 0, 0.0, 0, 2.0, 0.10000000000000009, 4.5, 1]
+      }
+    ],
+    "objects": [
+      {
+        "identifier": "sofa",
+        "category": {"sofa": {}},
+        "dimensions": [2.1, 0.8, 0.9],
+        "transform": [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 3.5, -0.7999999999999999, 3.7, 1]
+      },
+      {"identifier": "table", "category": {"table": {}}, "dimensions": [1.1, 0.42, 0.6], "transform": [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 3.8, -0.99, 4.7, 1]},
+      {
+        "identifier": "lamp",
+        "category": {"lamp": {}},
+        "dimensions": [0.4, 1.5, 0.4],
+        "transform": [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 5.3, -0.44999999999999996, 3.6, 1]
+      }
+    ],
+    "doors": [],
+    "windows": [],
+    "openings": [],
+    "floors": [],
+    "version": 1
+  },
+  "measured_context": {
+    "objects": [
+      {"native_id": "sofa", "category": "sofa", "size": [2.1, 0.9, 0.8]},
+      {"native_id": "table", "category": "table", "size": [1.1, 0.6, 0.42]},
+      {"native_id": "lamp", "category": "lamp", "size": [0.4, 0.4, 1.5]}
+    ]
+  },
+  "question": {
+    "schema_version": 1,
+    "operation_id": "pending-generation",
+    "kind": "generation",
+    "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+    "state": "needs_clarification",
+    "phase": "awaiting_answer",
+    "decision_revision": 0,
+    "pending_question": {
+      "kind": "single_choice",
+      "text": "What would make this room feel more like you?",
+      "choices": [
+        {"choice_id": "relax", "label": "A calmer place to unwind"},
+        {"choice_id": "host", "label": "More room for friends"},
+        {"choice_id": "work", "label": "A comfortable place to work"}
+      ],
+      "allow_skip": true,
+      "allow_delegate": true,
+      "question_id": "d28e18a6-fd5d-4a62-93d3-cbaa981a808a",
+      "operation_id": "pending-generation",
+      "base_context": {
+        "room_id": "40cf4a08-951d-44ad-9766-3758520b9b59",
+        "capture_id": "42467402-4e8c-4521-845a-9a5e8ee1994a",
+        "snapshot_id": "9006fd3e-7cf5-47fc-b2de-815561221faf",
+        "planning_revision": 0,
+        "active_design_id": "57e486f7-79c4-488f-8f4e-90f290f714a2",
+        "active_revision": 1
+      },
+      "decision_revision": 0,
+      "question_revision": 1,
+      "context": "interview",
+      "min_selections": 1,
+      "max_selections": 1
+    },
+    "answer_history": [],
+    "outcome": null,
+    "failure": null
+  }
+}

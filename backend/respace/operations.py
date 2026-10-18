@@ -44,6 +44,44 @@ class OperationService:
         require(operation is not None and operation.get('device_id')==device_id,'unknown_operation','No durable operation has this identity.',404)
         return operation
 
+    def progress_message(self, operation):
+        if (operation['state'] not in {'queued', 'running'} or operation.get('pending_question')
+                or operation['phase'] not in {'preparing_context', 'searching_products'}):
+            return None
+        # Local searches persist their cursor before returning a result to the controller.
+        searches = [search for search in self.store.list('searches', operation['room_id'])
+                    if search.get('intended_context', {}).get('operation_id') == operation['operation_id']
+                    and search['state'] == 'running']
+        if not searches:
+            return None
+        search = max(searches, key=lambda entry: entry['created_at'])
+        cursor = search.get('continuation', {})
+        phase = search['phase']
+        pools = search.get('source_candidate_pools', {})
+        total = len(set(pools.get('stored', []) + pools.get('live', [])))
+        if phase == 'discovery':
+            return f"Searching products · {len(search.get('queries', []))} searches completed · {total} candidates found"
+        if phase == 'verification':
+            message = 'Checking merchant listings'
+            index = cursor.get('candidate_index', 0)
+            if index < total:
+                message += f' · product {index + 1} of {total}'
+            work = search.get('verification_work', {})
+            listings = work.get('listings') or []
+            listing_index = work.get('listing_index', 0)
+            if listing_index < len(listings):
+                message += f' · listing {listing_index + 1} of {len(listings)}'
+            if work.get('attempt'):
+                message += ' · retrying'
+            return message
+        if phase == 'extraction':
+            return f"Reading product details · {cursor.get('extraction_index', 0)} of {len(cursor.get('capture_ids', []))} pages processed"
+        if phase == 'ranking':
+            return 'Comparing verified products'
+        if phase in {'refresh', 'refresh_verification'}:
+            return 'Rechecking prices and availability'
+        return None
+
     def _base(self, room):
         return {'room_id':room['room_id'],'capture_id':room.get('latest_capture_id'),'snapshot_id':room.get('latest_snapshot_id'),'planning_revision':room.get('planning_revision'),'active_design_id':room.get('active_design_id'),'active_revision':room.get('active_revision')}
 

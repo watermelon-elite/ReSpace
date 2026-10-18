@@ -1,0 +1,148 @@
+{
+  "alpha": [
+    {
+      "file": "01-idle.png",
+      "width": 1254,
+      "height": 1254,
+      "transparent": 1335657,
+      "visible": 222428,
+      "highAlpha": 209237,
+      "edge": 0,
+      "bounds": [
+        388,
+        61,
+        855,
+        1221
+      ]
+    },
+    {
+      "file": "02-wave-a.png",
+      "width": 1254,
+      "height": 1254,
+      "transparent": 1297798,
+      "visible": 252886,
+      "highAlpha": 238233,
+      "edge": 0,
+      "bounds": [
+        387,
+        59,
+        1010,
+        1223
+      ]
+    },
+    {
+      "file": "03-wave-b.png",
+      "width": 1254,
+      "height": 1254,
+      "transparent": 1311488,
+      "visible": 245865,
+      "highAlpha": 233764,
+      "edge": 0,
+      "bounds": [
+        387,
+        59,
+        963,
+        1222
+      ]
+    },
+    {
+      "file": "04-listening.png",
+      "width": 1254,
+      "height": 1254,
+      "transparent": 1299982,
+      "visible": 255070,
+      "highAlpha": 239464,
+      "edge": 0,
+      "bounds": [
+        373,
+        36,
+        882,
+        1223
+      ]
+    },
+    {
+      "file": "05-thinking.png",
+      "width": 1254,
+      "height": 1254,
+      "transparent": 1331085,
+      "visible": 223165,
+      "highAlpha": 209847,
+      "edge": 0,
+      "bounds": [
+        392,
+        58,
+        865,
+        1222
+      ]
+    },
+    {
+      "file": "06-asking.png",
+      "width": 1254,
+      "height": 1254,
+      "transparent": 1290191,
+      "visible": 263483,
+      "highAlpha": 248946,
+      "edge": 0,
+      "bounds": [
+        387,
+        58,
+        1131,
+        1221
+      ]
+    },
+    {
+      "file": "07-crouch.png",
+      "width": 1254,
+      "height": 1254,
+      "transparent": 1332029,
+      "visible": 224659,
+      "highAlpha": 212680,
+      "edge": 0,
+      "bounds": [
+        386,
+        165,
+        890,
+        1203
+      ]
+    },
+    {
+      "file": "08-jump.png",
+      "width": 1254,
+      "height": 1254,
+      "transparent": 1304253,
+      "visible": 250881,
+      "highAlpha": 237348,
+      "edge": 0,
+      "bounds": [
+        372,
+        55,
+        1008,
+        1144
+      ]
+    },
+    {
+      "file": "09-presenting.png",
+      "width": 1254,
+      "height": 1254,
+      "transparent": 1286281,
+      "visible": 262631,
+      "highAlpha": 247733,
+      "edge": 0,
+      "bounds": [
+        391,
+        62,
+        1171,
+        1223
+      ]
+    }
+  ],
+  "checks": [
+    "9 alpha PNGs, transparent canvas edges",
+    "375px layout in all four preview states",
+    "input preserved on preview Send",
+    "wave frame swap and cancellation",
+    "hop finishes once",
+    "Reduce Motion stays still",
+    "no JavaScript errors"
+  ]
+}

@@ -15,18 +15,32 @@ Keep this map current: when you add or move a doc, add or update its line here i
 - [`specs/h3spec.md`](specs/h3spec.md): historical planning/products/backend specification used in the consolidation; superseded by `SPEC.md`.
 - [`userflow.md`](userflow.md): historical screen-flow sketch; use the complete screen and workflow requirements in `SPEC.md`.
 
+### Design
+- [`docs/design/PROFILE.md`](docs/design/PROFILE.md): start here when creating, redesigning or auditing app screens; agent workflow, one-task layout principles, DreamSeal direction, source authority and superseded mockup decisions.
+- [`docs/design/SYSTEM.md`](docs/design/SYSTEM.md): read when changing colors, typography, spacing, components, motion, imagery or input/accessibility behavior; measured palette contrast and native component contracts.
+- [`docs/design/SCREENS.md`](docs/design/SCREENS.md): read the relevant screen family before changing navigation, content density, questions, room panels, recovery, Product pages or shopping/sharing; entry, actions, disclosure and persistence contracts.
+- [`docs/design/AUDIT.md`](docs/design/AUDIT.md): use for UI reviews and verification; invariant gates, evidence/severity rules, dated current-app findings and a state coverage matrix. Recheck source before treating a finding as current.
+- [`.lavish/ollo-companion.html`](.lavish/ollo-companion.html): read when adding Ollo, the penguin–ostrich mascot; nine transparent poses, image-swap previews and a proposed SwiftUI integration plan. Review artifact; not implemented in the app.
+
 ### Research
 Verified facts, each claim tagged confirmed or inferred with its source URL. Read the matching file before writing the code it covers.
 - [`specs/layout-awareness-side-chat-summary.md`](specs/layout-awareness-side-chat-summary.md): room-layout research, evidence limits and proposed Gemini/H2 integration from the side chat. Read when evaluating layout-awareness changes; proposals are not approved requirements and `SPEC.md` remains governing.
 - [`specs/H2-research/roomplan-arkit-facts.md`](specs/H2-research/roomplan-arkit-facts.md): Apple `CapturedRoom` JSON shape and enum/simd encoding, RoomPlan/ARKit coordinate frames, wall and object axes, `sceneDepth` availability during RoomPlan, intrinsics and the pixel-to-ray math. For any CapturedRoom parsing, camera or depth code.
+- [`specs/H2-research/photo-texturing-cpap-reuse.md`](specs/H2-research/photo-texturing-cpap-reuse.md): read for room photo-texturing or CPAP projection reuse; code audit, camera math, kitchenette coverage and proposed implementation. Experimental scope beyond `SPEC.md`.
 - [`specs/H2-research/perceptron-facts.md`](specs/H2-research/perceptron-facts.md): Perceptron API and SDK, model IDs, `annotation_format`, the 0–1000 coordinate grid vs `/v1/detect` pixels, limits and pricing. For any Mk1 call or parsing.
 - [`specs/launch-research/shortlist.md`](specs/launch-research/shortlist.md): twenty priority launch-film references and ReSpace applications. Read when planning the launch film; recommendations are creative inferences, with review coverage stated.
 - [`specs/launch-research/candidates.md`](specs/launch-research/candidates.md): all 120 candidates, links, reach evidence and selection reasons; companion JSON preserves structured evidence.
 - [`specs/launch-research/footage-previews.md`](specs/launch-research/footage-previews.md): eight automated audiovisual previews, clip limits and editorial corrections. Check before using a scene or timestamp.
+- [`specs/launch-research/app-capture-tools.md`](specs/launch-research/app-capture-tools.md): free app capture, zoom and 3D device-animation tools; verified plan limits, commercial/privacy terms, live-editor observations and a speed-first production pipeline.
+- [`experiments/video-smoke-tests/README.md`](experiments/video-smoke-tests/README.md): fifteen FreeMockup/Recordly treatment tests on real ReSpace Simulator screens; playable samples, editable projects, settings, export failures and final-capture preparation.
 - [`specs/launch-research/deep/index.md`](specs/launch-research/deep/index.md): twenty full-film audiovisual reviews, comparison and coverage summary; links each film's editorial analysis, model output (quotation redactions labeled where needed) and coverage record. Read editorial corrections before citing footage.
+- [`specs/launch-research/video-editing-style-profile.md`](specs/launch-research/video-editing-style-profile.md): reusable editing reference with 80 specific devices and effect variants, 32 cross-film fundamentals, reconstruction recipes, sound notes and production checks; independent of the current ReSpace script.
+- [`specs/launch-research/editing-audit/index.md`](specs/launch-research/editing-audit/index.md): editing-specific evidence, 21 focused clip audits across 14 films, direct frame checks, timing corrections and coverage limits; indexes raw/redacted reports, contact sheets and structured effect/fundamental data.
 - [`specs/launch-research/deep/respace-direction.md`](specs/launch-research/deep/respace-direction.md): original ReSpace launch concept, reference mechanisms, proposed film spine and production decisions; creative inferences, not validated performance claims.
 - [`specs/launch-research/respace-launch-script-storyboard.md`](specs/launch-research/respace-launch-script-storyboard.md): revised three-minute landscape film, 224-word core narration, 43 timed shots and imagined-future production plan; read when writing or filming the launch. [Critical review](specs/launch-research/respace-script-revision-review.md), [recording copy](specs/launch-research/respace-launch-voiceover.txt), [concept board](specs/launch-research/respace-storyboard-concepts.png) and [image prompt](specs/launch-research/respace-storyboard-image-prompt.txt) accompany it.
 - [`specs/launch-research/spatial-discovery.md`](specs/launch-research/spatial-discovery.md), [`specs/launch-research/creative-discovery.md`](specs/launch-research/creative-discovery.md): supporting discovery sources; their preliminary rankings are superseded by the shortlist.
+
+- [`.lavish/respace-middle.html`](.lavish/respace-middle.html): proposed launch-film middle with twelve timed beats, recording copy, a progressive Gemini diagram and four research-paper screenshots. Read when revising the middle; a creative proposal, not product requirements or the prototype's saved Working version.
 
 ### Engineering conventions
 
@@ -39,11 +53,14 @@ Verified facts, each claim tagged confirmed or inferred with its source URL. Rea
 
 ### Prompts
 - [`prompts/layout-reasoning.md`](prompts/layout-reasoning.md): research-backed layout principles, written as Gemini's system prompt for questions, Product choice, Anchor planning, repair and explanations. Edit it when changing how the agent reasons about layouts.
+- [`prompts/layouts.md`](prompts/layouts.md): advisory Gemini context loaded by planning, Product scoring, spatial and edit prompts through `backend/respace/layout_context.py`; preserves findings, limitations and sources. Read when refining layout guidance; `SPEC.md` governs application behavior.
 
 ### Code
+- [`docs/ui-studio.md`](docs/ui-studio.md): live SwiftUI previews and the debug-only ReSpace UI screen picker, sample data, simulated actions and recording workflow.
+- [`experiments/kitchenette-texturing/README.md`](experiments/kitchenette-texturing/README.md): isolated image-to-texture bake on the bundled kitchenette, with hybrid/direct USDZ outputs, camera calibration, visibility checks and repeatable previews; read before changing the texture experiment.
 - [`script/README.md`](script/README.md): contained temporary DS_HQ Script-screen copy, ReSpace narration and visual tracks, local autosave and run instructions. Read when changing the launch-script prototype; independent of the iPhone app.
 - [`ReSpace/`](ReSpace/), [`ReSpace.xcodeproj/`](ReSpace.xcodeproj/): the iOS capture, Room review, planning and immutable design client.
-- [`ReSpace/DesignSystem.swift`](ReSpace/DesignSystem.swift), [`ReSpace/IntentViews.swift`](ReSpace/IntentViews.swift), [`ReSpace/OperationViews.swift`](ReSpace/OperationViews.swift), [`ReSpace/ProductViews.swift`](ReSpace/ProductViews.swift): DreamSeal presentation components, guided brief/questions and focused Product pages; bundled Inter retains its [license](ReSpace/Resources/Inter-LICENSE.txt).
+- [`ReSpace/DesignSystem.swift`](ReSpace/DesignSystem.swift), [`ReSpace/IntentViews.swift`](ReSpace/IntentViews.swift), [`ReSpace/OperationViews.swift`](ReSpace/OperationViews.swift), [`ReSpace/ProductViews.swift`](ReSpace/ProductViews.swift): DreamSeal presentation components, room-request composer, sequential questions and focused Product pages; bundled Inter retains its [license](ReSpace/Resources/Inter-LICENSE.txt).
 - [`ReSpace/ShoppingList.swift`](ReSpace/ShoppingList.swift), [`ReSpace/ShoppingListViews.swift`](ReSpace/ShoppingListViews.swift), [`ReSpace/ShoppingShareView.swift`](ReSpace/ShoppingShareView.swift): saved per-Room purchase links, local persistence and native image/text sharing, including placeholder room posts with price labels for Messages and Instagram.
 - [`backend/`](backend/): versioned API, durable state, Product verification, perception and deterministic placement; contract and behavior tests are under `backend/tests/`.
 - [`backend/README.md`](backend/README.md): local runtime, opt-in model testing, startup instructions and test-data limits.

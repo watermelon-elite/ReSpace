@@ -1,0 +1,703 @@
+[
+  {
+    "name": "Internal motion can carry pace while geography stays stable",
+    "principle": "Creative inference: Perceived activity need not require a new camera angle. Repeated changes within a known frame can provide rapid development while preserving the subject’s relationship to the environment.",
+    "application": "Choose one stable anchor, introduce changes in distinct waves, and let each wave alter a meaningful state. Increase activity only after the viewer can locate the subject and the destination.",
+    "test": null,
+    "limit": "A static camera alone does not make dense layers readable; overlapping changes still require hierarchy.",
+    "examples": [
+      {
+        "film_rank": 1,
+        "time_range": "00:10.500–00:25.167",
+        "evidence": "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/report.md",
+        "observation": "Furniture, wall treatment and a rug change around a centrally anchored couple."
+      },
+      {
+        "film_rank": 7,
+        "time_range": "00:29.833–00:35.667",
+        "evidence": "specs/launch-research/deep/rank-07-slack-so-yeah/report.md",
+        "observation": "Notifications multiply around a worker in one recognizable desk composition."
+      }
+    ]
+  },
+  {
+    "name": "An effect should change a state, not merely decorate a cut",
+    "principle": "Creative inference: The most useful flourishes visibly complete an operation or dramatize a consequence. They have a before and an after that can be described independently of their style.",
+    "application": "For every effect, write its initial state, trigger and resulting state. If removing the effect changes no information or feeling, consider simplifying it.",
+    "test": null,
+    "limit": "This is an editorial heuristic; purely decorative movement can be appropriate, especially in a branded interlude.",
+    "examples": [
+      {
+        "film_rank": 1,
+        "time_range": "00:08.250–00:09.125",
+        "evidence": "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/report.md",
+        "observation": "Separate boards resolve into one shared board."
+      },
+      {
+        "film_rank": 3,
+        "time_range": "00:52.167–00:56.500",
+        "evidence": "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/report.md",
+        "observation": "The earlier difficult sentence becomes successful text output."
+      },
+      {
+        "film_rank": 2,
+        "time_range": "01:41.000–01:41.750",
+        "evidence": "specs/launch-research/deep/rank-02-remarkable-get-your-brain-back/report.md",
+        "observation": "A recognizable facial profile becomes divided fragments."
+      }
+    ]
+  },
+  {
+    "name": "Return to the same problem when demonstrating the solution",
+    "principle": "Creative inference: A repeated situation reduces setup work and makes the result comparable. The viewer recognizes why the operation matters before a new explanation is required.",
+    "application": "Capture reusable locations, object positions and task identifiers. Repeat the meaningful variable while changing the result; exact frame matching is optional.",
+    "test": null,
+    "limit": "Wispr’s repeated settings are established, but claims of frame-identical camera angles were rejected.",
+    "examples": [
+      {
+        "film_rank": 3,
+        "time_range": "00:06.333–00:35.200; 00:52.167–01:14.667",
+        "evidence": "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/report.md",
+        "observation": "Spelling, tone and a name recur as problems and successful demonstrations."
+      },
+      {
+        "film_rank": 7,
+        "time_range": "00:29.833–00:35.667; 00:37.833–00:44.200",
+        "evidence": "specs/launch-research/deep/rank-07-slack-so-yeah/report.md",
+        "observation": "The same workplace shifts from crowded messages to organized communication."
+      },
+      {
+        "film_rank": 1,
+        "time_range": "00:00.000–00:01.000; 00:25.167–00:28.400",
+        "evidence": "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/report.md",
+        "observation": "The couple inhabit the room first as a blank space and later as a finished social setting."
+      }
+    ]
+  },
+  {
+    "name": "Keep one human anchor while the surrounding information changes",
+    "principle": "Creative inference: A continuing person or relationship can organize a dense explanation. The person supplies scale, reaction and continuity while graphics, locations or supporting characters change.",
+    "application": "Preserve the person’s screen position, eye-line, route or vocal identity across changes. Choose which of those anchors remains constant before introducing visual novelty.",
+    "test": null,
+    "limit": "A recurring face is not a substitute for readable product actions; let unfamiliar operations occupy their own view.",
+    "examples": [
+      {
+        "film_rank": 9,
+        "time_range": "00:44.800–00:51.000; 00:57.300–01:07.000",
+        "evidence": "specs/launch-research/deep/rank-09-dollar-shave-club/report.md",
+        "observation": "The presenter continues through packing and wagon stations."
+      },
+      {
+        "film_rank": 1,
+        "time_range": "00:05.000–00:25.167",
+        "evidence": "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/report.md",
+        "observation": "The seated couple remains central through interface and furnishing changes."
+      },
+      {
+        "film_rank": 3,
+        "time_range": "00:52.167–01:14.667",
+        "evidence": "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/report.md",
+        "observation": "The same user remains present while dictation solves several tasks."
+      }
+    ]
+  },
+  {
+    "name": "Density contrast makes a transition meaningful",
+    "principle": "Creative inference: A visual reset is strongest when the next sequence follows a different organizing rule. Fewer objects, slower motion or a tactile sound field can make the product transition feel like the answer to the preceding problem.",
+    "application": "Define the outgoing and incoming density in layers, motion and sound. Remove specific pressures at the transition instead of merely adding a logo or changing music.",
+    "test": null,
+    "limit": "The emotional relief is an interpretation, not a measured physiological or retention result; precise reMarkable live-action boundary remains uncertain.",
+    "examples": [
+      {
+        "film_rank": 2,
+        "time_range": "02:03.500–02:22.799",
+        "evidence": "specs/launch-research/deep/rank-02-remarkable-get-your-brain-back/report.md",
+        "observation": "Dense animated danger gives way to a drawn-eye bridge and tactile device use."
+      },
+      {
+        "film_rank": 7,
+        "time_range": "00:35.833; 00:37.833–00:44.200",
+        "evidence": "specs/launch-research/deep/rank-07-slack-so-yeah/report.md",
+        "observation": "A clean identity card separates crowded notifications from orderly workplace graphics."
+      }
+    ]
+  },
+  {
+    "name": "Physical reactions connect impossible graphics to the scene",
+    "principle": "Creative inference: An actor’s body can establish that an effect occupies the same space. Posture, gaze, reaching and avoidance give a composited event weight even when its occurrence is clearly fantastical.",
+    "application": "Rehearse the reaction to a timed cue, record clean plates when needed, and preserve contact/occlusion relationships. Let the performer react to one event at a time.",
+    "test": null,
+    "limit": "These films do not establish the original compositing or prop fabrication method; reconstruction instructions are proposals.",
+    "examples": [
+      {
+        "film_rank": 1,
+        "time_range": "00:21.000–00:23.500",
+        "evidence": "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/report.md",
+        "observation": "The couple raises their feet as the rug unfurls."
+      },
+      {
+        "film_rank": 7,
+        "time_range": "00:29.833–00:35.667",
+        "evidence": "specs/launch-research/deep/rank-07-slack-so-yeah/report.md",
+        "observation": "The worker reacts as message graphics overwhelm the desk area."
+      }
+    ]
+  },
+  {
+    "name": "Match a sound accent to a visible cause",
+    "principle": "Creative inference: An audible click, impact or buzz becomes informative when the viewer can identify the action that caused it. Different materials and outcomes can have different sonic signatures.",
+    "application": "Place the accent on the perceptual contact or state change, not automatically on every cut. Distinguish input, processing and result sounds when those stages need explanation.",
+    "test": null,
+    "limit": "Exact original sources and frame synchronization were not independently measured; use the relationships, not unsupported instrument names.",
+    "examples": [
+      {
+        "film_rank": 1,
+        "time_range": "00:10.500–00:24.500",
+        "evidence": "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/report.md",
+        "observation": "Saving is paired with digital acknowledgements and physical-sounding room changes."
+      },
+      {
+        "film_rank": 3,
+        "time_range": "00:07.125–00:20.125",
+        "evidence": "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/report.md",
+        "observation": "Error buzzers interrupt failed typed entries."
+      },
+      {
+        "film_rank": 9,
+        "time_range": "00:51.000–00:54.200",
+        "evidence": "specs/launch-research/deep/rank-09-dollar-shave-club/report.md",
+        "observation": "Swishing and impacts accompany the prop disruption."
+      }
+    ]
+  },
+  {
+    "name": "Let the product enter through an established action",
+    "principle": "Creative inference: A motivated handoff from story to product maintains continuity. A character offers a tool, a familiar motif becomes its material, or an existing choice changes the room.",
+    "application": "Identify the action or image already carrying the story, then make the first product view answer it. Separate the conceptual turn, brand introduction and functional proof if they occur at different moments.",
+    "test": null,
+    "limit": "A theatrical transformation should not be presented as literal software behavior unless that behavior is demonstrated.",
+    "examples": [
+      {
+        "film_rank": 3,
+        "time_range": "00:43.167–00:45.500",
+        "evidence": "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/report.md",
+        "observation": "The therapist presents the software on a tablet within the counseling scene."
+      },
+      {
+        "film_rank": 2,
+        "time_range": "02:03.500–02:11.999",
+        "evidence": "specs/launch-research/deep/rank-02-remarkable-get-your-brain-back/report.md",
+        "observation": "The eye motif leads into drawing on the product surface."
+      }
+    ]
+  },
+  {
+    "name": "A joke needs readable setup, interruption and afterbeat",
+    "principle": "Creative inference: Comedy is an editing relationship, not simply an eccentric prop. Withholding information, punctuating a routine action and allowing a response give the gag a shape.",
+    "application": "Establish the ordinary action first, isolate the surprising beat, and keep a reaction or short hold before moving on. Avoid placing crucial UI reading over the punchline.",
+    "test": null,
+    "limit": "Returned times are navigation aids; precise comedic pause lengths need checking in an editing timeline.",
+    "examples": [
+      {
+        "film_rank": 3,
+        "time_range": "00:00.000–00:07.125",
+        "evidence": "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/report.md",
+        "observation": "A familiar counseling setup precedes the wider oversized-keyboard reveal."
+      },
+      {
+        "film_rank": 9,
+        "time_range": "00:51.000–00:57.300",
+        "evidence": "specs/launch-research/deep/rank-09-dollar-shave-club/report.md",
+        "observation": "Packing-table disruption is followed by a mascot beat."
+      },
+      {
+        "film_rank": 7,
+        "time_range": "00:26.333–00:29.833",
+        "evidence": "specs/launch-research/deep/rank-07-slack-so-yeah/report.md",
+        "observation": "A closet encounter interrupts the interview account before returning to commentary."
+      }
+    ]
+  },
+  {
+    "name": "Finish the metaphor before the final identity card",
+    "principle": "Creative inference: A visual idea carries more coherence when its characters, objects or motifs receive a conclusion. The closing brand card then follows a completed action rather than cutting off an unresolved story.",
+    "application": "List the film’s distinctive recurring elements and choose one concise payoff action. Resolve it, then simplify composition and reading load for the destination.",
+    "test": null,
+    "limit": "Do not introduce a new narrative premise in the finale; spectacle should remain connected to the established world.",
+    "examples": [
+      {
+        "film_rank": 3,
+        "time_range": "01:14.833–01:17.000",
+        "evidence": "specs/launch-research/deep/rank-03-wispr-break-up-keyboard/report.md",
+        "observation": "The keyboard character moves out after successful proof."
+      },
+      {
+        "film_rank": 1,
+        "time_range": "00:25.167–00:28.400",
+        "evidence": "specs/launch-research/deep/rank-01-pinterest-disco-treehouse/report.md",
+        "observation": "The couple celebrates in the room they have shaped."
+      },
+      {
+        "film_rank": 9,
+        "time_range": "01:16.000–01:22.000",
+        "evidence": "specs/launch-research/deep/rank-09-dollar-shave-club/report.md",
+        "observation": "Recurring participants join a warehouse celebration before the identity/website close."
+      }
+    ]
+  },
+  {
+    "name": "Use sparse typography as a density reset between proofs",
+    "principle": "The contrast is between information-dense interaction and a short, spacious proposition. A title creates reading room and identifies the next job before the viewer encounters its controls.",
+    "application": "Cut away from detailed UI at a natural completion. Put one benefit on a quiet field; reveal the next interaction only after that phrase is readable. Maintain the same type system across cards.",
+    "test": "If the title is removed, does the viewer lose the next task? If not, it may be redundant; if it is necessary, can it be read at normal playback?",
+    "limit": "The examples do not prescribe universal card durations; reading load and soundtrack change the timing.",
+    "examples": [
+      {
+        "film_rank": 10,
+        "time_range": "00:26.333–00:33.000",
+        "observation": "Sparse drafting card precedes composer/snippet interaction.",
+        "report": "specs/launch-research/deep/rank-10-notion-mail/report.md"
+      },
+      {
+        "film_rank": 20,
+        "time_range": "00:21.000–00:31.000",
+        "observation": "Writing chapter title precedes dense highlighted-document editing.",
+        "report": "specs/launch-research/deep/rank-20-notion-ai/report.md"
+      },
+      {
+        "film_rank": 17,
+        "time_range": "00:41.000–00:49.000",
+        "observation": "The document demonstration gives way to typography and meeting-type variation.",
+        "report": "specs/launch-research/deep/rank-17-granola/report.md"
+      }
+    ]
+  },
+  {
+    "name": "Make the recurring transition device belong to the product world",
+    "principle": "A recurring gesture carries identity most coherently when its material or action comes from the subject: a mail airplane, text caret, pixel screen or editing operation. This is a specific selection criterion for motifs, not a requirement that every cut be branded.",
+    "application": "Inventory three physical or interface actions native to the product. Choose one readable at small size. Develop two or three applications—entry, chapter boundary, close—without forcing it into every scene.",
+    "test": "Could the exact motif serve any unrelated company without alteration? If yes, the connection is probably decorative.",
+    "limit": "The inference concerns coherence, not trademark ownership or demonstrated conversion.",
+    "examples": [
+      {
+        "film_rank": 10,
+        "time_range": "00:00.000–00:06.000",
+        "observation": "The paper airplane returns across introductory graphic cards.",
+        "report": "specs/launch-research/deep/rank-10-notion-mail/report.md"
+      },
+      {
+        "film_rank": 17,
+        "time_range": "00:00.000–00:04.000;00:49.000–00:51.583",
+        "observation": "Typing/caret identity opens the film and reappears at the close.",
+        "report": "specs/launch-research/deep/rank-17-granola/report.md"
+      },
+      {
+        "film_rank": 14,
+        "time_range": "00:03.333–00:05.333",
+        "observation": "The screen raster becomes the passage into product typography.",
+        "report": "specs/launch-research/deep/rank-14-playdate/report.md"
+      }
+    ]
+  },
+  {
+    "name": "Slow down for unfamiliar mechanics; accelerate recognizable repetition",
+    "principle": "Fast films do not teach every operation at their fastest pace. They hold the first causal example, then compress repetitions, variants or a recap after the visual grammar is established.",
+    "application": "Mark the first unfamiliar step in the cut. Give it a complete before/action/result. Reserve quick repetitions for examples the viewer can classify from silhouette, familiar structure or prior explanation.",
+    "test": "Watch without knowing the script: can you explain the unfamiliar step before the montage begins?",
+    "limit": "No measured universal shot-length average is claimed; previous model micro-cut averages were unsupported.",
+    "examples": [
+      {
+        "film_rank": 4,
+        "time_range": "00:41.833–00:55.300;01:54.800–02:00.000",
+        "observation": "Text/media linkage receives an explanatory passage before the later rapid strike-through montage.",
+        "report": "specs/launch-research/deep/rank-04-descript/report.md"
+      },
+      {
+        "film_rank": 14,
+        "time_range": "00:35.334–00:45.000",
+        "observation": "Crank unveiling and gameplay response are allowed attention after the earlier feature montage.",
+        "report": "specs/launch-research/deep/rank-14-playdate/report.md"
+      },
+      {
+        "film_rank": 17,
+        "time_range": "00:20.000–00:41.000;00:45.000–00:49.000",
+        "observation": "Meeting/notes and enhancement are sustained before rapid meeting-type cycling.",
+        "report": "specs/launch-research/deep/rank-17-granola/report.md"
+      }
+    ]
+  },
+  {
+    "name": "Change viewing scale to follow the task, not to decorate every click",
+    "principle": "These films move between context, a readable action area and a result. Scale change is purposeful when each new crop answers a different question: where are we, what happened, what improved?",
+    "application": "Build a three-scale coverage plan before recording. Preserve one recognizable landmark through any digital push. Reframe only when the next detail would otherwise be too small to read.",
+    "test": "Freeze before and after each zoom: does the new crop reveal necessary information, or merely make the same information larger?",
+    "limit": "Exact lens choice, camera rig and easing curves cannot be inferred from these sampled observations.",
+    "examples": [
+      {
+        "film_rank": 4,
+        "time_range": "00:32.700–00:38.200;00:41.833–00:55.300",
+        "observation": "Monitor entry leads into a closer working editor.",
+        "report": "specs/launch-research/deep/rank-04-descript/report.md"
+      },
+      {
+        "film_rank": 10,
+        "time_range": "00:06.125–00:11.000",
+        "observation": "Fresh clip moves from broader inbox toward the relevant toolbar and list.",
+        "report": "specs/launch-research/editing-audit/rank-10-clip-2.txt"
+      },
+      {
+        "film_rank": 14,
+        "time_range": "00:28.167–00:30.667",
+        "observation": "A hand supplies physical scale after isolated product close-ups.",
+        "report": "specs/launch-research/deep/rank-14-playdate/report.md"
+      }
+    ]
+  },
+  {
+    "name": "Keep concurrent panels in a clear attention hierarchy",
+    "principle": "Simultaneous panes work when they give different kinds of information and one is quieter. Context can persist in one pane while an action develops in another; two competing demonstrations are harder to follow.",
+    "application": "Define which panel the viewer must read and which provides context. Give the reading panel sufficient area and pause unnecessary motion in the other. Align panel changes with handoffs of attention.",
+    "test": "Ask a viewer where they looked first; if the decoration beats the important action, reduce its size, contrast or motion.",
+    "limit": "The Descript ensemble has a different job from a UI split screen; the commonality is allocation, not identical layout.",
+    "examples": [
+      {
+        "film_rank": 17,
+        "time_range": "00:20.000–00:29.000",
+        "observation": "Meeting grid remains beside the notepad and activity indicators.",
+        "report": "specs/launch-research/deep/rank-17-granola/report.md"
+      },
+      {
+        "film_rank": 20,
+        "time_range": "00:12.375–00:21.000",
+        "observation": "Chat occupies the left while a blue mascot panel supplies character on the right.",
+        "report": "specs/launch-research/editing-audit/rank-20-clip-1.txt"
+      },
+      {
+        "film_rank": 4,
+        "time_range": "02:40.600–02:43.000",
+        "observation": "Distinct color-coded cast columns support a shared closing exchange.",
+        "report": "specs/launch-research/deep/rank-04-descript/report.md"
+      }
+    ]
+  },
+  {
+    "name": "Use color as a location or chapter identifier",
+    "principle": "A limited set of consistent color fields makes rapid returns legible. Color identifies a person, workspace or task, allowing the edit to change content without making the audience reorient from zero.",
+    "application": "Assign a stable color role before building transitions. Keep that role across wide, close and composite shots. Change the field when the task or context genuinely changes, rather than cycling colors arbitrarily.",
+    "test": "Can the chapter or subject still be recognized in a blurred thumbnail?",
+    "limit": "This is an editorial organizing technique, not a universal psychological meaning for a color.",
+    "examples": [
+      {
+        "film_rank": 4,
+        "time_range": "00:02.667–00:10.000;02:40.600–02:43.000",
+        "observation": "Distinct actor/set colors return in the closing split-screen.",
+        "report": "specs/launch-research/deep/rank-04-descript/report.md"
+      },
+      {
+        "film_rank": 20,
+        "time_range": "00:12.500–00:21.000;00:25.000–00:31.000;00:45.000–00:50.250",
+        "observation": "Blue, red and yellow-accented task compositions segment demonstrations.",
+        "report": "specs/launch-research/deep/rank-20-notion-ai/report.md"
+      },
+      {
+        "film_rank": 14,
+        "time_range": "00:22.000–00:30.667",
+        "observation": "Yellow hardware stays recognizable across changing studio/hand presentations.",
+        "report": "specs/launch-research/deep/rank-14-playdate/report.md"
+      }
+    ]
+  },
+  {
+    "name": "Return to a person or usable artifact after abstract spectacle",
+    "principle": "An expressive graphic can dramatize a benefit, but these examples reconnect it with a reaction, usable result or real interaction. That return gives the imaginative passage an intelligible destination.",
+    "application": "For each stylized insert, write the concrete result it returns to. Shoot or capture that result first. Keep the abstract passage only as long as it adds meaning or feeling.",
+    "test": "Does the sequence leave the viewer with something inspectable, or only the feeling that an effect happened?",
+    "limit": "Not every commercial requires documentary proof; the principle is especially useful when the sequence claims a functional transformation.",
+    "examples": [
+      {
+        "film_rank": 4,
+        "time_range": "01:54.800–02:07.000",
+        "observation": "Strike-through graphics lead to clean playback and relieved reactions.",
+        "report": "specs/launch-research/deep/rank-04-descript/report.md"
+      },
+      {
+        "film_rank": 14,
+        "time_range": "00:40.500–00:45.000;01:24.000–01:31.000",
+        "observation": "Analog crank imagery resolves into game control; package animation reveals playable content.",
+        "report": "specs/launch-research/deep/rank-14-playdate/report.md"
+      },
+      {
+        "film_rank": 17,
+        "time_range": "00:29.000–00:41.000",
+        "observation": "Enhancement action yields a structured document rather than ending on a processing symbol.",
+        "report": "specs/launch-research/deep/rank-17-granola/report.md"
+      }
+    ]
+  },
+  {
+    "name": "Give impossible motion a visible physical initiator",
+    "principle": "Introduce the effect through a recognizable gesture or operation before expanding its consequences. The initiating contact gives viewers a causal anchor even when the following action is surreal. It need not imply a real product capability.",
+    "application": "Choose one hand contact, tap or movement. Establish its target, delay the larger change until that action reads, then show the affected area.",
+    "test": "Can a viewer point to what started the change after watching without narration?",
+    "limit": "The initiation may be a film metaphor; do not let an edit make an unsupported product operation look real.",
+    "examples": [
+      {
+        "film_rank": 5,
+        "time_range": "01:13.000–01:17.000",
+        "evidence": "specs/launch-research/deep/rank-05-homepod/report.md",
+        "observation": "A hand reaches toward the table before its surface elongates."
+      },
+      {
+        "film_rank": 6,
+        "time_range": "00:03.000–00:08.667",
+        "evidence": "specs/launch-research/deep/rank-06-ikea-kreativ/report.md",
+        "observation": "Phone use and targeted room graphics precede the larger rearrangement."
+      }
+    ]
+  },
+  {
+    "name": "Treat arrival and settling as part of the effect",
+    "principle": "Movement earns satisfaction through a destination and a small period of resolution. Floating possessions entering storage and interface activity reaching completion both close a visible loop. Motion without a destination is decoration.",
+    "application": "Storyboard the finished state first, then animate toward it. Include deceleration, contact or confirmation, followed by enough stillness to recognize completion.",
+    "test": "Does the audience know what finished and where the moving element ended?",
+    "limit": "Do not insert fake completion or exaggerated bouncing merely to make an animation feel satisfying.",
+    "examples": [
+      {
+        "film_rank": 11,
+        "time_range": "00:00.000–00:06.000",
+        "evidence": "specs/launch-research/deep/rank-11-tylko/report.md",
+        "observation": "Floating possessions move into storage destinations and settle."
+      },
+      {
+        "film_rank": 15,
+        "time_range": "00:47.333–00:54.000",
+        "evidence": "specs/launch-research/deep/rank-15-dropbox/report.md",
+        "observation": "The recurring circle resolves into a completion/synchronization role."
+      }
+    ]
+  },
+  {
+    "name": "Create variety by changing one property at a time",
+    "principle": "Stable form, framing or performer makes prop, color or medium changes easy to register. Constrained variation can produce more impact than changing camera, lighting and content simultaneously.",
+    "application": "Choose an invariant: position, silhouette, person or shape. Change the one variable the shot is meant to celebrate.",
+    "test": "Can the viewer name what changed without watching twice?",
+    "limit": "This is not a demand for all shots to match; use stable variation where comparison or accumulation is the point.",
+    "examples": [
+      {
+        "film_rank": 6,
+        "time_range": "00:00.000–00:01.333",
+        "evidence": "specs/launch-research/deep/rank-06-ikea-kreativ/report.md",
+        "observation": "The performer stays in related framing while the held hobby prop changes."
+      },
+      {
+        "film_rank": 11,
+        "time_range": "00:12.833–00:14.333",
+        "evidence": "specs/launch-research/deep/rank-11-tylko/report.md",
+        "observation": "Furniture silhouette remains recognizable while finishes change."
+      },
+      {
+        "film_rank": 15,
+        "time_range": "00:00.000–00:12.333",
+        "evidence": "specs/launch-research/deep/rank-15-dropbox/report.md",
+        "observation": "A geometric motif persists across different media and objects."
+      }
+    ]
+  },
+  {
+    "name": "Use recurring material to connect different narrative states",
+    "principle": "Paper, packaging, furniture and other physical materials carry continuity across distinct shot types and narrative states. Sonos connects moving-home packaging with product handling; Dropbox turns a drawing into a physical form; HomePod transforms a familiar table after the product has already entered. The commonality is material continuity, not that all three introduce the product at that moment.",
+    "application": "Find a material already present in the story and give it a consequential later role: packaging becomes an installation action, a drawing becomes a shape, or a surface becomes responsive. Record the material’s texture, movement and contact.",
+    "test": "Can the viewer recognize the recurring material and explain what its role has changed into?",
+    "limit": "A shared material alone is not a causal link; keep the relationship understandable and avoid invented functional claims.",
+    "examples": [
+      {
+        "film_rank": 12,
+        "time_range": "00:15.000–00:21.000",
+        "evidence": "specs/launch-research/deep/rank-12-sonos/report.md",
+        "observation": "Moving-home packaging and speaker unpacking share a tactile material vocabulary."
+      },
+      {
+        "film_rank": 15,
+        "time_range": "00:19.167–00:22.500",
+        "evidence": "specs/launch-research/deep/rank-15-dropbox/report.md",
+        "observation": "The technical drawing is crumpled into a new physical shape."
+      },
+      {
+        "film_rank": 5,
+        "time_range": "01:13.000–01:17.000",
+        "evidence": "specs/launch-research/deep/rank-05-homepod/report.md",
+        "observation": "A familiar tabletop becomes the surface of the first impossible deformation."
+      }
+    ]
+  },
+  {
+    "name": "Follow an input through output to human response",
+    "principle": "A device action is only one link. Showing the affected object or state, then a person’s response, makes the operation readable and restores the human premise. The response can be subtle.",
+    "application": "Build a short input→output→response sequence. Remove intervening screens that do not clarify the cause.",
+    "test": "Can the audience connect the response to a visible change rather than a voiceover promise?",
+    "limit": "Cross-household montage does not prove one continuous event. Do not imply measurable emotional improvement from a staged reaction.",
+    "examples": [
+      {
+        "film_rank": 12,
+        "time_range": "00:18.833–00:28.000",
+        "evidence": "specs/launch-research/deep/rank-12-sonos/report.md",
+        "observation": "Phone music selection is followed by speaker imagery and listener responses across households."
+      },
+      {
+        "film_rank": 6,
+        "time_range": "00:04.167–00:12.167",
+        "evidence": "specs/launch-research/deep/rank-06-ikea-kreativ/report.md",
+        "observation": "The phone preview is followed by the person’s reaction and a wider redesigned room."
+      }
+    ]
+  },
+  {
+    "name": "Let the environment carry personality through use and belongings",
+    "principle": "The films repeatedly make rooms legible through meaningful objects or human activities. Character can be established before explanatory language, and furniture can gain purpose through what it holds or enables.",
+    "application": "Choose props or actions that imply an actual routine. Preserve them when moving from problem to result.",
+    "test": "Would these possessions or actions make sense for this specific person rather than any generic lifestyle ad?",
+    "limit": "Avoid treating all possessions as clutter; the film can organize personality without erasing it.",
+    "examples": [
+      {
+        "film_rank": 6,
+        "time_range": "00:00.000–00:03.000",
+        "evidence": "specs/launch-research/deep/rank-06-ikea-kreativ/report.md",
+        "observation": "Hobby props introduced close are revealed as belongings competing with a desk activity."
+      },
+      {
+        "film_rank": 11,
+        "time_range": "00:00.000–00:06.000",
+        "evidence": "specs/launch-research/deep/rank-11-tylko/report.md",
+        "observation": "Personal possessions float toward storage, giving the cabinetry a specific collection to hold."
+      },
+      {
+        "film_rank": 12,
+        "time_range": "00:28.000–00:40.000",
+        "evidence": "specs/launch-research/deep/rank-12-sonos/report.md",
+        "observation": "Cooking, cleaning and other domestic routines gain visible movement after music enters the sequence."
+      }
+    ]
+  },
+  {
+    "name": "Use an overhead view to reveal relationships that eye-level hides",
+    "principle": "An overhead composition can turn separate objects into a readable system: component spacing, destinations and the human route become visible together. Floyd uses a person inside an organized parts field; Tylko makes small objects and storage destinations legible from above. The useful commonality is the relational view, not overhead photography as a decorative style.",
+    "application": "Choose the relationship before choosing the angle. Lay out parts or destinations with enough separation to read. Include a hand or person only if it adds scale or demonstrates a route; preserve the layout long enough to inspect.",
+    "test": "Can the viewer see a relationship in this angle that the previous angle could not communicate?",
+    "limit": "A top view flattens height and can conceal depth; pair it with a side view when vertical fit matters.",
+    "refs": [
+      "E050",
+      "E073"
+    ]
+  },
+  {
+    "name": "Separate the element that changes from the element that provides reading continuity",
+    "principle": "IKEA Place holds one word while locations change; Notion AI holds sentence structure while capability pills swap; Daylight keeps a recurring text treatment across sensory images. These are related but different allocation strategies. Decide whether the viewer is comparing pictures, reading variants or following an argument, then stabilize the complementary layer.",
+    "application": "Mark one changing layer and one reading anchor in the storyboard. Keep position, baseline and contrast dependable. If both text and picture must change together, reduce the text to a form that can be recognized quickly.",
+    "test": "With the sound muted, is it obvious which element is meant to be compared and which is meant to remain familiar?",
+    "limit": "Anchored type does not excuse unreadable backgrounds or long replacement sentences.",
+    "refs": [
+      "E078",
+      "E038",
+      "E068"
+    ]
+  },
+  {
+    "name": "Resolve a visual world into a mark that belongs to it",
+    "principle": "Headspace contracts its inhabited park into a circle, Dropbox gives its recurring circular motif a completion role, and Granola builds identity out of a typing gesture. The shared principle is a traceable relationship between the film’s image language and its ending symbol. The exact shape or transition should differ with the subject.",
+    "application": "Choose a shape or action already present in the film. Plan the final clean state first, then a short bridge that retains a recognizable feature from the outgoing world. Remove secondary detail as the mark becomes smaller.",
+    "test": "Can someone describe the connection between the story image and the final mark without reading the brand name?",
+    "limit": "Do not force an unrelated scene into a logo-shaped mask merely because the software can do it.",
+    "refs": [
+      "E072",
+      "E060",
+      "E033"
+    ]
+  },
+  {
+    "name": "Restore human scale after isolated product beauty shots",
+    "principle": "Playdate places its isolated hardware into a real hand; Floyd lets a person move through components; Daylight returns from screen details to a wider shared room. Each sequence provides a physical reference after abstraction or isolation. Scale is not only a measurement: handling shows the relation between a product and a body.",
+    "application": "Pair at least one isolated object view with a hand, body or known environmental reference. Match the relevant orientation so the viewer can connect the two. Let the contact finish before introducing another camera move.",
+    "test": "Can the viewer imagine holding, reaching or moving around the object after the sequence?",
+    "limit": "Forced perspective and inconsistent composite scale can make the implied size misleading.",
+    "refs": [
+      "E030",
+      "E073",
+      "E067"
+    ]
+  },
+  {
+    "name": "Music can connect cuts without dictating every visual change",
+    "principle": "The IKEA domestic montage, IKEA Place’s repeated object/location cuts and Headspace’s scene changes preserve musical continuity while the picture changes structure. This makes a continuous phrase available as the spine of a sequence. It does not establish a universal requirement to cut on every beat or to restart music for every chapter.",
+    "application": "Lay out the visual causal sequence first, then find a musical phrase that can hold it. Choose a few strong synchronization points and allow other cuts to follow actions, reading or reactions. Preserve phrase continuity where locations change but the idea continues.",
+    "test": "Does the sequence still make sense when the music is muted, and does the music still phrase naturally without the picture?",
+    "limit": "The analyses do not provide measured BPM, exact beat grids or isolated music stems.",
+    "refs": [
+      "E063",
+      "E077",
+      "E069"
+    ]
+  },
+  {
+    "name": "Sound density can change the meaning of an image without simply becoming louder",
+    "principle": "reMarkable’s tactile product passage thins the sensory field after animated pressure; Wispr gives failed typing an intrusive buzzer; Descript makes deletion rhythmic. These are different sound roles: relief, obstruction and agency. Their commonality is a designed relationship between the audible texture and the state of the task.",
+    "application": "Define what each stage should sound like in terms of event count, texture and foreground/background priority. Reserve harshness for a meaningful interruption. Let a successful action have a clearer or sparser sound rather than automatically adding a bigger impact.",
+    "test": "Can the sound-only cut distinguish problem, action and resolution without relying on spoken explanation?",
+    "limit": "Observed sound descriptors are not original stems. Literal silence must be checked rather than inferred from a quiet image.",
+    "refs": [
+      "E009",
+      "E011",
+      "E024"
+    ]
+  },
+  {
+    "name": "A wider view should change the meaning of the detail",
+    "principle": "Wispr’s wide reveal exposes the absurd partner, IKEA Kreativ turns hobby props into a space conflict, and Daylight reveals that separate readers share one sofa. A wide shot is most useful when it supplies a missing relationship. Merely showing more pixels is less consequential than revealing who or what the earlier image excluded.",
+    "application": "Storyboard the information deliberately withheld by the close view. Place the missing person or object where it will be immediately readable in the wide. Cut after curiosity has formed but before the setup becomes confusing.",
+    "test": "Complete the sentence: the wide reveals that the earlier detail was actually part of ___.",
+    "limit": "It need not be a joke. Avoid forced mystery when the viewer needs basic orientation first.",
+    "refs": [
+      "E010",
+      "E046",
+      "E067"
+    ]
+  },
+  {
+    "name": "When comparison matters, make the invariant visible",
+    "principle": "Daylight brings contrasting illumination into a shared sofa frame, Tylko holds furniture form while finishes vary, and IKEA Place replaces objects within one room anchor. The stable context supplies the reference for comparison. Simultaneous comparison and successive replacement are alternatives, chosen according to what must be compared.",
+    "application": "Identify the variable under discussion and keep irrelevant conditions steady. For color/material use consistent lighting; for layouts use recognizable geometry; for workflows retain the same input. Show the comparison at a scale where the difference is actually visible.",
+    "test": "Can a viewer identify both the changed property and the conditions that remained constant?",
+    "limit": "A staged advertisement is not a controlled performance test. Do not infer measured product superiority from edited comparisons.",
+    "refs": [
+      "E067",
+      "E051",
+      "E077"
+    ]
+  },
+  {
+    "name": "Give the ending a reading job after its movement job",
+    "principle": "Granola resolves its graphic identity, Notion AI returns its character before the closing lockup, and Floyd holds a title over moving shadows. The end can retain life, but the demanding transition finishes before the viewer must absorb identity or a destination. This is separate from resolving the story: the final layout still needs time to be read.",
+    "application": "End the major movement, simplify the field, then hold only the necessary identity and action. Read the actual wording at ordinary playback and test it at the smallest expected viewing size. Subtle environmental motion can continue if it does not compete.",
+    "test": "Can a first-time viewer name the product and remember the requested next action without pausing?",
+    "limit": "Some references close on identity alone. A commercial end card is not automatically a successful acquisition CTA.",
+    "examples": [
+      {
+        "film_rank": 17,
+        "time_range": "00:49.000–00:51.583",
+        "observation": "The green field and cursor-related identity return for the close.",
+        "report": "specs/launch-research/deep/rank-17-granola/report.md"
+      },
+      {
+        "film_rank": 20,
+        "time_range": "00:50.250–00:56.333",
+        "observation": "The character returns with the invitation before the closing brand lockup.",
+        "report": "specs/launch-research/deep/rank-20-notion-ai/report.md"
+      },
+      {
+        "film_rank": 18,
+        "time_range": "03:17.000–03:19.834",
+        "observation": "Leaf shadows continue moving beneath the simple closing title.",
+        "report": "specs/launch-research/deep/rank-18-floyd/report.md"
+      }
+    ]
+  }
+]

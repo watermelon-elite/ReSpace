@@ -1,0 +1,31 @@
+{
+  "character": "Ollo",
+  "status": "Generated assets and proposed integration; native app unchanged",
+  "format": "RGBA PNG with transparent background",
+  "poses": [
+    { "file": "01-idle.png", "name": "Idle" },
+    { "file": "02-wave-a.png", "name": "Wave A" },
+    { "file": "03-wave-b.png", "name": "Wave B" },
+    { "file": "04-listening.png", "name": "Listening" },
+    { "file": "05-thinking.png", "name": "Thinking" },
+    { "file": "06-asking.png", "name": "Asking" },
+    { "file": "07-crouch.png", "name": "Jump preparation" },
+    { "file": "08-jump.png", "name": "Little jump" },
+    { "file": "09-presenting.png", "name": "Presenting" }
+  ],
+  "suggestedSequences": {
+    "wave": [
+      { "file": "02-wave-a.png", "milliseconds": 180 },
+      { "file": "03-wave-b.png", "milliseconds": 180 },
+      { "file": "02-wave-a.png", "milliseconds": 180 },
+      { "file": "01-idle.png", "milliseconds": 180 }
+    ],
+    "hop": [
+      { "file": "01-idle.png", "milliseconds": 100 },
+      { "file": "07-crouch.png", "milliseconds": 150 },
+      { "file": "08-jump.png", "milliseconds": 200 },
+      { "file": "01-idle.png", "milliseconds": 150 }
+    ]
+  },
+  "playback": "One pass, direct image swaps, then static pose appropriate to the current screen. Use a still pose with Reduce Motion."
+}

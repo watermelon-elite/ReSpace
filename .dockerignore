@@ -4,6 +4,8 @@
 !backend/pyproject.toml
 !backend/respace/
 !backend/respace/**
+!prompts/
+!prompts/layouts.md
 !assets/
 !assets/manifest.json
 !assets/manifests/

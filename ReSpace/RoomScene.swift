@@ -16,14 +16,25 @@ struct RoomScene: UIViewRepresentable {
     var cutaway = true
     var onModelLoad: ((String?) -> Void)? = nil
     func makeCoordinator() -> Coordinator { Coordinator(self) }
-    func makeUIView(context: Context) -> ARView {
+    func makeUIView(context: Context) -> UIView {
+        #if DEBUG
+        if let imageName = document["ui_demo_image"].string {
+            let image = UIImageView(image: UIImage(named: imageName))
+            image.contentMode = .scaleAspectFit
+            image.backgroundColor = UIColor(white: 0.93, alpha: 1)
+            return image
+        }
+        #endif
         let view = ARView(frame: .zero, cameraMode: .nonAR, automaticallyConfigureSession: false)
         view.environment.background = .color(UIColor(white: 0.93, alpha: 1))
         context.coordinator.attach(view)
         return view
     }
-    func updateUIView(_ view: ARView, context: Context) { context.coordinator.parent = self; context.coordinator.update() }
-    static func dismantleUIView(_ view: ARView, coordinator: Coordinator) { coordinator.importedLoadTask?.cancel() }
+    func updateUIView(_ view: UIView, context: Context) {
+        guard view is ARView else { return }
+        context.coordinator.parent = self; context.coordinator.update()
+    }
+    static func dismantleUIView(_ view: UIView, coordinator: Coordinator) { coordinator.importedLoadTask?.cancel() }
     @MainActor final class Coordinator: NSObject, UIGestureRecognizerDelegate {
         var parent: RoomScene
         weak var view: ARView?

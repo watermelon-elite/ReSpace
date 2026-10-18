@@ -130,7 +130,8 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         return TypeAdapter(contracts.ID).validate_python(value)
 
     def operation_response(operation):
-        return {'schema_version':1,'operation':{**{k:v for k,v in operation.items() if k not in {'device_id','spatial','edit'}},'answer_revision_allowed':operations.can_revise(operation)}}
+        return {'schema_version':1,'operation':{**{k:v for k,v in operation.items() if k not in {'device_id','spatial','edit'}},
+            'answer_revision_allowed':operations.can_revise(operation),'progress_message':operations.progress_message(operation)}}
 
     if role=='worker':
         from pydantic import BaseModel,Field

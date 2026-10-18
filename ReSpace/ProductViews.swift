@@ -213,3 +213,7 @@ struct OptionEvidence: View {
 }
 
 extension JSONValue: Identifiable { public var id: String { (try? String(data: data(), encoding: .utf8)) ?? "" } }
+
+#if DEBUG
+#Preview("Product") { UIDemoPreview(.product) }
+#endif

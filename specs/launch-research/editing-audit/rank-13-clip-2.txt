@@ -1,0 +1,64 @@
+> Quotation-redacted audiovisual model output. Quoted wording has been omitted; observational wording and returned timestamps are otherwise retained. The unmodified output was retained in the temporary research workspace. Model labels and timing claims remain subject to the corrections in the audit index.
+
+Here is a detailed breakdown of the editorial mechanisms and transition techniques in the provided clip, using exact source-video timestamps (MM:SS.mmm).
+
+---
+
+### 1. Match Cut / Graphic Match (Text Input to E-Reader Display)
+* **Start/End Time:** 01:06.950 – 01:07.600
+* **Incoming Composition:** Macro shot of a text cursor blinking while typing [source wording omitted] on a paper-like e-paper screen.
+* **Motion/Action:** Static shot of typing text, followed immediately by a hard cut.
+* **Outgoing Composition:** Medium shot of a woman in a dark room holding a lit Daylight e-reader tablet, facing right.
+* **Spatial Continuity & Layout:** The central focus remains on the screen interface/tablet device. The text [source wording omitted] logo slides/fades in on the right.
+* **Cut Type:** Hard cut.
+* **Audio & Music:** Ambient synthesizer music continues across the cut with no interruption or silence.
+
+---
+
+### 2. Hard Cut (Woman 1 to Woman 2)
+* **Start/End Time:** 01:09.450 – 01:09.600
+* **Incoming Composition:** Woman 1 looking down at her e-reader, illuminated by the screen in a dark room.
+* **Motion/Action:** Woman 1 blinking and looking down; hard cut.
+* **Outgoing Composition:** Woman 2 (with bangs) looking intently at her tablet device in a dark room, illuminated similarly.
+* **Spatial Continuity & Layout:** Match on action and framing: both subjects occupy a similar medium close-up head-and-shoulders composition facing downward/forward toward a handheld device.
+* **Cut Type:** Hard cut.
+* **Audio & Music:** Continuous synthesizer ambient pad.
+
+---
+
+### 3. Match Cut / Scale Shift (Close-Up to Wide Sofa Shot)
+* **Start/End Time:** 01:11.900 – 01:12.100
+* **Incoming Composition:** Close-up of Woman 2 looking at her tablet.
+* **Motion/Action:** Hard cut from close-up to wide shot.
+* **Outgoing Composition:** Wide shot of both women sitting side-by-side on a dark sofa at night, each holding and reading their respective illuminated tablets.
+* **Spatial Continuity & Layout:** Scales down instantly from a tight character close-up to establish the wider spatial environment (the sofa, table, and background plants).
+* **Cut Type:** Hard cut.
+* **Audio & Music:** Uninterrupted ambient music.
+
+---
+
+### 4. Graphic Match / Composite Overlay (Text-on-Screen to Macro Eye / Text Transition)
+* **Start/End Time:** 01:21.150 – 01:21.500
+* **Incoming Composition:** Extreme macro shot of an eye closed, overlaid with text lines like [source wording omitted] shifting vertically.
+* **Motion/Action:** The eye opens slowly while text layers dissolve/cross-fade.
+* **Outgoing Composition:** Close-up of an open blue eye looking toward the camera/screen.
+* **Spatial Continuity & Layout:** Text items ([source wording omitted], [source wording omitted]) slide vertically upward as new metadata lines appear in a stack.
+* **Cut Type:** Continuous shot with graphical text overlays and internal dissolve/masking effects.
+* **Audio & Music:** Continuous ambient soundscape.
+
+---
+
+### 5. Hard Cut (Macro Finger-on-Screen to Portrait Shot)
+* **Start/End Time:** 01:24.150 – 01:24.380
+* **Incoming Composition:** Macro shot of a finger scrolling through a photo grid on a tablet screen.
+* **Motion/Action:** Hard cut.
+* **Outgoing Composition:** Medium-close profile shot of a third woman lying down on a blue couch, looking upward and thoughtfully to the right.
+* **Spatial Continuity & Layout:** Shifts from an abstract macro interface interaction to a narrative character portrait.
+* **Cut Type:** Hard cut.
+* **Audio & Music:** Continuous drone/ambient track.
+
+---
+
+### Remaining Uncertainties
+* Whether certain textual overlays were composited in post-production via screen replacement or captured practically on specialized e-paper screens cannot be determined purely from the visual data.
+* Exact color grading adjustments between individual character close-ups in the dark room sequence may involve subtle secondary grading passes, though they appear unified by low-key practical device lighting.

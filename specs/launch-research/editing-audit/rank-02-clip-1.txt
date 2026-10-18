@@ -1,0 +1,32 @@
+- **01:41.000 – 01:41.750**: Face fragmentation.
+  - *Before-motion-after*: A solid facial profile transitions into a segmented, splintering 3D plane.
+  - *Constant*: Face orientation and eye direction; the background hue.
+  - *Cut/Morph/Camera*: Morph/cutting sequence combined with a slight lateral tracking shot.
+  - *Audible texture*: Low-pitch metallic strain.
+
+- **01:46.750 – 01:49.000**: Document ocean and digital predators.
+  - *Before-motion-after*: Papers and screens shatter into floating shards that cascade downward like an underwater current.
+  - *Constant*: Monochrome aesthetic (black, white, green glow); overarching grid topology.
+  - *Cut/Morph/Camera*: Fast dynamic zoom-out with a revolving camera axis.
+  - *Audible texture*: Sub-bass hum with high-frequency digital fluttering.
+
+- **01:57.000 – 01:58.250**: Sinking.
+  - *Before-motion-after*: The protagonist loses balance, falling backward into a dark, abstract abyss filled with drifting notifications.
+  - *Constant*: Protagonist's silhouette/outfit; dark color palette.
+  - *Cut/Morph/Camera*: Slow-motion falling sequence with a rotating upward-looking camera angle.
+  - *Audible texture*: Muffled atmospheric reverb and deep resonant tone.
+
+- **02:04.000 – 02:06.250**: Eye and pupil transition into drawing.
+  - *Before-motion-after*: A close-up of a human eye dilates and shifts inward, turning into a sketched illustration on a tablet screen.
+  - *Constant*: Eye shape and central focus point.
+  - *Cut/Morph/Camera*: Continuous zoom-in transitioning from animated character design to physical ink sketch.
+  - *Audible texture*: Swelling crescendo followed by silence.
+
+- **02:16.000 – 02:16.750**: Shift to live action.
+  - *Before-motion-after*: Animated visual transitions seamlessly to a live-action overhead shot of a person writing on a digital tablet.
+  - *Constant*: Subject matter (writing/note-taking); focus on digital paper interface.
+  - *Cut/Morph/Camera*: Hard cut from animation to live-action top-down perspective.
+  - *Audible texture*: Soft scratching pencil noise over ambient room tone.
+
+- **Confidence Score**: High.
+- **Competing Interpretations**: None.

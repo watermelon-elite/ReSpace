@@ -12,7 +12,13 @@ struct APIError: LocalizedError {
 struct APIClient {
     let baseURL: URL
     let deviceID: String
+    #if DEBUG
+    var uiDemo: UIDemoSession? = nil
+    #endif
     func request(_ path: String, method: String = "GET", body: JSONValue? = nil, data: Data? = nil, contentType: String? = nil) async throws -> JSONValue {
+        #if DEBUG
+        if let uiDemo { return try await uiDemo.request(path, method: method, body: body ?? .null) }
+        #endif
         guard let resolved = URL(string: path, relativeTo: baseURL.appendingPathComponent("", isDirectory: true))?.absoluteURL, var components = URLComponents(url: resolved, resolvingAgainstBaseURL: false) else { throw ContractError.invalid("Invalid backend path.") }
         if method == "DELETE", let id = body?["operation_id"].string { components.queryItems = (components.queryItems ?? []) + [URLQueryItem(name: "operation_id", value: id)] }
         guard let url = components.url else { throw ContractError.invalid("Invalid backend URL.") }
@@ -36,6 +42,16 @@ struct APIClient {
 
 @MainActor @Observable final class AppModel {
     #if DEBUG
+    var uiDemo: UIDemoSession?
+    #endif
+    var isUIDemo: Bool {
+        #if DEBUG
+        uiDemo != nil
+        #else
+        false
+        #endif
+    }
+    #if DEBUG
     var backend = ProcessInfo.processInfo.environment["RESPACE_BACKEND_URL"] ?? UserDefaults.standard.string(forKey: "backendURL") ?? "http://127.0.0.1:8000"
     #else
     var backend = UserDefaults.standard.string(forKey: "backendURL") ?? ""
@@ -48,7 +64,14 @@ struct APIClient {
     var shoppingLists: ShoppingListStore?
     private(set) var deviceID = ""
     private(set) var disk = FileManager.default.temporaryDirectory
-    init() {
+    init(demo: Bool = false) {
+        #if DEBUG
+        if demo {
+            uiDemo = UIDemoSession()
+            rooms = [uiDemo!.room]
+            return
+        }
+        #endif
         do {
             deviceID = try Self.installationID()
             disk = try FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("ReSpace", isDirectory: true)
@@ -60,10 +83,13 @@ struct APIClient {
         } catch { recoveryBlocked = true; self.error = "Local request recovery is unavailable: \(error.localizedDescription)" }
     }
     var client: APIClient? {
+        #if DEBUG
+        if let uiDemo { return APIClient(baseURL: URL(string: "https://ui-demo.invalid/v1")!, deviceID: "ui-demo", uiDemo: uiDemo) }
+        #endif
         guard !recoveryBlocked, !deviceID.isEmpty, let url = URL(string: backend), BackendURLPolicy.allows(url), url.query == nil, url.fragment == nil else { return nil }
         return APIClient(baseURL: url.appendingPathComponent("v1"), deviceID: deviceID)
     }
-    func saveBackend() { UserDefaults.standard.set(backend, forKey: "backendURL") }
+    func saveBackend() { if !isUIDemo { UserDefaults.standard.set(backend, forKey: "backendURL") } }
     func refresh() async {
         guard let client else { return }
         do {
@@ -84,6 +110,9 @@ struct APIClient {
         try JSONEncoder().encode(pending).write(to: disk.appendingPathComponent("requests.json"), options: [.atomic, .completeFileProtectionUnlessOpen])
     }
     func submit(_ request: PendingRequest) async throws -> JSONValue {
+        #if DEBUG
+        if let uiDemo { return try uiDemo.request(request.path, method: request.method, body: request.body) }
+        #endif
         guard let client else { throw ContractError.invalid("Configure the backend before continuing.") }
         if let existing = pending.first(where: { $0.operationID == request.operationID }), existing.path != request.path || existing.body != request.body { throw ContractError.invalid("This Room has an unresolved request. Reconcile its original payload before sending another action.") }
         if !pending.contains(where: { $0.operationID == request.operationID }) { pending.append(request); try persistPending() }
@@ -137,6 +166,9 @@ struct APIClient {
 
 extension APIClient {
     func media(_ path: String) async throws -> Data {
+        #if DEBUG
+        if uiDemo != nil { return try await UIDemoSession.roomImage() }
+        #endif
         guard let url = URL(string: path, relativeTo: baseURL.appendingPathComponent("", isDirectory: true))?.absoluteURL, BackendURLPolicy.sameOrigin(url, baseURL) else { throw ContractError.invalid("Private media must use this backend.") }
         var request = URLRequest(url: url, timeoutInterval: 30); request.setValue(deviceID, forHTTPHeaderField: "X-Device-Id")
         let (data, response) = try await URLSession.shared.data(for: request)

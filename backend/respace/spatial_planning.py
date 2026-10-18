@@ -10,6 +10,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from .categories import CATEGORIES, SUPPORT_CATEGORIES
+from .layout_context import layout_reference
 from .solver import _room, _target_id, _anchor_target_ids, solve
 
 
@@ -318,7 +319,7 @@ class GeminiSpatialPlanner:
             client = genai.Client(api_key=key, http_options=types.HttpOptions(timeout=int(self.timeout * 1000), retry_options=types.HttpRetryOptions(attempts=1)))
         context = {"room": _room(room_snapshot), "selections": selections, "instructions": instructions,
                    "constraints": constraints, "base_scene": base_scene,
-                   "category_ids": list(CATEGORIES)}
+                   "category_ids": list(CATEGORIES), "layout_reference": layout_reference()}
         prompt = ("Return an Anchor-based DesignPlan for this exact room and approved choices. "
                   "Use only supplied identities and selection_id; never invent metric placement coordinates. "
                   "Preserve Keep, permanent fixtures, hard requirements, intent and approved budget. "

@@ -1,0 +1,49 @@
+> Quotation-redacted audiovisual response. Quoted source copy has been omitted; timestamps and observations are otherwise retained. The unmodified response is retained privately under /tmp/respace-editing-profile.
+
+Here is an editing observation for the provided video clip.
+
+**Timestamp basis:** Timecode values reference the clip’s running time in `MM:SS.FFF` format.
+
+---
+
+### **1. 00:00.000 — 00:02.125 | Opening Title Card**
+* **BEFORE Composition:** Pure white background; clean slate.
+* **Action/Movement/Cut:** A vector line-art paper airplane enters from the left edge, glides across the screen, loops, and settles above centered black text reading [source wording omitted]
+* **AFTER Composition:** The paper airplane rests near the top center, with [source wording omitted] centered below it on white.
+* **Audio:** A playful, whimsical pizzicato pluck note accompanies the paper airplane’s movement.
+
+### **2. 00:02.125 — 00:03.875 | App Dock Transition**
+* **BEFORE Composition:** White screen with the title card text.
+* **Action/Movement/Cut:** A cut transitions to a Mac-style bottom application dock rendered over a light blue textured background. The paper airplane icon animates with a slight bounce/jiggle effect in the dock.
+* **AFTER Composition:** The close-up dock shows various application icons (Notion, Calendar, paper airplane, Figma, App Store, Slack), with the cursor hovering over the Figma icon (uncertain if cursor interaction was deliberate or a pointer artifact).
+* **Audio:** A light pop/click sound effect marks the transition to the dock view.
+
+### **3. 00:03.875 — 00:06.125 | Second Title Card**
+* **BEFORE Composition:** App dock view at the bottom of the screen.
+* **Action/Movement/Cut:** A cut returns to a pure white background. The paper airplane loops across the screen from left to right over centered black text reading [source wording omitted]
+* **AFTER Composition:** Paper airplane exits the frame to the lower right; text remains centered on a white canvas.
+* **Audio:** Whimsical pizzicato plucked notes play as the airplane flies across.
+
+### **4. 00:06.125 — 00:11.000 | Notion Mail Interface & Auto-Labeling Overview**
+* **BEFORE Composition:** White title card.
+* **Action/Movement/Cut:** A cut reveals the full Notion Mail application interface over a blue textured desktop background. The view starts zoomed out slightly, then the camera smoothly scales in/pans toward the right-side email list and top toolbar.
+* **AFTER Composition:** Close-up framing on the email list headers and the [source wording omitted] button in the upper right. Email rows display color-coded tag pills (e.g., Hiring, Calendar, Support, Newsletter).
+* **Audio:** Upbeat, light-hearted string melody builds up as the UI pans and showcases the labeled emails.
+
+### **5. 00:11.000 — 00:13.000 | Third Title Card**
+* **BEFORE Composition:** Notion Mail interface close-up.
+* **Action/Movement/Cut:** A cut shifts back to a plain white background with centered black text reading [source wording omitted] The paper airplane icon sweeps across the screen from upper left to lower right.
+* **AFTER Composition:** Text centered on white with the paper airplane finishing its flight path off-screen.
+* **Audio:** Playful pizzicato strings accompany the airplane animation.
+
+### **6. 00:13.000 — 00:20.000 | Interactive Auto-Label Demo & Resolution**
+* **BEFORE Composition:** White title card screen.
+* **Action/Movement/Cut:** A cut returns to the Notion Mail interface, focused on the top-right toolbar. The cursor clicks the [source wording omitted] button, opening a text input popover ([source wording omitted]). Typing animation populates the word [source wording omitted] followed by a cut showing the email list dynamically refreshing and applying labels.
+* **AFTER Composition:** Final UI state showing processed email rows with updated timestamped labels ([source wording omitted] [source wording omitted] [source wording omitted] [source wording omitted]).
+* **Audio:** The upbeat string and pizzicato theme plays through to a cheerful concluding flourish as the final labeled email list is revealed.
+
+---
+
+### **Coverage Limits & Ambiguities**
+* **Easing Functions:** Exact mathematical easing curves (bezier parameters) for camera pans and airplane flight paths cannot be determined precisely from visual observation alone.
+* **Cursor Artifacts:** Some cursor hovers (such as over the Figma icon in the dock at 00:03.000) may be native UI artifacts rather than intentional editorial focus points.

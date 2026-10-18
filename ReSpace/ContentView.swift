@@ -3,7 +3,11 @@ import RoomPlan
 import AVFoundation
 
 struct ContentView: View {
-    @State private var app = AppModel()
+    @State private var app: AppModel
+    init(app: AppModel? = nil) { _app = State(initialValue: app ?? AppModel()) }
+    #if DEBUG
+    @State private var showDemoRoom = false
+    #endif
     @State private var setup = false
     @State private var scanSetup = false
     @State private var capture: CaptureController?
@@ -11,7 +15,7 @@ struct ContentView: View {
     @State private var recoveries: [CaptureArchive] = []
     @State private var discardArchive: CaptureArchive?
     @State private var showShoppingLists = false
-    private var captureSupported: Bool { UIDevice.current.userInterfaceIdiom == .phone && RoomCaptureSession.isSupported }
+    private var captureSupported: Bool { app.isUIDemo || (UIDevice.current.userInterfaceIdiom == .phone && RoomCaptureSession.isSupported) }
     private var librarySupported: Bool {
         #if DEBUG && targetEnvironment(simulator)
         true
@@ -40,7 +44,7 @@ struct ContentView: View {
                     ForEach(Array(app.rooms.filter { $0["source_scene_sha256"] == .null }.enumerated()), id: \.element) { index, room in
                         NavigationLink { RoomReview(app: app, roomID: room["room_id"].text) } label: { roomCard(room, hero: index == 0) }.buttonStyle(.plain)
                     }
-                    if ImportedRoomView.modelURL != nil {
+                    if ImportedRoomView.modelURL != nil && !app.isUIDemo {
                         NavigationLink { ImportedRoomView(app: app) } label: {
                             RSRow(title: "Kitchenette", subtitle: "Your reconstructed room", symbol: "cube.transparent")
                         }.buttonStyle(.plain)
@@ -80,11 +84,16 @@ struct ContentView: View {
                     Button(app.rooms.isEmpty ? "Scan your room" : "Scan a new room") { scanSetup = true }
                         .buttonStyle(RSButtonStyle()).disabled(!captureSupported || app.client == nil || app.busy)
                 }
-                .refreshable { await app.refresh(); recoveries = CaptureArchive.recoverable() }
-                .task { await app.recoverPending(); await app.refresh(); recoveries = CaptureArchive.recoverable() }
+                .refreshable { await app.refresh(); if !app.isUIDemo { recoveries = CaptureArchive.recoverable() } }
+                .task { await app.recoverPending(); await app.refresh(); if !app.isUIDemo { recoveries = CaptureArchive.recoverable() } }
             }
         }
         .sheet(isPresented: $setup) { backendSettings }
+        #if DEBUG
+        .fullScreenCover(isPresented: $showDemoRoom) {
+            NavigationStack { RoomReview(app: app, roomID: app.uiDemo!.roomID) }
+        }
+        #endif
         .sheet(isPresented: $showShoppingLists) {
             if let store = app.shoppingLists { SavedShoppingListsView(store: store) }
         }
@@ -151,6 +160,9 @@ struct ContentView: View {
         }
     }
     private func start() async {
+        #if DEBUG
+        if app.isUIDemo { showDemoRoom = true; return }
+        #endif
         guard captureSupported, let client = app.client else { return }
         let allowed = AVCaptureDevice.authorizationStatus(for: .video) == .authorized ? true : await AVCaptureDevice.requestAccess(for: .video)
         guard allowed else { permissionDenied = true; return }
@@ -167,3 +179,7 @@ struct ContentView: View {
     }
 }
 extension CaptureController: Identifiable { var id: String { archive.captureID } }
+
+#if DEBUG
+#Preview("My Rooms") { UIDemoPreview(.rooms) }
+#endif

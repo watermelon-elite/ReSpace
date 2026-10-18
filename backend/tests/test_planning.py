@@ -26,6 +26,9 @@ async def test_search_tool_rejects_prose_in_one_attempt_and_preserves_axis_limit
     assert failure.value.retryable and len(calls) == 1
     action = await model.act({})
     assert len(calls) == 2
+    reference = json.loads(calls[0]['contents'].split('\n', 1)[1])['layout_reference']
+    assert 'Optional reference' in reference['usage']
+    assert '# ReSpace layout reasoning context' in reference['content']
     controller = PlanningController(None, None, None, None, None)
     operation = {'room_id': 'r', 'operation_id': 'op', 'request': {'budget': '300'}, 'base_context': {}, 'answer_history': []}
     request = controller._search_request(operation, action['payload'])

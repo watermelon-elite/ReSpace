@@ -253,6 +253,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W62GSPN4YJ;
 				ENABLE_PREVIEWS = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"ReSpace/Preview Content\"";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ReSpace.xcodeproj/DebugInfo.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "ReSpace uses the camera and LiDAR to measure your room.";
@@ -288,6 +289,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W62GSPN4YJ;
 				ENABLE_PREVIEWS = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"ReSpace/Preview Content\"";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "ReSpace uses the camera and LiDAR to measure your room.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save your room post images to Photos to share on Instagram.";

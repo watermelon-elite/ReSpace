@@ -1,0 +1,8 @@
+Below is a chronological breakdown of visual transitions, effects, and compositing mechanics identified in the video:
+
+- **00:05.125 - 00:06.000:** Split-screen style interface panels flanking the central couch scene zoom and scale outward, revealing collaged interior design inspiration images (Retro vs. Forestcore aesthetics).
+- **00:08.250 - 00:09.125:** The disparate Pinterest UI boards merge into a unified board preview card titled "June + Olli’s Disco Treehouse" with overlapping user profile avatars.
+- **00:11.625 - 00:12.125:** A direct match-cut/composite layer transition where the blank living room background walls change colour, and an orange archway silhouette is painted in behind the couch.
+- **00:13.000 - 00:15.875:** Floating UI "Save" cards appear sequentially; when tapped, 3D furniture elements (stools, pendant light, wallpaper panel) physically fly out of the 2D screen-space cards and anchor themselves into the physical room.
+- **00:16.375 - 00:20.875:** Continuous interactive room transformation: wall paneling wraps around the room via scrolling visual wipe effects, and potted plants/shelves dynamically cascade into existence as Pinterest cards trigger saves.
+- **00:22.000 - 00:25.375:** Area rug rolls out automatically across the floor from under the couch, followed by a trio of coffee table options displayed in UI cards that drop down, merge, and physically materialize the selected centerpiece table in front of the actors.

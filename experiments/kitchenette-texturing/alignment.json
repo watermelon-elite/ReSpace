@@ -1,0 +1,8 @@
+{
+  "note": "Conservative manual exclusions for generated dispenser, kettle/taps and appliances whose silhouettes moved relative to the original render. Coordinates are normalized source-image rectangles. These are experimental acceptance masks, not an automatic alignment estimate.",
+  "excluded_rectangles": [
+    [0.035, 0.56, 0.11, 0.80],
+    [0.17, 0.50, 0.29, 0.70],
+    [0.34, 0.30, 0.50, 0.75]
+  ]
+}

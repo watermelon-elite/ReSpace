@@ -155,6 +155,66 @@ Release builds require HTTPS and supported capture hardware.
 Run backend checks with `PYTHONPATH=backend .local/venv/bin/pytest backend/tests`.
 Run shared native checks with `swift test`.
 
+## Kitchenette to standalone furniture, with the user answering
+
+Use the bundled **Kitchenette** entry with the ordinary local live backend. Its
+`POST /v1/rooms/imported` path preserves reconstructed provenance and stops at a
+verified Product selection. It does not run perception, layout or scene placement.
+Do not use `--test-model` or `--test-shopping` for this room.
+
+After exporting the provider configuration described above, start a dedicated
+server with a fresh directory and logs:
+
+```sh
+mkdir -p .local/kitchenette-run
+PYTHONPATH=backend .local/venv/bin/python -u -m respace.local \
+  --port 8081 --live-providers --data-dir .local/kitchenette-run/live-data \
+  --trace-file .local/kitchenette-run/agent.jsonl \
+  > .local/kitchenette-run/backend.log 2>&1
+```
+
+Preparation must not submit a design request or answer an interview. Check
+`GET /v1/health`, the import route in `/openapi.json`, browser availability and
+provider configuration. A configured credential does not establish current quota
+or successful provider access. Keep those live checks in the user's first run.
+
+1. In Simulator connection settings, save `http://127.0.0.1:8081`, then open
+   **Kitchenette**. The room composer retains an unsent draft.
+2. The user sends the first request, for example “I want to add a chair here.”
+   Let the app ask for the budget and other missing preferences. Only the user
+   answers, revises or delegates. Follow `backend.log` and `agent.jsonl`.
+3. When **Your plan is ready** appears, review the selected Products, price,
+   quantities, dimensions and photographs. Record the completed operation ID
+   and the app installation ID (`X-Device-Id`).
+4. Generate standalone furniture with the bridge below. It reads the completed
+   operation and never submits answers, starts shopping or changes the scene.
+5. Inspect each source photograph and generated model from several angles before
+   accepting appearance. Stop before scene placement.
+
+Prepare the separate SPAR3D and conversion environments using
+[`assets/spar3d/README.md`](../assets/spar3d/README.md); obtain the model weights
+before the session. Then, from the repository root:
+
+```sh
+PYTHONPATH=backend .local/venv/bin/python -m respace.furniture_assets \
+  --backend http://127.0.0.1:8081 --device-id APP_INSTALLATION_ID \
+  --operation-id COMPLETED_OPERATION_ID --lab .local/spar3d-lab
+```
+
+The bridge saves `selection.json`, `images.json`, downloaded PNGs, `bridge.jsonl`,
+`reconstruction.log` and `report.json` under
+`.local/kitchenette-run/furniture/<selection_snapshot_id>/`. Each distinct variant
+gets one `mesh.glb`, dimensioned `model.usdz` and `asset.json`, regardless of the
+number of units purchased. Variant and dimension-evidence IDs survive the entire
+handoff. The converter reopens the USDZ to check physical bounds and pivot.
+
+The first stored photograph is used; it may need human review for the correct
+finish, framing or multiple products. Generated appearance remains unapproved.
+Repeat the same command to reuse downloaded photos and completed reconstructions;
+incomplete products are reported as failures. A partial failure exits nonzero.
+No output is installed in the catalog or room. Reconstruction uses CPU and runs
+sequentially to avoid interfering with the user's Simulator session.
+
 ## Test shopping independently
 
 The standalone shopping tests start at the exact request that planning sends to

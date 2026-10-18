@@ -61,6 +61,8 @@ def test_real_adapter_sends_room_selections_and_photos_and_retries_malformed_onc
     assert calls[0]["model"] == "configured-model"
     assert calls[0]["contents"][1].inline_data.data == b"photo1"
     assert '"w_1"' in calls[0]["contents"][0].text
+    assert 'Optional reference' in calls[0]['contents'][0].text
+    assert '# ReSpace layout reasoning context' in calls[0]['contents'][0].text
 
 
 def test_geometry_only_local_mode_is_explicit_and_preserves_normal_photo_requirement():

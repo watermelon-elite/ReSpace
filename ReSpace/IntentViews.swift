@@ -16,7 +16,7 @@ struct RoomRequestBar: View {
     private var active: Bool { ["queued", "running", "needs_clarification"].contains(operation["state"].text) }
     private var canReply: Bool { ["text", "single_choice", "multi_choice"].contains(question["kind"].text) }
     private var statusText: String {
-        if active { return operation["phase"].text.replacingOccurrences(of: "_", with: " ").capitalized }
+        if active { return operation["progress_message"].string ?? operation["phase"].text.replacingOccurrences(of: "_", with: " ").capitalized }
         if let failure = operation["failure"]["message"].string { return failure }
         return operation["outcome"]["result_kind"].text == "selection" ? "View your product plan" : "View your design"
     }
@@ -37,7 +37,7 @@ struct RoomRequestBar: View {
                     HStack(spacing: 10) {
                         if active { ProgressView() }
                         Text(statusText)
-                            .font(ReSpaceStyle.font(13)).lineLimit(3)
+                            .font(ReSpaceStyle.font(13)).fixedSize(horizontal: false, vertical: true)
                         Spacer(minLength: 0)
                         Image(systemName: "chevron.right").font(.caption)
                     }

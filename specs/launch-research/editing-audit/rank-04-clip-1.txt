@@ -1,0 +1,7 @@
+- **01:15.800**: Glitch VHS-style rewind transition.
+- **01:16.100**: UI graphic display "AUDIO" boxed in blue glow.
+- **01:21.800**: Top-down close-up of a magnifying glass inspecting a plush toy tag.
+- **01:26.600**: Software UI text selection and Overdub context menu pop-up.
+- **01:28.200**: Overhead keyboard typing close-up.
+- **01:34.000**: Chroma key background transformation to animated stars.
+- **01:37.600**: macOS menu bar screen recording drop-down UI.

@@ -52,6 +52,51 @@ def complete_room(api):
     return room_id,capture_id
 
 
+def test_operation_poll_reports_initial_search_progress_before_search_returns(api, store):
+    room_id, capture_id = complete_room(api)
+    operations = api.app.state.operations
+    operations.submit('device', room_id, 'generation', {'operation_id': 'op', 'capture_id': capture_id,
+        'planning_revision': 0, 'expected_active_revision': 0})
+    operations.checkpoint('op', 'preparing_context')
+    # The local worker is still inside its initial search, so no search result is on the operation yet.
+    api.app.state.controller._running.add('op')
+    search = {'search_id': 'search', 'room_id': room_id, 'state': 'running', 'phase': 'verification',
+        'intended_context': {'operation_id': 'op'}, 'created_at': '2026-10-18T11:15:59Z',
+        'source_candidate_pools': {'stored': [], 'live': ['first', 'second', 'third']},
+        'continuation': {'candidate_index': 1},
+        'verification_work': {'listings': [{}, {}], 'listing_index': 0, 'attempt': 0}}
+    with store.transaction():
+        store.put('searches', 'search', search)
+        store.put('searches', 'unrelated', {**search, 'search_id': 'unrelated',
+            'intended_context': {'operation_id': 'another-operation'}, 'created_at': '2026-10-18T11:16:00Z'})
+    poll = lambda: api.get('/v1/operations/op').json()['operation']
+    first = poll()
+    assert first.get('progress_message') == 'Checking merchant listings · product 2 of 3 · listing 1 of 2'
+    assert first['phase'] == 'preparing_context'
+    assert 'initial_products' not in first.get('controller', {})
+    assert api.get(f'/v1/rooms/{room_id}').json()['current_operation']['progress_message'] == first['progress_message']
+    search['verification_work'].update(listing_index=1, attempt=1)
+    with store.transaction():
+        store.put('searches', 'search', search)
+    assert poll()['progress_message'] == 'Checking merchant listings · product 2 of 3 · listing 2 of 2 · retrying'
+    assert api.get('/v1/operations/op', headers={'X-Device-Id': 'other'}).status_code == 404
+    for phase, cursor, expected in [
+        ('discovery', {}, 'Searching products · 0 searches completed · 3 candidates found'),
+        ('extraction', {'extraction_index': 1, 'capture_ids': ['a', 'b']}, 'Reading product details · 1 of 2 pages processed'),
+        ('ranking', {}, 'Comparing verified products'),
+        ('refresh_verification', {}, 'Rechecking prices and availability'),
+    ]:
+        search.update(phase=phase, continuation=cursor)
+        with store.transaction():
+            store.put('searches', 'search', search)
+        assert poll()['progress_message'] == expected
+    # A question or terminal operation must never show old search work as still active.
+    operations.ask('op', {'kind': 'text', 'text': 'What matters most?', 'choices': []})
+    assert poll()['progress_message'] is None
+    operations.cancel('device', 'op', 'cancel')
+    assert poll()['progress_message'] is None
+
+
 def test_public_create_finalize_question_cancel_delete_reconciliation(api,store):
     room_id,capture_id=complete_room(api)
     body={'schema_version':1,'operation_id':'generate','capture_id':capture_id,'planning_revision':0,'expected_active_design_id':None,'expected_active_revision':0,'intent':'add','styles':['Minimal'],'budget':'200.00','currency':'USD','text':''}

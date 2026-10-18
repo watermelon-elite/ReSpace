@@ -72,6 +72,9 @@ async def test_real_edit_sdk_receives_typed_nested_plan_schema(monkeypatch):
     finally:
         client.close()
     schema=calls[0]['generationConfig']['responseJsonSchema']
+    prompt=calls[0]['contents'][0]['parts'][0]['text']
+    assert 'Optional reference' in prompt
+    assert '# ReSpace layout reasoning context' in prompt
     nested=schema['properties']['payload']['properties']['plan']
     for group in ('moves','restores','replaces'):
         reference=nested['properties'][group]['items']['$ref'].split('/')[-1]

@@ -1,0 +1,53 @@
+> **Quotation-redacted audiovisual report.** Source dialogue and typed-message quotations were removed; observations and timestamps are otherwise unchanged, including errors. The untouched provider response is retained at `/tmp/respace-editing-profile/rank-03-clip-1-unmodified.txt`. The label “speech-to-text” is rejected by the editorial audit: this opening depicts typed errors, not the later dictation product.
+
+Here is an audit of the editing, staging and compositing in the video:
+
+### Scene Breakdown & Compositing Audit
+
+*   **00:00.000 – 00:02.000**
+    *   **Framing:** Medium close-up of a woman talking directly to camera from a sofa.
+    *   **Action:** Woman delivers opening dialogue about a toxic relationship.
+    *   **Sound:** Spoken dialogue with background ambient noise.
+    *   **Cut Type:** Hard cut.
+
+*   **00:02.000 – 00:04.375**
+    *   **Framing:** Medium shot of a man seated in an armchair in a stylish living room setting (therapist perspective).
+    *   **Action:** Man responds, gesturing with a tablet in hand.
+    *   **Sound:** Dialogue ([source dialogue omitted]).
+    *   **Cut Type:** Hard cut.
+
+*   **00:04.375 – 00:07.125**
+    *   **Framing:** Medium shot of the woman sitting on a couch with a man holding a comically large physical keyboard in his lap.
+    *   **Action:** Man pantomimes typing/tapping the giant keyboard keys; woman crosses arms and looks exasperated.
+    *   **Overlay/Animation:** None.
+    *   **Sound:** Dialogue ([source dialogue omitted]).
+    *   **Cut Type:** Hard cut.
+
+*   **00:07.125 – 00:13.750**
+    *   **Framing:** Medium shot of the woman sitting at a dining table typing on a laptop.
+    *   **Action:** Woman tries to spell "accommodate" while speaking aloud; mispronounces/spells it incorrectly ([source dialogue omitted]).
+    *   **Overlay/Animation:** Floating text box on the left showing speech-to-text input ([source dialogue omitted]).
+    *   **Sound:** Voice-to-text / typing prompts, buzzer sound effect on error ([source dialogue omitted]).
+    *   **Cut Type:** Hard cut.
+
+*   **00:13.750 – 00:20.125**
+    *   **Framing:** Medium shot of the man in a kitchen setting, leaning against a counter while holding the same giant keyboard and eating cereal from a bowl with a spoon.
+    *   **Action:** Man corrects her spelling; continues eating cereal.
+    *   **Sound:** Dialogue ([source dialogue omitted]).
+    *   **Cut Type:** Hard cut back to the kitchen context.
+
+*   **00:20.125 – 00:21.000**
+    *   **Framing:** Return to medium shot of woman at her laptop.
+    *   **Action:** Woman reacts to the correction, staring at the screen.
+    *   **Overlay/Animation:** Text box remains on screen ([source dialogue omitted]).
+    *   **Sound:** Dialogue continuation / ambient room noise.
+    *   **Cut Type:** Hard cut.
+
+---
+
+### Reusable Editing Mechanisms Identified
+
+1.  **Punchy Reaction Cut / Comedic Intercut:** Rapid switching between a frustrated person typing on a standard laptop and a partner sitting casually elsewhere holding an absurdly oversized prop keyboard to deliver corrections.
+2.  **Visual Metaphor Overlay (UI Bubble):** Floating speech-to-text input box tracking typed letters in real-time to visually reinforce the character's typing errors and struggles.
+3.  **Auditory Punctuation (Buzzer Sound Effect):** Insertion of an abrupt, jarring buzzer sound ([source dialogue omitted]) timed precisely to incorrect typing inputs for comedic emphasis.
+4.  **Spatial Perspective Shifting (Therapy to Reality):** Framing the opening interaction as a therapy session setup before immediately revealing the absurd household dynamic involving oversized props.

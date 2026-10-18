@@ -1,0 +1,415 @@
+{
+  "narrative": [
+    {
+      "film_rank": 1,
+      "source_url": "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+      "source_version": "YouTube upload hehaJGC9NJQ",
+      "requested_clip": "0:05-0:29",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "report": "specs/launch-research/editing-audit/rank-01-clip-1.txt",
+      "status": "complete",
+      "limitations": "Automated audiovisual observation; timestamps are returned navigation cues, not frame-verified EDL. Prior editorial corrections override unsupported raw claims. Fresh output did not return audio observations; audio notes remain prior-pass evidence. Avoid treating its fly-out wording as proof of a continuous literal UI-to-object trajectory.",
+      "stderr": "specs/launch-research/editing-audit/rank-01-clip-1.log"
+    },
+    {
+      "film_rank": 2,
+      "source_url": "https://www.youtube.com/watch?v=OcdxW2XF0v8",
+      "source_version": "YouTube upload OcdxW2XF0v8",
+      "requested_clip": "1:39-2:23",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "report": "specs/launch-research/editing-audit/rank-02-clip-1.txt",
+      "status": "complete",
+      "limitations": "Automated audiovisual observation; timestamps are returned navigation cues, not frame-verified EDL. Prior editorial corrections override unsupported raw claims. Fresh pass places animation/live-action boundary at 02:16.000, whereas prior full-film pass places live-action at 02:12.000. Broad transition adopted; precise boundary unresolved pending short recheck. No physiological-effect inference retained.",
+      "stderr": "specs/launch-research/editing-audit/rank-02-clip-1.log"
+    },
+    {
+      "film_rank": 3,
+      "source_url": "https://www.youtube.com/watch?v=9KqGpxtsawc",
+      "source_version": "YouTube upload 9KqGpxtsawc",
+      "requested_clip": "0:00-0:21",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "report": "specs/launch-research/editing-audit/rank-03-clip-1.txt",
+      "status": "complete",
+      "limitations": "Automated audiovisual observation; timestamps are returned navigation cues, not frame-verified EDL. Prior editorial corrections override unsupported raw claims. Fresh speech-to-text label rejected: this opening depicts typing errors. Fresh held-keyboard versus prior wearable-keyboard wording unresolved; describe oversized physical prop only.",
+      "stderr": "specs/launch-research/editing-audit/rank-03-clip-1.log",
+      "report_status": "Labeled quotation-redacted companion; observations and returned timestamps otherwise unchanged.",
+      "unmodified_private_report": "/tmp/respace-editing-profile/rank-03-clip-1-unmodified.txt"
+    },
+    {
+      "film_rank": 7,
+      "source_url": "https://www.youtube.com/watch?v=B6zVzWU95Sw",
+      "source_version": "YouTube upload B6zVzWU95Sw",
+      "requested_clip": "0:25-0:49",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "report": "specs/launch-research/editing-audit/rank-07-clip-1.txt",
+      "status": "complete",
+      "limitations": "Automated audiovisual observation; timestamps are returned navigation cues, not frame-verified EDL. Prior editorial corrections override unsupported raw claims. Fresh report uses coarse whole-second boundaries and provides no sound observations. Prior dedicated-card correction retained; incorrect earliest-brand claim excluded.",
+      "stderr": "specs/launch-research/editing-audit/rank-07-clip-1.log"
+    },
+    {
+      "film_rank": 9,
+      "source_url": "https://www.youtube.com/watch?v=ZUG9qYTJMsI",
+      "source_version": "YouTube upload ZUG9qYTJMsI",
+      "requested_clip": "0:44-1:22",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "report": "specs/launch-research/editing-audit/rank-09-clip-1.txt",
+      "status": "failed: HTTP503 temporary high demand; later retry clip-2 succeeded",
+      "limitations": "Automated audiovisual observation; timestamps are returned navigation cues, not frame-verified EDL. Prior editorial corrections override unsupported raw claims.",
+      "stderr": "specs/launch-research/editing-audit/rank-09-clip-1.log"
+    },
+    {
+      "film_rank": 2,
+      "source_url": "https://www.youtube.com/watch?v=OcdxW2XF0v8",
+      "source_version": "YouTube upload OcdxW2XF0v8",
+      "requested_clip": "2:02-2:17",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "report": "specs/launch-research/editing-audit/rank-02-clip-2.txt",
+      "stderr": "specs/launch-research/editing-audit/rank-02-clip-2.log",
+      "status": "complete",
+      "limitations": "Targeted recheck resolves distinct eye→pupil→texture→drawn eye→hand diagram→full tablet states. First unmistakably photographic wide reported 02:13.875–02:15.875; this does not prove the earliest photographic pixel. No audio observations returned."
+    },
+    {
+      "film_rank": 9,
+      "source_url": "https://www.youtube.com/watch?v=ZUG9qYTJMsI",
+      "source_version": "YouTube upload ZUG9qYTJMsI",
+      "requested_clip": "0:44-1:22",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "report": "specs/launch-research/editing-audit/rank-09-clip-2.txt",
+      "stderr": "specs/launch-research/editing-audit/rank-09-clip-2.log",
+      "status": "complete",
+      "limitations": "Fresh report supplies whole-second navigation points and no audio observations. Packing swipe 00:52 and mascot pan 00:53 differ from earlier targeted broader ranges 00:51.000–00:54.200 and 00:54.200–00:57.300; no frame-exact boundary asserted. Distinct cuts confirm route must not be described as literal one-take."
+    }
+  ],
+  "product": [
+    {
+      "film_rank": 4,
+      "source_version": "Original Wistia2rb6egpph3; metadata166.083s; retrieved720p public asset",
+      "requested_clip": "1:15-1:40",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success; terse observations",
+      "report": "specs/launch-research/editing-audit/rank-04-clip-1.txt",
+      "log": "specs/launch-research/editing-audit/rank-04-clip-1.log",
+      "video_tokens": 13825,
+      "limits": "Only individual source timestamps returned; exact mechanics drawn cautiously from prior fullAV. Model says chroma key but method unverified."
+    },
+    {
+      "film_rank": 10,
+      "source_version": "YouTube54l-1NfXnX8;60s",
+      "requested_clip": "0:00-0:26",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "failed503; sandbox DNS attempt preceded escalation",
+      "report": null,
+      "log": "specs/launch-research/editing-audit/rank-10-clip-1.log"
+    },
+    {
+      "film_rank": 10,
+      "source_version": "YouTube54l-1NfXnX8;60s",
+      "requested_clip": "0:00-0:20",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success; one shorter retry",
+      "report": "specs/launch-research/editing-audit/rank-10-clip-2.txt",
+      "log": "specs/launch-research/editing-audit/rank-10-clip-2.log",
+      "video_tokens": 11061,
+      "limits": "Report states clip-relative; starts at0so equals source. Quotation-redacted published companion; unmodified /tmp. Cursor launch claim downgraded due ambiguous hover; label-result uses cut."
+    },
+    {
+      "film_rank": 14,
+      "source_version": "YouTubeHdF3CnFvxg4;123s",
+      "requested_clip": "0:18-0:46",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "failed503",
+      "report": null,
+      "log": "specs/launch-research/editing-audit/rank-14-clip-1.log"
+    },
+    {
+      "film_rank": 14,
+      "source_version": "YouTubeHdF3CnFvxg4;123s",
+      "requested_clip": "0:28-0:45",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success; one shorter retry",
+      "report": "specs/launch-research/editing-audit/rank-14-clip-2.txt",
+      "log": "specs/launch-research/editing-audit/rank-14-clip-2.log",
+      "video_tokens": 9401,
+      "limits": "Source and clip timestamps both returned; use source. Estimated0.25s per shot excluded. Practical vs CG drop unknown. Internal reveal different descriptions across old/new passes; not used."
+    },
+    {
+      "film_rank": 17,
+      "source_version": "Original Vimeo948907406;52.053s",
+      "requested_clip": null,
+      "fps": null,
+      "model": null,
+      "status": "fresh acquisition blocked: public player configHTTP403; nofreshAPI call; uses existing full-film6fpsAV",
+      "report": "specs/launch-research/deep/rank-17-granola/av-report.md",
+      "log": null,
+      "limits": "No alternate film substituted. Prior original version includes audio and full-span contact-sheet crosscheck; no fresh timestamp refinement."
+    },
+    {
+      "film_rank": 20,
+      "source_version": "YouTubeS92KX8-Hmlc;57s",
+      "requested_clip": "0:00-0:21",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success",
+      "report": "specs/launch-research/editing-audit/rank-20-clip-1.txt",
+      "log": "specs/launch-research/editing-audit/rank-20-clip-1.log",
+      "video_tokens": 11614,
+      "limits": "Source-absolute timestamps. Quotation-redacted published companion; unmodified /tmp. Cursor travel direction contradicts prior pass and is excluded. Exact interpolation/methods unverified."
+    },
+    {
+      "film_rank": 4,
+      "source_version": "Original Wistia2rb6egpph3;166.083s;720p public asset",
+      "requested_clip": "1:50-2:05",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success; terse detailed visual bullets",
+      "report": "specs/launch-research/editing-audit/rank-04-clip-2.txt",
+      "log": "specs/launch-research/editing-audit/rank-04-clip-2.log",
+      "video_tokens": 8295,
+      "limits": "Source-relative timestamps. Quotation-redacted companion. Decoded filler wording uncertain and excluded. Fresh keyboard-key identity conflicts with prior report; specific key excluded. No fresh detailed audio.",
+      "manual_visual_crosscheck": "2fps contact sheet114–121s inspected; confirmscoloredstrikethroughcards followedbyrotatedwordsoveractorwithmagenta strokes. See specs/launch-research/editing-audit/rank-04-visual-crosscheck.txt andrank-04-strikes-contact-sheet.jpg"
+    }
+  ],
+  "spatial": {
+    "owner": "editing_spatial",
+    "date": "2026-10-18",
+    "entries": "E041–E060",
+    "sources": [
+      {
+        "rank": 5,
+        "prior_coverage": "specs/launch-research/deep/rank-05-homepod/coverage.json",
+        "prior_report": "specs/launch-research/deep/rank-05-homepod/report.md",
+        "source_url": "https://vimeo.com/821121634",
+        "fresh_retrieval": "Public source pages read; Vimeo player/config retrieval returned401/403, no new AV claimed",
+        "version_note": "Selected Vimeo version, analyzed from its downloaded public media asset; not a claim about the identity or reach of the original campaign upload."
+      },
+      {
+        "rank": 6,
+        "prior_coverage": "specs/launch-research/deep/rank-06-ikea-kreativ/coverage.json",
+        "prior_report": "specs/launch-research/deep/rank-06-ikea-kreativ/report.md",
+        "source_url": "https://vimeo.com/926031195",
+        "fresh_retrieval": "Public source pages read; Vimeo player/config retrieval returned401/403, no new AV claimed",
+        "version_note": "Exact selected Home Office film, public Vimeo playback; distinct from six-second social cutdown"
+      },
+      {
+        "rank": 11,
+        "prior_coverage": "specs/launch-research/deep/rank-11-tylko/coverage.json",
+        "prior_report": "specs/launch-research/deep/rank-11-tylko/report.md",
+        "source_url": "https://player.vimeo.com/video/713330048?h=9345467d00",
+        "fresh_retrieval": "Public source pages read; Vimeo player/config retrieval returned401/403, no new AV claimed",
+        "version_note": "Credited sound-studio public Bedroom film; exact byte equivalence to original selected embed not asserted"
+      },
+      {
+        "rank": 12,
+        "prior_coverage": "specs/launch-research/deep/rank-12-sonos/coverage.json",
+        "prior_report": "specs/launch-research/deep/rank-12-sonos/report.md",
+        "source_url": "https://vimeo.com/156330951",
+        "fresh_retrieval": "public embedded-player media recovered",
+        "version_note": "Exact selected version"
+      },
+      {
+        "rank": 15,
+        "prior_coverage": "specs/launch-research/deep/rank-15-dropbox/coverage.json",
+        "prior_report": "specs/launch-research/deep/rank-15-dropbox/report.md",
+        "source_url": "https://vimeo.com/142497378",
+        "fresh_retrieval": "Public source pages read; Vimeo player/config retrieval returned401/403, no new AV claimed",
+        "version_note": "Exact selected version"
+      }
+    ],
+    "fresh_runs": [
+      {
+        "rank": 12,
+        "report": "specs/launch-research/editing-audit/rank-12-clip-1.txt",
+        "log": "specs/launch-research/editing-audit/rank-12-clip-1.log",
+        "source_start_seconds": 15,
+        "duration_seconds": 35,
+        "fps": 8,
+        "model": "gemini-3.5-flash-lite",
+        "status": "503",
+        "timestamps": "clip-relative; add stated source offset only for locating original",
+        "video_tokens": null
+      },
+      {
+        "rank": 12,
+        "report": "specs/launch-research/editing-audit/rank-12-clip-1-retry.txt",
+        "log": "specs/launch-research/editing-audit/rank-12-clip-1-retry.log",
+        "source_start_seconds": 15,
+        "duration_seconds": 35,
+        "fps": 8,
+        "model": "gemini-3.5-flash-lite",
+        "status": "503",
+        "timestamps": "clip-relative; add stated source offset only for locating original",
+        "video_tokens": null
+      },
+      {
+        "rank": 12,
+        "report": "specs/launch-research/editing-audit/rank-12-clip-2.txt",
+        "log": "specs/launch-research/editing-audit/rank-12-clip-2.log",
+        "source_start_seconds": 18,
+        "duration_seconds": 15,
+        "fps": 8,
+        "model": "gemini-3.5-flash-lite",
+        "status": "success",
+        "timestamps": "clip-relative; add stated source offset only for locating original",
+        "video_tokens": 8295
+      }
+    ],
+    "limitations": [
+      "Prior full-film model AV timing is navigation, not frame-accurate editing measurement.",
+      "Sound claims remain prior AV: fresh successful Sonos report omitted audio despite request.",
+      "Technique recipes are proposed adaptations, not original production-method facts.",
+      "No retention or performance causality is claimed."
+    ],
+    "fresh_visual_checks": [
+      {
+        "rank": 12,
+        "report": "specs/launch-research/editing-audit/rank-12-visual-recheck.md",
+        "whole_source_sampling": "2fps10x12contactsheet",
+        "setup_sampling": "source18–26sec4fps4x8contactsheet",
+        "scope": "actual pixels inspected; no fresh audio or exactcutboundary measured"
+      }
+    ],
+    "source_sha256": "9f724c5e343403889e036fa39ae77cf183c589f149f50e9bc0abc95690cf1cfd"
+  },
+  "root": [
+    {
+      "rank": 8,
+      "source": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+      "clip": "0:10-0:23",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success",
+      "report": "specs/launch-research/editing-audit/rank-08-clip-1.txt",
+      "log": "specs/launch-research/editing-audit/rank-08-clip-1.log",
+      "prompt": "Inspect ONLY the supplied clip as video and audio for an editor building a reusable effects library. Do not summarize the product pitch. Do not transcribe or quote speech, lyrics, slogans or captions; paraphrase text functions. Use source-video timestamps (MM:SS.mmm) and explicitly state if any timestamps are clip-relative. Do not invent subframe precision, count unobserved cuts, or infer unseen content. Give 4–8 specific editorial mechanisms actually visible, each with: exact returned start/end navigation times; incoming composition; motion/action at the transition; outgoing composition; spatial continuity/mask/scale/layout/text behavior; whether it is a hard cut, continuous shot or uncertain; audible events and music continuity (state uncertainty instead of identifying instruments or sync precision without evidence). Separate observation from inferred emotional purpose and a possible recreation technique. Do NOT claim how the original was produced (practical vs CGI). Include observations that contradict any common description: silence vs continuous music, actual match cut vs distant bookend, change inside frame vs editorial cut. Be detailed about what changes and what stays fixed. Avoid generic 'smooth transition' wording. Finish with remaining uncertainties.",
+      "method": "Automated sampled audiovisual clip inspection; returned timestamps are navigation aids."
+    },
+    {
+      "rank": 8,
+      "source": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+      "clip": "0:58-1:20",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "failed",
+      "report": "specs/launch-research/editing-audit/rank-08-clip-2.txt",
+      "log": "specs/launch-research/editing-audit/rank-08-clip-2.log",
+      "prompt": "Inspect ONLY the supplied clip as video and audio for an editor building a reusable effects library. Do not summarize the product pitch. Do not transcribe or quote speech, lyrics, slogans or captions; paraphrase text functions. Use source-video timestamps (MM:SS.mmm) and explicitly state if any timestamps are clip-relative. Do not invent subframe precision, count unobserved cuts, or infer unseen content. Give 4–8 specific editorial mechanisms actually visible, each with: exact returned start/end navigation times; incoming composition; motion/action at the transition; outgoing composition; spatial continuity/mask/scale/layout/text behavior; whether it is a hard cut, continuous shot or uncertain; audible events and music continuity (state uncertainty instead of identifying instruments or sync precision without evidence). Separate observation from inferred emotional purpose and a possible recreation technique. Do NOT claim how the original was produced (practical vs CGI). Include observations that contradict any common description: silence vs continuous music, actual match cut vs distant bookend, change inside frame vs editorial cut. Be detailed about what changes and what stays fixed. Avoid generic 'smooth transition' wording. Finish with remaining uncertainties.",
+      "method": "Automated sampled audiovisual clip inspection; returned timestamps are navigation aids."
+    },
+    {
+      "rank": 16,
+      "source": "https://www.youtube.com/watch?v=CS76mK58urI",
+      "clip": "0:00-0:25",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success",
+      "report": "specs/launch-research/editing-audit/rank-16-clip-1.txt",
+      "log": "specs/launch-research/editing-audit/rank-16-clip-1.log",
+      "prompt": "Inspect ONLY the supplied clip as video and audio for an editor building a reusable effects library. Do not summarize the product pitch. Do not transcribe or quote speech, lyrics, slogans or captions; paraphrase text functions. Use source-video timestamps (MM:SS.mmm) and explicitly state if any timestamps are clip-relative. Do not invent subframe precision, count unobserved cuts, or infer unseen content. Give 4–8 specific editorial mechanisms actually visible, each with: exact returned start/end navigation times; incoming composition; motion/action at the transition; outgoing composition; spatial continuity/mask/scale/layout/text behavior; whether it is a hard cut, continuous shot or uncertain; audible events and music continuity (state uncertainty instead of identifying instruments or sync precision without evidence). Separate observation from inferred emotional purpose and a possible recreation technique. Do NOT claim how the original was produced (practical vs CGI). Include observations that contradict any common description: silence vs continuous music, actual match cut vs distant bookend, change inside frame vs editorial cut. Be detailed about what changes and what stays fixed. Avoid generic 'smooth transition' wording. Finish with remaining uncertainties.",
+      "method": "Automated sampled audiovisual clip inspection; returned timestamps are navigation aids."
+    },
+    {
+      "rank": 16,
+      "source": "https://www.youtube.com/watch?v=CS76mK58urI",
+      "clip": "0:55-1:20",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success",
+      "report": "specs/launch-research/editing-audit/rank-16-clip-2.txt",
+      "log": "specs/launch-research/editing-audit/rank-16-clip-2.log",
+      "prompt": "Inspect ONLY the supplied clip as video and audio for an editor building a reusable effects library. Do not summarize the product pitch. Do not transcribe or quote speech, lyrics, slogans or captions; paraphrase text functions. Use source-video timestamps (MM:SS.mmm) and explicitly state if any timestamps are clip-relative. Do not invent subframe precision, count unobserved cuts, or infer unseen content. Give 4–8 specific editorial mechanisms actually visible, each with: exact returned start/end navigation times; incoming composition; motion/action at the transition; outgoing composition; spatial continuity/mask/scale/layout/text behavior; whether it is a hard cut, continuous shot or uncertain; audible events and music continuity (state uncertainty instead of identifying instruments or sync precision without evidence). Separate observation from inferred emotional purpose and a possible recreation technique. Do NOT claim how the original was produced (practical vs CGI). Include observations that contradict any common description: silence vs continuous music, actual match cut vs distant bookend, change inside frame vs editorial cut. Be detailed about what changes and what stays fixed. Avoid generic 'smooth transition' wording. Finish with remaining uncertainties.",
+      "method": "Automated sampled audiovisual clip inspection; returned timestamps are navigation aids."
+    },
+    {
+      "rank": 19,
+      "source": "https://www.youtube.com/watch?v=UudV1VdFtuQ",
+      "clip": "0:00-0:18",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success",
+      "report": "specs/launch-research/editing-audit/rank-19-clip-1.txt",
+      "log": "specs/launch-research/editing-audit/rank-19-clip-1.log",
+      "prompt": "Inspect ONLY the supplied clip as video and audio for an editor building a reusable effects library. Do not summarize the product pitch. Do not transcribe or quote speech, lyrics, slogans or captions; paraphrase text functions. Use source-video timestamps (MM:SS.mmm) and explicitly state if any timestamps are clip-relative. Do not invent subframe precision, count unobserved cuts, or infer unseen content. Give 4–8 specific editorial mechanisms actually visible, each with: exact returned start/end navigation times; incoming composition; motion/action at the transition; outgoing composition; spatial continuity/mask/scale/layout/text behavior; whether it is a hard cut, continuous shot or uncertain; audible events and music continuity (state uncertainty instead of identifying instruments or sync precision without evidence). Separate observation from inferred emotional purpose and a possible recreation technique. Do NOT claim how the original was produced (practical vs CGI). Include observations that contradict any common description: silence vs continuous music, actual match cut vs distant bookend, change inside frame vs editorial cut. Be detailed about what changes and what stays fixed. Avoid generic 'smooth transition' wording. Finish with remaining uncertainties.",
+      "method": "Automated sampled audiovisual clip inspection; returned timestamps are navigation aids."
+    },
+    {
+      "rank": 19,
+      "source": "https://www.youtube.com/watch?v=UudV1VdFtuQ",
+      "clip": "0:39-0:59",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success",
+      "report": "specs/launch-research/editing-audit/rank-19-clip-2.txt",
+      "log": "specs/launch-research/editing-audit/rank-19-clip-2.log",
+      "prompt": "Inspect ONLY the supplied clip as video and audio for an editor building a reusable effects library. Do not summarize the product pitch. Do not transcribe or quote speech, lyrics, slogans or captions; paraphrase text functions. Use source-video timestamps (MM:SS.mmm) and explicitly state if any timestamps are clip-relative. Do not invent subframe precision, count unobserved cuts, or infer unseen content. Give 4–8 specific editorial mechanisms actually visible, each with: exact returned start/end navigation times; incoming composition; motion/action at the transition; outgoing composition; spatial continuity/mask/scale/layout/text behavior; whether it is a hard cut, continuous shot or uncertain; audible events and music continuity (state uncertainty instead of identifying instruments or sync precision without evidence). Separate observation from inferred emotional purpose and a possible recreation technique. Do NOT claim how the original was produced (practical vs CGI). Include observations that contradict any common description: silence vs continuous music, actual match cut vs distant bookend, change inside frame vs editorial cut. Be detailed about what changes and what stays fixed. Avoid generic 'smooth transition' wording. Finish with remaining uncertainties.",
+      "method": "Automated sampled audiovisual clip inspection; returned timestamps are navigation aids."
+    }
+  ],
+  "root-extra": [
+    {
+      "rank": 13,
+      "source": "/tmp/respace-editing-profile/daylight.mp4",
+      "clip": "0:00-0:15",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success",
+      "report": "specs/launch-research/editing-audit/rank-13-clip-1.txt",
+      "log": "specs/launch-research/editing-audit/rank-13-clip-1.log",
+      "prompt": "Inspect ONLY the supplied clip as video and audio for an editor building a reusable effects library. Do not summarize the product pitch. Do not transcribe or quote speech, lyrics, slogans or captions; paraphrase text functions. Use source-video timestamps (MM:SS.mmm) and explicitly state if any timestamps are clip-relative. Do not invent subframe precision, count unobserved cuts, or infer unseen content. Give 4–8 specific editorial mechanisms actually visible, each with: exact returned start/end navigation times; incoming composition; motion/action at the transition; outgoing composition; spatial continuity/mask/scale/layout/text behavior; whether it is a hard cut, continuous shot or uncertain; audible events and music continuity (state uncertainty instead of identifying instruments or sync precision without evidence). Separate observation from inferred emotional purpose and a possible recreation technique. Do NOT claim how the original was produced (practical vs CGI). Include observations that contradict any common description: silence vs continuous music, actual match cut vs distant bookend, change inside frame vs editorial cut. Be detailed about what changes and what stays fixed. Avoid generic 'smooth transition' wording. Finish with remaining uncertainties.",
+      "method": "Automated sampled audiovisual clip inspection; returned timestamps are navigation aids."
+    },
+    {
+      "rank": 13,
+      "source": "/tmp/respace-editing-profile/daylight.mp4",
+      "clip": "1:06-1:28",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success",
+      "report": "specs/launch-research/editing-audit/rank-13-clip-2.txt",
+      "log": "specs/launch-research/editing-audit/rank-13-clip-2.log",
+      "prompt": "Inspect ONLY the supplied clip as video and audio for an editor building a reusable effects library. Do not summarize the product pitch. Do not transcribe or quote speech, lyrics, slogans or captions; paraphrase text functions. Use source-video timestamps (MM:SS.mmm) and explicitly state if any timestamps are clip-relative. Do not invent subframe precision, count unobserved cuts, or infer unseen content. Give 4–8 specific editorial mechanisms actually visible, each with: exact returned start/end navigation times; incoming composition; motion/action at the transition; outgoing composition; spatial continuity/mask/scale/layout/text behavior; whether it is a hard cut, continuous shot or uncertain; audible events and music continuity (state uncertainty instead of identifying instruments or sync precision without evidence). Separate observation from inferred emotional purpose and a possible recreation technique. Do NOT claim how the original was produced (practical vs CGI). Include observations that contradict any common description: silence vs continuous music, actual match cut vs distant bookend, change inside frame vs editorial cut. Be detailed about what changes and what stays fixed. Avoid generic 'smooth transition' wording. Finish with remaining uncertainties.",
+      "method": "Automated sampled audiovisual clip inspection; returned timestamps are navigation aids."
+    },
+    {
+      "rank": 8,
+      "source": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+      "clip": "0:58-1:05",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success",
+      "report": "specs/launch-research/editing-audit/rank-08-clip-3.txt",
+      "log": "specs/launch-research/editing-audit/rank-08-clip-3.log",
+      "prompt": "Inspect ONLY the supplied clip as video and audio for an editor building a reusable effects library. Do not summarize the product pitch. Do not transcribe or quote speech, lyrics, slogans or captions; paraphrase text functions. Use source-video timestamps (MM:SS.mmm) and explicitly state if any timestamps are clip-relative. Do not invent subframe precision, count unobserved cuts, or infer unseen content. Give 4–8 specific editorial mechanisms actually visible, each with: exact returned start/end navigation times; incoming composition; motion/action at the transition; outgoing composition; spatial continuity/mask/scale/layout/text behavior; whether it is a hard cut, continuous shot or uncertain; audible events and music continuity (state uncertainty instead of identifying instruments or sync precision without evidence). Separate observation from inferred emotional purpose and a possible recreation technique. Do NOT claim how the original was produced (practical vs CGI). Include observations that contradict any common description: silence vs continuous music, actual match cut vs distant bookend, change inside frame vs editorial cut. Be detailed about what changes and what stays fixed. Avoid generic 'smooth transition' wording. Finish with remaining uncertainties.",
+      "method": "Automated sampled audiovisual clip inspection; returned timestamps are navigation aids."
+    },
+    {
+      "rank": 8,
+      "source": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+      "clip": "1:19-1:29",
+      "fps": 8,
+      "model": "gemini-3.5-flash-lite",
+      "status": "success",
+      "report": "specs/launch-research/editing-audit/rank-08-clip-4.txt",
+      "log": "specs/launch-research/editing-audit/rank-08-clip-4.log",
+      "prompt": "Inspect ONLY the supplied clip as video and audio for an editor building a reusable effects library. Do not summarize the product pitch. Do not transcribe or quote speech, lyrics, slogans or captions; paraphrase text functions. Use source-video timestamps (MM:SS.mmm) and explicitly state if any timestamps are clip-relative. Do not invent subframe precision, count unobserved cuts, or infer unseen content. Give 4–8 specific editorial mechanisms actually visible, each with: exact returned start/end navigation times; incoming composition; motion/action at the transition; outgoing composition; spatial continuity/mask/scale/layout/text behavior; whether it is a hard cut, continuous shot or uncertain; audible events and music continuity (state uncertainty instead of identifying instruments or sync precision without evidence). Separate observation from inferred emotional purpose and a possible recreation technique. Do NOT claim how the original was produced (practical vs CGI). Include observations that contradict any common description: silence vs continuous music, actual match cut vs distant bookend, change inside frame vs editorial cut. Be detailed about what changes and what stays fixed. Avoid generic 'smooth transition' wording. Finish with remaining uncertainties.",
+      "method": "Automated sampled audiovisual clip inspection; returned timestamps are navigation aids."
+    }
+  ],
+  "root_notes": {
+    "floyd": "Public selected Vimeo config returned HTTP403; existing full-film AV retained, no alternate film substituted.",
+    "daylight": "Public Wistia u8xn64uj9r metadata and720p asset retrieved. Fresh local-file excerpts plus direct1fps comparison frames inspected.",
+    "redactions": "Root13,16,19 report companions omit quoted source wording; unmodified outputs retained in temporary research workspace.",
+    "timestamps": "Several root outputs claim clip-relative but contain source-range values beyond the requested clip duration. Treat as approximate source navigation, do not add offset mechanically."
+  }
+}

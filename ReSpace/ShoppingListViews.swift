@@ -67,3 +67,7 @@ struct SavedShoppingListsView: View {
         }
     }
 }
+
+#if DEBUG
+#Preview("Shopping list") { UIDemoPreview(.shopping) }
+#endif

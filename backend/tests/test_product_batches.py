@@ -68,6 +68,7 @@ class ProductResponses:
         data = json.loads(prompt.split('\n', 1)[1])
         self.calls.append(data)
         if 'listings' in data:
+            assert 'layout_reference' not in data
             if self.fail_extractions:
                 self.fail_extractions -= 1
                 return httpx.Response(503, json={'error': {'code': 503, 'message': 'Controlled transient failure'}})
@@ -77,6 +78,8 @@ class ProductResponses:
                             ('variant', 'measurements', 'price', 'availability', 'pack_contents', 'features', 'identity')}}
                        for entry in data['listings']]
         else:
+            assert 'Optional reference' in data['layout_reference']['usage']
+            assert '# ReSpace layout reasoning context' in data['layout_reference']['content']
             results = []
             for entry in data['choices']:
                 best = ' 6 natural' in entry['product']['title']

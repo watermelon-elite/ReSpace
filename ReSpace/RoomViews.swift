@@ -86,12 +86,12 @@ struct RoomReview: View {
             }
         }
         .task {
-            text = UserDefaults.standard.string(forKey: "review_draft_\(roomID)") ?? ""
+            if !app.isUIDemo { text = UserDefaults.standard.string(forKey: "review_draft_\(roomID)") ?? "" }
             await load()
-            designText = UserDefaults.standard.string(forKey: "design_draft_\(roomID)") ?? ""
+            if !app.isUIDemo { designText = UserDefaults.standard.string(forKey: "design_draft_\(roomID)") ?? "" }
         }
-        .onChange(of: designText) { _, value in UserDefaults.standard.set(value, forKey: "design_draft_\(roomID)") }
-        .onChange(of: text) { _, value in UserDefaults.standard.set(value, forKey: "review_draft_\(roomID)") }
+        .onChange(of: designText) { _, value in if !app.isUIDemo { UserDefaults.standard.set(value, forKey: "design_draft_\(roomID)") } }
+        .onChange(of: text) { _, value in if !app.isUIDemo { UserDefaults.standard.set(value, forKey: "review_draft_\(roomID)") } }
         .task(id: [operation["operation_id"].text, operation["state"].text]) { await poll() }
     }
     @ViewBuilder private var pageContent: some View {
@@ -253,7 +253,9 @@ struct RoomReview: View {
         do {
             let result = try await app.submit(PendingRequest(path: "rooms/\(roomID)", method: "DELETE", roomID: roomID, body: [:]))
             if result["deletion"]["state"].text == "deleted" {
-                for archive in CaptureArchive.recoverable() where archive.roomID == roomID { try FileManager.default.removeItem(at: archive.folder) }
+                if !app.isUIDemo {
+                    for archive in CaptureArchive.recoverable() where archive.roomID == roomID { try FileManager.default.removeItem(at: archive.folder) }
+                }
                 await app.refresh(); dismiss()
             } else { error = "Deletion pending. Refresh and retry until the backend confirms cleanup." }
         } catch { self.error = "Deletion pending: \(error.localizedDescription)" }
@@ -271,3 +273,7 @@ struct PrivateCapturePhoto: View {
             .task(id: path) { image = nil; failed = false; do { guard let client = app.client else { return }; let bytes = try await client.media(path); guard let decoded = UIImage(data: bytes) else { throw ContractError.invalid("Invalid image") }; image = decoded } catch { failed = true } }
     }
 }
+
+#if DEBUG
+#Preview("Room review") { UIDemoPreview(.room) }
+#endif

@@ -5,6 +5,7 @@ ENV PYTHONUNBUFFERED=1 PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright RESPACE_ASSET
 WORKDIR /app
 COPY backend/pyproject.toml ./
 COPY backend/respace ./respace
+COPY prompts/layouts.md ./prompts/layouts.md
 COPY assets ./assets
 RUN pip install --no-cache-dir . && playwright install --with-deps chromium \
     && useradd --create-home --uid 10001 respace

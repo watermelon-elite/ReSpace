@@ -171,3 +171,7 @@ private struct ShoppingActivityView: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
+
+#if DEBUG
+#Preview("Share images") { UIDemoPreview(.share) }
+#endif

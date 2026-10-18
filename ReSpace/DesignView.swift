@@ -38,7 +38,7 @@ struct DesignView: View {
         if let error { return error }
         guard operation != .null else { return nil }
         if operation["pending_question"] != .null { return "Answer a question to continue" }
-        if activeOperation { return operation["phase"].text.replacingOccurrences(of: "_", with: " ").capitalized }
+        if activeOperation { return operation["progress_message"].string ?? operation["phase"].text.replacingOccurrences(of: "_", with: " ").capitalized }
         if let failure = operation["failure"]["message"].string { return failure }
         return entries.last(where: { $0["role"].text == "assistant" })?["text"].string
     }
@@ -64,6 +64,9 @@ struct DesignView: View {
             GeometryReader { geometry in
                 ZStack(alignment: .bottom) {
                     RoomScene(document: swapPreview?.scene(over: scene) ?? scene, native: false, selectedID: $selectedID, ghosts: ghosts, resetToken: reset, assetBaseURL: app.client?.baseURL, assetManifest: assetManifest)
+                        #if DEBUG
+                        .id(scene["ui_demo_image"].text)
+                        #endif
                         .frame(width: geometry.size.width, height: min(geometry.size.width, geometry.size.height))
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     VStack(spacing: 0) {
@@ -96,8 +99,8 @@ struct DesignView: View {
         } message: { Text(shoppingError ?? "") }
         .sheet(item: $removeItem) { item in removalPage(item) }
         .fullScreenCover(isPresented: $showOperation) { NavigationStack { OperationPanel(app: app, operation: $operation, onUpdate: { await load() }) } }
-        .task { text = UserDefaults.standard.string(forKey: "design_draft_\(roomID)") ?? ""; await load(initial: true) }
-        .onChange(of: text) { _, value in UserDefaults.standard.set(value, forKey: "design_draft_\(roomID)") }
+        .task { if !app.isUIDemo { text = UserDefaults.standard.string(forKey: "design_draft_\(roomID)") ?? "" }; await load(initial: true) }
+        .onChange(of: text) { _, value in if !app.isUIDemo { UserDefaults.standard.set(value, forKey: "design_draft_\(roomID)") } }
         .task(id: [operation["operation_id"].text, operation["state"].text]) { await poll() }
     }
     private var itemPanel: some View {
@@ -133,7 +136,7 @@ struct DesignView: View {
                 Button { showOperation = true } label: {
                     HStack(spacing: 10) {
                         if activeOperation { ProgressView().controlSize(.small) }
-                        Text(feedback).font(ReSpaceStyle.font(12)).lineLimit(error == nil ? 2 : nil).multilineTextAlignment(.leading).frame(maxWidth: .infinity, alignment: .leading)
+                        Text(feedback).font(ReSpaceStyle.font(12)).lineLimit(error == nil && !activeOperation ? 2 : nil).multilineTextAlignment(.leading).frame(maxWidth: .infinity, alignment: .leading)
                         if operation != .null { Image(systemName: "chevron.right").font(.system(size: 12)) }
                     }.foregroundStyle(error != nil ? ReSpaceStyle.danger : ReSpaceStyle.secondary).frame(minHeight: 44)
                 }.buttonStyle(.plain).disabled(operation == .null).accessibilityHint(operation == .null ? "" : "Open request details")
@@ -223,6 +226,12 @@ struct DesignView: View {
     }
     private func openShoppingList() {
         do {
+            #if DEBUG
+            if app.isUIDemo {
+                shoppingList = try ShoppingList(design: design, roomName: room["name"].text)
+                return
+            }
+            #endif
             guard let store = app.shoppingLists else { throw ContractError.invalid("Local storage is unavailable. Reopen the app and try again.") }
             let list = try ShoppingList(design: design, roomName: room["name"].string ?? "Your room")
             try store.save(list)
@@ -343,3 +352,7 @@ struct DesignView: View {
         if !Task.isCancelled, operation["operation_id"].text == id { await load() }
     }
 }
+
+#if DEBUG
+#Preview("Design") { UIDemoPreview(.design) }
+#endif

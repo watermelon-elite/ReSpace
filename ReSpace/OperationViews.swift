@@ -31,7 +31,7 @@ struct OperationPanel: View {
         case "succeeded": return operation["outcome"]["result_kind"].text == "selection" ? "Your plan is ready." : operation["kind"].text == "generation" ? "Your room is ready." : "Changes saved."
         case "failed", "rejected": return "Let’s take another look."
         case "cancelled": return "Request cancelled."
-        default: return ["preparing", "planning", "discovering", "searching", "interview"].contains(operation["phase"].text) ? "Getting to know\nyour room." : "Designing your room."
+        default: return ["preparing", "preparing_context", "planning", "discovering", "searching", "searching_products", "interview"].contains(operation["phase"].text) ? "Getting to know\nyour room." : "Designing your room."
         }
     }
     var body: some View {
@@ -144,7 +144,7 @@ struct OperationPanel: View {
                 .frame(height: 250).clipShape(RoundedRectangle(cornerRadius: 28))
         } else { RSSymbol(name: terminal ? (operation["state"].text == "succeeded" ? "checkmark" : "arrow.clockwise") : "sparkles") }
         if !terminal {
-            HStack(spacing: 12) { ProgressView(); Text(operation["phase"].text.replacingOccurrences(of: "_", with: " ").capitalized).font(ReSpaceStyle.font(14)) }.padding(.vertical, 12)
+            HStack(spacing: 12) { ProgressView(); Text(operation["progress_message"].string ?? operation["phase"].text.replacingOccurrences(of: "_", with: " ").capitalized).font(ReSpaceStyle.font(14)).fixedSize(horizontal: false, vertical: true) }.padding(.vertical, 12)
         }
         ForEach(operation["outcome"]["action_outcomes"].array, id: \.self) { action in
             RSNotice(message: "\(action["type"].text.capitalized): \(action["outcome"].text.replacingOccurrences(of: "_", with: " ")) · \(action["reason"].text)", isError: action["outcome"].text == "failed")
@@ -213,3 +213,9 @@ struct OperationPanel: View {
         } catch { self.error = error.localizedDescription }
     }
 }
+
+#if DEBUG
+#Preview("Question") { UIDemoPreview(.question) }
+#Preview("Generating") { UIDemoPreview(.generating) }
+#Preview("Ready") { UIDemoPreview(.ready) }
+#endif

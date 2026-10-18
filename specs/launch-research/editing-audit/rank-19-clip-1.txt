@@ -1,0 +1,49 @@
+> Quotation-redacted audiovisual model output. Quoted wording has been omitted; observational wording and returned timestamps are otherwise retained. The unmodified output was retained in the temporary research workspace. Model labels and timing claims remain subject to the corrections in the audit index.
+
+Here are the specific editorial mechanisms and visual transitions observed within the supplied clip, based strictly on the visible footage and source timestamps.
+
+### 1. Title Card Introduction
+* **Navigation Times:** 00:03.750 – 00:06.000
+* **Incoming Composition:** A static living room shot centered around a white rug on wooden flooring.
+* **Motion/Action at Transition:** The large white sans-serif word [source wording omitted] is overlaid on the frame.
+* **Outgoing Composition:** The same living room shot continues while the word persists on screen.
+* **Spatial Continuity/Mask/Scale/Layout/Text Behavior:** Static typography centered on screen over live-action video.
+* **Cut Type:** Continuous shot.
+* **Audible Events & Music Continuity:** Upbeat acoustic guitar music starts matching the on-screen pacing; spoken narration ([source wording omitted]) begins.
+* **Observation vs. Inference (Emotional Purpose):** The title establishes the product's function. (Recreation: Overlay white sans-serif text onto locked-off camera footage).
+
+### 2. Rapid Furniture Carousel Montage
+* **Navigation Times:** 00:07.000 – 00:11.875
+* **Incoming Composition:** Empty room with the round rug.
+* **Motion/Action at Transition:** Successive hard cuts showing different virtual or real pieces of furniture instantly appearing on the rug (red armchair, grey lounge chair, wooden table, patterned sofa, blue armchair).
+* **Outgoing Composition:** The final blue armchair rests on the rug before cutting to a hand holding an iPhone.
+* **Spatial Continuity/Mask/Scale/Layout/Text Behavior:** Fixed camera angle and room background remain entirely static while objects pop in and out at exact center frame.
+* **Cut Type:** Hard cuts (rapid montage).
+* **Audible Events & Music Continuity:** Music continues uninterrupted underneath spoken voiceover explaining AR capabilities.
+* **Observation vs. Inference (Emotional Purpose):** Demonstrates variety and instant scale replacement. (Recreation: Lock-off tripod shot with matching plate extraction to composite moving or static elements into the identical location).
+
+### 3. Phone App Launch Transition
+* **Navigation Times:** 00:11.875 – 00:13.500
+* **Incoming Composition:** A close-up shot of a hand holding a smartphone displaying an iOS home screen.
+* **Motion/Action at Transition:** A finger taps the IKEA app icon, which scales up to fill the entire screen as a graphic user interface transition.
+* **Outgoing Composition:** The IKEA blue and yellow logo fills the white screen.
+* **Spatial Continuity/Mask/Scale/Layout/Text Behavior:** Graphic zoom-in matches the app icon expanding to full screen.
+* **Cut Type:** Continuous shot / graphic motion transition.
+* **Audible Events & Music Continuity:** Music and voiceover continue through the app opening sequence.
+* **Observation vs. Inference (Emotional Purpose):** Transitions viewer perspective from the real room into the digital app environment. (Recreation: Screen recording composite matched to physical prop phone frame).
+
+### 4. AR Spatial Scanning Demonstration
+* **Navigation Times:** 00:15.625 – 00:17.500
+* **Incoming Composition:** Close-up top-down view of the white fluffy rug on wooden flooring.
+* **Motion/Action at Transition:** Animated yellow tracking dots dynamically spawn and spread across the floor surface as a graphic overlay while a phone scanning icon pulses.
+* **Outgoing Composition:** Cut back to the user holding the smartphone displaying the app catalogue interface.
+* **Spatial Continuity/Mask/Scale/Layout/Text Behavior:** AR tracking interface elements are layered over live-action floor footage.
+* **Cut Type:** Hard cut at 00:17.500 back to the user's hands.
+* **Audible Events & Music Continuity:** Background music persists continuously; voiceover explains scanning functionality.
+* **Observation vs. Inference (Emotional Purpose):** Visualizes the technical mechanism of AR space mapping. (Recreation: Motion graphics tracking point overlays combined with live-action floor footage).
+
+---
+
+### Remaining Uncertainties
+* It is visually ambiguous whether the furniture items appearing in the rapid carousel (00:07.000–00:11.875) were rendered via CGI in post-production or captured practically using real physical props swapped frame-by-frame.
+* The exact device UI shown on the phone screen may be a software simulation overlaid onto a physical prop phone rather than a live operational application.

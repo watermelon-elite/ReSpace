@@ -13,7 +13,14 @@ struct ReSpaceApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Group {
+                #if DEBUG
+                if ProcessInfo.processInfo.arguments.contains("--ui-demo") { UIDemoGallery() }
+                else { ContentView() }
+                #else
+                ContentView()
+                #endif
+            }
                 .tint(ReSpaceStyle.purple)
                 .font(ReSpaceStyle.font())
                 .preferredColorScheme(.light)

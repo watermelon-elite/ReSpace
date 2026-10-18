@@ -1,0 +1,387 @@
+{
+  "date": "2026-10-18",
+  "recordly_version": "1.4.0",
+  "tests": [
+    {
+      "id": "F01",
+      "title": "Upright 3D phone",
+      "tool": "FreeMockup",
+      "status": "verified",
+      "file": "exports/F01-room-landscape-upright.mp4",
+      "source": "sources/03-room.png",
+      "settings": "Landscape Animation 1, gray scene, 100%.",
+      "note": "Use for a brief product introduction.",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1920,
+            "height": 1080,
+            "pix_fmt": "yuv420p",
+            "r_frame_rate": "30/1",
+            "nb_frames": "210"
+          }
+        ],
+        "format": {
+          "duration": "7.000000",
+          "size": "1308344"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": null,
+      "preview": "previews/F01.jpg"
+    },
+    {
+      "id": "F02",
+      "title": "Dark tilted phone",
+      "tool": "FreeMockup",
+      "status": "incomplete",
+      "file": null,
+      "source": "sources/03-room.png",
+      "settings": "Landscape Animation 2, #111827, 200%.",
+      "note": "Export reached 47% at the last check; hidden tabs pause capture. No completed file."
+    },
+    {
+      "id": "F03",
+      "title": "4K portrait reveal",
+      "tool": "FreeMockup",
+      "status": "render only",
+      "file": null,
+      "source": "sources/01-rooms.png",
+      "settings": "Portrait Animation 9, gray scene, 200%.",
+      "note": "UI reported 2160\u00d73840, 30fps, 105 frames, 3.5s. In-app browser download could not be retrieved; file quality unverified."
+    },
+    {
+      "id": "F04",
+      "title": "Macro phone close-up",
+      "tool": "FreeMockup",
+      "status": "preview only",
+      "file": null,
+      "source": "sources/04-room-details.png",
+      "settings": "Landscape Animation 3, gray scene, 200%.",
+      "note": "Preview showed readable enlarged details, with strong perspective and cropped edges. Use briefly before a frontal hold."
+    },
+    {
+      "id": "F05",
+      "title": "Overhead phone with video",
+      "tool": "FreeMockup",
+      "status": "limited preview",
+      "file": null,
+      "source": "sources/room-details-8s.mp4",
+      "settings": "Landscape Animation 4, Pearl gradient; tested 200% then 50%.",
+      "note": "MP4 import and mapping verified. Preview screenshots stayed on the room view; continuous screen playback/export remains unverified. The source changes at 5.8s, after the fast preset ends."
+    },
+    {
+      "id": "R01",
+      "title": "Default framed recording",
+      "tool": "Recordly",
+      "status": "verified",
+      "file": "exports/R01-baseline.mp4",
+      "source": "sources/room-details.mov",
+      "settings": "Tahoe Light, shadow 67%, radius 8%, padding 20%, 16:9.",
+      "note": "Working baseline. Background is busy and UI occupies little of a landscape frame.",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 2144,
+            "height": 1206,
+            "pix_fmt": "yuv420p",
+            "r_frame_rate": "30/1",
+            "nb_frames": "244"
+          }
+        ],
+        "format": {
+          "duration": "8.133333",
+          "size": "1411991"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": null,
+      "preview": "previews/R01.jpg"
+    },
+    {
+      "id": "R02",
+      "title": "White manual zoom",
+      "tool": "Recordly",
+      "status": "verified",
+      "file": "exports/R02-white-manual-zoom.mp4",
+      "source": "sources/room-details.mov",
+      "settings": "White background, manual 1.8\u00d7 zoom, native default timing.",
+      "note": "Useful for deliberate interface emphasis; default shadow is heavy.",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 2144,
+            "height": 1206,
+            "pix_fmt": "yuv420p",
+            "r_frame_rate": "30/1",
+            "nb_frames": "244"
+          }
+        ],
+        "format": {
+          "duration": "8.133333",
+          "size": "1089229"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": null,
+      "preview": "previews/R02.jpg"
+    },
+    {
+      "id": "R03",
+      "title": "Zoom plus arrow",
+      "tool": "Recordly",
+      "status": "verified",
+      "file": "exports/R03-arrow-callout.mp4",
+      "source": "sources/room-details.mov",
+      "settings": "White background, 1.8\u00d7 zoom plus blue arrow at 0.5\u20131.5s.",
+      "note": "Layer combination works. Aim the arrow at a specific useful control in final capture.",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 2144,
+            "height": 1206,
+            "pix_fmt": "yuv420p",
+            "r_frame_rate": "30/1",
+            "nb_frames": "244"
+          }
+        ],
+        "format": {
+          "duration": "8.133333",
+          "size": "990512"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": null,
+      "preview": "previews/R03.jpg"
+    },
+    {
+      "id": "R04",
+      "title": "Smooth dark close-up",
+      "tool": "Recordly",
+      "status": "verified",
+      "file": "exports/R04-dark-smooth-closeup.mp4",
+      "source": "sources/room-details.mov",
+      "settings": "1.8\u00d7 manual zoom; 650ms in/out; focus (0.5,0.65); dark #111827; 25% shadow; 10% padding.",
+      "note": "Recommended starting treatment for room inspection. Check crop against the exact final screen.",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 2144,
+            "height": 1206,
+            "pix_fmt": "yuv420p",
+            "r_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000",
+          "size": "1173396"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": null,
+      "preview": "previews/R04.jpg"
+    },
+    {
+      "id": "R05",
+      "title": "Snappy punch-in",
+      "tool": "Recordly",
+      "status": "verified",
+      "file": "exports/R05-snappy-punch.mp4",
+      "source": "sources/room-details.mov",
+      "settings": "2.2\u00d7 zoom; 120ms in/out; zero zoom blur; warm #f4efe7.",
+      "note": "Strong emphasis for a short beat. Crops the room heavily; unsuitable for full-screen reading.",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 2144,
+            "height": 1206,
+            "pix_fmt": "yuv420p",
+            "r_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000",
+          "size": "1553648"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": null,
+      "preview": "previews/R05.jpg"
+    },
+    {
+      "id": "R06",
+      "title": "Connected camera glide",
+      "tool": "Recordly",
+      "status": "verified",
+      "file": "exports/R06-connected-glide.mp4",
+      "source": "sources/room-details.mov",
+      "settings": "Two 1.8\u00d7 zooms; connected motion; 700ms bridge.",
+      "note": "Motion works; the first focus region includes too much empty UI. Choose meaningful targets before using this.",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 2144,
+            "height": 1206,
+            "pix_fmt": "yuv420p",
+            "r_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000",
+          "size": "1203363"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": null,
+      "preview": "previews/R06.jpg"
+    },
+    {
+      "id": "R07",
+      "title": "Arrow on room details",
+      "tool": "Recordly",
+      "status": "verified",
+      "file": "exports/R07-details-arrow.mp4",
+      "source": "sources/04-room-details-hold.mp4",
+      "settings": "Blue right-pointing arrow; 0.5\u20133.5s; warm background; 25% shadow; 10% padding.",
+      "note": "Recommended for a brief count/dimension callout. Source is a held actual screenshot.",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 2144,
+            "height": 1206,
+            "pix_fmt": "yuv420p",
+            "r_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000",
+          "size": "79308"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": null,
+      "preview": "previews/R07.jpg"
+    },
+    {
+      "id": "R08",
+      "title": "Text label overlay",
+      "tool": "Recordly",
+      "status": "visual failure",
+      "file": "exports/R08-details-text-label.mp4",
+      "source": "sources/04-room-details-hold.mp4",
+      "settings": "Measured room text label. Retried via native Text/Blur controls.",
+      "note": "Both exports replaced the underlying phone screen with gray. Do not use this setup. Initial and retried files retained; root cause unresolved.",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 2144,
+            "height": 1206,
+            "pix_fmt": "yuv420p",
+            "r_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000",
+          "size": "133180"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": null,
+      "preview": "previews/R08.jpg"
+    },
+    {
+      "id": "R09",
+      "title": "Portrait Objects list",
+      "tool": "Recordly",
+      "status": "verified",
+      "file": "exports/R09-portrait-objects.mp4",
+      "source": "sources/05-objects-hold.mp4",
+      "settings": "9:16, white scene, 5% padding, 25% shadow.",
+      "note": "Readable Objects list. Export has black outer padding despite white preview; check border treatment for final delivery.",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1206,
+            "height": 2144,
+            "pix_fmt": "yuv420p",
+            "r_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000",
+          "size": "138739"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": null,
+      "preview": "previews/R09.jpg"
+    },
+    {
+      "id": "R10",
+      "title": "Double-speed navigation",
+      "tool": "Recordly",
+      "status": "verified",
+      "file": "exports/R10-double-speed.mp4",
+      "source": "sources/room-details.mov",
+      "settings": "Native 2\u00d7 speed control; dark scene; no zoom.",
+      "note": "Speed was reapplied through the native control. Timeline clip span is 8.104s for a 16.208s source interval; output is about 8.13s. Avoid editing only the speed field in a prepared fixture.",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 2144,
+            "height": 1206,
+            "pix_fmt": "yuv420p",
+            "r_frame_rate": "30/1",
+            "nb_frames": "244"
+          }
+        ],
+        "format": {
+          "duration": "8.133333",
+          "size": "306139"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": null,
+      "preview": "previews/R10.jpg"
+    }
+  ]
+}

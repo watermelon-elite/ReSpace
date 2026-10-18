@@ -1,0 +1,5 @@
+Fresh visual crosscheck,2026-10-18
+Source: public720p Wistia2rb6egpph3 Descript film.
+Extraction:114–121s at2fps,7columns x2rows,read left-to-right then nextrow. These extraction positions are navigation aids,not measuredcutboundaries.
+Observed pixels: colored horizontalstrikes over oversized words on flat backgrounds; then rotatedwhite word overlays around the live actor, crossed with magenta; separate olderwoman reaction; keyboardinsert; returntodocument. Confirmed examples: yellowtype/tealstroke/blackfield and whitetype/purplestroke/cyanfield.
+Not established: exactanimationeasing,musicalbeatdivision,originalcompositingsoftware,or keyboardkey identity from thiscropped view.

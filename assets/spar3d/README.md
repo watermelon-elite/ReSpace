@@ -20,6 +20,11 @@ not assumed. Real dimensions come from Product evidence and are applied by
 Runs offline, outside the API request path. No live image-to-3D generation is
 required for discovered Products.
 
+For the manual kitchenette evaluation, `python -m respace.furniture_assets`
+bridges a completed live Product selection to these scripts, preserving verified
+dimensions and identities. See the [backend runbook](../../backend/README.md#kitchenette-to-standalone-furniture-with-the-user-answering).
+The resulting models remain standalone and require visual review.
+
 ## Layout
 
 Code is versioned here; the runtime, weights and generated meshes are not, because
