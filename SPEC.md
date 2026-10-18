@@ -483,7 +483,9 @@ Commit the final successful subset once, after full scene/purchase validation. V
 - Build one entry per authoritative PurchaseLine, with the exact merchant URL, Product title, purchased pack count, supplied units, paid surplus and returned USD line total. Preserve the returned overall total and approved ceiling. Existing Objects and removed purchases do not appear; replacement Products do.
 - Show a clear empty state for a design with no purchases. Invalid or incomplete purchase data and storage failures show an error; never claim a partial or failed write was saved.
 - My Rooms provides Saved shopping lists. Lists survive app relaunch and remain readable without fetching the Room again. This local list does not provide offline design editing or cross-device synchronization. Display when it was saved; opening a changed design's shopping bag replaces that Room's list with the current displayed version.
-- Share list opens Apple's native share sheet. Choosing Messages prepares one text containing all Product names, quantities, exact links and saved totals, with tax/shipping exclusions and price/availability caveats. The user chooses recipients and sends; the app does not send automatically or share scan media, geometry, credentials or conversation.
+- Share list opens an export preview. Render 1080 × 1350 JPEG images using the bundled room placeholder, with numbered labels showing each PurchaseLine's Product title, purchased pack count and saved USD line total. Include the overall purchase total and tax/shipping exclusions. Show up to four purchases per image and paginate without dropping purchases. Mark the image as a placeholder and the label positions as illustrative, not projections of actual Items; retain the pending-fit caveat when applicable.
+- Share images & links opens Apple's native share sheet with the images and one text containing all Product names, quantities, exact links and saved totals, with tax/shipping exclusions and price/availability caveats. Choosing Messages prepares those attachments and text. The user chooses recipients and sends; the app does not send automatically or share scan media, geometry, credentials or conversation.
+- Instagram post opens the native share sheet with the JPEG images. Copy caption & links explicitly copies the complete text for pasting into Instagram, since its share extension may not accept supplied caption text. Instagram must be installed and configured by the user; this native export needs no Meta API credentials. If its extension is unavailable, the user can save the images through the share sheet and create a post in Instagram. The app declares add-only Photos usage for saving exported images. Publishing stays under the user's control.
 - Confirmed Room deletion also removes its local shopping list before the deletion request is marked locally complete. Saving or sharing a list creates no Design version and does not change Undo.
 
 ### 7. Discovery, verification, ranking and purchase planning
@@ -1122,7 +1124,7 @@ An intent-conflict answer can explicitly choose the proposed allowed intent chan
 | `GET /catalog/manifest` | Optional requested manifest revision. | Versioned category/render asset metadata and dimensional conventions. |
 | `GET /health` | No application mutation. | Operational service health without secrets or private diagnostics. |
 
-Buy is ordinary exact-offer navigation, not a purchase API. There is no mutable item-transform PATCH, sample-room route, sharing flow or public web design endpoint. The Scene already provides the purchase details required by the retained shopping UI.
+Buy is ordinary exact-offer navigation, not a purchase API. There is no mutable item-transform PATCH, sample-room route, server-side sharing API or public web design endpoint. The Scene already provides the purchase details required by the retained shopping UI and local sharing flow.
 
 #### 13.5 Revision and idempotency scenarios
 
@@ -1488,7 +1490,7 @@ Contract tests check that fields necessary to render or enforce rules are presen
 - Business mode, mode selector, business labels, explicit seating-target controls, business seating-group placement and business-only counter/register clearance workflows.
 - Spot intent, tapped-placement input and `at_spot` Anchors.
 - Sample-room entry/recovery, unsupported-device browsing, iPad and Android.
-- Before/After UI, walk mode, Day/Evening toggle, sharing screenshots and public hosted design sharing. Local shopping lists and native text sharing are included.
+- Before/After UI, walk mode, Day/Evening toggle, actual scene screenshot export and public hosted design sharing. Local shopping lists and native image/text sharing with a labeled placeholder room image are included.
 - Furniture dragging, direct rotation, mutable direct-transform PATCH and manual model-editor tools. Camera gestures and validated Swap/Remove remain included.
 - Cart, checkout, payments, Amazon Product API and an additional commerce backend. Exact-offer Buy and an optional secondary configured search link remain included.
 - User accounts/login, a shared app-key gate or a new authentication project. Input validation, private capture media and server credentials remain required.

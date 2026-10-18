@@ -13,6 +13,7 @@ struct ShoppingList: Codable, Identifiable, Equatable {
         let total: String
 
         var quantity: String { "\(packCount) \(packCount == 1 ? "pack" : "packs") · \(suppliedCount) supplied" }
+        var priceLabel: String { "USD \(total) · \(packCount) \(packCount == 1 ? "pack" : "packs")" }
     }
 
     let id: String
@@ -85,6 +86,14 @@ struct ShoppingList: Codable, Identifiable, Equatable {
         return (["ReSpace shopping list — \(roomName)\(fitPending ? "\nProduct plan · room fit is still pending." : "")"] + purchases
                 + ["Total: USD \(total)", "Saved prices. Whole packs included; existing Objects, tax and shipping excluded. Confirm price and availability with each merchant."])
             .joined(separator: "\n\n")
+    }
+
+    var postPages: [[Line]] {
+        stride(from: 0, to: lines.count, by: 4).map { Array(lines[$0..<min($0 + 4, lines.count)]) }
+    }
+
+    var postCaption: String {
+        shareText + "\n\nRoom image is a placeholder. Price labels show the saved purchases, not the furniture pictured."
     }
 
     private static func validAmount(_ value: String) -> Bool {

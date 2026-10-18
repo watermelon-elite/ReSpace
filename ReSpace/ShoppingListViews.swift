@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ShoppingListView: View {
     let list: ShoppingList
+    @State private var showShare = false
 
     var body: some View {
         RSPage(title: "Your shopping list", topTitle: list.roomName) {
@@ -33,13 +34,14 @@ struct ShoppingListView: View {
                 .font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
         } footer: {
             if !list.lines.isEmpty {
-                ShareLink(item: list.shareText) {
+                Button { showShare = true } label: {
                     Label("Share list", systemImage: "square.and.arrow.up")
                 }.buttonStyle(RSButtonStyle())
-                Text("Choose Messages to send all the links together.")
+                Text("Room image, price labels and shopping links.")
                     .font(ReSpaceStyle.font(12)).foregroundStyle(ReSpaceStyle.secondary)
             }
         }
+        .sheet(isPresented: $showShare) { ShoppingShareView(list: list) }
     }
 }
 

@@ -66,8 +66,33 @@ final class ShoppingListTests: XCTestCase {
         XCTAssertEqual(list.lines[0].title, "Measured desk")
         XCTAssertEqual(list.lines[0].packCount, 2)
         XCTAssertEqual(list.total, "100.00")
+        XCTAssertEqual(list.lines[0].priceLabel, "USD 100.00 · 2 packs")
         XCTAssertTrue(list.shareText.contains("2 packs · 4 supplied · USD 100.00"))
         XCTAssertTrue(list.shareText.contains("1 unplaced paid units"))
+    }
+
+    func testPostPagesKeepEveryPurchaseInOrderAndCaptionKeepsEveryLink() throws {
+        let original = try ShoppingList(design: fixture()["design"]["design"], roomName: "Room")
+        var saved = try JSONDecoder().decode(JSONValue.self, from: JSONEncoder().encode(original)).object
+        let template = saved["lines"]!.array[0].object
+        for count in [0, 1, 4, 5, 20] {
+            saved["lines"] = .array((0..<count).map { index in
+                var line = template
+                line["id"] = .string("offer-\(index)")
+                line["url"] = .string("https://example.com/product/\(index)?variant=exact")
+                return .object(line)
+            })
+            let list = try JSONDecoder().decode(ShoppingList.self, from: JSONEncoder().encode(JSONValue.object(saved)))
+            XCTAssertEqual(list.postPages.count, (count + 3) / 4)
+            XCTAssertTrue(list.postPages.allSatisfy { (1...4).contains($0.count) })
+            XCTAssertEqual(list.postPages.flatMap { $0 }, list.lines)
+            XCTAssertTrue(list.postCaption.hasPrefix(list.shareText))
+            XCTAssertTrue(list.postCaption.contains("Room image is a placeholder"))
+            for line in list.lines {
+                XCTAssertEqual(list.postCaption.components(separatedBy: line.url.absoluteString).count, 2)
+                XCTAssertTrue(list.postCaption.contains("USD \(line.total)"))
+            }
+        }
     }
 
     func testRemovedProductsDoNotSurviveInShoppingList() throws {
