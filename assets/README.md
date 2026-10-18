@@ -45,9 +45,12 @@ reconstruction or a stand-in.
 
 Not yet done for any Product, and not a formality. It requires, at minimum:
 verified exact-variant dimension evidence from the Product source, a category
-whose grading supports a mesh, a colour check against the source photograph,
-and a `--yaw` chosen so the model faces `+Z`. The last two are judgements made
-by eye from a grading sheet; no automated check catches either.
+whose grading supports a mesh, conversion with `--auto-orient`, and a colour
+check against the source photograph. `--auto-orient` turns the model to face
+`+Z`, squares it to the axes so the verified width and depth land on the right
+box, and levels it; a person still confirms the result and clears any flags on
+the grading sheet. Colour is a judgement made by eye; no automated check
+catches it.
 
 ## Conventions
 
@@ -57,7 +60,8 @@ reopening the package it just wrote, and refuses a catalog conversion that lacks
 dimensions, a variant ID and an evidence ID together.
 
 ```sh
-python assets/prepare.py input.glb output.usdz --category chair --yaw 180
+python assets/prepare.py input.glb output.usdz --category chair --yaw 180   # authored source
+python assets/prepare.py mesh.glb output.usdz --category chair --auto-orient # SPAR3D reconstruction
 ```
 
 Preparation needs `requirements.txt` installed in its own environment. It is

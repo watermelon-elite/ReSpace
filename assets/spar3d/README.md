@@ -9,8 +9,11 @@ This is the first half of the asset pipeline required by [`SPEC.md`](../../SPEC.
 USDZ and applies verified dimensions:
 
 ```
-product photo -> run_spar3d.py -> mesh.glb -> prepare.py -> model.usdz
+product photo -> run_spar3d.py -> mesh.glb -> prepare.py --auto-orient -> model.usdz
 ```
+
+`--auto-orient` turns, straightens and levels the reconstruction before sizing
+it; see "Orientation" below. Always use it for SPAR3D output.
 
 **A reconstruction establishes appearance only.** Every mesh comes out normalized
 to roughly unit size, so it carries no physical scale at all; this was measured,
@@ -177,61 +180,70 @@ grey is wrong in a way no size check catches. **Check colour against the source
 photograph before promoting any Product with a dark or saturated finish**, and
 prefer a tinted stand-in over a mesh whose colour is wrong.
 
-### Every mesh leans
+### Orientation
 
-No output is upright. Measured as the angle between vertical and the axis
-joining the top and bottom decile centroids:
+A reconstruction comes out in the camera's frame, not the room's, and is wrong
+in three ways. Each has one cause, and `prepare.py --auto-orient` corrects all
+three using `assets/spar3d/orient.py`. Measured on all 30 test products,
+2026-10-18.
 
-| | tilt from vertical |
-|---|---|
-| Lamps | 1.8°–10.8°, consistently backwards |
-| Shelf units | 3.1°–16.6° |
-| Chairs | 4.6°–6.8°, small enough to need no correction |
-| Tables, desks | inflated by detached parts; the metric assumes a tall axial shape |
-| Sofas, armchairs | reads 33°–39°, which the renders contradict; they sit level. The metric is measuring width, not lean. Do not trust it here. |
+| Error | Cause | Measured | Correction |
+|---|---|---|---|
+| Faces backwards | SPAR3D puts the photographed side at −Z, and product photos show the front | 30/30: the view from −Z matched the source photo | fixed 180° turn |
+| Turned off the axes | Product photos are three-quarter views | every boxy product 12°–29°, all the same way | straighten the footprint to the axes |
+| Leans | The camera looks down | chairs 18°–22° forward, back feet in the air; sofas 9°–12°; lamps 6°–19° | level the base, front-to-back and sideways |
 
-The cause is that product photography shoots slightly from above and the
-reconstruction is in camera space, not world space.
+**The turn is a sizing bug, not just appearance.** `prepare.py` stretches the
+axis-aligned box to the verified width and depth. A model still turned 20°
+inside that box comes out the wrong size.
 
-`assets/spar3d/upright.py` proposes a correction, applied through the
-`prepare.py --pitch` option added for it:
+Straightening uses the smallest rectangle around the footprint. It is skipped
+for round footprints (lamps, plants, round tables), where it changes nothing.
+Every measured turn is under 30°, so there is one right answer; anything past
+38° is flagged, because near 45° the front cannot be told from a side.
 
-```sh
-~/spar3d-lab/.venv-prepare/bin/python assets/spar3d/upright.py   # writes pitch.json
-```
+Levelling uses one of two estimates. The **resting face** is the convex-hull face
+the object would settle on: the one nearest level whose plane contains the
+centroid's projection. It reads legs and feet. The **base plane** in
+`upright.py` fits the lowest vertices and declines on narrow bases. Furniture
+uses the resting face, and lamps use the base plane, which reads slightly better
+on ÅRSTID and STOCKHOLM. Each falls back to the other when it declines.
 
-It fits a plane to the vertices the object rests on and measures how far that
-plane is from level. **Opt-in, defaulting to none**, because it is only
-trustworthy for some shapes and Kenney sources are authored upright already.
+| | Before (`upright.py` only) | Now |
+|---|---|---|
+| Chairs | declined, left tipped 18°–22° | stand on all four feet |
+| Sofas | declined, left leaning 9°–12° | level |
+| MORABO armchair | tipped −7.7°, the wrong way | +8.4°, level |
+| TROTTEN desk, VITTSJÖ nesting tables, ÖSTAVALL | declined | levelled |
+| Shelf units | over-corrected to 16.5° | 0.1°–1.4°, upright |
+| Lamps | upright | unchanged, same estimate |
 
-Only pitch is corrected, never roll. The error has one known cause, a camera
-looking down, which is a single rotation about the horizontal axis across the
-view. Solving for the full plane normal also rolls the model sideways, which was
-measured to skew slab reconstructions that were not leaning that way at all.
+The earlier claim that chairs lean only 4.6°–6.8° and need no correction was
+wrong. That tilt metric joins the top and bottom of the mesh, which cannot see a
+chair rocking forward on its front legs.
 
-| | Result |
-|---|---|
-| Lamps | all six visibly upright from every azimuth; this is the category that passed grading |
-| Tables | correctly declined on two, negligible change on the rest |
-| Chairs | declined on all three, correctly: thin legs give too narrow a base, and at 4.6°–6.8° they did not need it |
-| Desks | corrected two well (11.4°→4.1°); declined TROTTEN, which does lean and is left leaning |
-| Sofas, armchairs | declined on all three sofas; applied 3.1°–7.7° to the armchairs with no visible harm |
-| Shelf units | over-corrected, because their reconstructed underside is itself slanted |
-| Plants | refused one at 69°, which the limit caught |
+Sideways lean is corrected too, after the forward lean. It was refused before
+because solving the base-plane fit for the full normal skewed slab
+reconstructions. The resting face measures at most 3.4° sideways across all 30,
+and under 2.5° on the shelf units, which grade upright. A correction over 8° is
+applied and flagged.
 
-The shelf failure is tolerated, not solved: those Products take stand-ins. It
-does mean the estimate is a **proposal**. Check it on a grading sheet before
-trusting it for a category that has not been through this.
+All three angles are recorded per model as `source_yaw_degrees`,
+`source_pitch_degrees` and `source_roll_degrees`, with the method and any flags
+under `orientation`. The grading sheet shows front, side and back views, with
+the angles and flags beside them, and is still where a person confirms the
+result. The pre-orientation sheets are kept in `~/spar3d-lab/grade-before-orient/`.
 
-The narrow-base guard cuts both ways. It is right on chairs, which do not need
-a correction, and wrong on TROTTEN, which does and is refused for the same
-reason: trestle feet are too narrow to fit a plane to. A thin-legged Product
-that genuinely leans has no correction available today.
+Two of 30 are flagged, both plants, which take stand-ins: FEJKA 10615244 is
+turned 41°, and FEJKA 10615258 (a hanging plant) has no base to level on.
 
-Where the base is one leg tip or a floating fragment, the plane is numerically
-fine and physically meaningless, so the estimator declines instead of guessing,
-and refuses any correction beyond 30°. The chosen angle is recorded per model as
-`source_pitch_degrees`, so a conversion stays reproducible and auditable.
+The round-footprint test reads the reconstructed outline, so a garbled outline
+can pass as round. ÖRTRÄSK, an oval table, reads round because its top detached
+and its legs scattered, and is left unstraightened. It already fails grading.
+
+`upright.py` still runs on its own and writes `pitch.json`; `--pitch`, `--roll`
+and `--yaw` remain for manual overrides and cannot be combined with
+`--auto-orient`.
 
 ### Reproducing the grading
 
@@ -239,9 +251,10 @@ and refuses any correction beyond 30°. The chosen angle is recorded per model a
 ~/spar3d-lab/.venv-prepare/bin/python assets/spar3d/grade.py [slug-substring]
 ```
 
-`grade.py` converts every mesh through `prepare.py`, records size, texture
-survival and tilt, and writes one comparison sheet per Product to
-`~/spar3d-lab/grade/sheets/`. `render.py` behind it is a small software
+`grade.py` converts every mesh through `prepare.py --auto-orient`, records size,
+texture survival, tilt and the orientation chosen, and writes one comparison
+sheet per Product to `~/spar3d-lab/grade/sheets/`: the source photo, front,
+side and back views, textured and as clay, and the angles and flags. `render.py` behind it is a small software
 rasterizer: no GPU, no OpenGL, no window, so it cannot disturb anyone using the
 machine and cannot repeat the MPS incident. All 30 take about 2.5 min on CPU.
 
@@ -441,13 +454,13 @@ teardown — and in both cases resuming cost only the item in flight.
 - Two of the six sofa and armchair reconstructions have not been looked at.
 - Remeshing is disabled: `gpytoolbox` and `pynanoinstantmeshes` are not installed,
   so `--remesh` options are unavailable. Meshes are raw marching-cubes output.
-- The upright correction is verified on lamps only, over-corrects shelf units,
-  and is opt-in for that reason. See "Every mesh leans".
+- Orientation assumes the source photo shows the front or a three-quarter
+  front. That held for all 30 IKEA main images; another retailer's photography
+  may not, which is what the 45° flag and the grading sheet are for. See
+  "Orientation".
 - Opening a packaged USDZ on an iPhone confirms the format is readable by
   Apple's loader, so the `qlmanage` hang is a desktop tooling fault and not a
   defect in our output. Appearance on device beyond "it opens" is unaudited.
-- The `+Z` forward yaw per Product has not been determined. The grading sheets
-  render 0/90/180/270 and are the input to that decision.
 - Open structures were the expected failure mode and the grading confirms it for
   shelf units; thin frames, against expectation, reconstruct well.
 - `scrape_ikea.py` produces test inputs only. Those Products carry no verified

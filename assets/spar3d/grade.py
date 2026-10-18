@@ -4,9 +4,10 @@ Two independent questions per product:
 
   1. Does prepare.py package it? That is pass/fail and the script answers it,
      including whether the baked texture actually survives into the USDZ.
-  2. Does it look like the product? That needs eyes, so this only lays the
-     evidence out: source photograph beside four textured views and the same
-     four as untextured clay.
+  2. Does it look like the product, facing forward and standing level? That
+     needs eyes, so this only lays the evidence out: source photograph beside
+     front, side and back views, textured and as untextured clay, with the
+     orientation prepare.py --auto-orient chose and any flags it raised.
 
 Dimensions here preserve the mesh's own proportions scaled to one metre. They
 are NOT measurements. These are scraped test inputs with no dimension evidence,
@@ -17,8 +18,9 @@ prepare.py pins a newer trimesh than SPAR3D runs on:
 
     $SPAR3D_LAB/.venv-prepare/bin/python assets/spar3d/grade.py [slug-substring]
 
-Writes sheets and a report to $SPAR3D_LAB/grade/. Runs on CPU in about 75 s for
-all 15; it never loads SPAR3D, so it will not disturb anyone using the machine.
+Writes sheets and a report to $SPAR3D_LAB/grade/, replacing the previous run.
+Runs on CPU in about 2.5 min for all 30; it never loads SPAR3D, so it will not
+disturb anyone using the machine.
 """
 
 import json
@@ -33,6 +35,7 @@ import trimesh
 from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).parent))
+import orient  # noqa: E402
 import upright  # noqa: E402
 from render import render  # noqa: E402
 
@@ -42,7 +45,9 @@ LAB = Path(os.environ.get("SPAR3D_LAB", Path.home() / "spar3d-lab"))
 # beside the scripts in the repository.
 WORK = LAB / "grade"
 TILE = 300
-AZIMUTHS = (0, 90, 180, 270)
+# Meshes are posed by orient.py first, so +Z is the front. render.py's camera
+# sits at -Z for azimuth 0, which makes 180 the front view.
+VIEWS = ((180, "front"), (90, "side"), (0, "back"), (270, "side"))
 
 
 def label(image, text):
@@ -75,12 +80,12 @@ def tilt(mesh):
     return round(float(np.degrees(np.arctan2(np.linalg.norm(axis[[0, 2]]), axis[1]))), 1)
 
 
-def convert(slug, source, mesh, pitch):
+def convert(slug, source, mesh):
     """Package to USDZ at the mesh's own proportions, then verify the texture.
 
-    `mesh` must already carry the pitch, because the proportions passed as
-    --dimensions have to describe the model prepare.py will actually measure
-    after it applies the same rotation.
+    `mesh` must already carry the orientation, because the proportions passed
+    as --dimensions have to describe the model prepare.py will actually measure
+    after it works out and applies the same rotation.
     """
     extent = mesh.bounds[1] - mesh.bounds[0]
     k = 1.0 / float(extent.max())
@@ -90,7 +95,7 @@ def convert(slug, source, mesh, pitch):
         [
             sys.executable, str(REPO / "assets/prepare.py"),
             str(source), str(destination), "--category", slug.split("_")[0],
-            "--pitch", str(pitch),
+            "--auto-orient",
             "--dimensions", f"{width:.6f}", f"{depth:.6f}", f"{height:.6f}",
             "--variant-id", f"TEST-{slug}", "--evidence-id", "TEST-NO-EVIDENCE",
         ],
@@ -105,6 +110,7 @@ def convert(slug, source, mesh, pitch):
     textures = [n for n in names if n.endswith(".png")]
     return {
         "ok": True,
+        "orientation": record["orientation"],
         "bytes": record["byte_count"],
         "under_3_mb": record["under_3_mb"],
         "triangles": record["conversion"]["triangles"],
@@ -131,32 +137,42 @@ def main():
                "type": meta["type_name"], "vertices": int(len(mesh.vertices)),
                "tilt_before": tilt(mesh)}
 
-        pitch, reason = upright.estimate(mesh.vertices)
-        if pitch:
-            mesh = mesh.copy()
-            mesh.vertices = np.asarray(mesh.vertices) @ upright.rotation(pitch).T
-        row["pitch_degrees"], row["pitch_reason"] = pitch, reason
+        # The same estimate prepare.py --auto-orient makes, applied here so the
+        # proportions and the sheet describe the model that gets packaged.
+        pose = orient.orient(mesh.vertices, meta["category"])
+        mesh = mesh.copy()
+        mesh.vertices = (np.asarray(mesh.vertices) @ upright.rotation(pose["pitch_degrees"]).T
+                         @ orient.roll_rotation(pose["roll_degrees"]).T)
+        mesh.apply_transform(trimesh.transformations.rotation_matrix(np.radians(pose["yaw_degrees"]), [0, 1, 0]))
         row["tilt_after"] = tilt(mesh)
-        row.update(convert(slug, source, mesh, pitch))
+        row.update(convert(slug, source, mesh))
+        pose = row.get("orientation", pose)
+        row["pitch_degrees"], row["yaw_degrees"] = pose["pitch_degrees"], pose["yaw_degrees"]
 
         sheet = Image.new("RGB", (TILE * 5, TILE * 2), (250, 250, 250))
         photo = fit(Image.open(LAB / "images" / meta["file"]), TILE)
         sheet.paste(label(photo, f"SOURCE  {meta['name']}  {meta['type_name']}"), (0, 0))
         note = Image.new("RGB", (TILE, TILE), (250, 250, 250))
-        caption = (f"{row['vertices']}v  pitch {row['pitch_degrees']} deg  "
-                   f"usdz={'ok' if row['ok'] else 'FAIL'}")
+        draw = ImageDraw.Draw(note)
+        lines = [f"pitch {pose['pitch_degrees']} deg ({pose['level_method']})",
+                 f"straighten {pose['straighten_degrees']} deg ({pose['straighten_reason']})",
+                 f"sideways {pose['roll_degrees']} deg", *pose["flags"]]
+        for i, line in enumerate(lines):
+            draw.text((8, 10 + 16 * i), line[:46], fill=(160, 0, 0) if i >= 3 else (30, 30, 30))
+        caption = f"{row['vertices']}v  usdz={'ok' if row['ok'] else 'FAIL'}"
         sheet.paste(label(note, caption), (0, TILE))
-        for column, azimuth in enumerate(AZIMUTHS, start=1):
+        for column, (azimuth, name) in enumerate(VIEWS, start=1):
             view = render(mesh, size=TILE, azimuth=azimuth)
-            sheet.paste(label(view, f"texture {azimuth} deg"), (TILE * column, 0))
+            sheet.paste(label(view, f"texture {name}"), (TILE * column, 0))
             view = render(mesh, size=TILE, azimuth=azimuth, clay=True)
-            sheet.paste(label(view, f"clay {azimuth} deg"), (TILE * column, TILE))
+            sheet.paste(label(view, f"clay {name}"), (TILE * column, TILE))
         sheet.save(WORK / "sheets" / f"{slug}.png")
 
         report.append(row)
         print(f"{slug:42s} {'ok  ' if row['ok'] else 'FAIL'} "
               f"{'tex' if row.get('textured') else 'NO-TEX':6s} "
-              f"{row.get('bytes', 0) // 1024:>6} KB  pitch {row['pitch_degrees']:>6} deg  "
+              f"{row.get('bytes', 0) // 1024:>6} KB  pitch {row['pitch_degrees']:>6}  "
+              f"yaw {row['yaw_degrees']:>6}  {'; '.join(pose['flags'])}"
               f"{row.get('error', '')}", flush=True)
 
     # A filtered run is a spot check, so it must not clobber the full report.
