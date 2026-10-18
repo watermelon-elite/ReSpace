@@ -126,10 +126,38 @@ joining the top and bottom decile centroids:
 | Tables | inflated by detached parts; the metric assumes a tall axial shape |
 
 The cause is that product photography shoots slightly from above and the
-reconstruction is in camera space, not world space. `prepare.py` applies `--yaw`
-about the vertical axis only, so it cannot correct this. **An upright
-correction before conversion is required and does not exist yet.** Until then a
-lamp placed on a floor will visibly lean.
+reconstruction is in camera space, not world space.
+
+`assets/spar3d/upright.py` proposes a correction, applied through the
+`prepare.py --pitch` option added for it:
+
+```sh
+~/spar3d-lab/.venv-prepare/bin/python assets/spar3d/upright.py   # writes pitch.json
+```
+
+It fits a plane to the vertices the object rests on and measures how far that
+plane is from level. **Opt-in, defaulting to none**, because it is only
+trustworthy for some shapes and Kenney sources are authored upright already.
+
+Only pitch is corrected, never roll. The error has one known cause, a camera
+looking down, which is a single rotation about the horizontal axis across the
+view. Solving for the full plane normal also rolls the model sideways, which was
+measured to skew slab reconstructions that were not leaning that way at all.
+
+| | Result |
+|---|---|
+| Lamps | all six visibly upright from every azimuth; this is the category that passed grading |
+| Tables | correctly declined on two, negligible change on the rest |
+| Shelf units | over-corrected, because their reconstructed underside is itself slanted |
+
+The shelf failure is tolerated, not solved: those Products take stand-ins. It
+does mean the estimate is a **proposal**. Check it on a grading sheet before
+trusting it for a category that has not been through this.
+
+Where the base is one leg tip or a floating fragment, the plane is numerically
+fine and physically meaningless, so the estimator declines instead of guessing,
+and refuses any correction beyond 30°. The chosen angle is recorded per model as
+`source_pitch_degrees`, so a conversion stays reproducible and auditable.
 
 ### Reproducing the grading
 
@@ -289,12 +317,11 @@ teardown — and in both cases resuming cost only the item in flight.
   default. See Device support.
 - Remeshing is disabled: `gpytoolbox` and `pynanoinstantmeshes` are not installed,
   so `--remesh` options are unavailable. Meshes are raw marching-cubes output.
-- **Nothing has been opened in RealityKit.** All 15 convert and validate inside
-  USD, but Apple's own loader has never seen them, because `qlmanage` hangs on
-  every USDZ on this machine. This needs a device or Xcode and is the largest
-  remaining unknown.
-- **No upright correction exists.** Every mesh leans; `prepare.py` only rotates
-  about the vertical axis. See "Every mesh leans".
+- The upright correction is verified on lamps only, over-corrects shelf units,
+  and is opt-in for that reason. See "Every mesh leans".
+- Opening a packaged USDZ on an iPhone confirms the format is readable by
+  Apple's loader, so the `qlmanage` hang is a desktop tooling fault and not a
+  defect in our output. Appearance on device beyond "it opens" is unaudited.
 - The `+Z` forward yaw per Product has not been determined. The grading sheets
   render 0/90/180/270 and are the input to that decision.
 - Open structures were the expected failure mode and the grading confirms it for

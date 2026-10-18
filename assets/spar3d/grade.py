@@ -33,6 +33,7 @@ import trimesh
 from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).parent))
+import upright  # noqa: E402
 from render import render  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[2]
@@ -74,8 +75,13 @@ def tilt(mesh):
     return round(float(np.degrees(np.arctan2(np.linalg.norm(axis[[0, 2]]), axis[1]))), 1)
 
 
-def convert(slug, source, mesh):
-    """Package to USDZ at the mesh's own proportions, then verify the texture."""
+def convert(slug, source, mesh, pitch):
+    """Package to USDZ at the mesh's own proportions, then verify the texture.
+
+    `mesh` must already carry the pitch, because the proportions passed as
+    --dimensions have to describe the model prepare.py will actually measure
+    after it applies the same rotation.
+    """
     extent = mesh.bounds[1] - mesh.bounds[0]
     k = 1.0 / float(extent.max())
     width, height, depth = (extent * k).tolist()
@@ -84,6 +90,7 @@ def convert(slug, source, mesh):
         [
             sys.executable, str(REPO / "assets/prepare.py"),
             str(source), str(destination), "--category", slug.split("_")[0],
+            "--pitch", str(pitch),
             "--dimensions", f"{width:.6f}", f"{depth:.6f}", f"{height:.6f}",
             "--variant-id", f"TEST-{slug}", "--evidence-id", "TEST-NO-EVIDENCE",
         ],
@@ -122,14 +129,21 @@ def main():
         mesh = trimesh.load_scene(source, process=False).dump()[0]
         row = {"slug": slug, "category": meta["category"], "name": meta["name"],
                "type": meta["type_name"], "vertices": int(len(mesh.vertices)),
-               "tilt_degrees": tilt(mesh)}
-        row.update(convert(slug, source, mesh))
+               "tilt_before": tilt(mesh)}
+
+        pitch, reason = upright.estimate(mesh.vertices)
+        if pitch:
+            mesh = mesh.copy()
+            mesh.vertices = np.asarray(mesh.vertices) @ upright.rotation(pitch).T
+        row["pitch_degrees"], row["pitch_reason"] = pitch, reason
+        row["tilt_after"] = tilt(mesh)
+        row.update(convert(slug, source, mesh, pitch))
 
         sheet = Image.new("RGB", (TILE * 5, TILE * 2), (250, 250, 250))
         photo = fit(Image.open(LAB / "images" / meta["file"]), TILE)
         sheet.paste(label(photo, f"SOURCE  {meta['name']}  {meta['type_name']}"), (0, 0))
         note = Image.new("RGB", (TILE, TILE), (250, 250, 250))
-        caption = (f"{row['vertices']}v  tilt {row['tilt_degrees']} deg  "
+        caption = (f"{row['vertices']}v  pitch {row['pitch_degrees']} deg  "
                    f"usdz={'ok' if row['ok'] else 'FAIL'}")
         sheet.paste(label(note, caption), (0, TILE))
         for column, azimuth in enumerate(AZIMUTHS, start=1):
@@ -142,7 +156,7 @@ def main():
         report.append(row)
         print(f"{slug:42s} {'ok  ' if row['ok'] else 'FAIL'} "
               f"{'tex' if row.get('textured') else 'NO-TEX':6s} "
-              f"{row.get('bytes', 0) // 1024:>6} KB  tilt {row['tilt_degrees']:>4} deg  "
+              f"{row.get('bytes', 0) // 1024:>6} KB  pitch {row['pitch_degrees']:>6} deg  "
               f"{row.get('error', '')}", flush=True)
 
     # A filtered run is a spot check, so it must not clobber the full report.
