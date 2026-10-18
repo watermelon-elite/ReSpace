@@ -19,8 +19,15 @@ class SpatialPipeline:
         operation,room=self.operations.guard(operation_id)
         data=operation.get('spatial',{})
         if 'snapshot' not in data:
-            snapshot=await self.process_snapshot(operation_id,bounded=bounded)
-            if snapshot is None:return
+            snapshot_id=operation['request'].get('snapshot_id')
+            if snapshot_id:
+                snapshot=self.store.get('snapshots',snapshot_id)
+                require(snapshot and snapshot.get('room_id')==room['room_id'] and snapshot.get('capture_id')==operation['request']['capture_id'],'invalid_snapshot','The requested snapshot is unavailable for this Room and capture.',422)
+                require(snapshot.get('room',{}).get('validity',{}).get('usable',False),'invalid_room','The requested Room snapshot is unusable. Choose a valid snapshot or rescan this Room.',422)
+                with self.store.transaction():self._save(operation_id,'snapshot',snapshot)
+            else:
+                snapshot=await self.process_snapshot(operation_id,bounded=bounded)
+                if snapshot is None:return
             data['snapshot']=snapshot
             if bounded:return
         snapshot=data['snapshot']

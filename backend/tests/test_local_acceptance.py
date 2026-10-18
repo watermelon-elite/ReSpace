@@ -121,6 +121,9 @@ def test_full_redesign_fit_answer_survives_sqlite_reopen_without_repeating_inter
         waiting = operation(api, 'generate')
         assert waiting['state'] == 'needs_clarification', waiting
         assert waiting['pending_question']['context'] == 'repair'
+        assert 'spatial' not in waiting
+        assert 'spatial' not in api.get(f'/v1/rooms/{room_id}').json()['current_operation']
+        assert app.state.store.get('operations', 'generate')['spatial']['private_candidate']['conflicts']
         assert api.get(f'/v1/rooms/{room_id}').json()['room']['active_design_id'] is None
         assert app.state.store.list('designs', room_id) == []
         snapshot = app.state.store.list('snapshots', room_id)

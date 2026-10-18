@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-18T02:47:35.611129+00:00",
+  "checked_at": "2026-10-18T05:31:50.197908+00:00",
   "standin": {
     "source": "https://kenney.nl/assets/furniture-kit",
     "license": "CC0-1.0",
@@ -39,7 +39,62 @@
       "native_validation": "all 21 actual USDZ files loaded in macOS RealityKit at nonuniform saved dimensions; physical extents/bottom-center pivots passed; interactive visual inspection pending",
       "missing_categories_use": "existing correctly sized panel/box fallback",
       "catalog_product_count": 0,
-      "checked_at": "2026-10-18T04:53:15.581352+00:00"
+      "checked_at": "2026-10-18T04:53:15.581352+00:00",
+      "delivery_recheck": {
+        "checked_at": "2026-10-18T05:27:00.949735+00:00",
+        "transport": "FastAPI TestClient against canonical public GET /v1/catalog/manifest and every immutable asset URL; no providers or sample Products",
+        "manifest_revision": "kenney-standins-2a51b85be79606b2",
+        "shared_category_registry_version": 1,
+        "registry_category_count": 40,
+        "standin_category_count": 21,
+        "catalog_product_count": 0,
+        "all_asset_http_status": 200,
+        "mime_type": "model/vnd.usdz+zip",
+        "checksum_and_immutable_cache_headers": "passed for all assets",
+        "asset_size_bytes": {
+          "minimum": 4301,
+          "maximum": 57152,
+          "total": 424564
+        },
+        "archived_manifest_revision": "kenney-chair-67d8cb9ab6c620bb",
+        "archived_asset_byte_identity": "passed",
+        "categories_without_prepared_model": [
+          "bathtub",
+          "counter",
+          "curtain",
+          "decor",
+          "dishwasher",
+          "dresser",
+          "fireplace",
+          "light_switch",
+          "outlet",
+          "oven",
+          "radiator",
+          "refrigerator",
+          "sink",
+          "stairs",
+          "stove",
+          "toilet",
+          "vent",
+          "wall_art",
+          "washer_dryer"
+        ],
+        "fallback": "existing category panel/box with supplied dimensions; no guessed Product geometry or exact-model claim",
+        "native_rendering": "Existing RealityKit numeric 21-model coverage retained; current viewer proof tracked separately in #42",
+        "expansion_blocker": "#27 still lacks authorized SPAR3D weights/runtime/license confirmation and one exact-variant complete catalog proof; no new catalog records generated."
+      }
+    },
+    "conversion_recheck": {
+      "checked_at": "2026-10-18T05:26:28.728379+00:00",
+      "command": "PYTHONPATH=backend /private/tmp/respace-venv/bin/pytest backend/tests/test_assets.py -q",
+      "result": "12 passed",
+      "trimesh": "5.1.1",
+      "usd": [
+        0,
+        26,
+        8
+      ],
+      "dimensioned_path": "Existing licensed chair GLB reopened at test-only width/depth/height [0.7, 0.3, 1.1]; incomplete catalog inputs rejected. This does not prove a reconstructed catalog Product."
     }
   },
   "catalog": {
@@ -47,7 +102,16 @@
     "evidence_record": "evidence/ikea-lack-30449908.json",
     "dimensions": "verified from actual exact-variant published fields",
     "offer_pack_contents": "unverified; remains ineligible",
-    "mesh": "not generated"
+    "mesh": "not generated",
+    "ingestion_recheck": {
+      "checked_at": "2026-10-18T05:26:28.728379+00:00",
+      "browser_http_status": 200,
+      "transport": "Production DNS-pinned Playwright networking; read-only Measurements tab opened",
+      "visible_text_characters": 4002,
+      "structured_text_characters": 13778,
+      "captured_data_sha256": "1e4d39aad1eabde9f833c6c50c0d871cc7378fe43e39a55a598d18398b594fa3",
+      "pack_result": "Explicit pack count not present in production browser capture; existing incomplete eligibility retained."
+    }
   },
   "spar3d": {
     "source": "https://github.com/Stability-AI/stable-point-aware-3d",
@@ -55,16 +119,286 @@
     "license": "Stability AI Community License; user/entity eligibility and any registration not established",
     "anonymous_weight_access_http_status": 401,
     "configured_hf_token_present": false,
-    "runtime": "not installed or measured; official README gives conflicting VRAM figures, so no validated runtime claim"
+    "runtime": "No torch/SPAR3D runtime installed in system or local API environment; no inference, memory measurement or paid provisioning performed.",
+    "checked_at": "2026-10-18T05:26:28.728379+00:00",
+    "weight_access_url": "https://huggingface.co/stabilityai/stable-point-aware-3d/resolve/main/model.safetensors",
+    "anonymous_weight_access_error": "GatedRepo: authenticated approved model access required",
+    "hf_token_cache_present": false,
+    "local_torch_module_present": false,
+    "local_spar3d_module_present": false
   },
   "providers": {
-    "serpapi_key_present": false,
-    "local_merchant_browser": "IKEA actual page reached using DNS-pinned public HTTPS requests",
+    "serpapi_key_present": true,
+    "local_merchant_browser": "Production Playwright/DNS-pinned capture: IKEA and Tribesigns reached; Macys page inaccessible.",
     "cloud_browser": "not deployed/verified",
-    "gemini_2_5_flash": "404 retired for new users",
-    "gemini_3_8_flash": "429 daily request quota exhausted",
-    "gemini_3_1_pro_preview": "429 free-tier limit 0",
-    "key_source_file": "/Users/humaid/.zshenv"
+    "historical_shell_credential_results": {
+      "gemini_2_5_flash": "404 retired for new users",
+      "gemini_3_8_flash": "429 daily request quota exhausted",
+      "gemini_3_1_pro_preview": "429 free-tier limit 0"
+    },
+    "current_credential_source": "Repository .env, loaded only into temporary probe processes; differs from the login-shell Gemini credential. No secrets recorded.",
+    "shell_credential_planning_probes": [
+      {
+        "checked_at": "2026-10-18T05:25:31.803246+00:00",
+        "model": "gemini-2.5-pro",
+        "sdk": "google-genai 1.75.0",
+        "scope": "One real planning adapter request; synthetic API native-context fixture, explicit empty Product batch; no search, spatial processing or publication.",
+        "network_requests": 1,
+        "provider_error": {
+          "type": "ClientError",
+          "code": 404,
+          "status": "NOT_FOUND"
+        },
+        "elapsed_seconds": 0.282
+      },
+      {
+        "checked_at": "2026-10-18T05:25:32.088319+00:00",
+        "model": "gemini-3.5-flash",
+        "sdk": "google-genai 1.75.0",
+        "scope": "One real planning adapter request; synthetic API native-context fixture, explicit empty Product batch; no search, spatial processing or publication.",
+        "network_requests": 1,
+        "provider_error": {
+          "type": "ServerError",
+          "code": 503,
+          "status": "UNAVAILABLE"
+        },
+        "elapsed_seconds": 17.209
+      }
+    ],
+    "planning": {
+      "checked_at": "2026-10-18T05:26:22.329923+00:00",
+      "model": "gemini-3.8-flash",
+      "sdk": "google-genai 1.75.0",
+      "scope": "One real planning adapter request; synthetic API native-context fixture, explicit empty Product batch; no search, spatial processing or publication.",
+      "network_requests": 1,
+      "elapsed_seconds": 6.196,
+      "usage": {
+        "candidates_token_count": 275,
+        "prompt_token_count": 1289,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 1289
+          }
+        ],
+        "thoughts_token_count": 261,
+        "total_token_count": 1825
+      },
+      "input_fixture": "backend/tests/fixtures/api/roundtrip.json:room_detail.measured_context",
+      "outcome": "schema_validated",
+      "action": "ask_user",
+      "durable_question_check": {
+        "outcome": "passed",
+        "state": "needs_clarification",
+        "choices": 4,
+        "reopens_identically": true,
+        "searches": 0,
+        "snapshots": 0,
+        "designs": 0
+      }
+    },
+    "spatial": {
+      "schema_version": 1,
+      "model": "gemini-3.8-flash",
+      "sdk": "1.75.0",
+      "network_calls": 2,
+      "outcome": "provider_error",
+      "final_http_status": 503,
+      "final_provider_message": "Model experiencing high demand (UNAVAILABLE)",
+      "usage": null,
+      "elapsed_seconds": null,
+      "latency_note": "Failure elapsed time was not captured; no latency or performance target claimed.",
+      "input": "Repository rectangle_v1.json explicitly synthetic 4x3x2.6m room; simulated desk with test-only verified marker; geometry only, no photos or user room data",
+      "plan": null,
+      "solver_check": "Not run; provider did not return a plan",
+      "prior_existing_room_attempt": "Rejected by automatic approval review before execution; replaced with explicitly synthetic fixture only"
+    },
+    "edit_initial_failure": {
+      "checked_at": "2026-10-18T05:28:01.572811+00:00",
+      "model": "gemini-3.8-flash",
+      "sdk": "google-genai 1.75.0",
+      "scope": "One real language edit adapter request, actual API/controller/solver/purchases/publication/SQLite/Undo. Synthetic native-contract Room and controlled external Product evidence; no real shopping acceptance.",
+      "network_requests": 1,
+      "provider_error": {
+        "type": "ServerError",
+        "code": 503,
+        "status": "UNAVAILABLE"
+      },
+      "provider_elapsed_seconds": 0.643,
+      "elapsed_seconds": 1.591,
+      "operation_state": "failed",
+      "base_preserved": true
+    },
+    "edit_before_fix": {
+      "checked_at": "2026-10-18T05:28:47.089000+00:00",
+      "model": "gemini-3.8-flash",
+      "sdk": "google-genai 1.75.0",
+      "scope": "One real language edit adapter request, actual API/controller/solver/purchases/publication/SQLite/Undo. Synthetic native-contract Room and controlled external Product evidence; no real shopping acceptance.",
+      "network_requests": 1,
+      "provider_elapsed_seconds": 15.742,
+      "elapsed_seconds": 17.594,
+      "usage": {
+        "candidates_token_count": 304,
+        "prompt_token_count": 31471,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 31471
+          }
+        ],
+        "thoughts_token_count": 1551,
+        "total_token_count": 33326
+      },
+      "operation_state": "failed",
+      "base_preserved": true,
+      "response_shape": "execute_plan contained JSON strings inside moves/restores arrays; generic edit_failure preserved base.",
+      "fix": "Provider receives canonical DesignPlan schema; per-action validation precedes target access."
+    },
+    "edit_recorded_response_replay": {
+      "checked_at": "2026-10-18T05:31:04.636121+00:00",
+      "model": "gemini-3.8-flash",
+      "sdk": "google-genai 1.75.0",
+      "scope": "Local replay of saved real malformed Gemini response through changed controller; no provider call. Synthetic native-contract Room and controlled external Product evidence.",
+      "network_requests": 0,
+      "elapsed_seconds": 0.884,
+      "operation_state": "rejected",
+      "base_preserved": true,
+      "outcome": "no_effective_change",
+      "action_failure_codes": [
+        "invalid_plan_entry",
+        "invalid_plan_entry"
+      ]
+    },
+    "edit_after_fix": {
+      "checked_at": "2026-10-18T05:31:49.681347+00:00",
+      "model": "gemini-3.8-flash",
+      "sdk": "google-genai 1.75.0",
+      "scope": "One fixed-schema GeminiEditModel call with reduced synthetic one-Item context, then exact API/controller/solver/publication/Undo/SQLite reopen; controlled Product evidence.",
+      "network_requests": 1,
+      "provider_error": {
+        "type": "ServerError",
+        "code": 503,
+        "status": "UNAVAILABLE"
+      },
+      "provider_elapsed_seconds": 0.699,
+      "elapsed_seconds": 0.902,
+      "operation_state": "failed",
+      "parent_unchanged": true,
+      "reopened_active_parent": true,
+      "reopened_parent_unchanged": true,
+      "context_characters": 842,
+      "outcome": "503 UNAVAILABLE; fixed schema live success remains unverified; exact parent survives reopen."
+    },
+    "gemini_generation_requests": 9,
+    "gemini_reported_total_tokens": 35151,
+    "usage_scope": "Two responses supplied token usage. Failed calls returned no usage; no currency charge estimate or complete live workflow claim.",
+    "model_tier_scope": "Flash adapter probes do not establish Pro-tier planning readiness."
   },
-  "acceptance": "partial; 21 licensed stand-in categories prepared; verified catalog/SPAR3D and native visual acceptance remain incomplete"
+  "acceptance": "partial; 21 licensed stand-in categories prepared; verified catalog/SPAR3D and native visual acceptance remain incomplete",
+  "live_discovery_recheck": {
+    "checked_at": "2026-10-18T05:30:16.020858+00:00",
+    "adapter": "respace.discovery.SerpAPIShopping.search + ProductService.queries",
+    "request": {
+      "category": "side_table",
+      "styles": [
+        "Minimal"
+      ],
+      "function": "living room occasional table",
+      "quantity": 1,
+      "approved_ceiling": "100.00"
+    },
+    "queries": [
+      {
+        "query": "Minimal side table living room occasional table",
+        "hits": 40,
+        "provider_status": "Success",
+        "fresh_requested": true
+      },
+      {
+        "query": "side table living room occasional table compact practical furniture",
+        "hits": 40,
+        "provider_status": "Success",
+        "fresh_requested": true
+      },
+      {
+        "query": "Minimal side table living room occasional table alternative materials design",
+        "hits": 40,
+        "provider_status": "Success",
+        "fresh_requested": true
+      }
+    ],
+    "elapsed_seconds": 1.772,
+    "market": "US",
+    "currency": "USD",
+    "no_cache": true,
+    "total_hits": 120,
+    "distinct_google_product_ids": 109,
+    "merchant_source_labels": 68,
+    "merchant_resolution": {
+      "requests": 1,
+      "offers": 7,
+      "elapsed_seconds": 0.531
+    },
+    "browser_captures": {
+      "count": 2,
+      "successful_merchant": "Tribesigns",
+      "second_merchant": "Macys",
+      "second_outcome": "page_inaccessible",
+      "source_url": "https://tribesigns.com/products/round-end-table-wooden-side-table-living-room-bedroom-19-7-inch?currency=USD&country=US&variant=48540457468123&utm_source=google&utm_medium=cpc&utm_campaign=Google%20Shopping&stkn=c3c6ddccd13a&srsltid=AU7gw4XRQKYpwWt7KbcFBGI12qBGWJ2ESXT5_hLdjZ75D5bka3h-p9z8abw",
+      "captured_data_sha256": "c1e4821f6f53b8d50a3611a14930bcb365f965ba43a4510329f250f6a6efde64",
+      "pack_evidence": "Explicit supplied pack count absent; no eligible Product asserted."
+    },
+    "extraction": {
+      "checked_at": "2026-10-18T05:31:50.197908+00:00",
+      "model": "gemini-3.8-flash",
+      "sdk_version": "1.75.0",
+      "adapter": "GeminiProductModels.extract -> checked_facts -> choice_eligible",
+      "outcome": "blocked",
+      "error_code": "extraction_failure",
+      "elapsed_seconds": 0.55,
+      "gemini_generate_content_calls": 1,
+      "usage": null
+    },
+    "serpapi_quota": {
+      "checked_at": "2026-10-18T05:31:50.862654+00:00",
+      "plan_name": "Free Plan",
+      "searches_per_month": 250,
+      "plan_searches_left": 246,
+      "this_month_usage": 4,
+      "extra_credits": 0
+    },
+    "scope": "Canonical real adapter/browser stages only; no complete deployed ProductService session, eligible selection, ranking/deduplication proof or immutable live design."
+  },
+  "post_scan_verification": {
+    "date_local": "2026-10-17",
+    "wave_1": [
+      27,
+      39,
+      42
+    ],
+    "wave_2": [
+      28,
+      40,
+      41
+    ],
+    "parallel_subagents_per_wave": 3,
+    "backend_tests": {
+      "command": "PYTHONPATH=backend /tmp/respace-py312/bin/pytest backend/tests -q",
+      "passed": 247
+    },
+    "native_tests": {
+      "command": "swift test --scratch-path /tmp/respace-final-wave-swift",
+      "passed": 30,
+      "actual_usdz_models": 21,
+      "scope": "macOS RealityKit numeric asset/contract checks; iPhone fidelity and FPS unverified"
+    },
+    "typecheck": {
+      "command": ".local/venv/bin/mypy backend/respace --ignore-missing-imports",
+      "modules": 28,
+      "outcome": "Two pre-existing multipart capture upload narrowing errors in api.py; excluded capture implementation unchanged."
+    },
+    "viewer": "Saved design summary/history reopened, but Simulator room surface blank and accessibility timed out; no attributable cause or speculative fix.",
+    "scanning_and_reconstruction_changes": false,
+    "acceptance": "All six tickets remain open for their unresolved real catalog, provider, deployment and device gates."
+  }
 }

@@ -55,6 +55,8 @@ Set `GEMINI_EDIT_MODEL` if edits should use a different model; otherwise they us
 the spatial model. Use model IDs available to the configured account. Install the
 merchant browser once with `.local/venv/bin/python -m playwright install chromium`.
 Startup reports missing configuration before creating data or calling a provider.
+The CLI reads the process environment; it does not automatically load `.env`.
+Export the credential for the credited Gemini project in that process.
 
 ```sh
 PYTHONPATH=backend .local/venv/bin/python -m respace.local \
@@ -82,3 +84,36 @@ Release builds require HTTPS and supported capture hardware.
 
 Run backend checks with `PYTHONPATH=backend .local/venv/bin/pytest backend/tests`.
 Run shared native checks with `swift test`.
+
+## Post-scan verification (2026-10-17)
+
+Both requested waves ran with three ticket subagents in parallel. Initial LiDAR
+scanning and room reconstruction were excluded. The resulting fixes reject
+catalog conversion without supplied dimensions, give Gemini the canonical typed
+edit-plan schema, report malformed actions without losing valid independent
+changes, reuse an explicitly requested saved snapshot, and keep unfinished
+spatial/edit candidates out of public Operation and Room responses.
+
+The credited repository Gemini credential produced a valid planning question
+that survived SQLite reopen (1,825 tokens). A real edit response exposed the
+malformed-action bug (33,326 tokens); its recorded replay now rejects safely.
+Spatial attempts and the final small edit check returned HTTP 503. One real
+Product extraction failed. These checks used synthetic repository room inputs;
+they do not establish a successful live design or fixed-schema edit.
+
+The new SerpAPI key completed three fresh US/USD shopping queries: 120 hits,
+109 distinct Google Product IDs and 68 source labels. One merchant-resolution
+request found seven offers. Tribesigns loaded in the production browser;
+Macy's was inaccessible. Four free SerpAPI searches were used, leaving 246.
+No eligible Product or selected purchase was asserted from incomplete evidence.
+
+All 21 stand-ins passed immutable API delivery checks and native numeric loading
+checks. SPAR3D still requires approved model access (HTTP 401), a suitable runtime
+and license confirmation. Complete exact-variant catalog evidence, deployed
+sessions, successful live edits and iPhone fidelity/performance remain open.
+
+Final verification: 247 backend tests and 30 Swift tests passed. Full mypy checks
+28 modules and reports two pre-existing multipart capture-upload type errors;
+that excluded implementation was left unchanged. No native source changed, so
+the iPhone build was not repeated. Detailed bounded probes, usage and coverage
+are retained in [`assets/proof.json`](../assets/proof.json).

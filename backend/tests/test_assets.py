@@ -66,17 +66,49 @@ def test_saved_asset_revision_remains_available_after_manifest_update(tmp_path,m
     assert assets.manifest(prior['manifest_revision'])['assets'][0]['revision']==record['revision']
 
 
-def test_offline_glb_to_usdz_reopens_exact_bounds_and_keeps_asymmetry(tmp_path):
+@pytest.fixture
+def converter():
     pytest.importorskip("trimesh")
     pytest.importorskip("pxr")
     script = Path(__file__).resolve().parents[2] / "assets" / "prepare.py"
     specification = importlib.util.spec_from_file_location("prepare", script)
     module = importlib.util.module_from_spec(specification)
     specification.loader.exec_module(module)
-    record = module.convert(script.parent / "sources" / "kenney" / "chair.glb", tmp_path / "chair.usdz", "chair")
+    return module
+
+
+def test_offline_glb_to_usdz_reopens_exact_bounds_and_keeps_asymmetry(tmp_path, converter):
+    source = Path(__file__).resolve().parents[2] / "assets/sources/kenney/chair.glb"
+    record = converter.convert(source, tmp_path / "chair.usdz", "chair")
     assert record["conversion"]["physical_bounds_reopened"] == pytest.approx([1, 1, 1])
     from pxr import Usd, UsdGeom
     stage = Usd.Stage.Open(str(tmp_path / "chair.usdz"))
     points = [p for prim in stage.Traverse() if prim.IsA(UsdGeom.Mesh) for p in UsdGeom.Mesh(prim).GetPointsAttr().Get()]
     back = [p for p in points if p[1] > .8]
     assert sum(p[2] for p in back) / len(back) < 0, "Asymmetric chair back must face away from +Z front"
+
+
+@pytest.mark.parametrize("arguments", [
+    {"dimensions": [0.7, 0.3, 1.1]},
+    {"variant_id": "test_variant"},
+    {"evidence_id": "test_dimensions"},
+    {"variant_id": "test_variant", "evidence_id": "test_dimensions"},
+    {"dimensions": [0.7, 0.3, 1.1], "variant_id": "test_variant"},
+    {"dimensions": [0.7, 0.3, 1.1], "evidence_id": "test_dimensions"},
+])
+def test_catalog_conversion_requires_dimensions_variant_and_evidence(tmp_path, converter, arguments):
+    with pytest.raises(ValueError, match="exact-variant dimension evidence"):
+        converter.convert(tmp_path / "unused.glb", tmp_path / "unused.usdz", "chair", **arguments)
+    assert not (tmp_path / "unused.usdz").exists()
+
+
+def test_dimensioned_conversion_reopens_supplied_bounds(tmp_path, converter):
+    source = Path(__file__).resolve().parents[2] / "assets/sources/kenney/chair.glb"
+    arguments = {"dimensions": [0.7, 0.3, 1.1], "variant_id": "test_variant", "evidence_id": "test_dimensions"}
+    record = converter.convert(source, tmp_path / "dimensioned.usdz", "chair", **arguments)
+    assert record["kind"] == "catalog" and record["scaling_mode"] == "dimensioned"
+    assert record["authored_bounds"] == arguments["dimensions"]
+    assert record["conversion"]["physical_bounds_reopened"] == pytest.approx(arguments["dimensions"])
+    assert validate_asset(record)["dimension_evidence_id"] == "test_dimensions"
+    with pytest.raises(ValueError, match="positive finite"):
+        converter.convert(source, tmp_path / "empty.usdz", "chair", **{**arguments, "dimensions": []})

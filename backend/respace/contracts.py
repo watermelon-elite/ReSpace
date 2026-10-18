@@ -22,6 +22,7 @@ class RenameRoom(Request):
 
 class Generation(Request):
     capture_id: ID
+    snapshot_id: ID | None=None
     planning_revision: int=Field(ge=0)
     expected_active_design_id: ID | None=None
     expected_active_revision: int=Field(ge=0)

@@ -127,7 +127,7 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         return TypeAdapter(contracts.ID).validate_python(value)
 
     def operation_response(operation):
-        return {'schema_version':1,'operation':{**{k:v for k,v in operation.items() if k!='device_id'},'answer_revision_allowed':operations.can_revise(operation)}}
+        return {'schema_version':1,'operation':{**{k:v for k,v in operation.items() if k not in {'device_id','spatial','edit'}},'answer_revision_allowed':operations.can_revise(operation)}}
 
     if role=='worker':
         from pydantic import BaseModel,Field
@@ -159,7 +159,11 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         return {'schema_version':1,'rooms':sorted(records,key=lambda room:room['created_at'],reverse=True),'next_cursor':None}
 
     @app.get('/v1/rooms/{room_id}')
-    def room_detail(room_id:contracts.ID,x_device_id:str=Header()): return captures.detail(device(x_device_id),room_id)
+    def room_detail(room_id:contracts.ID,x_device_id:str=Header()):
+        detail=captures.detail(device(x_device_id),room_id)
+        if detail['current_operation'] is not None:
+            detail['current_operation']=operation_response(detail['current_operation'])['operation']
+        return detail
 
     @app.patch('/v1/rooms/{room_id}')
     def rename_room(room_id:contracts.ID,body:contracts.RenameRoom,x_device_id:str=Header()): return captures.rename(device(x_device_id),room_id,body.model_dump())
@@ -237,7 +241,9 @@ def create_app(store=None, storage=None, products=None, model=None, spatial=None
         money(body.budget,positive=True)
         room=operations.room(device(x_device_id),room_id)
         require(room['capture_state']=='complete','capture_incomplete','Complete this capture before generating.')
-        operation=operations.submit(device(x_device_id),room_id,'generation',body.model_dump())
+        request=body.model_dump()
+        if request['snapshot_id'] is None:del request['snapshot_id']
+        operation=operations.submit(device(x_device_id),room_id,'generation',request)
         schedule(background,operation)
         return JSONResponse(operation_response(operation),status_code=202 if operation['state'] not in {'succeeded','rejected','failed','cancelled'} else 200)
 

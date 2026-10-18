@@ -19,9 +19,10 @@ from pxr import Gf, Sdf, Usd, UsdGeom, UsdShade, UsdUtils
 def convert(source: Path, destination: Path, category: str, *, yaw: float = 0,
             dimensions: list[float] | None = None, variant_id: str | None = None,
             evidence_id: str | None = None) -> dict:
-    if dimensions is not None and (not variant_id or not evidence_id):
+    catalog = dimensions is not None or variant_id is not None or evidence_id is not None
+    if catalog and (dimensions is None or not variant_id or not evidence_id):
         raise ValueError("Catalog conversion requires exact-variant dimension evidence")
-    desired = np.array(dimensions or [1, 1, 1], dtype=float)
+    desired = np.array([1, 1, 1] if dimensions is None else dimensions, dtype=float)
     if desired.shape != (3,) or not np.isfinite(desired).all() or (desired <= 0).any():
         raise ValueError("Bounds must be positive finite width/depth/height")
     scene = trimesh.load_scene(source, process=False)

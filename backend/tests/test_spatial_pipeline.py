@@ -135,3 +135,94 @@ async def test_required_fit_question_can_cancel_without_ever_publishing(store):
     assert ops.get('device', 'op')['state'] == 'cancelled'
     assert store.list('designs', 'room') == []
     assert len(store.list('snapshots', 'room')) == 1
+
+
+def test_generation_reuses_requested_snapshot_and_preserves_parents_across_snapshot_versions(tmp_path):
+    from fastapi.testclient import TestClient
+    from test_api import complete_room
+    from test_local_acceptance import generate, local_app, operation
+
+    app = local_app(tmp_path)
+    with TestClient(app, headers={'X-Device-Id': 'device'}) as api:
+        room_id, capture_id = complete_room(api)
+        completed = generate(api, room_id, capture_id)
+        original = api.get('/v1/designs/' + completed['outcome']['design_id']).json()['design']
+        snapshot = app.state.store.get('snapshots', original['snapshot_id'])
+        legacy_request = app.state.store.get('operations', 'generate')['request']
+        assert 'snapshot_id' not in legacy_request
+        assert api.post(f'/v1/rooms/{room_id}/designs', json={**legacy_request, 'snapshot_id': None}).status_code == 200
+
+        async def no_processing(*args, **kwargs):
+            pytest.fail('An explicitly reused snapshot must not repeat room processing.')
+        app.state.controller.spatial.process_snapshot = no_processing
+        request = {'operation_id': 'reuse', 'capture_id': capture_id, 'snapshot_id': snapshot['snapshot_id'],
+                   'planning_revision': 0, 'expected_active_design_id': original['design_id'],
+                   'expected_active_revision': 1, 'intent': 'redesign', 'budget': '500.00'}
+        assert api.post(f'/v1/rooms/{room_id}/designs', json=request).status_code == 202
+        reused = operation(api, 'reuse')
+        assert reused['state'] == 'succeeded', reused
+        child = api.get('/v1/designs/' + reused['outcome']['design_id']).json()['design']
+        assert child['parent_id'] == original['design_id']
+        assert child['snapshot_id'] == original['snapshot_id']
+        assert len(app.state.store.list('snapshots', room_id)) == 1
+
+        # This stored context is an upstream fixture; no scan/reconstruction path is changed.
+        newer = {**deepcopy(snapshot), 'snapshot_id': 'recorded-snapshot-v2', 'revision': 2,
+                 'input_fingerprint': 'recorded-test-input-v2'}
+        with app.state.store.transaction():
+            app.state.store.put('snapshots', newer['snapshot_id'], newer)
+        request.update(operation_id='new-snapshot', snapshot_id=newer['snapshot_id'],
+                       expected_active_design_id=child['design_id'], expected_active_revision=2)
+        assert api.post(f'/v1/rooms/{room_id}/designs', json=request).status_code == 202
+        regenerated = operation(api, 'new-snapshot')
+        assert regenerated['state'] == 'succeeded', regenerated
+        latest = api.get('/v1/designs/' + regenerated['outcome']['design_id']).json()['design']
+        assert latest['parent_id'] == child['design_id'] and latest['snapshot_id'] == newer['snapshot_id']
+        assert api.post(f'/v1/rooms/{room_id}/designs', json=request).json()['operation']['outcome'] == regenerated['outcome']
+        undo = {'operation_id': 'undo-generation', 'expected_active_design_id': latest['design_id'],
+                'expected_active_revision': 3}
+        assert api.post(f'/v1/rooms/{room_id}/undo', json=undo).json()['operation']['outcome']['design_id'] == child['design_id']
+        assert app.state.store.get('snapshots', snapshot['snapshot_id']) == snapshot
+        assert len(app.state.store.list('designs', room_id)) == 3
+
+    with TestClient(local_app(tmp_path), headers={'X-Device-Id': 'device'}) as api:
+        assert api.get(f'/v1/rooms/{room_id}').json()['room']['active_design_id'] == child['design_id']
+        for saved in (original, child, latest):
+            assert api.get('/v1/designs/' + saved['design_id']).json()['design'] == saved
+
+
+@pytest.mark.parametrize('invalid', ['unknown', 'other_room', 'other_capture', 'unusable'])
+def test_generation_rejects_invalid_requested_snapshot_without_processing_or_publication(tmp_path, invalid):
+    from fastapi.testclient import TestClient
+    from test_api import complete_room
+    from test_local_acceptance import generate, local_app, operation
+
+    app = local_app(tmp_path)
+    with TestClient(app, headers={'X-Device-Id': 'device'}) as api:
+        room_id, capture_id = complete_room(api)
+        completed = generate(api, room_id, capture_id)
+        original = api.get('/v1/designs/' + completed['outcome']['design_id']).json()['design']
+        snapshot = deepcopy(app.state.store.get('snapshots', original['snapshot_id']))
+        snapshot['snapshot_id'] = 'invalid-snapshot'
+        if invalid == 'other_room':
+            snapshot['room_id'] = 'another-room'
+        elif invalid == 'other_capture':
+            snapshot['capture_id'] = 'another-capture'
+        elif invalid == 'unusable':
+            snapshot['room']['validity']['usable'] = False
+        if invalid != 'unknown':
+            with app.state.store.transaction():
+                app.state.store.put('snapshots', snapshot['snapshot_id'], snapshot)
+
+        async def no_processing(*args, **kwargs):
+            pytest.fail('A rejected snapshot must not start room processing.')
+        app.state.controller.spatial.process_snapshot = no_processing
+        request = {'operation_id': 'invalid-reuse', 'capture_id': capture_id, 'snapshot_id': snapshot['snapshot_id'],
+                   'planning_revision': 0, 'expected_active_design_id': original['design_id'],
+                   'expected_active_revision': 1, 'intent': 'add', 'budget': '500.00'}
+        assert api.post(f'/v1/rooms/{room_id}/designs', json=request).status_code == 202
+        rejected = operation(api, 'invalid-reuse')
+        assert rejected['state'] == 'rejected', rejected
+        assert rejected['failure']['code'] == ('invalid_room' if invalid == 'unusable' else 'invalid_snapshot')
+        assert app.state.store.list('designs', room_id) == [original]
+        assert api.get(f'/v1/rooms/{room_id}').json()['room']['active_design_id'] == original['design_id']

@@ -1,6 +1,8 @@
 from copy import deepcopy
+import json
 
 from fastapi.testclient import TestClient
+import httpx
 import pytest
 from respace.api import create_app
 from respace.geometry import normalize_room
@@ -50,6 +52,64 @@ def base_request(operation_id='edit'):
 
 def move(wall='w_3'):
     return {'action_id':'move','target':{'kind':'item','id':'i_a_0'},'anchor':{'type':'against_wall','wall_id':wall,'alignment':'center'},'reason':'Requested move'}
+
+
+@pytest.mark.asyncio
+async def test_real_edit_sdk_receives_typed_nested_plan_schema(monkeypatch):
+    from google import genai
+    from respace.edits import GeminiEditModel
+
+    calls=[]
+    result={'action':'execute_plan','payload':{'plan':{'summary':'Move desk','moves':[move()]}}}
+    def request(request):
+        calls.append(json.loads(request.content))
+        return httpx.Response(200,json={'candidates':[{'content':{'role':'model','parts':[{'text':json.dumps(result)}]}}]})
+    client=genai.Client(api_key='test-only',http_options={'httpx_async_client':httpx.AsyncClient(transport=httpx.MockTransport(request))})
+    monkeypatch.setenv('GEMINI_EDIT_MODEL','configured-model')
+    monkeypatch.setattr(genai,'Client',lambda **kwargs:client)
+    try:
+        assert await GeminiEditModel().act({'command':'Move the desk.'})==result
+    finally:
+        client.close()
+    schema=calls[0]['generationConfig']['responseJsonSchema']
+    nested=schema['properties']['payload']['properties']['plan']
+    for group in ('moves','restores','replaces'):
+        reference=nested['properties'][group]['items']['$ref'].split('/')[-1]
+        assert schema['$defs'][reference]['type']=='object'
+
+
+def test_malformed_model_actions_preserve_valid_subset_and_exact_undo(store):
+    result={'action':'execute_plan','payload':{'plan':{'summary':'Move desk and restore workspace','base':None,'decision_revision':None,
+        'moves':[move(),json.dumps(move())],
+        'restores':[json.dumps({'action_id':'restore','removed_item_id':'missing','reason':'Requested restore'})],
+        'replaces':[json.dumps({'action_id':'replace','target_item_id':'i_a_0','selection_id':'sel','reason':'Requested replacement'})]}}}
+    api,_,parent=setup_edit(store,result)
+    api.post('/v1/designs/parent/chat',json={**base_request(),'text':'Move the desk and restore the removed workspace.'})
+    operation=api.get('/v1/operations/edit').json()['operation']
+    assert operation['state']=='succeeded',operation
+    outcomes=operation['outcome']['action_outcomes']
+    assert outcomes[0]['action_id']=='move' and outcomes[0]['outcome']=='applied'
+    assert len(outcomes)==4 and all(outcome['code']=='invalid_plan_entry' for outcome in outcomes[1:])
+    child=store.get('designs',operation['outcome']['design_id'])
+    assert child['scene']['purchase_summary']==parent['scene']['purchase_summary']
+    undo=api.post('/v1/rooms/room/undo',json={'operation_id':'undo','expected_active_design_id':child['design_id'],'expected_active_revision':2}).json()['operation']
+    assert undo['state']=='succeeded' and undo['outcome']['design_id']=='parent'
+    assert store.get('designs','parent')==parent
+
+
+def test_escaped_string_plan_entries_are_rejected_without_a_generic_failure(store):
+    result={'action':'execute_plan','payload':{'plan':{'summary':'Restore workspace and move seat','base':None,'decision_revision':0,
+        'moves':[json.dumps(move())],
+        'restores':[json.dumps({'action_id':'restore','removed_item_id':'missing','reason':'Requested restore'})]}}}
+    api,_,parent=setup_edit(store,result)
+    api.post('/v1/designs/parent/chat',json={**base_request(),'text':'Move the desk and restore the workspace.'})
+    operation=api.get('/v1/operations/edit').json()['operation']
+    assert operation['state']=='rejected' and operation['outcome']['result_kind']=='no_effective_change'
+    assert len(operation['outcome']['action_outcomes'])==2
+    assert all(outcome['code']=='invalid_plan_entry' for outcome in operation['outcome']['action_outcomes'])
+    assert store.get('designs','parent')==parent
+    assert store.get('rooms','room')['active_design_id']=='parent'
+    assert len(store.list('designs','room'))==1
 
 
 def test_language_edit_publishes_successful_subset_once_and_preserves_failed_product(store):
@@ -140,6 +200,10 @@ def test_explicit_named_target_wins_and_ambiguous_work_stays_private(store):
     assert result.status_code==202,result.text
     pending=operations.get('device','ambiguous')
     assert pending['state']=='needs_clarification' and pending['pending_question']['context']=='command'
+    public=api.get('/v1/operations/ambiguous').json()['operation']
+    assert 'edit' not in public and pending['edit']['targets_checked']
+    assert public['pending_question']==pending['pending_question']
+    assert public['question_history']==pending['question_history']
     assert store.get('rooms','room')['active_design_id']=='two-desks'
     assert len(model.contexts)==1
 
