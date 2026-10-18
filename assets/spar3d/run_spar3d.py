@@ -84,6 +84,33 @@ def _svd_on_cpu(A, full_matrices=True, **kw):
 
 torch.linalg.svd = _svd_on_cpu
 
+# The actual MPS blocker, and the one that matters. torch 2.14 replaced the
+# MPSGraph linalg path with hand-written Metal kernels, and its linalg.qr
+# materializes a full m x m Q instead of the reduced m x q (pytorch#187567,
+# fixed on main, shipping in 2.15). uv_unwrapper reaches it at unwrap.py:555
+# through torch.pca_lowrank(vertices, q=2), so an (Nv, 2) input allocates Nv^2
+# floats: measured 23.5 s at Nv=4444 and over 216 s at Nv=17377, against
+# instant on CPU. It does not raise at our mesh sizes, it just grinds, which
+# presents as a hang. Inputs are at most ~32k x 3, so the CPU cost is nil.
+#
+# Safe to patch before imports too -- nothing TorchScript-compiles a
+# pca_lowrank caller -- but kept here beside the svd patch for symmetry.
+#
+# Verified: with this applied, --device mps reconstructs end to end in 31.3 s
+# against 78.7 s on CPU for the same product, producing an equivalent mesh.
+# Once torch 2.15 is released, drop this and raise TORCH_VERSION in setup.sh.
+_pca_lowrank = torch.pca_lowrank
+
+
+def _pca_lowrank_on_cpu(A, q=None, center=True, niter=2):
+    if A.device.type != "mps":
+        return _pca_lowrank(A, q=q, center=center, niter=niter)
+    out = _pca_lowrank(A.cpu(), q=q, center=center, niter=niter)
+    return tuple(t.to(A.device) for t in out)
+
+
+torch.pca_lowrank = _pca_lowrank_on_cpu
+
 
 def now():
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
