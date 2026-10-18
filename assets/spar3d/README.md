@@ -102,13 +102,20 @@ Every one of the 30 packaged, kept its baked texture and came in under SPEC's
 3 MB ceiling (684 KB–2.2 MB). Packaging is not quality; the verdicts below are
 by eye, from the sheets.
 
+Evidence level differs by category and the table says so. The first 15 were
+each reviewed individually. Of the second 15, all three chairs, all three
+plants and two of three desks were reviewed, but only four of the six sofas and
+armchairs. Where a category says "n of m reviewed", the rest are packaged but
+unseen, and the first round is the reason that matters: tables split two good,
+two partial and two failing inside a single category.
+
 | Category | Verdict | What happens |
 |---|---|---|
 | Lamps (6/6) | **use** | Shades, turned stems, thin twin-stalk frames and glass globes all survive. Pleating on ÅRSTID is real geometry, not texture. |
-| Chairs (3/3) | **use** | The strongest new category. Legs stay separate, the seat survives as a surface and the gap under the backrest stays open. Legs splay in profile, the usual single-image depth ambiguity. |
+| Chairs (3/3) | **use, check colour** | The strongest new category for geometry. Legs stay separate, the seat survives as a surface and the gap under the backrest stays open. SKOGSTA resolves every Windsor spindle and the leg stretchers. Legs splay in profile, the usual single-image depth ambiguity. SKOGSTA's black finish came back pale grey; see "Colour is not reliable". |
 | Tables (2 good, 2 partial, 2 fail) | **gate individually** | Open steel frames reconstruct well. Tops seen edge-on detach and float. |
 | Desks (3/3 geometry, 1 leaning) | **gate individually** | Trestles and thin tops survive. TROTTEN leans uncorrected; LÄNGDHOPP's two-tier pull-out garbles into a recognizable but wrong structure. |
-| Sofas and armchairs (6/6) | **use front-facing only** | Arms, separate back and seat cushions and turned legs all land. The body is an open shell: hollow underneath and a thin back panel. Fine against a wall, wrong if seen from behind or above. |
+| Sofas and armchairs (4 of 6 reviewed) | **use front-facing only** | Arms, separate back and seat cushions and turned legs all land. Every one is hollow underneath. Boxy forms also get a thin back panel; HERRÅKRA's curved tub back came back properly closed, so that part is form-dependent. Fine against a wall, wrong if seen from below. |
 | Shelf units (0/3) | **stand-in** | BILLY comes back a solid slab with the shelves painted on. No cavity, no opening. |
 | Plants (0/3) | **stand-in** | FEJKA fuses every blade into one solid brick. The texture hides it; the clay view is unambiguous. |
 
@@ -146,6 +153,29 @@ shell. Sofas and armchairs are convincing from the front and hollow underneath,
 because no part of a single front-on photograph constrains a surface the camera
 never saw. That is invisible in the metrics — all six packaged cleanly — and
 obvious in the clay views from 90° and 180°.
+
+### Colour is not reliable
+
+Geometry and colour fail independently, and the second round found colour
+failing on products whose shape came back well.
+
+| Source finish | Result |
+|---|---|
+| SKOGSTA, black stain | pale grey — badly wrong, on the best geometry in the set |
+| HERRÅKRA, warm tan | shifted yellow-green |
+| Greys, creams, sage, pale wood | faithful |
+
+The pattern across what was reviewed is that **neutral finishes survive and
+dark or saturated ones do not** (inferred from six products, not confirmed —
+nobody has tested a saturated colour deliberately). The likely cause is the
+delighting step, which has to separate the photograph's lighting from the
+object's own colour and has the least to work with at the dark end.
+
+This matters more than it looks. A catalog Product's appearance includes its
+colour, a reconstruction establishes appearance, and a black chair arriving
+grey is wrong in a way no size check catches. **Check colour against the source
+photograph before promoting any Product with a dark or saturated finish**, and
+prefer a tinted stand-in over a mesh whose colour is wrong.
 
 ### Every mesh leans
 
@@ -406,6 +436,9 @@ teardown — and in both cases resuming cost only the item in flight.
   Device support.
 - Reconstruction does not parallelize on this hardware; one at a time is the
   fastest configuration measured. See "Reconstruct one at a time".
+- Colour is unverified for dark and saturated finishes, and wrong on the two
+  tested. See "Colour is not reliable".
+- Two of the six sofa and armchair reconstructions have not been looked at.
 - Remeshing is disabled: `gpytoolbox` and `pynanoinstantmeshes` are not installed,
   so `--remesh` options are unavailable. Meshes are raw marching-cubes output.
 - The upright correction is verified on lamps only, over-corrects shelf units,
