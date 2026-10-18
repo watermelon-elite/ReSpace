@@ -25,12 +25,25 @@ from pathlib import Path
 
 LAB = Path(os.environ.get("SPAR3D_LAB", Path.home() / "spar3d-lab"))
 
+# Chosen to span the failure mode the first round found: reconstruction tracks
+# whether the silhouette explains the shape. Thin frames photographed whole
+# succeeded, horizontal planes seen edge-on detached, repeated interior cavities
+# filled in solid. So this covers thin legs (chair, desk), bulky upholstery
+# (armchair, sofa) and foliage with no clean outline (plant).
+#
+# No rug, art or mirror query: SPEC 11 lets those render as textured panels, so
+# a mesh buys nothing and the reconstruction time is better spent elsewhere.
 QUERIES = [
     ("table", "coffee table"),
     ("table", "side table"),
     ("shelf", "bookcase shelf unit"),
     ("lamp", "table lamp"),
     ("lamp", "floor lamp"),
+    ("chair", "dining chair"),
+    ("armchair", "armchair"),
+    ("sofa", "2 seat sofa"),
+    ("desk", "desk"),
+    ("plant", "artificial potted plant"),
 ]
 
 UA = (

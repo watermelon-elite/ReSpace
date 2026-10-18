@@ -74,13 +74,15 @@ Useful flags: `--limit N`, `--only <substring>`, `--redo`, `--texture-resolution
 
 ## Measured results
 
-15 IKEA products (6 tables, 3 shelf units, 6 lamps), Apple M5 Max / 128 GB,
-macOS 26.6.2, torch 2.14.1, CPU, 1024px textures, 2026-10-18.
+First round: 15 IKEA products (6 tables, 3 shelf units, 6 lamps), Apple M5 Max
+/ 128 GB, macOS 26.6.2, torch 2.14.1, CPU, 1024px textures, 2026-10-18. A second
+round added 15 more (3 each of chairs, armchairs, sofas, desks, plants) on MPS;
+see Device support for its timings.
 
 | | |
 |---|---|
 | Inference | **79 s per product** (77.6–84.0 s), strikingly consistent |
-| One-time model load | ~60 s per process |
+| One-time model load | ~60 s cold, 6.7–8.1 s once the weights are cached |
 | Mesh size | 3.7k–32.3k vertices, 340 KB–1.9 MB |
 | Total | 16.4 MB for 15 models; **all under SPEC's 3 MB target** |
 | Textures | 1024px baked atlas on all 15 |
@@ -91,19 +93,32 @@ offline work, which is acceptable for a step outside request latency.
 
 ## Reconstruction quality
 
-All 15 test products were converted through `assets/prepare.py` and rendered
+All 30 test products were converted through `assets/prepare.py` and rendered
 from four azimuths, textured and as untextured clay, against the source
 photograph. Clay is the deciding view: a baked photo texture paints detail onto
 flat geometry and makes a slab look like a bookcase.
 
+Every one of the 30 packaged, kept its baked texture and came in under SPEC's
+3 MB ceiling (684 KB–2.2 MB). Packaging is not quality; the verdicts below are
+by eye, from the sheets.
+
 | Category | Verdict | What happens |
 |---|---|---|
 | Lamps (6/6) | **use** | Shades, turned stems, thin twin-stalk frames and glass globes all survive. Pleating on ÅRSTID is real geometry, not texture. |
+| Chairs (3/3) | **use** | The strongest new category. Legs stay separate, the seat survives as a surface and the gap under the backrest stays open. Legs splay in profile, the usual single-image depth ambiguity. |
 | Tables (2 good, 2 partial, 2 fail) | **gate individually** | Open steel frames reconstruct well. Tops seen edge-on detach and float. |
+| Desks (3/3 geometry, 1 leaning) | **gate individually** | Trestles and thin tops survive. TROTTEN leans uncorrected; LÄNGDHOPP's two-tier pull-out garbles into a recognizable but wrong structure. |
+| Sofas and armchairs (6/6) | **use front-facing only** | Arms, separate back and seat cushions and turned legs all land. The body is an open shell: hollow underneath and a thin back panel. Fine against a wall, wrong if seen from behind or above. |
 | Shelf units (0/3) | **stand-in** | BILLY comes back a solid slab with the shelves painted on. No cavity, no opening. |
+| Plants (0/3) | **stand-in** | FEJKA fuses every blade into one solid brick. The texture hides it; the clay view is unambiguous. |
 
-Per [`SPEC.md`](../../SPEC.md) §11, bookcases must use a stand-in. Lamps are
-safe. Tables need a per-Product check before promotion.
+Per [`SPEC.md`](../../SPEC.md) §11, bookcases must use a stand-in, and plants
+join them. Lamps and chairs are safe. Tables and desks need a per-Product check
+before promotion. Upholstery is usable where it is placed against a wall, which
+is where a solver puts it anyway.
+
+Rugs, art and mirrors were deliberately not tested. SPEC §11 already allows
+them to render as textured panels, so a mesh buys nothing.
 
 What predicts success is not thickness but whether the silhouette explains the
 shape. Thin tube frames photographed whole (VITTSJÖ, SIMRISHAMN) come back
@@ -114,6 +129,24 @@ single large cavity of the BILLY height-extension unit partly opened, but
 warped, with an open back and an invented blue patch where the photo showed
 nothing.
 
+The second round sharpened this. Chairs were the open question — thin legs like
+the frames that worked, but a flat seat like the tops that failed — and they
+passed, seat included. So an edge-on plane is not fatal by itself; what killed
+the tabletops was a plane with nothing around it to fix its depth. A seat
+bounded by legs and a backrest is constrained from several directions at once.
+
+FEJKA restates the cavity failure at a finer scale: hundreds of gaps between
+grass blades, none individually resolvable, all filled in. The rule is the same
+one that sinks BILLY, and the practical test is whether the detail that matters
+survives in the clay view, since the baked photo texture will paint it back on
+either way.
+
+What the second round added is a failure the first could not show: the open
+shell. Sofas and armchairs are convincing from the front and hollow underneath,
+because no part of a single front-on photograph constrains a surface the camera
+never saw. That is invisible in the metrics — all six packaged cleanly — and
+obvious in the clay views from 90° and 180°.
+
 ### Every mesh leans
 
 No output is upright. Measured as the angle between vertical and the axis
@@ -123,7 +156,9 @@ joining the top and bottom decile centroids:
 |---|---|
 | Lamps | 1.8°–10.8°, consistently backwards |
 | Shelf units | 3.1°–16.6° |
-| Tables | inflated by detached parts; the metric assumes a tall axial shape |
+| Chairs | 4.6°–6.8°, small enough to need no correction |
+| Tables, desks | inflated by detached parts; the metric assumes a tall axial shape |
+| Sofas, armchairs | reads 33°–39°, which the renders contradict; they sit level. The metric is measuring width, not lean. Do not trust it here. |
 
 The cause is that product photography shoots slightly from above and the
 reconstruction is in camera space, not world space.
@@ -148,11 +183,20 @@ measured to skew slab reconstructions that were not leaning that way at all.
 |---|---|
 | Lamps | all six visibly upright from every azimuth; this is the category that passed grading |
 | Tables | correctly declined on two, negligible change on the rest |
+| Chairs | declined on all three, correctly: thin legs give too narrow a base, and at 4.6°–6.8° they did not need it |
+| Desks | corrected two well (11.4°→4.1°); declined TROTTEN, which does lean and is left leaning |
+| Sofas, armchairs | declined on all three sofas; applied 3.1°–7.7° to the armchairs with no visible harm |
 | Shelf units | over-corrected, because their reconstructed underside is itself slanted |
+| Plants | refused one at 69°, which the limit caught |
 
 The shelf failure is tolerated, not solved: those Products take stand-ins. It
 does mean the estimate is a **proposal**. Check it on a grading sheet before
 trusting it for a category that has not been through this.
+
+The narrow-base guard cuts both ways. It is right on chairs, which do not need
+a correction, and wrong on TROTTEN, which does and is refused for the same
+reason: trestle feet are too narrow to fit a plane to. A thin-legged Product
+that genuinely leans has no correction available today.
 
 Where the base is one leg tip or a floating fragment, the plane is numerically
 fine and physically meaningless, so the estimator declines instead of guessing,
@@ -169,7 +213,7 @@ and refuses any correction beyond 30°. The chosen angle is recorded per model a
 survival and tilt, and writes one comparison sheet per Product to
 `~/spar3d-lab/grade/sheets/`. `render.py` behind it is a small software
 rasterizer: no GPU, no OpenGL, no window, so it cannot disturb anyone using the
-machine and cannot repeat the MPS incident. All 15 take about 75 s on CPU.
+machine and cannot repeat the MPS incident. All 30 take about 2.5 min on CPU.
 
 A software renderer is deliberate. `qlmanage` hangs indefinitely on USDZ on this
 machine — including on the Kenney assets already committed, so it is the tool
@@ -179,23 +223,67 @@ packaged.
 ## Device support
 
 **`--device cpu` is the default and the right choice while anyone is using the
-machine.** `--device mps` now works and is about 2.5x faster, but it visibly
-degrades the desktop; prefer it only for unattended bulk preparation.
+machine.** `--device mps` is roughly 7x faster and is now verified across a
+full batch, but it visibly degrades the desktop; prefer it only for unattended
+bulk preparation.
 
 | | CPU | MPS |
 |---|---|---|
-| Inference, same product | 78.7 s | **31.3 s** |
-| Mesh | 3709v / 5608f / 340 KB | 3723v / 5580f / 346 KB |
+| Inference per product | 77.6–84.0 s (16 products) | **9.8–11.4 s** (14 products) |
+| One-time model load | 6.7 s | 7.1–8.1 s |
+| Mesh, same product | 3709v / 5608f / 340 KB | 3723v / 5580f / 346 KB |
 | Bounds, volume, texture | — | equivalent within 2% |
 
-Verified on one product (the smallest mesh, 3.7k vertices) with the
-`pca_lowrank` patch below. **Not yet verified across all 15**, and in particular
-not at the largest mesh (32k vertices), where the patched path matters most.
+Verified 2026-10-18 across 14 products spanning 11.8k–32.2k vertices, which
+includes the largest mesh, where the `pca_lowrank` patch below matters most.
+Fourteen products reconstructed in 2 min 45 s wall including model load.
+
+This supersedes an earlier figure of 31.3 s measured on a single product. The
+gap is almost certainly cold Metal shader compilation on that first-ever GPU
+run, cached on disk by the time of this batch (inferred, not confirmed — the
+original condition cannot be recreated now that the cache is warm). The CPU
+figure was unchanged between the two measurements, so the difference is on the
+GPU side rather than in how the two were timed.
 
 Stability caveat, observed first-hand: MPS runs contend with WindowServer for the
 GPU. One run produced a brief UI freeze — it recovered without a watchdog report,
 but an earlier GPU hang on this machine escalated to a forced reboot. Treat MPS
 as disruptive, and do not run a GPU batch on a machine someone is working on.
+
+### Reconstruct one at a time
+
+**Do not parallelize reconstruction.** A single generation already saturates the
+GPU, so every way of running more at once measured slower than running them in
+sequence. `assets/spar3d/throughput.py` records the ramp; rerun it if the
+hardware or torch version changes, because the conclusion is a property of this
+machine and not of the code.
+
+| Configuration | Per product | Throughput | Memory |
+|---|---|---|---|
+| 1 process, 1 image | 11.52 s | 5.2/min | 15.3 GB |
+| 1 process, 2 images | 11.31 s | 5.3/min | 15.3 GB |
+| 1 process, 4 images | 13.94 s | 4.3/min | 15.3 GB |
+| 2 processes, 1 image | 13.55 s | 4.4/min | 30.5 GB |
+
+Two processes cost 15% throughput for twice the memory, and a batch of four
+costs 21%. A batch of two is within noise of serial — 10.08 s against 10.36 s
+mean inference, against a ±0.42 s spread inside the serial run itself — and is
+not worth the weaker failure mode, since an interrupted chunk loses two products
+instead of one. `run_image` does accept a list and batches genuinely, stacking
+into one tensor; it simply buys nothing here.
+
+Memory is the second reason, and it binds sooner than the arithmetic suggests.
+A worker holds **15.3 GB**: 7.7 GB of live weights on the GPU, ~4.5 GB of
+allocator pool PyTorch reserves and does not return, and ~3 GB of runtime and
+CPU-side copies. Unified memory means the GPU's share counts against the same
+128 GB the system uses, so eight workers project to ~122 GB and would starve the
+window server rather than merely swap. `throughput.py` refuses any configuration
+projecting past 55% of physical memory for that reason.
+
+One measurement worth knowing when reading any of these numbers: inference
+drifts slower within a run, 9.52 s to 10.77 s across eight consecutive products
+(13%). Compare configurations over equal-length runs, or the drift outweighs
+what is being measured.
 
 The rest of this section records why MPS failed before the patch.
 
@@ -313,8 +401,11 @@ teardown — and in both cases resuming cost only the item in flight.
 
 ## Known limits
 
-- MPS verified on one product only, and not at the largest mesh. CPU remains the
-  default. See Device support.
+- MPS is verified across 14 products including the largest mesh, but CPU remains
+  the default because MPS degrades the desktop, not because it is unproven. See
+  Device support.
+- Reconstruction does not parallelize on this hardware; one at a time is the
+  fastest configuration measured. See "Reconstruct one at a time".
 - Remeshing is disabled: `gpytoolbox` and `pynanoinstantmeshes` are not installed,
   so `--remesh` options are unavailable. Meshes are raw marching-cubes output.
 - The upright correction is verified on lamps only, over-corrects shelf units,
