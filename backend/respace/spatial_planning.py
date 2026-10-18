@@ -279,11 +279,11 @@ def validate_plan(raw, room_snapshot, selections, constraints, base_scene=None):
                 accepted[group].remove(entry)
                 diagnostics.append({"code": "invalid_dependency", "group": group, "action_id": entry["action_id"], "reason": "Anchor target is missing, rejected, removed or cyclic."})
     hard_errors = []
-    for key, field in (("must_have_add_ids", "add_id"), ("must_have_selection_ids", "selection_id"), ("must_have_categories", "category")):
+    for key, field in (("must_have_add_ids", "add_id"), ("must_have_selection_ids", "selection_id"), ("explicit_selection_ids", "selection_id"), ("must_have_categories", "category")):
         actual = {e[field] for e in accepted["adds"]}
         actual.update(item[field] for item in base_items.values() if item.get('status')!='removed' and item.get(field))
         for missing in set(constraints.get(key, [])) - actual:
-            hard_errors.append({"code": "missing_must_have", "field": key, "id": missing, "reason": "A hard requirement cannot be filtered from the plan."})
+            hard_errors.append({"code": "missing_explicit_selection" if key == "explicit_selection_ids" else "missing_must_have", "field": key, "id": missing, "reason": "A protected requirement cannot be filtered from the plan."})
     plan = {"schema_version": 1, "summary": raw["summary"], **accepted,
             "decision_revision": raw.get("decision_revision"), "base": deepcopy(raw.get("base"))}
     if constraints.get("decision_revision") is not None and plan["decision_revision"] != constraints["decision_revision"]:
@@ -388,7 +388,8 @@ def repair_candidate(room_snapshot, plan, selections, constraints, solve_result,
                 next(a for a in candidate_plan["adds"] if a["add_id"] == addition["add_id"])["selection_id"] = alternative_id
                 candidate_selections = {**private_selections, alternative_id: alternative}
                 candidate_constraints = deepcopy(private_constraints)
-                candidate_constraints["must_have_selection_ids"] = [alternative_id if key == original_id else key for key in candidate_constraints.get("must_have_selection_ids", [])]
+                for field in ("must_have_selection_ids", "explicit_selection_ids"):
+                    candidate_constraints[field] = [alternative_id if key == original_id else key for key in candidate_constraints.get(field, [])]
                 candidate = solve(room_snapshot, candidate_plan, candidate_selections, candidate_constraints)
                 if any(addition["add_id"] in c.get("target_ids", []) for c in candidate["conflicts"]):
                     diagnostics.append({"selection_id": alternative_id, "code": "equivalent_does_not_fit"})

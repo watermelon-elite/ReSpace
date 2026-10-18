@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "manifest_revision": "kenney-chair-67d8cb9ab6c620bb",
+  "manifest_revision": "kenney-standins-2a51b85be79606b2",
   "category_version": 1,
   "assets": [
     {
@@ -48,6 +48,946 @@
         "backrest_source_z": -0.18,
         "front_direction": "+Z",
         "method": "source high-vertex centroid; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-sofa",
+      "revision": "d66b5c28fc7ed6c9",
+      "kind": "standin",
+      "category": "sofa",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "d66b5c28fc7ed6c9cd0e2524bf9dc4bd648efdb90e9101c33a3b5aa67252b394",
+      "byte_count": 21454,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "1886b811c0d3ad0d8525a4fd43adf4112c497c8e0ed906f06877ca3517f4c7dd",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 128,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-sofa-d66b5c28fc7ed6c9.usdz",
+      "source_path": "sources/kenney/loungeSofa.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source backrest/headboard lies on negative Z; source preview inspected; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-armchair",
+      "revision": "12d3403506f599ed",
+      "kind": "standin",
+      "category": "armchair",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "12d3403506f599ed87fe9581a0e2112d6b6aa88f46e415b22e8de89957acec32",
+      "byte_count": 21622,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "ddfe6bc4b3451bca61666d7b614552d6ed2a03d82fc76244b72ae3155874dc6c",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 128,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-armchair-12d3403506f599ed.usdz",
+      "source_path": "sources/kenney/loungeChair.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source backrest/headboard lies on negative Z; source preview inspected; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-stool",
+      "revision": "7bd04a46c2fb0881",
+      "kind": "standin",
+      "category": "stool",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "7bd04a46c2fb088109c52ac5874c4c0620e97b42f5a97679f387f6e4df90e658",
+      "byte_count": 28311,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "a86167a9f92401a61fec7e509ad089ecc552d0f299743add3aeb919acb24e341",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 176,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-stool-7bd04a46c2fb0881.usdz",
+      "source_path": "sources/kenney/stoolBar.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source axes preserved; no directional front required for this stand-in; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-table",
+      "revision": "1293266087155d7f",
+      "kind": "standin",
+      "category": "table",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "1293266087155d7f39a635ccdfebaf6f983e6ea185b9da033d1e9dc40e38d03d",
+      "byte_count": 11136,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "ff1a94498d023957f4bc3ff6f55a7a82977d336dbf01a573b3364f03afe5ff61",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 120,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-table-1293266087155d7f.usdz",
+      "source_path": "sources/kenney/table.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source axes preserved; no directional front required for this stand-in; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-dining_table",
+      "revision": "9249da5ee7f39ee8",
+      "kind": "standin",
+      "category": "dining_table",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "9249da5ee7f39ee88db4311d6edb8e15bf05724e9130e63f9eeb505f9c2f467a",
+      "byte_count": 17676,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "f0d83392aff5df82f6c9585cadff694643dbd30a4ff2b8bb01a00a7a161338a3",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 178,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-dining_table-9249da5ee7f39ee8.usdz",
+      "source_path": "sources/kenney/tableCross.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source axes preserved; no directional front required for this stand-in; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-coffee_table",
+      "revision": "c92339f02a820ec1",
+      "kind": "standin",
+      "category": "coffee_table",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "c92339f02a820ec18bbdcb4473d30c5b289266259f6baf377ccdaf2848c41a0d",
+      "byte_count": 10238,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "e38bea760fbd514efbb75528d09b4752c91af44677bbb97e6d4386c263525179",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 124,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-coffee_table-c92339f02a820ec1.usdz",
+      "source_path": "sources/kenney/tableCoffee.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source axes preserved; no directional front required for this stand-in; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-side_table",
+      "revision": "394bf01f92dced08",
+      "kind": "standin",
+      "category": "side_table",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "394bf01f92dced0809b6ffb5a61044db8015339d3288c0c3fece7b80e5fe5022",
+      "byte_count": 19409,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "8227810584f7d37582e4e9ec821c56f1dc54b99c88a8dc74242ea3b7402bc472",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 118,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-side_table-394bf01f92dced08.usdz",
+      "source_path": "sources/kenney/sideTable.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source axes preserved; no directional front required for this stand-in; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-desk",
+      "revision": "507d75497ff31961",
+      "kind": "standin",
+      "category": "desk",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "507d75497ff31961b377a86298a10e90f3ac88d33cdfa283d38ff971a8c27881",
+      "byte_count": 24357,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "0164fe828f028b321730fb8c74502e353583f751be74da1682d42fff7d3c5a42",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 198,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-desk-507d75497ff31961.usdz",
+      "source_path": "sources/kenney/desk.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source openings/handles face positive Z; source preview inspected; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-nightstand",
+      "revision": "53020fcac16bc458",
+      "kind": "standin",
+      "category": "nightstand",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "53020fcac16bc45815d939328f07eb401527a3ce27347f57c3c820513a89133d",
+      "byte_count": 37218,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "e3dfd2e120af3d4d29b66509e317452cd15bd3f57ac8945575462c582adc6de8",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 182,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-nightstand-53020fcac16bc458.usdz",
+      "source_path": "sources/kenney/cabinetBedDrawer.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source openings/handles face positive Z; source preview inspected; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-cabinet",
+      "revision": "43f369006878a80f",
+      "kind": "standin",
+      "category": "cabinet",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "43f369006878a80fac79cd3389591a9df75f26bc9403f01de9404290f88b6818",
+      "byte_count": 33961,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "ff33f535acdb1825c0e958a293642b39665adcae0b1317b650e83d2bb687f4e2",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 296,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-cabinet-43f369006878a80f.usdz",
+      "source_path": "sources/kenney/bookcaseClosedDoors.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source openings/handles face positive Z; source preview inspected; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-shelf",
+      "revision": "334ce5bbf9001654",
+      "kind": "standin",
+      "category": "shelf",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "334ce5bbf900165448b73f88ef3bad6b96a90accf2f2a60c908019ede272aeee",
+      "byte_count": 23070,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "750702218d68c062b15dfef6ab06a4014d1cfa8bd05f02e57c53b7e13bec157c",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 320,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-shelf-334ce5bbf9001654.usdz",
+      "source_path": "sources/kenney/bookcaseOpen.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source axes preserved; no directional front required for this stand-in; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-tv_stand",
+      "revision": "d9f665fa5d302056",
+      "kind": "standin",
+      "category": "tv_stand",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "d9f665fa5d30205602e5da7f63b9ed437bb42cfc59f1174cca6ccd31dc88da59",
+      "byte_count": 13157,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "811719593d676ff76f7b5904d52c845ce0396af2bc9a6a2636c4818ead320b99",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 154,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-tv_stand-d9f665fa5d302056.usdz",
+      "source_path": "sources/kenney/cabinetTelevision.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source openings/handles face positive Z; source preview inspected; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-bed",
+      "revision": "5a323145f4e25c83",
+      "kind": "standin",
+      "category": "bed",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "5a323145f4e25c830064cc75fe1b2971ef95d96aedebce5a5c9b85538b57ab7d",
+      "byte_count": 57152,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "c49b33e7d797d2ba1111895587dba7ff63b17a712eb9b4ceeb40a598f73e476c",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 264,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-bed-5a323145f4e25c83.usdz",
+      "source_path": "sources/kenney/bedDouble.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source backrest/headboard lies on negative Z; source preview inspected; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-tv",
+      "revision": "764bf20fc7e1afb7",
+      "kind": "standin",
+      "category": "tv",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "764bf20fc7e1afb7584fb06166ef5d4d779f5ec9e2ea6c3027b451096594dcba",
+      "byte_count": 13881,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "d89519ad0a5f28b5b0dccb0d83209dccf610cda959578238dd21bbf9e219cfc6",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 72,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-tv-764bf20fc7e1afb7.usdz",
+      "source_path": "sources/kenney/televisionModern.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source display face normal points positive Z; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-floor_lamp",
+      "revision": "1a00c59019683c82",
+      "kind": "standin",
+      "category": "floor_lamp",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "1a00c59019683c827b7a529f06932372a8086c942892da72fd0907d4b032d583",
+      "byte_count": 15225,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "50fe1b5b588edf15bfa9cc880f71a02a4fda6036350b24733d0ef4de5cc5e908",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 76,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-floor_lamp-1a00c59019683c82.usdz",
+      "source_path": "sources/kenney/lampRoundFloor.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source axes preserved; no directional front required for this stand-in; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-table_lamp",
+      "revision": "7993a7efdf353d3f",
+      "kind": "standin",
+      "category": "table_lamp",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "7993a7efdf353d3f2c820fdcb9f344caa20126ce42ae84a021ff2664ad496785",
+      "byte_count": 15054,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "75bb644caaa3da003b4fcad7a931722dd61cd2858aab70cf660021d5061fa1b2",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 76,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-table_lamp-7993a7efdf353d3f.usdz",
+      "source_path": "sources/kenney/lampRoundTable.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source axes preserved; no directional front required for this stand-in; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-plant",
+      "revision": "2a16e4812a01e85f",
+      "kind": "standin",
+      "category": "plant",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "2a16e4812a01e85f531da15f6d31504e29ee65867362ab10f919cdf3fe1668ec",
+      "byte_count": 14418,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "5b760eda2766f75fda36b2c5df652a1662f82981ef64cd8fa7fe7bcd386b3a15",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 60,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-plant-2a16e4812a01e85f.usdz",
+      "source_path": "sources/kenney/pottedPlant.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source axes preserved; no directional front required for this stand-in; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-mirror",
+      "revision": "1200f2ca0d472ae2",
+      "kind": "standin",
+      "category": "mirror",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "1200f2ca0d472ae2912f4eb21c69e218d456994806a8baf33854e58a988ce03c",
+      "byte_count": 18905,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "940b986894101ea59b50541554b6dc608a22b133057975849259009012984175",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 72,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-mirror-1200f2ca0d472ae2.usdz",
+      "source_path": "sources/kenney/bathroomMirror.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source display face normal points positive Z; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-rug",
+      "revision": "15b8f1e5b33c2bae",
+      "kind": "standin",
+      "category": "rug",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "15b8f1e5b33c2baee6b20eac5a6cee4f3026ed8484086997d2b7078d5486ea90",
+      "byte_count": 4301,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "a989d2d59c04e3071e0c90388b113a9a8f339ce1814ef984c51cb6dcd7c8e0eb",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 28,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-rug-15b8f1e5b33c2bae.usdz",
+      "source_path": "sources/kenney/rugRectangle.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source axes preserved; no directional front required for this stand-in; native visual verification pending"
+      }
+    },
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-ceiling_light",
+      "revision": "3166e52789ce46f4",
+      "kind": "standin",
+      "category": "ceiling_light",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "3166e52789ce46f490567dcb153623a4bd8c2697815c477d633c947e467bcdd4",
+      "byte_count": 11157,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "57066be51583d83ae60071e8179af275189cb2911ecb9fc24953bb930c8bf118",
+      "source_yaw_degrees": 0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 60,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-ceiling_light-3166e52789ce46f4.usdz",
+      "source_path": "sources/kenney/lampSquareCeiling.glb",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "front_direction": "+Z",
+        "method": "source axes preserved; no directional front required for this stand-in; native visual verification pending"
       }
     }
   ]

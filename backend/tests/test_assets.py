@@ -32,6 +32,28 @@ def test_catalog_mesh_cannot_establish_purchase_dimensions():
         validate_asset(record)
 
 
+def test_expanded_standins_use_licensed_sources_and_keep_the_original_revision():
+    data = manifest()
+    required = {"sofa", "armchair", "chair", "stool", "table", "dining_table", "coffee_table",
+                "side_table", "desk", "nightstand", "cabinet", "shelf", "tv_stand", "bed", "tv",
+                "floor_lamp", "table_lamp", "plant", "mirror", "rug", "ceiling_light"}
+    assert {record["category"] for record in data["assets"]} == required
+    root = Path(__file__).resolve().parents[2] / "assets"
+    for record in data["assets"]:
+        assert record["kind"] == "standin" and record["license"] == "CC0-1.0"
+        assert record["variant_id"] is None and record["dimension_evidence_id"] is None
+        path = asset_path(record["asset_id"], record["revision"])
+        assert path.stat().st_size == record["byte_count"] < 3_000_000
+        source = root / record.get("source_path", "sources/kenney/chair.glb")
+        assert hashlib.sha256(source.read_bytes()).hexdigest() == record["source_sha256"]
+        descriptor = render_descriptor(record["category"])
+        assert descriptor["asset_id"] == record["asset_id"]
+        assert descriptor["authored_bounds"] == [1, 1, 1]
+    original = manifest("kenney-chair-67d8cb9ab6c620bb")["assets"][0]
+    assert original == data["assets"][0]
+    assert asset_path(original["asset_id"], original["revision"]).is_file()
+
+
 def test_saved_asset_revision_remains_available_after_manifest_update(tmp_path,monkeypatch):
     from respace import assets
     prior=manifest();record=prior['assets'][0]

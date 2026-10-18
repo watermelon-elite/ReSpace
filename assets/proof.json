@@ -4,11 +4,43 @@
   "standin": {
     "source": "https://kenney.nl/assets/furniture-kit",
     "license": "CC0-1.0",
-    "manifest_revision": "kenney-chair-67d8cb9ab6c620bb",
+    "manifest_revision": "kenney-standins-2a51b85be79606b2",
     "pipeline": "assets/prepare.py",
     "glb_to_usdz": "passed",
     "bounds_pivot_reopen": "passed",
-    "asymmetric_forward_axis": "algorithm verified; RealityKit device visual validation pending"
+    "asymmetric_forward_axis": "algorithm verified; RealityKit device visual validation pending",
+    "coverage": {
+      "category_count": 21,
+      "categories": [
+        "chair",
+        "sofa",
+        "armchair",
+        "stool",
+        "table",
+        "dining_table",
+        "coffee_table",
+        "side_table",
+        "desk",
+        "nightstand",
+        "cabinet",
+        "shelf",
+        "tv_stand",
+        "bed",
+        "tv",
+        "floor_lamp",
+        "table_lamp",
+        "plant",
+        "mirror",
+        "rug",
+        "ceiling_light"
+      ],
+      "source_archive_sha256": "e67652d0932cee41683f74711c03d3e192a2af9979ef8e6b237711f5482d46b0",
+      "source_preview_inspection": "selected official isometric previews reviewed for category fit",
+      "native_validation": "all 21 actual USDZ files loaded in macOS RealityKit at nonuniform saved dimensions; physical extents/bottom-center pivots passed; interactive visual inspection pending",
+      "missing_categories_use": "existing correctly sized panel/box fallback",
+      "catalog_product_count": 0,
+      "checked_at": "2026-10-18T04:53:15.581352+00:00"
+    }
   },
   "catalog": {
     "source_url": "https://www.ikea.com/us/en/p/lack-side-table-white-30449908/",
@@ -34,5 +66,5 @@
     "gemini_3_1_pro_preview": "429 free-tier limit 0",
     "key_source_file": "/Users/humaid/.zshenv"
   },
-  "acceptance": "partial; ticket 27 is not complete"
+  "acceptance": "partial; 21 licensed stand-in categories prepared; verified catalog/SPAR3D and native visual acceptance remain incomplete"
 }

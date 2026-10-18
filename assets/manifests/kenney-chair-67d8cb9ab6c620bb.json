@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "manifest_revision": "kenney-chair-67d8cb9ab6c620bb",
+  "category_version": 1,
+  "assets": [
+    {
+      "schema_version": 1,
+      "asset_id": "kenney-chair",
+      "revision": "67d8cb9ab6c620bb",
+      "kind": "standin",
+      "category": "chair",
+      "variant_id": null,
+      "dimension_evidence_id": null,
+      "sha256": "67d8cb9ab6c620bb1a2647520ab99cb1a58a940238060622d4f198c7d82d1df5",
+      "byte_count": 12862,
+      "under_3_mb": true,
+      "authored_bounds": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "units": "meters",
+      "pivot": "bottom_center",
+      "forward_axis": "+Z",
+      "up_axis": "+Y",
+      "scaling_mode": "normalized",
+      "source_sha256": "c8a11eec93e89e31250ba91afc1b8d56c3bec7ae86640fd1239f595ff4180883",
+      "source_yaw_degrees": 0.0,
+      "conversion": {
+        "trimesh": "5.1.1",
+        "usd": [
+          0,
+          26,
+          8
+        ],
+        "triangles": 170,
+        "physical_bounds_reopened": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "native_validation": "pending",
+      "path": "models/kenney-chair-67d8cb9ab6c620bb.usdz",
+      "source_url": "https://kenney.nl/assets/furniture-kit",
+      "license": "CC0-1.0",
+      "orientation_evidence": {
+        "backrest_source_z": -0.18,
+        "front_direction": "+Z",
+        "method": "source high-vertex centroid; native visual verification pending"
+      }
+    }
+  ]
+}

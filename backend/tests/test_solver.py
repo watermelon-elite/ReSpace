@@ -231,12 +231,15 @@ def test_rugs_collide_with_each_other_but_ceiling_and_informational_features_do_
     assert rugs['action_outcomes'][0]['code'] == 'partial_quantity'
 
 
-def test_versioned_relation_transport_replays_solver_and_purchase_evidence():
+def test_versioned_relation_transport_replays_solver_and_purchase_evidence(monkeypatch):
     import json
     from pathlib import Path
     from respace.products import calculate_purchases
     from respace.spatial_planning import validate_plan
+    from respace import assets
 
+    original_assets = assets.manifest('kenney-chair-67d8cb9ab6c620bb')
+    monkeypatch.setattr(assets, 'manifest', lambda revision=None: original_assets)
     fixture = json.loads((Path(__file__).parent/'fixtures/spatial-relations-v1.json').read_text())
     assert fixture['schema_version'] == 1
     validation = validate_plan(fixture['plan'], fixture['snapshot'], fixture['selections'], fixture['constraints'])

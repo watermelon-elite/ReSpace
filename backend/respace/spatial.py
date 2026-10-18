@@ -57,7 +57,7 @@ class SpatialPipeline:
             data['plan']=result['plan']
             if bounded:return
         plan=deepcopy(data['plan'])
-        constraints.setdefault('must_have_add_ids',[a['add_id'] for a in plan.get('adds',[]) if a['selection_id'] in constraints.get('must_have_selection_ids',[])])
+        constraints.setdefault('must_have_add_ids',[a['add_id'] for a in plan.get('adds',[]) if a['selection_id'] in constraints.get('must_have_selection_ids',[])+constraints.get('explicit_selection_ids',[])])
         if data.get('repair_question'):
             stopped,plan,constraints= self._consume_repair_answer(operation_id,data,plan,constraints)
             if stopped:
@@ -252,6 +252,7 @@ class SpatialPipeline:
             plan['adds'].remove(removed)
             constraints['must_have_add_ids']=[key for key in constraints.get('must_have_add_ids',[]) if key!=removed['add_id']]
             constraints['must_have_selection_ids']=[key for key in constraints.get('must_have_selection_ids',[]) if key!=removed['selection_id']]
+            constraints['explicit_selection_ids']=[key for key in constraints.get('explicit_selection_ids',[]) if key!=removed['selection_id']]
             constraints['must_have_categories']=[key for key in constraints.get('must_have_categories',[]) if key!=removed['category']]
             data.setdefault('approved_omissions',[]).append({'action_id':removed['action_id'],'type':'add','outcome':'no_op','code':'user_approved_omission','reason':'User explicitly approved continuing without this Addition.','affected_item_ids':[]})
         else:

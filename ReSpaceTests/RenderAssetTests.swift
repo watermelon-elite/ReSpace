@@ -33,6 +33,21 @@ import UniformTypeIdentifiers
         XCTAssertEqual(Double(bounds.center.x), 0, accuracy: 0.005)
         XCTAssertEqual(Double(bounds.center.z), 0, accuracy: 0.005)
     }
+    func testExpandedLicensedStandinsLoadAtSavedDimensionsAndPivot() async throws {
+        let manifest = try JSONDecoder().decode(JSONValue.self, from: Data(contentsOf: root.appendingPathComponent("assets/manifest.json")))
+        XCTAssertEqual(manifest["assets"].array.count, 21)
+        for record in manifest["assets"].array {
+            let asset = try RenderAsset(record)
+            let entity = try await RealityAssetLoader.load(asset, from: root.appendingPathComponent("assets/" + record["path"].text), savedSize: [0.73, 0.41, 0.97])
+            let bounds = entity.visualBounds(relativeTo: nil)
+            XCTAssertEqual(Double(bounds.extents.x), 0.73, accuracy: 0.005, asset.id)
+            XCTAssertEqual(Double(bounds.extents.y), 0.97, accuracy: 0.005, asset.id)
+            XCTAssertEqual(Double(bounds.extents.z), 0.41, accuracy: 0.005, asset.id)
+            XCTAssertEqual(Double(bounds.min.y), 0, accuracy: 0.005, asset.id)
+            XCTAssertEqual(Double(bounds.center.x), 0, accuracy: 0.005, asset.id)
+            XCTAssertEqual(Double(bounds.center.z), 0, accuracy: 0.005, asset.id)
+        }
+    }
     func testRealAssetUpgradePreservesInstanceIdentityPoseAndSelectionMarker() async throws {
         let asset = try asset()
         let model = try await RealityAssetLoader.load(asset, from: root.appendingPathComponent("assets/" + asset.value["path"].text), savedSize: [0.7, 0.3, 1.1])
