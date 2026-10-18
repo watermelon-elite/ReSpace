@@ -52,6 +52,24 @@ class CaptureService:
             result['deletion_state']=deletion['state']
         return result
 
+    def import_context(self, device_id, request):
+        with self.store.transaction():
+            created=self.create(device_id,request)
+            room=self.operations.room(device_id,created['room']['room_id'])
+            capture=self.store.get('captures',room['latest_capture_id'])
+            if capture['state']!='complete':
+                capture.update(state='complete',source='imported_scene',planning_only=True,
+                    source_capture_id=request['source_capture_id'],source_scene_sha256=request['source_scene_sha256'],
+                    measured_context={'source':'imported_scene','units':'meters','frame':'meters_y_up_floor_zero',
+                        'objects':[entity for entity in request['entities'] if entity['kind'] not in {'wall','floor','ceiling'}],
+                        'structure':[entity for entity in request['entities'] if entity['kind'] in {'wall','floor','ceiling'}],
+                        'uncertainty':'Reconstructed mesh bounds, not native RoomPlan measurements. Supports and calibrated capture photos are unavailable; layout placement is not validated.'})
+                room.update(capture_state='complete',source_scene_sha256=request['source_scene_sha256'],
+                    warnings=[{'code':'imported_context','message':'Reconstructed scene: planning is available; validated layout changes require the original capture.'}])
+                self.store.put('captures',capture['capture_id'],capture)
+                self.store.put('rooms',room['room_id'],room)
+            return self.detail(device_id,room['room_id'])
+
     def detail(self, device_id, room_id):
         room=self.operations.room(device_id,room_id)
         capture=self.store.get('captures',room['latest_capture_id'])

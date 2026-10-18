@@ -1,0 +1,32 @@
+{
+  "rank": 2,
+  "source_url": "https://www.youtube.com/watch?v=OcdxW2XF0v8",
+  "expected_duration_seconds": 157,
+  "method": "watch-video Gemini audiovisual analysis",
+  "model": "gemini-flash-latest",
+  "fps": 6,
+  "successful_clips": [
+    {
+      "range": "0:00-2:38",
+      "raw_report": "raw-full.md"
+    }
+  ],
+  "full_film_requested": true,
+  "run_exit_code": 0,
+  "review_date": "2026-10-17",
+  "notes": "Request end extends one second beyond rounded metadata duration to include final frame. Automated audiovisual analysis; editorial review follows.",
+  "editorially_reviewed": true,
+  "coverage_assessment": "Full film requested and end card reported; timestamp precision is model-produced, not independently frame-verified.",
+  "observed_end_time_in_raw": "02:36.000",
+  "editorial_corrections": [
+    "Apparent brand-timestamp conflict resolved: caption segment124.97\u2013143.234 contains the full audiovisual timestamp02:12.900. No recheck needed solely for this comparison.",
+    "Metaphorical restored cognition is a creative proposition, not verified medical or performance evidence.",
+    "Raw speculative AR, drag-and-drop and guaranteed optimal placement proposals are not adopted as ReSpace capabilities."
+  ],
+  "timing_crosscheck": {
+    "caption_segment_start": 124.97,
+    "caption_segment_duration": 18.264,
+    "av_spoken_brand_timestamp": "02:12.900",
+    "assessment": "Compatible; a coarse caption segment start is not the exact spoken word time."
+  }
+}

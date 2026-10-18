@@ -1,0 +1,1098 @@
+{
+  "schema_version": 1,
+  "scenario_id": "03_l_shaped_studio",
+  "title": "L-shaped studio",
+  "provenance": {
+    "kind": "synthetic",
+    "created_at": "2026-10-18T00:00:00+00:00",
+    "description": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.",
+    "measurement_accuracy": "Internally consistent authored values, not calibrated real-world measurements.",
+    "listing_evidence": "Fictional page text for offline verifier tests only. Never load these records into a production Product catalog."
+  },
+  "agent_context": {
+    "measured_context": {
+      "capture_id": "capture_03_l_shaped_studio",
+      "captured_at": "2026-10-18T00:00:00+00:00",
+      "source": "synthetic_json",
+      "units": "meters",
+      "frame": "normalized_room",
+      "height": 2.7,
+      "extents": {
+        "width": 6,
+        "depth": 5,
+        "meaning": "Bounding extents only; use floor.polygon for usable floor."
+      },
+      "floor": {
+        "polygon": [
+          [
+            0,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            6,
+            2.4
+          ],
+          [
+            3.2,
+            2.4
+          ],
+          [
+            3.2,
+            5
+          ],
+          [
+            0,
+            5
+          ]
+        ],
+        "area": 22.72
+      },
+      "walls": [
+        {
+          "id": "w_1",
+          "a": [
+            0,
+            0
+          ],
+          "b": [
+            6,
+            0
+          ],
+          "length": 6.0,
+          "inward_normal": [
+            0.0,
+            1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_2",
+          "a": [
+            6,
+            0
+          ],
+          "b": [
+            6,
+            2.4
+          ],
+          "length": 2.4,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_3",
+          "a": [
+            6,
+            2.4
+          ],
+          "b": [
+            3.2,
+            2.4
+          ],
+          "length": 2.8,
+          "inward_normal": [
+            -0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_4",
+          "a": [
+            3.2,
+            2.4
+          ],
+          "b": [
+            3.2,
+            5
+          ],
+          "length": 2.6,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_5",
+          "a": [
+            3.2,
+            5
+          ],
+          "b": [
+            0,
+            5
+          ],
+          "length": 3.2,
+          "inward_normal": [
+            0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_6",
+          "a": [
+            0,
+            5
+          ],
+          "b": [
+            0,
+            0
+          ],
+          "length": 5.0,
+          "inward_normal": [
+            1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        }
+      ],
+      "openings": [
+        {
+          "id": "entry",
+          "type": "door",
+          "wall_id": "w_6",
+          "offset": 3.8,
+          "width": 0.9,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        },
+        {
+          "id": "window",
+          "type": "window",
+          "wall_id": "w_5",
+          "offset": 0.6,
+          "width": 1.6,
+          "bottom": 1.0,
+          "height": 1.2,
+          "source_ids": []
+        }
+      ],
+      "objects": [
+        {
+          "id": "bed",
+          "source_ids": [],
+          "category": "bed",
+          "source": "synthetic",
+          "center": [
+            4.7,
+            1.2
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            1.4,
+            2,
+            0.6
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "sofa",
+          "source_ids": [],
+          "category": "sofa",
+          "source": "synthetic",
+          "center": [
+            1.5,
+            3.9
+          ],
+          "base_y": 0,
+          "yaw": 3.141592653589793,
+          "size": [
+            1.8,
+            0.8,
+            0.8
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "old_coffee_table",
+          "source_ids": [],
+          "category": "coffee_table",
+          "source": "synthetic",
+          "center": [
+            1.5,
+            2.85
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            0.8,
+            0.45,
+            0.4
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        }
+      ],
+      "uncertainty": "Exact authored test values; physical measurement accuracy and sensor confidence are untested."
+    },
+    "planning": {
+      "room_id": "room_03_l_shaped_studio",
+      "capture_id": "capture_03_l_shaped_studio",
+      "planning_revision": 0,
+      "instructions": [
+        {
+          "target": {
+            "kind": "object",
+            "id": "bed",
+            "capture_id": "capture_03_l_shaped_studio"
+          },
+          "instruction": "keep"
+        },
+        {
+          "target": {
+            "kind": "object",
+            "id": "old_coffee_table",
+            "capture_id": "capture_03_l_shaped_studio"
+          },
+          "instruction": "remove"
+        }
+      ]
+    },
+    "request": {
+      "schema_version": 1,
+      "operation_id": "generate_03_l_shaped_studio",
+      "capture_id": "capture_03_l_shaped_studio",
+      "snapshot_id": "snapshot_03_l_shaped_studio",
+      "planning_revision": 0,
+      "expected_active_design_id": null,
+      "expected_active_revision": 0,
+      "intent": "redesign",
+      "styles": [
+        "Japandi"
+      ],
+      "budget": "350.00",
+      "currency": "USD",
+      "text": "Add a desk and a mirror. Keep the bed in place. Remove the old coffee table from the design. Preserve the sofa."
+    },
+    "answers": [],
+    "initial_products": {
+      "state": "empty",
+      "displayed_choices": [],
+      "reasons": [
+        "Offline fixture before discovery; verify the fictional evidence through the controlled provider."
+      ]
+    },
+    "actions": [],
+    "approved_budget": "350.00",
+    "categories": [
+      "sofa",
+      "armchair",
+      "chair",
+      "stool",
+      "table",
+      "dining_table",
+      "coffee_table",
+      "side_table",
+      "desk",
+      "nightstand",
+      "dresser",
+      "counter",
+      "shelf",
+      "cabinet",
+      "tv_stand",
+      "bed",
+      "tv",
+      "floor_lamp",
+      "table_lamp",
+      "plant",
+      "decor",
+      "mirror",
+      "wall_art",
+      "rug",
+      "curtain",
+      "ceiling_light",
+      "outlet",
+      "light_switch",
+      "radiator",
+      "vent",
+      "sink",
+      "toilet",
+      "bathtub",
+      "refrigerator",
+      "stove",
+      "oven",
+      "dishwasher",
+      "washer_dryer",
+      "fireplace",
+      "stairs"
+    ]
+  },
+  "room_snapshot": {
+    "schema_version": 1,
+    "snapshot_id": "snapshot_03_l_shaped_studio",
+    "revision": 1,
+    "room_id": "room_03_l_shaped_studio",
+    "capture_id": "capture_03_l_shaped_studio",
+    "created_at": "2026-10-18T00:00:00+00:00",
+    "room": {
+      "schema_version": 1,
+      "category_version": 1,
+      "room_id": "room_03_l_shaped_studio",
+      "capture_id": "capture_03_l_shaped_studio",
+      "height": 2.7,
+      "frame": {
+        "room_from_world": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "floor": {
+        "polygon": [
+          [
+            0,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            6,
+            2.4
+          ],
+          [
+            3.2,
+            2.4
+          ],
+          [
+            3.2,
+            5
+          ],
+          [
+            0,
+            5
+          ]
+        ],
+        "area": 22.72
+      },
+      "walls": [
+        {
+          "id": "w_1",
+          "a": [
+            0,
+            0
+          ],
+          "b": [
+            6,
+            0
+          ],
+          "length": 6.0,
+          "inward_normal": [
+            0.0,
+            1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_2",
+          "a": [
+            6,
+            0
+          ],
+          "b": [
+            6,
+            2.4
+          ],
+          "length": 2.4,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_3",
+          "a": [
+            6,
+            2.4
+          ],
+          "b": [
+            3.2,
+            2.4
+          ],
+          "length": 2.8,
+          "inward_normal": [
+            -0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_4",
+          "a": [
+            3.2,
+            2.4
+          ],
+          "b": [
+            3.2,
+            5
+          ],
+          "length": 2.6,
+          "inward_normal": [
+            -1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_5",
+          "a": [
+            3.2,
+            5
+          ],
+          "b": [
+            0,
+            5
+          ],
+          "length": 3.2,
+          "inward_normal": [
+            0.0,
+            -1.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        },
+        {
+          "id": "w_6",
+          "a": [
+            0,
+            5
+          ],
+          "b": [
+            0,
+            0
+          ],
+          "length": 5.0,
+          "inward_normal": [
+            1.0,
+            0.0
+          ],
+          "virtual": false,
+          "source_ids": []
+        }
+      ],
+      "corners": [
+        {
+          "id": "c_1",
+          "position": [
+            0,
+            0
+          ],
+          "wall_ids": [
+            "w_6",
+            "w_1"
+          ]
+        },
+        {
+          "id": "c_2",
+          "position": [
+            6,
+            0
+          ],
+          "wall_ids": [
+            "w_1",
+            "w_2"
+          ]
+        },
+        {
+          "id": "c_3",
+          "position": [
+            6,
+            2.4
+          ],
+          "wall_ids": [
+            "w_2",
+            "w_3"
+          ]
+        },
+        {
+          "id": "c_5",
+          "position": [
+            3.2,
+            5
+          ],
+          "wall_ids": [
+            "w_4",
+            "w_5"
+          ]
+        },
+        {
+          "id": "c_6",
+          "position": [
+            0,
+            5
+          ],
+          "wall_ids": [
+            "w_5",
+            "w_6"
+          ]
+        }
+      ],
+      "openings": [
+        {
+          "id": "entry",
+          "type": "door",
+          "wall_id": "w_6",
+          "offset": 3.8,
+          "width": 0.9,
+          "bottom": 0,
+          "height": 2.05,
+          "source_ids": []
+        },
+        {
+          "id": "window",
+          "type": "window",
+          "wall_id": "w_5",
+          "offset": 0.6,
+          "width": 1.6,
+          "bottom": 1.0,
+          "height": 1.2,
+          "source_ids": []
+        }
+      ],
+      "objects": [
+        {
+          "id": "bed",
+          "source_ids": [],
+          "category": "bed",
+          "source": "synthetic",
+          "center": [
+            4.7,
+            1.2
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            1.4,
+            2,
+            0.6
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "sofa",
+          "source_ids": [],
+          "category": "sofa",
+          "source": "synthetic",
+          "center": [
+            1.5,
+            3.9
+          ],
+          "base_y": 0,
+          "yaw": 3.141592653589793,
+          "size": [
+            1.8,
+            0.8,
+            0.8
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        },
+        {
+          "id": "old_coffee_table",
+          "source_ids": [],
+          "category": "coffee_table",
+          "source": "synthetic",
+          "center": [
+            1.5,
+            2.85
+          ],
+          "base_y": 0,
+          "yaw": 0,
+          "size": [
+            0.8,
+            0.45,
+            0.4
+          ],
+          "mount": "floor",
+          "wall_id": null,
+          "support_id": null,
+          "fixed_in_place": false,
+          "attrs": {},
+          "observation_count": 0
+        }
+      ],
+      "wall_features": [],
+      "zones": [
+        {
+          "id": "z_entry",
+          "type": "keep_clear",
+          "reason": "door",
+          "opening_id": "entry",
+          "polygon": [
+            [
+              0.0,
+              1.35
+            ],
+            [
+              0.9,
+              1.35
+            ],
+            [
+              0.9,
+              0.15000000000000013
+            ],
+            [
+              0.0,
+              0.15000000000000013
+            ]
+          ]
+        }
+      ],
+      "style_hints": {},
+      "identity_map": {
+        "bed": {
+          "kind": "object",
+          "id": "bed"
+        },
+        "sofa": {
+          "kind": "object",
+          "id": "sofa"
+        },
+        "old_coffee_table": {
+          "kind": "object",
+          "id": "old_coffee_table"
+        }
+      },
+      "processing": {
+        "expected_frames": 0,
+        "not_started": 0,
+        "pending": 0,
+        "succeeded": 0,
+        "failed": 0,
+        "lifted": 0,
+        "completed": 0
+      },
+      "validity": {
+        "usable": true,
+        "reasons": [],
+        "warnings": [
+          {
+            "code": "synthetic_input",
+            "message": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers."
+          }
+        ]
+      }
+    },
+    "identity_map": {
+      "bed": {
+        "kind": "object",
+        "id": "bed"
+      },
+      "sofa": {
+        "kind": "object",
+        "id": "sofa"
+      },
+      "old_coffee_table": {
+        "kind": "object",
+        "id": "old_coffee_table"
+      }
+    }
+  },
+  "listings": [
+    {
+      "listing_id": "studio_desk",
+      "candidate": {
+        "title": "SYNTHETIC studio desk / oak",
+        "category": "desk",
+        "product_url": "https://fixtures.example.com/studio_desk",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "studio_desk"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC studio desk / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "studio_desk",
+        "identity_quote": "Synthetic Fixtures model studio_desk",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "110",
+            "unit": "cm",
+            "quote": "Width 110 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "55",
+            "unit": "cm",
+            "quote": "Depth 55 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "74",
+            "unit": "cm",
+            "quote": "Height 74 cm"
+          }
+        ],
+        "price": "149.99",
+        "currency": "USD",
+        "price_quote": "USD 149.99",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical desk units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/studio_desk",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC studio desk / oak\nSynthetic Fixtures model studio_desk\nWidth 110 cm\nDepth 55 cm\nHeight 74 cm\nUSD 149.99\nin stock\nContains 1 identical desk units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          1.1,
+          0.55,
+          0.74
+        ],
+        "offer_available": true
+      }
+    },
+    {
+      "listing_id": "studio_mirror",
+      "candidate": {
+        "title": "SYNTHETIC studio mirror / oak",
+        "category": "mirror",
+        "product_url": "https://fixtures.example.com/studio_mirror",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "studio_mirror"
+      },
+      "facts": {
+        "exact_variant": true,
+        "variant_quote": "SYNTHETIC studio mirror / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "studio_mirror",
+        "identity_quote": "Synthetic Fixtures model studio_mirror",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "60",
+            "unit": "cm",
+            "quote": "Width 60 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "3",
+            "unit": "cm",
+            "quote": "Depth 3 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "90",
+            "unit": "cm",
+            "quote": "Height 90 cm"
+          }
+        ],
+        "price": "59.99",
+        "currency": "USD",
+        "price_quote": "USD 59.99",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical mirror units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/studio_mirror",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC studio mirror / oak\nSynthetic Fixtures model studio_mirror\nWidth 60 cm\nDepth 3 cm\nHeight 90 cm\nUSD 59.99\nin stock\nContains 1 identical mirror units"
+      },
+      "expected": {
+        "dimension_outcome": "verified",
+        "dimensions": [
+          0.6,
+          0.03,
+          0.9
+        ],
+        "offer_available": true
+      }
+    },
+    {
+      "listing_id": "mirror_ambiguous_variant",
+      "candidate": {
+        "title": "SYNTHETIC mirror ambiguous variant / oak",
+        "category": "mirror",
+        "product_url": "https://fixtures.example.com/mirror_ambiguous_variant",
+        "merchant": "Synthetic Furnishings",
+        "source_key": "mirror_ambiguous_variant"
+      },
+      "facts": {
+        "exact_variant": false,
+        "variant_quote": "SYNTHETIC mirror ambiguous variant / oak",
+        "options": {
+          "finish": "oak"
+        },
+        "gtin": null,
+        "manufacturer": "Synthetic Fixtures",
+        "mpn": "mirror_ambiguous_variant",
+        "identity_quote": "Synthetic Fixtures model mirror_ambiguous_variant",
+        "classification": "item",
+        "measurements": [
+          {
+            "axis": "width",
+            "label": "Width",
+            "value": "60",
+            "unit": "cm",
+            "quote": "Width 60 cm"
+          },
+          {
+            "axis": "depth",
+            "label": "Depth",
+            "value": "3",
+            "unit": "cm",
+            "quote": "Depth 3 cm"
+          },
+          {
+            "axis": "height",
+            "label": "Height",
+            "value": "90",
+            "unit": "cm",
+            "quote": "Height 90 cm"
+          }
+        ],
+        "price": "39.99",
+        "currency": "USD",
+        "price_quote": "USD 39.99",
+        "availability": "in_stock",
+        "availability_quote": "in stock",
+        "units_per_pack": 1,
+        "pack_quote": "Contains 1 identical mirror units",
+        "features": {},
+        "feature_quotes": {}
+      },
+      "page": {
+        "source_url": "https://fixtures.example.com/mirror_ambiguous_variant",
+        "visible_text": "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers.\nSYNTHETIC mirror ambiguous variant / oak\nSynthetic Fixtures model mirror_ambiguous_variant\nWidth 60 cm\nDepth 3 cm\nHeight 90 cm\nUSD 39.99\nin stock\nContains 1 identical mirror units"
+      },
+      "expected": {
+        "dimension_outcome": "ambiguous_variant",
+        "dimensions": null,
+        "offer_available": false
+      }
+    }
+  ],
+  "replay": {
+    "actions": [
+      {
+        "action": "ask_user",
+        "payload": {
+          "kind": "numeric",
+          "topic": "occupants",
+          "text": "How many people usually use this room?",
+          "numeric_min": 1,
+          "numeric_max": 8,
+          "numeric_step": 1,
+          "allow_skip": true,
+          "allow_delegate": true,
+          "choices": []
+        }
+      },
+      {
+        "action": "search_products",
+        "payload": {
+          "category": "desk",
+          "function": "Synthetic L-shaped studio",
+          "quantity": 1
+        }
+      },
+      {
+        "action": "search_products",
+        "payload": {
+          "category": "mirror",
+          "function": "Synthetic L-shaped studio",
+          "quantity": 1
+        }
+      },
+      {
+        "action": "finalize_selection",
+        "payload": {
+          "selected": [
+            {
+              "variant_id": "v_dfcfc14655716ce577df4880",
+              "offer_id": "offer_76c627648301b97742ecf822",
+              "quantity": 1,
+              "selection_id": "selection_desk"
+            },
+            {
+              "variant_id": "v_ecec31398f492334b0d5a3dd",
+              "offer_id": "offer_2b3eeed71685dea5d2fa1cdc",
+              "quantity": 1,
+              "selection_id": "selection_mirror"
+            }
+          ],
+          "assumptions": [
+            "Entirely authored synthetic measurements and fictional listings; no scan, mesh, photos, sensor evidence or real merchant offers."
+          ],
+          "reasons": [
+            "Recorded offline replay; the live model may ask different valid questions."
+          ]
+        }
+      }
+    ],
+    "answer": {
+      "action": "answer",
+      "number": 1
+    },
+    "selection_listings": {
+      "desk": "studio_desk",
+      "mirror": "studio_mirror"
+    }
+  },
+  "spatial_case": {
+    "plan": {
+      "summary": "SYNTHETIC: L-shaped studio",
+      "adds": [
+        {
+          "action_id": "add_desk",
+          "add_id": "desk",
+          "category": "desk",
+          "priority": 1,
+          "quantity": 1,
+          "selection_id": "selection_desk",
+          "anchor": {
+            "type": "against_wall",
+            "wall_id": "w_1",
+            "alignment": "center"
+          },
+          "reason": "Controlled synthetic placement case."
+        },
+        {
+          "action_id": "add_mirror",
+          "add_id": "mirror",
+          "category": "mirror",
+          "priority": 2,
+          "quantity": 1,
+          "selection_id": "selection_mirror",
+          "anchor": {
+            "type": "on_wall",
+            "wall_id": "w_3",
+            "alignment": "center",
+            "height": 1.7
+          },
+          "reason": "Controlled synthetic placement case."
+        }
+      ],
+      "moves": [],
+      "removes": [
+        {
+          "action_id": "remove_old_table",
+          "target": {
+            "kind": "object",
+            "id": "old_coffee_table"
+          },
+          "reason": "Explicit synthetic user instruction."
+        }
+      ],
+      "replaces": [],
+      "restores": [],
+      "unlocks": []
+    },
+    "constraints": {
+      "intent": "redesign",
+      "instructions": {
+        "bed": "keep",
+        "old_coffee_table": "remove"
+      },
+      "approved_ceiling": "350.00",
+      "must_have_add_ids": [],
+      "allow_adjustments": true
+    }
+  },
+  "expected": {
+    "floor_area": 22.72,
+    "selected_total": "209.98",
+    "candidate_total": "209.98",
+    "new_item_count": 2,
+    "conflict_codes": [],
+    "omitted_add_ids": [],
+    "eligible_choices_by_category": {
+      "desk": 1,
+      "mirror": 1
+    },
+    "removed_object_ids": [
+      "old_coffee_table"
+    ],
+    "checks": [
+      "concave floor differs from rectangular extents",
+      "Kept bed preserved",
+      "remove from design retains original Object",
+      "wall elevation",
+      "ambiguous variant rejected"
+    ]
+  }
+}

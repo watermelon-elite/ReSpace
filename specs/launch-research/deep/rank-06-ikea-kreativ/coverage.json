@@ -1,0 +1,21 @@
+{
+  "rank": 6,
+  "source_url": "https://vimeo.com/926031195",
+  "source_page": "https://www.theheist.com/work/ikea-kreativ",
+  "source_version": "Exact selected Home Office film, public Vimeo playback; distinct from six-second social cutdown",
+  "expected_duration_seconds": 15.019,
+  "media_resolution": "1280x720",
+  "audio_stream_verified": true,
+  "method": "watch-video actual video and audio, plus full-span contact-sheet check",
+  "model": "gemini-3.5-flash-lite",
+  "fps": 6,
+  "successful_clips": [{"range": "0:00-0:16", "raw_report": "raw-full-lite-1.md"}],
+  "video_tokens": 6315,
+  "full_film_requested": true,
+  "run_exit_code": 0,
+  "observed_end_time_in_raw": "00:14.833",
+  "editorially_reviewed": true,
+  "coverage_assessment": "Complete film including final logo and ending audio reported. Model timestamps are not independently frame-verified.",
+  "review_date": "2026-10-17",
+  "editorial_corrections": ["Separate earlier phone/product interaction from final large brand logo.", "Physical makeover is advertising stylization, not an actual app action.", "Exact sound synchronization and geometric accuracy are not established."]
+}

@@ -1,0 +1,42 @@
+{
+  "rank": 8,
+  "source_url": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+  "duration_seconds": 89,
+  "duration_source": "Public YouTube watch-page lengthSeconds metadata retrieved 2026-10-17 America/Los_Angeles",
+  "requested_clip": "0:00-1:30",
+  "fps": 6,
+  "model": "gemini-flash-latest",
+  "successful_clip_ranges": [
+    {
+      "start_seconds": 0,
+      "end_seconds": 90,
+      "note": "Requested through one second beyond the89-second source duration."
+    }
+  ],
+  "completion": "full source coverage; automated audiovisual report reaches final card",
+  "any_gaps": null,
+  "attempts": 3,
+  "raw_report": "raw-full.md",
+  "title": "IKEA \u2014 Make Room for Life 2018",
+  "video_tokens": 37472,
+  "provider_attempts": 5,
+  "provider_failures": [
+    "503 on three initial requests",
+    "429 on first queued request"
+  ],
+  "method_limit": "Automated sampled-frame/audio review. Exact cut averages, physical performance and production equipment are not measured by this pass.",
+  "targeted_rechecks": [
+    {
+      "source_url": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+      "requested_clip": "0:57-1:04",
+      "start_seconds": 57,
+      "end_seconds": 64,
+      "fps": 10,
+      "model": "gemini-3.5-flash-lite",
+      "completion": "successful",
+      "video_tokens": 4796,
+      "report": "raw-sound-recheck.md",
+      "finding": "Continuous music; original full-pass silence/ducking claim contradicted. Soft whisper/breathy accent at01:00.000; dance cut01:00.100."
+    }
+  ]
+}

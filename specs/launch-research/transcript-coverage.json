@@ -1,0 +1,125 @@
+{
+  "note": "Caption availability only; analytical findings are in shortlist.md. Full third-party transcripts are not reproduced in the deliverable.",
+  "videos": [
+    {
+      "video_id": "hehaJGC9NJQ",
+      "status": "ready",
+      "language": "en",
+      "kind": "auto",
+      "segment_count": 1,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "Xwc22EK8qE0",
+      "status": "error",
+      "code": "not_found",
+      "detail": "No subtitles for requested language",
+      "segment_count": 0,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "OcdxW2XF0v8",
+      "status": "ready",
+      "language": "en",
+      "kind": "auto",
+      "segment_count": 8,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "9KqGpxtsawc",
+      "status": "ready",
+      "language": "en",
+      "kind": "auto",
+      "segment_count": 7,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "B6zVzWU95Sw",
+      "status": "ready",
+      "language": "en",
+      "kind": "auto",
+      "segment_count": 15,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "SSKtiEA8qMw",
+      "status": "ready",
+      "language": "en",
+      "kind": "manual",
+      "segment_count": 18,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "ZUG9qYTJMsI",
+      "status": "ready",
+      "language": "en",
+      "kind": "auto",
+      "segment_count": 8,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "54l-1NfXnX8",
+      "status": "error",
+      "code": "not_found",
+      "detail": "No subtitles for requested language",
+      "segment_count": 0,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "WIeJF3kL5ng",
+      "status": "ready",
+      "language": "en",
+      "kind": "auto",
+      "segment_count": 98,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "HdF3CnFvxg4",
+      "status": "ready",
+      "language": "en-US",
+      "kind": "manual",
+      "segment_count": 65,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "UudV1VdFtuQ",
+      "status": "ready",
+      "language": "en",
+      "kind": "auto",
+      "segment_count": 3,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "S92KX8-Hmlc",
+      "status": "error",
+      "code": "not_found",
+      "detail": "No subtitles for requested language",
+      "segment_count": 0,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "rTugX0knWVA",
+      "status": "ready",
+      "language": "en",
+      "kind": "auto",
+      "segment_count": 1,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "C4Q2ezioTUM",
+      "status": "ready",
+      "language": "en",
+      "kind": "manual",
+      "segment_count": 25,
+      "metadata_returned": false
+    },
+    {
+      "video_id": "Nin0NSjp8II",
+      "status": "ready",
+      "language": "en",
+      "kind": "auto",
+      "segment_count": 1,
+      "metadata_returned": false
+    }
+  ]
+}

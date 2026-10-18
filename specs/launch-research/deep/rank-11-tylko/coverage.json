@@ -1,0 +1,22 @@
+{
+  "rank": 11,
+  "source_url": "https://vimeo.com/705647639",
+  "analyzed_public_version": "https://player.vimeo.com/video/713330048?h=9345467d00",
+  "provenance_page": "https://the-soundery.com/tylko-spaces/",
+  "source_version": "Credited sound-studio public Bedroom film; exact byte equivalence to original selected embed not asserted",
+  "expected_duration_seconds": 27.008,
+  "media_resolution": "640x360",
+  "audio_stream_verified": true,
+  "method": "watch-video actual video and audio, plus full-span contact-sheet check",
+  "model": "gemini-3.5-flash-lite",
+  "fps": 6,
+  "successful_clips": [{"range": "0:00-0:28", "raw_report": "raw-full-lite-1.md"}],
+  "video_tokens": 11367,
+  "full_film_requested": true,
+  "run_exit_code": 0,
+  "observed_end_time_in_raw": "00:26.500",
+  "editorially_reviewed": true,
+  "coverage_assessment": "Complete credited public Bedroom film and ending audio reported. Fine prop branding and subsecond edit boundaries are uncertain.",
+  "review_date": "2026-10-17",
+  "editorial_corrections": ["Furniture is present in opening; tiny prop branding is not a reliable first-brand marker.", "Animation illustrates organization, not measured product performance.", "Attention, production-method and exact instrument assertions are not adopted."]
+}

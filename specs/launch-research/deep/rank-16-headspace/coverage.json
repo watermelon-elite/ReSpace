@@ -1,0 +1,47 @@
+{
+  "rank": 16,
+  "duration_seconds": 87.001,
+  "analysis_source": "https://www.youtube.com/watch?v=CS76mK58urI",
+  "coverage_status": "full_film_sampled",
+  "analysis_attempted": true,
+  "research_date_local": "2026-10-17",
+  "title": "Headspace \u2014 Say Hello to Headspace",
+  "source_page": "https://vimeo.com/226652947",
+  "playable_reference": "https://www.youtube.com/watch?v=CS76mK58urI",
+  "provenance": "Director Anna Charity links this YouTube film in the primary project post.",
+  "supporting_sources": [
+    "https://dribbble.com/shots/3581319-Say-hello-to-Headspace"
+  ],
+  "audio_stream_verified": true,
+  "model": "gemini-3.5-flash-lite",
+  "fps": 6,
+  "requested_intervals_seconds": [
+    [
+      0,
+      88
+    ],
+    [
+      0,
+      30
+    ]
+  ],
+  "reported_observed_interval": "00:00.000\u201301:27.500",
+  "file_duration_seconds": 87.001,
+  "raw_report_private": "/private/tmp/respace-hosted/headspace-raw-full-unmodified.md",
+  "delivered_av_reports": [
+    "av-report.md",
+    "opening-check.md"
+  ],
+  "manual_visual_crosscheck": "Downloaded same director-linked public YouTube film; contact sheet across complete runtime inspected. Focused audiovisual recheck confirms calm/focused/sleeping opening. Public auto-captions corroborate opening narration and first spoken brand, supplementary only.",
+  "limits": [
+    "Initial audiovisual report reverses opening speech and character state; opening recheck and inspected frames correct it.",
+    "Both model reports place first spoken brand too late; public captions place it around 9.44s. Editorial report uses approximate 9\u201311s.",
+    "Reported full-pass endpoint87.5s exceeds measured media duration87.001s; do not treat it as exact.",
+    "Recheck contains malformed timestamp notation; final report gives approximate coherent scene ranges.",
+    "No clinical, retention, conversion or testimonial claims independently validated."
+  ],
+  "local_recheck_source": "/private/tmp/respace-hosted/headspace-source.webm",
+  "video_tokens_full_pass": 36629,
+  "video_tokens_opening_recheck": 12630,
+  "raw_opening_recheck_private": "/private/tmp/respace-hosted/headspace-raw-opening-check-unmodified.md"
+}

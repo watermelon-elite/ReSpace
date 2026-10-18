@@ -1,0 +1,35 @@
+{
+  "desk": {
+    "budget": "500.00",
+    "styles": ["Japandi", "Minimal"],
+    "payload": {
+      "category": "desk",
+      "function": "compact laptop workspace for working from home",
+      "quantity": 1,
+      "must_have": {},
+      "avoid": {"condition": "used"}
+    }
+  },
+  "chair_pair": {
+    "budget": "400.00",
+    "styles": ["Mid-century"],
+    "payload": {
+      "category": "chair",
+      "function": "two dining chairs for a small apartment",
+      "quantity": 2,
+      "must_have": {"material": "wood"},
+      "avoid": {"condition": "used"}
+    }
+  },
+  "rug": {
+    "budget": "250.00",
+    "styles": ["Cozy"],
+    "payload": {
+      "category": "rug",
+      "function": "area rug for a small living room reading corner",
+      "quantity": 1,
+      "must_have": {},
+      "avoid": {}
+    }
+  }
+}

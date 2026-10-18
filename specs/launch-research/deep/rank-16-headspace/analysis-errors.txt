@@ -1,0 +1,5 @@
+headspace.log
+[info] reading the YouTube link directly, no download needed
+[info] analyzing with gemini-flash-latest...
+ERROR: Rate limit hit on the free tier.
+Wait a minute and retry, or analyze a shorter clip with --clip.

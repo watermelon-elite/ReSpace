@@ -1,0 +1,329 @@
+{% extends "format_workflow/run_base.html" %}
+{% macro visual_type_label(visual_type) -%}
+{{ {"personal-asset": "Personal asset", "recording": "Recording", "generative": "Generated", "general-asset": "General asset", "subtitle-hidden": "Hidden subtitles", "subtitle-emphasis": "Subtitle emphasis"}.get(visual_type, visual_type|replace("-", " ")|title) }}
+{%- endmacro %}
+{% block title %}{{ run.title }} · Scripts{% endblock %}
+{% block extra_head %}{% if packages %}<link rel="stylesheet" href="{{ url_for('static', filename='format_feedback.css') }}">{% endif %}{% endblock %}
+{% block extra_scripts %}{% if packages %}<script src="{{ url_for('static', filename='format_scripts_editor.js') }}" defer></script>{% endif %}{% endblock %}
+{% block main_class %} format-scripts-shell{% endblock %}
+{% block active_page %}scripts{% endblock %}
+{% block run_body %}
+  {% if packages %}
+  <section class="format-script-page" aria-labelledby="script-title">
+    <header class="format-script-selector-header">
+      <div>
+        <p class="format-eyebrow">Scripts</p>
+        <nav class="format-script-selector" aria-label="Choose a script">
+          {% for package in packages %}
+            <a href="{{ url_for(format_ui.scripts_endpoint, run_id=run.id, package=package.id) }}"
+               class="{{ 'is-active' if package.id == selected_package.id else '' }}"
+               data-script-selector-link="{{ package.id }}"
+               title="{{ package.title }}"
+               {% if package.id == selected_package.id %}aria-current="page"{% endif %}>
+              <span class="format-script-selector-index">{{ loop.index }}</span>
+              <span class="format-script-selector-label">{{ package.selector_title }}</span>
+            </a>
+          {% endfor %}
+        </nav>
+      </div>
+    </header>
+
+    {% set package = selected_package %}
+    {% set version = package.display_version %}
+    {% set content = version.content %}
+    {% set is_old_version = version.id != package.active_version_id %}
+    {% set comments_enabled = format_ui.add_script_comment_endpoint %}
+    <article class="format-package-editor format-script-workspace"
+             data-comments-disabled="{{ 'true' if is_old_version or not comments_enabled else 'false' }}"
+             data-editing-disabled="{{ 'true' if is_old_version else 'false' }}"
+             {% if not is_old_version %}
+             data-autosave-url="{{ url_for(format_ui.autosave_package_endpoint, run_id=run.id, package_id=package.id) }}"
+             data-generated-base-version-id="{{ package.generated_base_version_id }}"
+             {% endif %}>
+      <div class="format-script-toolbar">
+        <div class="format-script-heading-row">
+          <div class="format-title-carousel" data-title-carousel data-package-id="{{ package.id }}">
+            {% for title in package.title_options %}
+              <input type="hidden" data-title-option value="{{ title }}">
+            {% endfor %}
+            <button type="button" class="format-title-arrow" data-title-previous aria-label="Previous title">&lsaquo;</button>
+            <div class="format-title-choice">
+              <h2 id="script-title" data-title-editor
+                  contenteditable="{{ 'false' if is_old_version else 'plaintext-only' }}"
+                  spellcheck="true">{{ package.display_title }}</h2>
+              <div class="format-title-choice-meta">
+                <span data-title-position>1 / {{ package.title_options|length }}</span>
+                <span class="format-title-selected" data-title-selected>Selected</span>
+                <button type="button" class="format-title-select" data-title-select hidden
+                        {% if is_old_version %}disabled{% endif %}>Select</button>
+              </div>
+            </div>
+            <button type="button" class="format-title-arrow" data-title-next aria-label="Next title">&rsaquo;</button>
+          </div>
+          <span class="format-script-meta">{{ content.script.estimated_duration_seconds }} sec · {{ content.target.aspect_ratio }}</span>
+        </div>
+        <div class="format-script-copy-ids">
+          <code>Run ID: {{ run.id }} · Script ID: {{ package.id }}</code>
+          <button type="button" aria-label="Copy run and script IDs">Copy IDs</button>
+        </div>
+        <button class="format-copy-export" type="button" data-copy-export-button
+                aria-label="Copy styled export for Google Docs">
+          <span data-copy-export-label>Copy Export</span>
+        </button>
+        <span class="sr-only" data-copy-export-status aria-live="polite"></span>
+        <span class="format-package-save-status" data-package-save-status role="status" aria-live="polite">{{ '' if is_old_version else 'Saved automatically' }}</span>
+        {% if package.versions|length > 1 %}
+          <div class="format-script-status">
+            <label>Version
+              <select data-version-selector>
+                {% for choice in package.versions %}
+                  <option value="{{ url_for(format_ui.scripts_endpoint, run_id=run.id, package=package.id, version=choice.id) }}"
+                          {% if choice.id == version.id %}selected{% endif %}>
+                    {{ choice.number }} · {{ choice.kind }}
+                  </option>
+                {% endfor %}
+              </select>
+            </label>
+            {% if is_old_version %}
+              <span class="format-old-version-warning">This is an old version, comments can't be added</span>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div data-copy-export-source hidden>
+        <div style="font-family:Arial,sans-serif;color:#000000;line-height:1.15;">
+          <p style="margin:0 0 3pt;font-size:26pt;line-height:1.1;">{{ content.copy_export.title }}</p>
+          <p style="margin:0 0 12pt;color:#555555;font-size:10pt;">{{ content.copy_export.metadata }}</p>
+          <p style="margin:0 0 3pt;font-size:10.5pt;font-weight:700;">How to read the styling</p>
+          <ul style="margin:0 0 14pt;padding-left:24pt;color:#000000;font-size:9.5pt;">
+            {% for label, explanation in content.copy_export.legend %}
+              <li style="margin:0 0 2pt;"><span style="font-weight:700;">{{ label }}</span><span style="color:#555555;">{{ explanation }}</span></li>
+            {% endfor %}
+          </ul>
+          {% for line in content.copy_export.lines %}
+            <div style="margin:{{ '0' if loop.first else '10pt' }} 0 0;">
+              <p style="margin:0 0 3pt;color:#000000;font-size:9pt;font-weight:700;">{{ line.heading }}</p>
+              <p style="margin:0 0 8pt;font-size:12pt;line-height:1.15;">{% for segment in line.segments %}<span style="color:{{ segment.color }};font-weight:{{ '700' if segment.bold else '400' }};text-decoration:{{ 'underline' if segment.underline else 'none' }};">{{ segment.text }}</span>{% endfor %}</p>
+              <ul style="margin:0;padding-left:24pt;color:#000000;font-size:10.5pt;line-height:1.15;">
+                {% for bullet in line.bullets %}
+                  <li style="margin:0 0 4pt;"><span style="color:{{ bullet.color }};font-weight:{{ '700' if bullet.bold else '400' }};text-decoration:{{ 'underline' if bullet.underline else 'none' }};">{{ bullet.label }}</span>{% if bullet.description %}<span style="color:{{ bullet.color }};font-weight:{{ '700' if bullet.bold else '400' }};text-decoration:none;"> — {{ bullet.description }}</span>{% endif %}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <textarea data-copy-export-plain hidden>{{ content.copy_export.plain_text }}</textarea>
+
+      <div class="format-script-page-controls" role="group" aria-label="Script page width">
+        <button type="button" data-script-pages-button="1" aria-pressed="false">One page</button>
+        <button type="button" data-script-pages-button="2" aria-pressed="true">Two page</button>
+        <button type="button" data-script-pages-button="3" aria-pressed="false">Three page</button>
+      </div>
+
+      <section class="format-script-focus{{ ' without-comments' if not comments_enabled else '' }}" data-script-pages="2" aria-label="Script document and comments">
+        <div class="format-script-reader">
+          <div class="format-script-document" data-script-document aria-label="Full script narration">
+            <div class="format-script-document-body" data-script-document-body data-script-editor
+                 contenteditable="{{ 'false' if is_old_version else 'plaintext-only' }}"
+                 spellcheck="true">{% for beat in content.display_beats %}<p class="format-document-beat"
+                   data-narration-target="{{ beat.id }}:narration:text"
+                   data-beat-id="{{ beat.id }}"
+                   data-script-start-char="{{ beat.start_char }}">{% for segment in beat.annotated_narration %}{% if segment.comment_ids %}<mark data-comment-ids="{{ segment.comment_ids|join(' ') }}">{% endif %}{% if segment.word_index is not none %}<span data-script-word-index="{{ segment.word_index }}">{{ segment.text }}</span>{% else %}{{ segment.text }}{% endif %}{% if segment.comment_ids %}</mark>{% endif %}{% endfor %}</p>{% endfor %}</div>
+          </div>
+        </div>
+
+        {% if comments_enabled %}
+        <aside class="format-comment-rail" aria-label="Comments">
+          {% set general_comment_events = package.commentary_events|selectattr("kind", "equalto", "comment")|list %}
+          <span class="format-comment-count" data-comment-count>{{ package.narration_comments|length + general_comment_events|length }} comments</span>
+          <div class="format-comment-thread-layer" data-comment-thread-layer aria-live="polite">
+            {% for comment in package.narration_comments %}
+              <form class="format-margin-comment" data-inline-comment-edit data-comment-card="{{ comment.id }}"
+                    data-comment-target="{{ comment.target_id }}"
+                    data-range-start="{{ comment.range_start }}"
+                    action="{{ url_for(format_ui.edit_script_comment_endpoint, run_id=run.id, package_id=package.id, feedback_id=comment.id) }}">
+                <button type="button" class="format-comment-card-content" data-inline-comment-preview aria-expanded="false">
+                  <span class="format-comment-quote" data-full-quote="{{ comment.anchored_text }}">“{{ comment.anchored_text }}”</span>
+                  <span class="format-comment-text" data-comment-summary>{{ comment.feedback_text }}</span>
+                  <span data-comment-full hidden>{{ comment.feedback_text }}</span>
+                </button>
+                <div class="format-margin-comment-edit" data-inline-comment-edit-fields hidden>
+                  <textarea name="comment_text" aria-label="Edit comment">{{ comment.feedback_text }}</textarea>
+                  <div class="format-comment-actions">
+                    <button type="button" class="is-secondary" data-inline-comment-cancel>Cancel</button>
+                    <button type="submit">Save</button>
+                  </div>
+                </div>
+                <span class="format-comment-status" role="status" aria-live="polite"></span>
+              </form>
+            {% endfor %}
+
+            {% for event in package.commentary_events %}
+              {% if event.kind == "comment" %}
+                <article class="format-margin-comment is-general">
+                  <span class="format-comment-quote">General comment</span>
+                  <p class="format-comment-text">{{ event.comment.feedback_text }}</p>
+                </article>
+              {% else %}
+                <article class="format-margin-comment is-general format-regeneration-event">
+                  <span class="format-comment-quote">Version history</span>
+                  <p class="format-comment-text">Script regenerated · version {{ event.version.number }}</p>
+                </article>
+              {% endif %}
+            {% endfor %}
+
+            <div class="format-comments-empty" data-comments-empty {% if package.narration_comments or package.commentary_events %}hidden{% endif %}>
+              <p>No comments yet</p>
+              <span>Use the comment field below to start a thread.</span>
+            </div>
+          </div>
+
+          <form class="format-general-comments" aria-labelledby="general-comments-title"
+                data-script-comment-form data-general-comment-form method="post"
+                action="{{ url_for(format_ui.add_script_comment_endpoint, run_id=run.id, package_id=package.id) }}">
+            <label class="sr-only" id="general-comments-title" for="general-comment-{{ package.id }}">General comments</label>
+            <textarea id="general-comment-{{ package.id }}" name="comment_text" rows="1" required autocomplete="off"
+                      data-general-comment-input placeholder="Add a general comment…"{% if is_old_version %} disabled{% endif %}></textarea>
+            <button type="submit" aria-label="Add general comment"{% if is_old_version %} disabled{% endif %}>+</button>
+            <span class="format-comment-status" role="status" aria-live="polite"></span>
+          </form>
+        </aside>
+        {% endif %}
+      </section>
+
+      {% if comments_enabled %}
+      <form class="format-selection-comment-composer" data-script-comment-form data-selection-comment-form hidden method="post"
+            action="{{ url_for(format_ui.add_script_comment_endpoint, run_id=run.id, package_id=package.id) }}">
+        <input type="hidden" name="version_id" value="{{ version.id }}">
+        <input type="hidden" name="narration_target">
+        <input type="hidden" name="range_end_target">
+        <input type="hidden" name="range_start">
+        <input type="hidden" name="range_end">
+        <input type="text" name="comment_text" required autocomplete="off"
+               placeholder="Add a comment…" aria-label="Comment on selected text"{% if is_old_version %} disabled{% endif %}>
+        <button type="submit" aria-label="Add comment"{% if is_old_version %} disabled{% endif %}>+</button>
+        <span class="format-comment-status" role="status" aria-live="polite"></span>
+      </form>
+      {% endif %}
+
+      <p class="format-timeline-note">{{ content.timeline_note|default('Word-based timeline · Shot timecodes, pauses, music and sound cues are included in the blocks.') }}</p>
+
+      <div class="format-timeline-toolbar">
+        <ul class="format-timeline-key" aria-label="Visual asset color key">
+          {% for visual_type in ("personal-asset", "recording", "generative", "general-asset") %}
+            <li>
+              <span class="format-timeline-key-dot format-asset-{{ visual_type }}" aria-hidden="true"></span>
+              {{ visual_type_label(visual_type) }}
+            </li>
+          {% endfor %}
+        </ul>
+        <div class="format-timeline-controls">
+          <div class="format-view-switch" role="group" aria-label="Visual layout">
+            <button type="button" data-timeline-view="timeline" aria-pressed="true"
+                    aria-controls="visual-timeline-{{ package.id }}">Timeline</button>
+            <button type="button" data-timeline-view="grid" aria-pressed="false"
+                    aria-controls="visual-timeline-{{ package.id }}">Grid</button>
+          </div>
+          <div class="format-view-switch format-grid-track-switch" role="group" aria-label="Grid track">
+            {% for track in content.timeline_tracks %}
+              <button type="button" data-grid-track="{{ track.key }}"
+                      aria-pressed="{{ 'true' if track.key == 'base' else 'false' }}"
+                      aria-controls="visual-timeline-{{ package.id }}">{{ track.label }}</button>
+            {% endfor %}
+          </div>
+          <div class="format-view-switch" role="group" aria-label="Script visibility">
+            <button type="button" data-timeline-script="show" aria-pressed="true"
+                    aria-controls="visual-timeline-{{ package.id }}">Show script</button>
+            <button type="button" data-timeline-script="hide" aria-pressed="false"
+                    aria-controls="visual-timeline-{{ package.id }}">Hide script</button>
+          </div>
+        </div>
+      </div>
+
+      <section class="format-visual-timeline" id="visual-timeline-{{ package.id }}"
+               data-visual-timeline data-view="timeline" data-grid-track="base"
+               style="--word-count: {{ content.word_count }}"
+               aria-label="Visual timeline">
+        <div class="format-word-axis" style="--word-count: {{ content.word_count }}"
+             aria-label="Script divided by base visual blocks">
+          {% for section in content.timeline_script_sections %}
+            <p class="format-word-axis-section" data-base-script-section="{{ section.id }}"
+               style="--word-start: {{ section.start_index + 1 }}; --word-span: {{ section.word_span }}">
+              {% for word in section.words %}<span data-axis-word-index="{{ word.index }}">{{ word.text }}</span>{% if not loop.last %} {% endif %}{% endfor %}
+            </p>
+          {% endfor %}
+        </div>
+        <div class="format-timeline-rows">
+          {% for track in content.timeline_tracks %}
+            <section class="format-timeline-row" data-track-key="{{ track.key }}" aria-label="{{ track.label }} track">
+              <h3>{{ track.label }}</h3>
+              <div class="format-timeline-track" style="--word-count: {{ content.word_count }}">
+              {% for element in track.elements %}
+              <div class="format-timeline-item" data-start-index="{{ element.start_index }}"
+                   data-end-index="{{ element.end_index }}" data-element-id="{{ element.id }}"
+                   style="--word-start: {{ element.start_index + 1 }}; --word-span: {{ element.word_span }}">
+                <p class="format-timeline-script">{{ element.script_text }}</p>
+                <article class="format-timeline-card format-asset-{{ element.visual_type }}"
+                         data-visual-comment-card tabindex="0"
+                         aria-label="{{ visual_type_label(element.visual_type) }}">
+                  {% set recording_comment_count = element.recording_comments|default([])|length %}
+                  {% set visual_comment_count = element.element_comments|length + recording_comment_count %}
+                  <span class="format-visual-comment-count" data-visual-comment-count
+                        aria-label="{{ visual_comment_count }} {{ 'comment' if visual_comment_count == 1 else 'comments' }} on this block"
+                        {% if not visual_comment_count %}hidden{% endif %}>{{ visual_comment_count }}</span>
+                  <p class="format-timeline-visual"
+                     {% if element.target_type == 'visual-block' %}
+                     data-visual-description-editor data-visual-id="{{ element.id }}"
+                     contenteditable="{{ 'false' if is_old_version else 'plaintext-only' }}" spellcheck="true"
+                     {% endif %}>{{ element.visual_description }}</p>
+                  {% if element.recording_requirement %}
+                    <details class="format-following-action">
+                      <summary>Details</summary>
+                      <p data-following-action-editor data-visual-id="{{ element.id }}"
+                         contenteditable="{{ 'false' if is_old_version else 'plaintext-only' }}"
+                         spellcheck="true">{{ element.recording_requirement.exact_action }}</p>
+                    </details>
+                  {% endif %}
+                  {% if comments_enabled %}
+                  <button class="format-visual-comment-toggle" type="button"
+                          data-visual-comment-toggle data-element-comment-toggle
+                          data-comment-form-id="comment-form-{{ package.id }}-{{ element.id }}-visual"
+                          aria-expanded="false"
+                          aria-label="Add a comment to this block"
+                          {% if is_old_version %}disabled{% endif %}>+</button>
+                  {% endif %}
+                </article>
+                {% if comments_enabled %}
+                <form class="format-visual-comment-composer" id="comment-form-{{ package.id }}-{{ element.id }}-visual"
+                      data-script-comment-form data-element-comment-form
+                      data-visual-comment-form hidden method="post"
+                      action="{{ url_for(format_ui.add_script_comment_endpoint, run_id=run.id, package_id=package.id) }}">
+                  <input type="hidden" name="version_id" value="{{ version.id }}">
+                  <input type="hidden" name="{{ 'subtitle_target' if element.target_type == 'subtitle-directive' else 'visual_target' }}" value="{{ element.id }}">
+                  <label class="sr-only" for="visual-comment-{{ package.id }}-{{ element.id }}">Comment on this block</label>
+                  <textarea id="visual-comment-{{ package.id }}-{{ element.id }}" name="comment_text"
+                            rows="1" required autocomplete="off" data-visual-comment-input
+                            placeholder="Add a comment…"{% if is_old_version %} disabled{% endif %}></textarea>
+                  <span class="format-comment-status" role="status" aria-live="polite"></span>
+                </form>
+                {% endif %}
+              </div>
+              {% endfor %}
+              </div>
+            </section>
+          {% endfor %}
+        </div>
+      </section>
+
+
+    </article>
+  </section>
+  {% else %}
+    <section class="format-page-section format-empty-state" aria-labelledby="empty-heading">
+      <h2 id="empty-heading">{{ empty_message }}</h2>
+      <p>{{ empty_detail }}</p>
+    </section>
+  {% endif %}
+{% endblock %}

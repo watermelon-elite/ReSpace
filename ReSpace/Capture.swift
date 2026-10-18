@@ -212,22 +212,67 @@ struct CaptureScreen: View {
     @State private var confirmDiscard = false
     @State private var showPreview = false
     @State private var selectedObject: String?
+    private var acquiring: Bool { controller.archive.phase == "capturing" && !controller.finishing && controller.failure == nil }
     var body: some View {
-        ZStack(alignment: .bottom) {
-            CaptureSurface(controller: controller).ignoresSafeArea()
-            VStack {
-                Text(controller.status)
-                Text("Accepted \(controller.accepted) · Stored \(controller.stored) · Pending \(controller.accepted - controller.stored)").font(.caption.monospacedDigit())
-                if let error = controller.failure { Text(error).foregroundStyle(.red); if controller.archive.phase == "upload_pending" { Button("Retry finished upload") { Task { await controller.recover() } } } }
-                if controller.preview != .null { Button("Review native measurements") { showPreview = true } }
-                if controller.archive.phase == "capturing" { Button("Done") { controller.done() }.buttonStyle(.borderedProminent).disabled(controller.finishing) }
-                Button("Cancel Scan", role: .destructive) { confirmDiscard = true }
-            }.padding().background(.regularMaterial).clipShape(RoundedRectangle(cornerRadius: 20)).padding()
+        ZStack {
+            VStack(spacing: 0) {
+                RSTopBar(title: "Scan your room", trailingSymbol: "xmark", trailingLabel: "Cancel scan", trailing: { confirmDiscard = true })
+                CaptureSurface(controller: controller)
+                    .overlay(alignment: .top) {
+                        Text(controller.status).font(ReSpaceStyle.font(15, weight: .medium)).multilineTextAlignment(.center)
+                            .padding(16).frame(maxWidth: .infinity).background(.white, in: RoundedRectangle(cornerRadius: 16)).padding(16)
+                    }
+                    .overlay(alignment: .bottomLeading) {
+                        Text("Stored \(controller.stored) · Pending \(controller.accepted - controller.stored)")
+                            .font(ReSpaceStyle.font(12)).padding(.horizontal, 12).padding(.vertical, 8)
+                            .background(.white, in: Capsule()).padding(16)
+                    }.clipShape(RoundedRectangle(cornerRadius: 28)).padding(.horizontal, 12)
+                VStack(spacing: 8) {
+                    Button("Finish scan") { controller.done() }.buttonStyle(RSButtonStyle()).disabled(controller.finishing)
+                    Button("Cancel scan") { confirmDiscard = true }.buttonStyle(RSButtonStyle(kind: .quiet))
+                }.padding(.horizontal, 24).padding(.top, 16).padding(.bottom, 12)
+            }.opacity(acquiring ? 1 : 0).allowsHitTesting(acquiring)
+            if !acquiring { savingPage }
+        }.background(.white).foregroundStyle(ReSpaceStyle.ink)
+        .fullScreenCover(isPresented: $confirmDiscard) {
+            RSPage(title: "Discard this scan?", question: true, back: { confirmDiscard = false }) {
+                RSSymbol(name: "camera")
+                Text("This scan and its photos will be discarded. You’ll need to start again.").foregroundStyle(ReSpaceStyle.secondary)
+            } footer: {
+                Button(acquiring ? "Keep scanning" : "Keep this scan") { confirmDiscard = false }.buttonStyle(RSButtonStyle())
+                Button("Discard scan") { Task { await controller.abandon(); confirmDiscard = false; dismiss() } }.buttonStyle(RSButtonStyle(kind: .quiet))
+            }
         }
-        .sheet(isPresented: $showPreview) { NavigationStack { RoomScene(document: controller.preview, native: true, selectedID: $selectedObject, ghosts: true, resetToken: 0).navigationTitle("Native measurements").toolbar { Button("Done") { showPreview = false } } } }
+        .sheet(isPresented: $showPreview) {
+            RSPage(title: "Your measured room", back: { showPreview = false }) {
+                RoomScene(document: controller.preview, native: true, selectedID: $selectedObject, ghosts: true, resetToken: 0)
+                    .frame(height: 400).clipShape(RoundedRectangle(cornerRadius: 28))
+            } footer: { Button("Done") { showPreview = false }.buttonStyle(RSButtonStyle()) }
+        }
         .interactiveDismissDisabled()
-        .confirmationDialog("Discard this scan and its photos?", isPresented: $confirmDiscard) { Button("Discard Scan", role: .destructive) { Task { await controller.abandon(); dismiss() } } }
         .onChange(of: controller.finished) { _, value in if value { dismiss() } }
         .onChange(of: scenePhase) { _, phase in if phase != .active { controller.interrupt("Scan interrupted. Start again to capture this room.") } }
+    }
+    private var savingPage: some View {
+        RSPage(title: controller.failure == nil ? "Saving your scan." : controller.archive.phase == "upload_pending" ? "Your scan is safe." : "Let’s scan again.", showsBack: false) {
+            if controller.preview != .null {
+                RoomScene(document: controller.preview, native: true, selectedID: $selectedObject, ghosts: true, resetToken: 0)
+                    .frame(height: 260).clipShape(RoundedRectangle(cornerRadius: 28))
+                Button("Review native measurements") { showPreview = true }.buttonStyle(RSButtonStyle(kind: .quiet))
+            } else { RSSymbol(name: controller.failure == nil ? "square.and.arrow.up" : "arrow.clockwise") }
+            if let error = controller.failure {
+                RSNotice(message: error, isError: true)
+                if controller.archive.phase == "upload_pending" { Text("It’s on your phone. Reconnect to finish saving it.").foregroundStyle(ReSpaceStyle.secondary) }
+            } else {
+                HStack(spacing: 12) { ProgressView(); Text(controller.status).font(ReSpaceStyle.font(14)) }
+            }
+            RSKeyValue(title: "Stored captures", value: "\(controller.stored) of \(controller.accepted)")
+        } footer: {
+            if controller.failure != nil && controller.archive.phase == "upload_pending" {
+                Button("Try saving again") { Task { await controller.recover() } }.buttonStyle(RSButtonStyle())
+            }
+            Button("My Rooms") { dismiss() }.buttonStyle(RSButtonStyle(kind: .quiet)).disabled(controller.finishing && controller.archive.phase == "capturing")
+            Button("Discard scan") { confirmDiscard = true }.buttonStyle(RSButtonStyle(kind: .quiet))
+        }
     }
 }

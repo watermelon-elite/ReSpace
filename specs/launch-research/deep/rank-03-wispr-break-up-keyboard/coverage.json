@@ -1,0 +1,26 @@
+{
+  "rank": 3,
+  "source_url": "https://www.youtube.com/watch?v=9KqGpxtsawc",
+  "expected_duration_seconds": 86,
+  "method": "watch-video Gemini audiovisual analysis",
+  "model": "gemini-flash-latest",
+  "fps": 6,
+  "successful_clips": [
+    {
+      "range": "0:00-1:27",
+      "raw_report": "raw-full.md"
+    }
+  ],
+  "full_film_requested": true,
+  "run_exit_code": 0,
+  "review_date": "2026-10-17",
+  "notes": "Request end extends one second beyond rounded metadata duration to include final frame. Automated audiovisual analysis; editorial review follows.",
+  "editorially_reviewed": true,
+  "observed_end_time_in_raw": "01:25.667",
+  "coverage_assessment": "Complete film requested; full narrative resolution and end card reported.",
+  "editorial_corrections": [
+    "Repeated settings and problems are supported; frame-identical camera matching is not independently established.",
+    "Edited instantaneous transcription is not a measured latency test.",
+    "Raw proposed live AR overlays and clearance pills are not adopted as current ReSpace functionality."
+  ]
+}

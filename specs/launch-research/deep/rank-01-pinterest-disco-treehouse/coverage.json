@@ -1,0 +1,28 @@
+{
+  "rank": 1,
+  "source_url": "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+  "expected_duration_seconds": 31,
+  "method": "watch-video Gemini audiovisual analysis",
+  "model": "gemini-flash-latest",
+  "fps": 6,
+  "successful_clips": [
+    {
+      "range": "0:00-0:32",
+      "raw_report": "analysis-full.quote-redacted.md",
+      "report_status": "Minimal labeled quote redactions; all timestamps and observations otherwise unchanged"
+    }
+  ],
+  "full_film_requested": true,
+  "run_exit_code": 0,
+  "review_date": "2026-10-17",
+  "notes": "Request end extends one second beyond rounded metadata duration to include final frame. Automated audiovisual analysis; editorial review follows.",
+  "editorially_reviewed": true,
+  "coverage_assessment": "Full film requested and end card reported; timestamp precision is model-produced, not independently frame-verified.",
+  "observed_end_time_in_raw": "00:30.000",
+  "editorial_corrections": [
+    "Physical furniture manifestations are advertising visualization, not evidence of Pinterest purchase or installation functionality.",
+    "Raw ReSpace live AR and collaborative style-merge proposals are not established capabilities and are not adopted.",
+    "Soundtrack description is automated; stereo fidelity is not independently verified."
+  ],
+  "private_unmodified_raw": "/private/tmp/respace-deep-raw/rank-01-pinterest-disco-treehouse/raw-full.md"
+}

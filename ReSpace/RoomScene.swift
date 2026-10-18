@@ -9,8 +9,12 @@ struct RoomScene: UIViewRepresentable {
     @Binding var selectedID: String?
     let ghosts: Bool
     let resetToken: Int
+    var zoomSteps: Int = 0
     var assetBaseURL: URL? = nil
     var assetManifest: JSONValue = .null
+    var importedModelURL: URL? = nil
+    var cutaway = true
+    var onModelLoad: ((String?) -> Void)? = nil
     func makeCoordinator() -> Coordinator { Coordinator(self) }
     func makeUIView(context: Context) -> ARView {
         let view = ARView(frame: .zero, cameraMode: .nonAR, automaticallyConfigureSession: false)
@@ -19,6 +23,7 @@ struct RoomScene: UIViewRepresentable {
         return view
     }
     func updateUIView(_ view: ARView, context: Context) { context.coordinator.parent = self; context.coordinator.update() }
+    static func dismantleUIView(_ view: ARView, coordinator: Coordinator) { coordinator.importedLoadTask?.cancel() }
     @MainActor final class Coordinator: NSObject, UIGestureRecognizerDelegate {
         var parent: RoomScene
         weak var view: ARView?
@@ -28,6 +33,7 @@ struct RoomScene: UIViewRepresentable {
         var last: JSONValue = .null
         var lastGhosts = true
         var lastReset = 0
+        var lastZoomSteps = 0
         var center = SIMD3<Float>(0, 1, 0)
         var radius: Float = 7
         var azimuth: Float = .pi / 4
@@ -41,6 +47,8 @@ struct RoomScene: UIViewRepresentable {
         var lastManifest: JSONValue = .null
         var framedContent = false
         var wallEntities: [(Entity, SIMD3<Float>, SIMD3<Float>)] = []
+        var ceilingEntities: [Entity] = []
+        var importedLoadTask: Task<Void, Never>?
         init(_ parent: RoomScene) { self.parent = parent }
         func attach(_ view: ARView) {
             self.view = view; view.scene.addAnchor(root); root.addChild(camera); root.addChild(content)
@@ -57,19 +65,25 @@ struct RoomScene: UIViewRepresentable {
             let changed = last != parent.document || lastGhosts != parent.ghosts || lastManifest != parent.assetManifest
             if changed {
                 let first = last == .null
-                if !parent.native, !first, last["room"] == parent.document["room"] {
+                if parent.importedModelURL == nil, !parent.native, !first, last["room"] == parent.document["room"] {
                     if lastManifest != parent.assetManifest { itemDocuments.removeAll() }
                     reconcileItems(parent.document)
                 } else {
                     assetTasks.values.forEach { $0.cancel() }; assetTasks.removeAll()
                     content.removeFromParent(); content = Entity(); root.addChild(content)
                     objects = [:]; colors = [:]; wallEntities = []; itemRoots = [:]; itemDocuments = [:]; highlights = [:]
-                    if parent.native { buildNative(parent.document) } else { buildScene(parent.document) }
+                    ceilingEntities = []
+                    if let url = parent.importedModelURL { loadImported(url) }
+                    else if parent.native { buildNative(parent.document) } else { buildScene(parent.document) }
                 }
                 if parent.native, !framedContent { reset() }
                 last = parent.document; lastGhosts = parent.ghosts; lastManifest = parent.assetManifest
             }
             if lastReset != parent.resetToken { lastReset = parent.resetToken; reset() }
+            if lastZoomSteps != parent.zoomSteps {
+                radius = min(40, max(0.8, radius / pow(1.25, Float(parent.zoomSteps - lastZoomSteps))))
+                lastZoomSteps = parent.zoomSteps
+            }
             for (id, entity) in objects { entity.model?.materials = [material(id == parent.selectedID ? .systemYellow : colors[id] ?? .systemGray, alpha: entity.name.hasPrefix("ghost:") ? 0.2 : 1)] }
             for (id, highlight) in highlights { highlight.isEnabled = id == parent.selectedID }
             positionCamera()
@@ -84,6 +98,45 @@ struct RoomScene: UIViewRepresentable {
         func tint(_ hex: String?) -> UIColor {
             guard let hex, hex.count == 7, hex.first == "#", let value = UInt32(hex.dropFirst(), radix: 16) else { return UIColor(red: 0.55, green: 0.61, blue: 0.58, alpha: 1) }
             return UIColor(red: CGFloat((value >> 16) & 255) / 255, green: CGFloat((value >> 8) & 255) / 255, blue: CGFloat(value & 255) / 255, alpha: 1)
+        }
+        func loadImported(_ url: URL) {
+            importedLoadTask?.cancel()
+            let target = content
+            importedLoadTask = Task { [weak self, weak target] in
+                guard let self, let target else { return }
+                do {
+                    let model = try await Entity(contentsOf: url)
+                    guard !Task.isCancelled, content === target else { return }
+                    target.addChild(model)
+                    for record in parent.document["entities"].array {
+                        guard let entity = model.findEntity(named: record["node_name"].text) else {
+                            throw ContractError.invalid("The imported model is missing \(record["label"].text).")
+                        }
+                        let kind = record["kind"].text
+                        if record["cutaway"].text == "ceiling" { ceilingEntities.append(entity) }
+                        if record["cutaway"].text == "wall" {
+                            let p = record["center"].numbers, n = record["inward_normal"].numbers
+                            guard p.count == 3, n.count == 3 else { throw ContractError.invalid("Imported wall geometry is incomplete.") }
+                            wallEntities.append((entity, SIMD3(Float(p[0]), Float(p[1]), Float(p[2])), SIMD3(Float(n[0]), Float(n[1]), Float(n[2]))))
+                        }
+                        if !["wall", "floor", "ceiling"].contains(kind) {
+                            let id = record["id"].text
+                            entity.name = id; entity.generateCollisionShapes(recursive: true); itemRoots[id] = entity
+                            let low = record["bounds_min"].numbers, high = record["bounds_max"].numbers
+                            guard low.count == 3, high.count == 3 else { throw ContractError.invalid("Imported Object bounds are incomplete.") }
+                            let minimum = SIMD3<Float>(Float(low[0]), Float(low[1]), Float(low[2]))
+                            let maximum = SIMD3<Float>(Float(high[0]), Float(high[1]), Float(high[2]))
+                            let marker = ModelEntity(mesh: .generateBox(size: maximum - minimum + SIMD3(repeating: 0.01)), materials: [material(.systemYellow, alpha: 0.2)])
+                            marker.position = (minimum + maximum) / 2; marker.isEnabled = id == parent.selectedID
+                            target.addChild(marker); highlights[id] = marker
+                        }
+                    }
+                    reset(); parent.onModelLoad?(nil)
+                } catch {
+                    guard !Task.isCancelled else { return }
+                    target.children.removeAll(); parent.onModelLoad?(error.localizedDescription)
+                }
+            }
         }
         func buildScene(_ scene: JSONValue) {
             let room = scene["room"] == .null ? scene["room_model"] : scene["room"]
@@ -280,14 +333,16 @@ struct RoomScene: UIViewRepresentable {
             let bounds = content.visualBounds(relativeTo: root)
             let extent = simd_length(bounds.extents)
             guard extent.isFinite, extent > 0, bounds.center.x.isFinite, bounds.center.y.isFinite, bounds.center.z.isFinite else { return }
-            center = bounds.center; radius = max(2, extent * 1.1)
+            let framing: Float = parent.importedModelURL == nil ? 1.1 : max(1.1, Float((view?.bounds.height ?? 1) / max(view?.bounds.width ?? 1, 1)))
+            center = bounds.center; radius = max(2, extent * framing)
             azimuth = .pi / 4; elevation = .pi / 4; positionCamera()
             framedContent = true
         }
         func positionCamera() {
             let position = center + SIMD3<Float>(radius * cos(elevation) * sin(azimuth), radius * sin(elevation), radius * cos(elevation) * cos(azimuth))
             camera.look(at: center, from: position, relativeTo: root)
-            for (entity, wallCenter, inward) in wallEntities { entity.isEnabled = simd_dot(position - wallCenter, inward) >= -0.05 }
+            for (entity, wallCenter, inward) in wallEntities { entity.isEnabled = (parent.importedModelURL != nil && !parent.cutaway) || simd_dot(position - wallCenter, inward) >= -0.05 }
+            for entity in ceilingEntities { entity.isEnabled = !parent.cutaway }
         }
         @objc func orbit(_ gesture: UIPanGestureRecognizer) { let delta = gesture.translation(in: view); gesture.setTranslation(.zero, in: view); azimuth -= Float(delta.x) * 0.007; elevation = min(1.45, max(0.08, elevation + Float(delta.y) * 0.007)); positionCamera() }
         @objc func pan(_ gesture: UIPanGestureRecognizer) { let d = gesture.translation(in: view); gesture.setTranslation(.zero, in: view); let right = SIMD3<Float>(cos(azimuth), 0, -sin(azimuth)); let forward = SIMD3<Float>(sin(azimuth), 0, cos(azimuth)); center -= right * Float(d.x) * radius * 0.0015; center -= forward * Float(d.y) * radius * 0.0015; positionCamera() }

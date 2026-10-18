@@ -9,60 +9,208 @@ struct RoomReview: View {
     @State private var selected: String?
     @State private var text = ""
     @State private var rename = ""
-    @State private var naming = false
-    @State private var deleting = false
     @State private var error: String?
-    @State private var intent = false
+    @State private var showOperation = false
+    @State private var page = "review"
+    @State private var chosenInstruction = "decide"
+    @State private var photo = 0
+    @State private var saving = false
+    @State private var designText = ""
+    @State private var reset = 0
     @Environment(\.dismiss) private var dismiss
     var room: JSONValue { detail["room"] }
-    var testNotice: JSONValue? { room["warnings"].array.first { $0["code"].text == "offline_test" } }
+    var testNotice: JSONValue? { room["warnings"].array.first { ["offline_test", "local_test"].contains($0["code"].text) } }
     var locked: Bool { room["current_operation_id"].string != nil || app.pending.contains { $0.roomID == roomID } }
+    private var objects: [JSONValue] { detail["measured_context"]["objects"].array }
+    private var photos: [JSONValue] { detail["capture_status"]["manifest"]["artifacts"].array.filter { $0["kind"].text == "jpeg" } }
+    private var selectedObject: JSONValue { objects.first { objectID($0) == selected } ?? .null }
+    private var objectName: String { selectedObject["category"].string?.capitalized ?? "Object" }
+    private var title: String {
+        switch page {
+        case "objects": return "What can change?"
+        case "object": return "Your \(objectName.lowercased())"
+        case "unlock": return "Unlock the \(objectName.lowercased())?"
+        case "photos": return "Your scan photos"
+        case "chat": return "What should we know?"
+        case "rename": return "Name your room"
+        case "delete": return "Delete this room?"
+        case "deletion": return "Deletion pending"
+        default: return room["name"].string ?? "Your room"
+        }
+    }
     var body: some View {
-        List {
-            if let error { Text(error).foregroundStyle(.red) }
-            if detail != .null {
-                Section(testNotice == nil ? "Original measured room" : "Imported test room") {
-                    if let testNotice { Text(testNotice["message"].text).foregroundStyle(.orange) }
-                    if detail["raw_export"] != .null { RoomScene(document: detail["raw_export"], native: true, selectedID: $selected, ghosts: true, resetToken: 0).frame(height: 280).listRowInsets(EdgeInsets()) }
-                    if !detail["capture_status"]["manifest"]["artifacts"].array.isEmpty {
-                        ScrollView(.horizontal) { HStack { ForEach(detail["capture_status"]["manifest"]["artifacts"].array.filter { $0["kind"].text == "jpeg" }, id: \.self) { artifact in
-                            PrivateCapturePhoto(app: app, path: "rooms/\(roomID)/artifacts/\(artifact["artifact_id"].text)").frame(width: 160, height: 120).clipped()
-                        } } }
-                    }
-                    Text(testNotice == nil ? "Native RoomPlan measurements. Small-object detection has not run at this stage." : "Model-derived geometry for local testing. This room was imported from a 3D model.").font(.caption).foregroundStyle(.secondary)
-                    let capture = detail["capture_status"]
-                    Text("Capture: \(capture["state"].text) · Expected \(capture["expected_artifacts"].int) · Stored \(capture["stored_artifacts"].int) · Missing \(capture["missing_artifacts"].int)").font(.caption)
-                    if let design = room["active_design_id"].string { NavigationLink("Reopen design") { DesignView(app: app, roomID: roomID, designID: design) } }
-                }
-                Section("Objects") {
-                    ForEach(detail["measured_context"]["objects"].array, id: \.self) { object in
-                        let objectID = object["native_id"].string ?? object["id"].string ?? object["identifier"].text
-                        VStack(alignment: .leading) {
-                            Button { selected = objectID } label: { Label(object["category"].string ?? "Measured Object", systemImage: selected == objectID ? "checkmark.circle.fill" : "cube") }
-                            Text(object["size"].numbers.map { String(format: "%.2f", $0) }.joined(separator: " × ") + " m").font(.caption)
-                            Picker("Planning instruction", selection: Binding(get: { instruction(objectID) }, set: { value in Task { await command(value == "keep" ? "Keep this in place" : value == "remove" ? "Remove this from the design" : "Explicitly unlock this and let the design decide", target: objectID) } })) { Text("Keep").tag("keep"); Text("Decide").tag("decide"); Text("Remove").tag("remove") }.pickerStyle(.segmented).disabled(locked)
+        Group {
+            if page == "review" {
+                VStack(spacing: 0) {
+                    RSTopBar(title: room["name"].text, back: { dismiss() }, trailing: { page = "options" })
+                    HStack {
+                        Button { page = "objects" } label: {
+                            Label("Objects", systemImage: "square.stack.3d.up")
+                                .font(ReSpaceStyle.font(13, weight: .medium)).padding(.horizontal, 14).frame(height: 44)
+                                .background(.white, in: Capsule())
+                        }.buttonStyle(.plain)
+                        Spacer()
+                        if let designID = room["active_design_id"].string {
+                            NavigationLink { DesignView(app: app, roomID: roomID, designID: designID) } label: {
+                                Text("Saved design").font(ReSpaceStyle.font(13, weight: .medium))
+                            }
                         }
+                        RSIconButton(symbol: "viewfinder", label: "Reset View") { reset += 1 }
+                    }.padding(.horizontal, 16).padding(.bottom, 8)
+                    if detail == .null { ProgressView("Opening your room…").frame(maxWidth: .infinity, maxHeight: .infinity) }
+                    else {
+                        RoomScene(document: detail["raw_export"], native: true, selectedID: $selected, ghosts: true, resetToken: reset)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .ignoresSafeArea(.container, edges: .bottom)
                     }
                 }
-                if operation != .null { Section { OperationPanel(app: app, operation: $operation, onUpdate: { await load() }) } }
-                Section("Conversation · Room review") {
-                    ForEach(conversation, id: \.self) { entry in VStack(alignment: .leading) { Text(entry["context"].text.capitalized).font(.caption).foregroundStyle(.secondary); Text(entry["text"].text) } }
-                    if let selected { HStack { Text("Selected Object: \(selected)").font(.caption); Button("Clear") { self.selected = nil } } }
-                    TextField("Ask about this room", text: $text, axis: .vertical)
-                    Button("Send") { let message = text; Task { await command(message, target: selected) } }.disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || locked)
+                .overlay(alignment: .bottom) {
+                    RoomRequestBar(app: app, text: $designText, operation: $operation, selection: selected.map { _ in objectName },
+                        selectedObjectID: selected, clear: { selected = nil }, prepareRoom: {
+                            guard let client = app.client else { throw ContractError.invalid("Configure the backend before continuing.") }
+                            return try await client.request("rooms/\(roomID)")
+                        }, onUpdate: { await load() }, onDetails: { showOperation = true })
                 }
-                Button("Design this room") { intent = true }.disabled(locked || room["capture_state"].text != "complete")
+                .background(ReSpaceStyle.canvas)
+                .toolbar(.hidden, for: .navigationBar).navigationBarBackButtonHidden()
+            } else {
+                RSPage(title: title, topTitle: page == "chat" ? "Room instructions" : "", question: page == "unlock" || page == "delete", back: { goBack() }) {
+                    if let error { RSNotice(message: error, isError: true) }
+                    pageContent
+                } footer: { pageFooter }
             }
         }
-        .navigationTitle(room["name"].string ?? "Room")
-        .toolbar { Menu { Button("Rename") { rename = room["name"].text; naming = true }; Button("Delete Room", role: .destructive) { deleting = true } } label: { Image(systemName: "ellipsis.circle") } }
-        .alert("Rename Room", isPresented: $naming) { TextField("Name", text: $rename); Button("Save") { Task { await renameRoom() } }; Button("Cancel", role: .cancel) {} }
-        .confirmationDialog("Delete this scan, photos, designs and conversation?", isPresented: $deleting, titleVisibility: .visible) { Button("Delete Room", role: .destructive) { Task { await deleteRoom() } } }
-        .sheet(isPresented: $intent) { IntentForm(app: app, detail: detail, onSubmit: { operation = $0; await load() }) }
-        .refreshable { await load() }
-        .task { text = UserDefaults.standard.string(forKey: "review_draft_\(roomID)") ?? ""; await load() }
+        .fullScreenCover(isPresented: $showOperation) {
+            NavigationStack {
+                OperationPanel(app: app, operation: $operation, roomDocument: detail["raw_export"], onUpdate: { await load() })
+            }
+        }
+        .task {
+            text = UserDefaults.standard.string(forKey: "review_draft_\(roomID)") ?? ""
+            await load()
+            designText = UserDefaults.standard.string(forKey: "design_draft_\(roomID)") ?? ""
+        }
+        .onChange(of: designText) { _, value in UserDefaults.standard.set(value, forKey: "design_draft_\(roomID)") }
         .onChange(of: text) { _, value in UserDefaults.standard.set(value, forKey: "review_draft_\(roomID)") }
         .task(id: [operation["operation_id"].text, operation["state"].text]) { await poll() }
+    }
+    @ViewBuilder private var pageContent: some View {
+        switch page {
+        case "objects":
+            if objects.isEmpty { Text("No measured Objects are available in this scan.").foregroundStyle(ReSpaceStyle.secondary) }
+            VStack(spacing: 0) {
+                ForEach(objects, id: \.self) { object in
+                    Button {
+                        selected = objectID(object); chosenInstruction = instruction(objectID(object)); page = "object"
+                    } label: { RSRow(title: object["category"].string?.capitalized ?? "Measured Object", subtitle: instructionLabel(instruction(objectID(object))), symbol: "cube") }.buttonStyle(.plain)
+                }
+            }
+        case "object":
+            measuredRoom.frame(maxHeight: 220)
+            Text(selectedObject["size"].numbers.map { String(format: "%.2f", $0) }.joined(separator: " × ") + " m")
+                .font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+            VStack(spacing: 16) {
+                RSChoice(title: "Keep in place", subtitle: "Keep its position and presence.", symbol: "lock", selected: chosenInstruction == "keep") { chosenInstruction = "keep" }
+                RSChoice(title: "Let the design decide", selected: chosenInstruction == "decide") { chosenInstruction = "decide" }
+                RSChoice(title: "Remove from design", selected: chosenInstruction == "remove") { chosenInstruction = "remove" }
+            }.disabled(locked || saving)
+        case "unlock":
+            RSSymbol(name: "lock")
+            Text("You asked to keep it in place. Allow this design to change it?").foregroundStyle(ReSpaceStyle.secondary)
+            Text("Permanent fixtures will still stay fixed.").font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+        case "photos":
+            if photos.indices.contains(photo) {
+                PrivateCapturePhoto(app: app, path: "rooms/\(roomID)/artifacts/\(photos[photo]["artifact_id"].text)", fill: true)
+                    .frame(height: 380).clipShape(RoundedRectangle(cornerRadius: 28))
+                Text("Photo \(photo + 1) of \(photos.count)").font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+            } else { Text("No scan photos are available.").foregroundStyle(ReSpaceStyle.secondary) }
+        case "chat":
+            Text("Tell us what to keep, remove or make room for.")
+            ForEach(conversation, id: \.self) { RSMessage(entry: $0) }
+            Text("Instructions apply to your next design.").font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+            if locked { Button("View current request") { showOperation = true }.buttonStyle(RSButtonStyle(kind: .secondary)) }
+        case "options":
+            if let testNotice { RSNotice(message: testNotice["message"].text) }
+            VStack(spacing: 0) {
+                Button { photo = 0; page = "photos" } label: { RSRow(title: "Scan photos", symbol: "photo.on.rectangle") }
+                Button { page = "chat" } label: { RSRow(title: "Room instructions", symbol: "bubble.left") }
+                Button { rename = room["name"].text; page = "rename" } label: { RSRow(title: "Rename room", symbol: "pencil") }
+                Button { page = "delete" } label: { RSRow(title: "Delete room", symbol: "trash") }
+            }.buttonStyle(.plain)
+        case "rename":
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Room name").font(ReSpaceStyle.font(14, weight: .medium))
+                TextField("Room name", text: $rename).rsInput()
+            }
+        case "delete":
+            RSSymbol(name: "trash")
+            Text("\(room["name"].text) and its scan, photos, designs and conversation will be removed.").foregroundStyle(ReSpaceStyle.secondary)
+        case "deletion":
+            RSSymbol(name: "arrow.clockwise")
+            Text("We couldn’t confirm deletion of \(room["name"].text).")
+            Text("Your other rooms are ready to use.").font(ReSpaceStyle.font(14)).foregroundStyle(ReSpaceStyle.secondary)
+        default: EmptyView()
+        }
+    }
+    @ViewBuilder private var pageFooter: some View {
+        switch page {
+        case "objects": Button("Done") { page = "review" }.buttonStyle(RSButtonStyle())
+        case "object":
+            Button(saving ? "Saving…" : "Save instruction") {
+                if let selected, instruction(selected) == "keep", chosenInstruction == "decide" { page = "unlock" }
+                else { Task { await saveInstruction() } }
+            }.buttonStyle(RSButtonStyle()).disabled(locked || saving)
+        case "unlock":
+            Button("Unlock and continue") { Task { await saveInstruction() } }.buttonStyle(RSButtonStyle()).disabled(locked || saving)
+            Button("Keep protected") { chosenInstruction = "keep"; page = "object" }.buttonStyle(RSButtonStyle(kind: .secondary))
+        case "photos":
+            HStack(spacing: 8) {
+                Button("Previous") { photo -= 1 }.disabled(photo == 0).buttonStyle(RSButtonStyle(kind: .secondary))
+                Button("Next") { photo += 1 }.disabled(photo + 1 >= photos.count).buttonStyle(RSButtonStyle(kind: .secondary))
+                Button("Done") { page = "review" }.buttonStyle(RSButtonStyle(kind: .secondary))
+            }
+        case "chat":
+            RSComposer(text: $text, placeholder: "Tell us what to keep…", selection: selected.map { _ in objectName }, clear: { selected = nil }, disabled: locked) {
+                let message = text; Task { await command(message, target: selected); if operation["pending_question"] != .null { showOperation = true } }
+            }
+        case "rename":
+            Button(saving ? "Saving…" : "Save name") {
+                Task { saving = true; await renameRoom(); saving = false; if error == nil { page = "review" } }
+            }.buttonStyle(RSButtonStyle()).disabled(saving || rename.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            Button("Cancel") { page = "options" }.buttonStyle(RSButtonStyle(kind: .quiet))
+        case "delete", "deletion":
+            Button(saving ? "Deleting…" : page == "deletion" ? "Retry deletion" : "Delete room") {
+                Task { saving = true; await deleteRoom(); saving = false; if error != nil { page = "deletion" } }
+            }.buttonStyle(RSButtonStyle(kind: page == "deletion" ? .primary : .danger)).disabled(saving)
+            Button(page == "deletion" ? "Other rooms" : "Keep room") { if page == "deletion" { dismiss() } else { page = "review" } }.buttonStyle(RSButtonStyle(kind: .secondary))
+        default: EmptyView()
+        }
+    }
+    private var measuredRoom: some View {
+        Group {
+            if detail["raw_export"] != .null {
+                RoomScene(document: detail["raw_export"], native: true, selectedID: $selected, ghosts: true, resetToken: 0)
+            } else { ReSpaceStyle.canvas.overlay { Image(systemName: "cube.transparent").font(.system(size: 48, weight: .ultraLight)).foregroundStyle(ReSpaceStyle.purple) } }
+        }.frame(height: page == "object" ? 200 : 260).clipShape(RoundedRectangle(cornerRadius: 28))
+    }
+    private func goBack() {
+        switch page {
+        case "review": dismiss()
+        case "object": page = "objects"
+        case "unlock": page = "object"
+        case "rename", "delete": page = "options"
+        default: page = "review"
+        }
+    }
+    private func objectID(_ object: JSONValue) -> String { object["native_id"].string ?? object["id"].string ?? object["identifier"].text }
+    private func instructionLabel(_ value: String) -> String { value == "keep" ? "Keep in place" : value == "remove" ? "Remove from design" : "Let the design decide" }
+    private func saveInstruction() async {
+        guard let selected else { return }
+        saving = true
+        await command(chosenInstruction == "keep" ? "Keep this in place" : chosenInstruction == "remove" ? "Remove this from the design" : "Explicitly unlock this and let the design decide", target: selected)
+        saving = false
+        if error == nil { page = "objects" }
+        if operation["pending_question"] != .null { showOperation = true }
     }
     func instruction(_ id: String) -> String { detail["planning"]["instructions"].array.first { $0["target"]["id"].text == id }?["instruction"].string ?? "decide" }
     func load() async {
@@ -112,145 +260,14 @@ struct RoomReview: View {
     }
 }
 
-struct IntentForm: View {
-    let app: AppModel
-    let detail: JSONValue
-    let onSubmit: (JSONValue) async -> Void
-    @State private var draft = IntentDraft()
-    @State private var error: String?
-    @State private var submitting = false
-    @Environment(\.dismiss) private var dismiss
-    private var key: String { "intent_\(detail["room"]["room_id"].text)" }
-    var body: some View {
-        NavigationStack { Form {
-            Picker("Intent", selection: $draft.intent) { Text("Add a few things").tag("add"); Text("Full redesign").tag("redesign") }
-            Section("Style") { ForEach(["match", "Cozy", "Minimal", "Japandi", "Industrial", "Boho", "Mid-century"], id: \.self) { style in Button { draft.toggleStyle(style) } label: { HStack { Text(style == "match" ? "Match what I have" : style); Spacer(); if draft.styles.contains(style) { Image(systemName: "checkmark") } } } } }
-            Section("Required budget · USD") { TextField("Budget", text: $draft.budget).keyboardType(.decimalPad); Text("Purchase total excludes tax and shipping.").font(.caption) }
-            Section("Anything else?") { TextField("Optional design priorities", text: $draft.text, axis: .vertical) }
-            if let error { Text(error).foregroundStyle(.red) }
-            Button("Start planning") { Task { await submit() } }.disabled(submitting || !IntentDraft.validBudget(draft.budget))
-        }.navigationTitle("Design intent").toolbar { Button("Close") { dismiss() } } }
-        .onAppear { if let data = UserDefaults.standard.data(forKey: key), let saved = try? JSONDecoder().decode(IntentDraft.self, from: data) { draft = saved } }
-        .onChange(of: draft) { _, value in if let data = try? JSONEncoder().encode(value) { UserDefaults.standard.set(data, forKey: key) } }
-    }
-    func submit() async {
-        submitting = true; defer { submitting = false }
-        do {
-            let room = detail["room"]
-            let response = try await app.submit(PendingRequest(path: "rooms/\(room["room_id"].text)/designs", roomID: room["room_id"].text, body: ["capture_id": room["latest_capture_id"], "planning_revision": detail["planning"]["planning_revision"], "expected_active_design_id": room["active_design_id"], "expected_active_revision": room["active_revision"], "intent": .string(draft.intent), "styles": .array(draft.styles.map(JSONValue.string)), "budget": .string(draft.budget), "currency": .string("USD"), "text": .string(draft.text)]))
-            await onSubmit(response["operation"]); dismiss()
-        } catch { self.error = error.localizedDescription }
-    }
-}
-
-struct OperationPanel: View {
-    let app: AppModel
-    @Binding var operation: JSONValue
-    let onUpdate: () async -> Void
-    @State private var choices: Set<String> = []
-    @State private var text = ""
-    @State private var number: Double?
-    @State private var revisionAnswer: JSONValue = .null
-    @State private var error: String?
-    @State private var busy = false
-    var question: JSONValue { revisionAnswer == .null ? operation["pending_question"] : revisionAnswer["question"] }
-    var revising: Bool { revisionAnswer != .null }
-    var formIdentity: String { revising ? revisionAnswer["answer_id"].text : question["question_id"].text }
-    var numeric: NumericQuestion { NumericQuestion(question) }
-    var displayedNumber: Double { number ?? numeric.initialValue }
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(operation["state"].text.replacingOccurrences(of: "_", with: " ").capitalized).font(.headline)
-            Text(operation["phase"].text.replacingOccurrences(of: "_", with: " ")).font(.caption)
-            if !operation["answer_history"].array.isEmpty {
-                DisclosureGroup("Earlier questions and answers") {
-                    ForEach(operation["answer_history"].array, id: \.self) { entry in
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(entry["question"]["text"].text).font(.subheadline)
-                            Text(AnswerHistory.summary(entry)).font(.caption)
-                            if entry["request"]["revision_of_answer_id"].string != nil { Text("Revised answer · earlier response retained").font(.caption).foregroundStyle(.secondary) }
-                            Button("Revise this answer") { revisionAnswer = entry }
-                                .disabled(busy || operation["answer_revision_allowed"].bool != true)
-                        }
-                    }
-                    if operation["answer_revision_allowed"].bool != true { Text("Answers can be revised when planning pauses at an interview question.").font(.caption) }
-                }
-            }
-            if question != .null {
-                if revising { HStack { Text("Revising an earlier answer").font(.headline); Button("Keep current answer") { revisionAnswer = .null } } }
-                Text(question["text"].text)
-                ForEach(question["choices"].array, id: \.self) { choice in
-                    Button {
-                        let id = choice["choice_id"].text
-                        if question["max_selections"].int <= 1 { choices = [id] }
-                        else if choices.contains(id) { choices.remove(id) } else if choices.count < question["max_selections"].int { choices.insert(id) }
-                    } label: { HStack { if let url = URL(string: choice["image_url"].text) { AsyncImage(url: url) { $0.resizable().scaledToFit() } placeholder: { ProgressView() }.frame(width: 72, height: 72) }; Text(choice["label"].text); Spacer(); if choices.contains(choice["choice_id"].text) { Image(systemName: "checkmark.circle.fill") } } }
-                }
-                if question["kind"].text == "numeric" {
-                    Stepper("Answer: \(displayedNumber.formatted())",
-                            onIncrement: numeric.next(displayedNumber, direction: 1).map { value in { number = value } },
-                            onDecrement: numeric.next(displayedNumber, direction: -1).map { value in { number = value } })
-                        .disabled(busy)
-                }
-                if question["kind"].text != "budget" { TextField("Optional details", text: $text) }
-                if question["kind"].text == "budget" { Text("Current ceiling: USD \(question["budget_proposal"]["old_ceiling"].text) → Proposed: USD \(question["budget_proposal"]["new_ceiling"].text)"); Text("Resulting total: USD \(question["budget_proposal"]["resulting_total"].text)"); Button("Approve this budget increase") { Task { await answer("answer", approve: true) } }.disabled(busy) }
-                else { Button(revising ? "Save revised answer" : "Answer") { Task { await answer("answer") } }.disabled(busy || !validAnswer) }
-                HStack {
-                    if question["allow_skip"].bool == true { Button("Skip") { Task { await answer("skip") } }.disabled(busy) }
-                    if question["allow_delegate"].bool == true { Button("Decide for me") { Task { await answer("delegate") } }.disabled(busy) }
-                    if question["context"].text == "command" { Button("Dismiss clarification") { Task { await control("dismiss-clarification", extra: ["question_id": question["question_id"], "dismissal_id": .string(UUID().uuidString)]) } }.disabled(busy) }
-                }
-            }
-            ForEach(operation["outcome"]["action_outcomes"].array, id: \.self) { action in
-                Text("\(action["type"].text.capitalized): \(action["outcome"].text.replacingOccurrences(of: "_", with: " ")) · \(action["reason"].text)")
-                    .foregroundStyle(action["outcome"].text == "failed" ? Color.orange : Color.primary)
-            }
-            if let message = operation["outcome"]["message"].string { Text(message) }
-            ForEach(operation["outcome"]["warnings"].array, id: \.self) { Text($0["message"].text).foregroundStyle(.orange) }
-            if let failure = operation["failure"]["message"].string { Text(failure).foregroundStyle(.red) }
-            if let error { Text(error).foregroundStyle(.red) }
-            HStack { Button("Refresh") { Task { await refresh() } }; if !["succeeded", "failed", "cancelled", "rejected"].contains(operation["state"].text) { Button("Cancel", role: .destructive) { Task { await control("cancel", extra: ["cancellation_id": .string(UUID().uuidString)]) } }.disabled(busy) } }
-        }
-        .onChange(of: formIdentity) { _, _ in
-            choices = Set(revisionAnswer["request"]["choice_ids"].array.compactMap(\.string))
-            text = revisionAnswer["request"]["text"].text
-            number = revisionAnswer["request"]["number"].number
-        }
-        .onChange(of: operation["answer_revision_allowed"].bool) { _, allowed in if allowed != true { revisionAnswer = .null } }
-    }
-    var validAnswer: Bool {
-        if question["kind"].text == "numeric" { return numeric.isValid(displayedNumber) }
-        if question["kind"].text == "text" { return !text.isEmpty }
-        return choices.count >= question["min_selections"].int && choices.count <= question["max_selections"].int
-    }
-    func refresh() async { guard let client = app.client else { return }; do { operation = try await client.request("operations/\(operation["operation_id"].text)")["operation"]; await onUpdate() } catch { self.error = error.localizedDescription } }
-    func answer(_ action: String, approve: Bool = false) async {
-        var body: [String: JSONValue] = ["question_id": question["question_id"], "reply_id": .string(UUID().uuidString), "expected_decision_revision": operation["decision_revision"], "expected_question_revision": question["question_revision"], "choice_ids": .array(choices.sorted().map(JSONValue.string)), "text": .string(text), "action": .string(action)]
-        if revising {
-            do { body.merge(try AnswerHistory.revisionIdentity(answerID: revisionAnswer["answer_id"].text, operation: operation)) { _, current in current } }
-            catch { self.error = error.localizedDescription; return }
-        }
-        if question["kind"].text == "numeric", action == "answer" { body["number"] = .number(displayedNumber) }
-        if approve { body["budget_approval"] = .object(["old_ceiling": question["budget_proposal"]["old_ceiling"], "new_ceiling": question["budget_proposal"]["new_ceiling"], "resulting_total": question["budget_proposal"]["resulting_total"]]) }
-        await control("answers", extra: body)
-    }
-    func control(_ action: String, extra: [String: JSONValue]) async {
-        busy = true; defer { busy = false }
-        do {
-            var body = extra; body["operation_id"] = operation["operation_id"]
-            let request = PendingRequest(path: "operations/\(operation["operation_id"].text)/\(action)", roomID: operation["room_id"].text, body: body)
-            operation = try await app.submit(request)["operation"]; if action == "answers" { revisionAnswer = .null }; await onUpdate()
-        } catch { self.error = error.localizedDescription }
-    }
-}
-
 struct PrivateCapturePhoto: View {
     let app: AppModel
     let path: String
+    var fill = false
     @State private var image: UIImage?
     @State private var failed = false
     var body: some View {
-        Group { if let image { Image(uiImage: image).resizable().scaledToFit() } else if failed { Label("Image unavailable", systemImage: "photo").font(.caption) } else { ProgressView() } }
-            .task(id: path) { do { guard let client = app.client else { return }; let bytes = try await client.media(path); guard let decoded = UIImage(data: bytes) else { throw ContractError.invalid("Invalid image") }; image = decoded } catch { failed = true } }
+        Group { if let image { Image(uiImage: image).resizable().aspectRatio(contentMode: fill ? .fill : .fit) } else if failed { Label("Image unavailable", systemImage: "photo").font(.caption) } else { ProgressView() } }
+            .task(id: path) { image = nil; failed = false; do { guard let client = app.client else { return }; let bytes = try await client.media(path); guard let decoded = UIImage(data: bytes) else { throw ContractError.invalid("Invalid image") }; image = decoded } catch { failed = true } }
     }
 }

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/private/tmp/respace_watch_queued.py", line 10, in <module>
+    if delay:time.sleep(delay)
+             ~~~~~~~~~~^^^^^^^
+KeyboardInterrupt

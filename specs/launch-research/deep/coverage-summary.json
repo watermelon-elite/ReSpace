@@ -1,0 +1,439 @@
+{
+  "research_date_local": "2026-10-17",
+  "timezone": "America/Los_Angeles",
+  "completed_full_film_count": 20,
+  "total_source_runtime_seconds": 1906.885,
+  "full_pass_model_counts": {
+    "gemini-flash-latest": 7,
+    "gemini-3.5-flash-lite": 13
+  },
+  "method": "Actual full-runtime video and audio supplied to watch-video at 6 fps; editorial corrections and targeted rechecks. Not exhaustive human frame inspection or a frame-accurate edit list.",
+  "quote_handling": "Some delivered model outputs contain explicitly labeled quotation redactions; other observations and timestamps retained. See each report.",
+  "films": [
+    {
+      "rank": 1,
+      "title": "01 · Pinterest — Disco Treehouse",
+      "source_reference": "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+      "analyzed_public_reference": "https://www.youtube.com/watch?v=hehaJGC9NJQ",
+      "source_duration_seconds": 31,
+      "full_requested_interval_seconds": [
+        0.0,
+        32.0
+      ],
+      "model": "gemini-flash-latest",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": null,
+      "editorial_report": "rank-01-pinterest-disco-treehouse/report.md",
+      "coverage_record": "rank-01-pinterest-disco-treehouse/coverage.json",
+      "delivered_av_outputs": [
+        "rank-01-pinterest-disco-treehouse/analysis-full.quote-redacted.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 2,
+      "title": "02 · reMarkable — Get Your Brain Back",
+      "source_reference": "https://www.youtube.com/watch?v=OcdxW2XF0v8",
+      "analyzed_public_reference": "https://www.youtube.com/watch?v=OcdxW2XF0v8",
+      "source_duration_seconds": 157,
+      "full_requested_interval_seconds": [
+        0.0,
+        158.0
+      ],
+      "model": "gemini-flash-latest",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": null,
+      "editorial_report": "rank-02-remarkable-get-your-brain-back/report.md",
+      "coverage_record": "rank-02-remarkable-get-your-brain-back/coverage.json",
+      "delivered_av_outputs": [
+        "rank-02-remarkable-get-your-brain-back/raw-full.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 3,
+      "title": "03 · Wispr Flow — Break Up with Your Keyboard",
+      "source_reference": "https://www.youtube.com/watch?v=9KqGpxtsawc",
+      "analyzed_public_reference": "https://www.youtube.com/watch?v=9KqGpxtsawc",
+      "source_duration_seconds": 86,
+      "full_requested_interval_seconds": [
+        0.0,
+        87.0
+      ],
+      "model": "gemini-flash-latest",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": null,
+      "editorial_report": "rank-03-wispr-break-up-keyboard/report.md",
+      "coverage_record": "rank-03-wispr-break-up-keyboard/coverage.json",
+      "delivered_av_outputs": [
+        "rank-03-wispr-break-up-keyboard/raw-full.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 4,
+      "title": "04 — Descript: Damn, Jenny!",
+      "source_reference": "https://sandwich.co/work/descript-video/",
+      "analyzed_public_reference": "https://fast.wistia.net/embed/iframe/2rb6egpph3",
+      "source_duration_seconds": 166.100998,
+      "full_requested_interval_seconds": [
+        0,
+        167
+      ],
+      "model": "gemini-flash-latest",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": true,
+      "editorial_report": "rank-04-descript/report.md",
+      "coverage_record": "rank-04-descript/coverage.json",
+      "delivered_av_outputs": [
+        "rank-04-descript/av-report.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 5,
+      "title": "5. Apple — HomePod: Welcome Home",
+      "source_reference": "https://vimeo.com/821121634",
+      "analyzed_public_reference": "https://vimeo.com/821121634",
+      "source_duration_seconds": 233.621,
+      "full_requested_interval_seconds": [
+        0,
+        235
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": true,
+      "editorial_report": "rank-05-homepod/report.md",
+      "coverage_record": "rank-05-homepod/coverage.json",
+      "delivered_av_outputs": [
+        "rank-05-homepod/raw-full-lite-1.md",
+        "rank-05-homepod/raw-opening-recheck.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 6,
+      "title": "06 — IKEA Kreativ: Home Office",
+      "source_reference": "https://vimeo.com/926031195",
+      "analyzed_public_reference": "https://vimeo.com/926031195",
+      "source_duration_seconds": 15.019,
+      "full_requested_interval_seconds": [
+        0.0,
+        16.0
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": true,
+      "editorial_report": "rank-06-ikea-kreativ/report.md",
+      "coverage_record": "rank-06-ikea-kreativ/coverage.json",
+      "delivered_av_outputs": [
+        "rank-06-ikea-kreativ/raw-full-lite-1.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 7,
+      "title": "07 · Slack — So Yeah, We Tried Slack…",
+      "source_reference": "https://www.youtube.com/watch?v=B6zVzWU95Sw",
+      "analyzed_public_reference": "https://www.youtube.com/watch?v=B6zVzWU95Sw",
+      "source_duration_seconds": 140,
+      "full_requested_interval_seconds": [
+        0.0,
+        141.0
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": null,
+      "editorial_report": "rank-07-slack-so-yeah/report.md",
+      "coverage_record": "rank-07-slack-so-yeah/coverage.json",
+      "delivered_av_outputs": [
+        "rank-07-slack-so-yeah/analysis-full.quote-redacted.md",
+        "rank-07-slack-so-yeah/analysis-opening-recheck.quote-redacted.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 8,
+      "title": "8. IKEA — Make Room for Life 2018",
+      "source_reference": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+      "analyzed_public_reference": "https://www.youtube.com/watch?v=SSKtiEA8qMw",
+      "source_duration_seconds": 89,
+      "full_requested_interval_seconds": [
+        0,
+        90
+      ],
+      "model": "gemini-flash-latest",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": null,
+      "editorial_report": "rank-08-ikea-make-room/report.md",
+      "coverage_record": "rank-08-ikea-make-room/coverage.json",
+      "delivered_av_outputs": [
+        "rank-08-ikea-make-room/raw-full.md",
+        "rank-08-ikea-make-room/raw-sound-recheck.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 9,
+      "title": "09 · Dollar Shave Club — Our Blades Are F***ing Great",
+      "source_reference": "https://www.youtube.com/watch?v=ZUG9qYTJMsI",
+      "analyzed_public_reference": "https://www.youtube.com/watch?v=ZUG9qYTJMsI",
+      "source_duration_seconds": 93,
+      "full_requested_interval_seconds": [
+        0.0,
+        94.0
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": null,
+      "editorial_report": "rank-09-dollar-shave-club/report.md",
+      "coverage_record": "rank-09-dollar-shave-club/coverage.json",
+      "delivered_av_outputs": [
+        "rank-09-dollar-shave-club/analysis-full.quote-redacted.md",
+        "rank-09-dollar-shave-club/raw-middle-recheck.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 10,
+      "title": "10. Notion — Meet Notion Mail",
+      "source_reference": "https://www.youtube.com/watch?v=54l-1NfXnX8",
+      "analyzed_public_reference": "https://www.youtube.com/watch?v=54l-1NfXnX8",
+      "source_duration_seconds": 60,
+      "full_requested_interval_seconds": [
+        0,
+        61
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": null,
+      "editorial_report": "rank-10-notion-mail/report.md",
+      "coverage_record": "rank-10-notion-mail/coverage.json",
+      "delivered_av_outputs": [
+        "rank-10-notion-mail/raw-full.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 11,
+      "title": "11 — Tylko: Spaces — Bedroom",
+      "source_reference": "https://vimeo.com/705647639",
+      "analyzed_public_reference": "https://player.vimeo.com/video/713330048?h=9345467d00",
+      "source_duration_seconds": 27.008,
+      "full_requested_interval_seconds": [
+        0.0,
+        28.0
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": true,
+      "editorial_report": "rank-11-tylko/report.md",
+      "coverage_record": "rank-11-tylko/coverage.json",
+      "delivered_av_outputs": [
+        "rank-11-tylko/raw-full-lite-1.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 12,
+      "title": "12 — Sonos / Apple Music: Music Makes It Home",
+      "source_reference": "https://vimeo.com/156330951",
+      "analyzed_public_reference": "https://vimeo.com/156330951",
+      "source_duration_seconds": 60.096,
+      "full_requested_interval_seconds": [
+        0.0,
+        61.0
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": true,
+      "editorial_report": "rank-12-sonos/report.md",
+      "coverage_record": "rank-12-sonos/coverage.json",
+      "delivered_av_outputs": [
+        "rank-12-sonos/raw-full-lite-1.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 13,
+      "title": "13 — Daylight: Not Like the Others",
+      "source_reference": "https://sandwich.co/work/not-like-the-others/",
+      "analyzed_public_reference": "https://fast.wistia.net/embed/iframe/u8xn64uj9r",
+      "source_duration_seconds": 110.740998,
+      "full_requested_interval_seconds": [
+        0,
+        111
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": true,
+      "editorial_report": "rank-13-daylight/report.md",
+      "coverage_record": "rank-13-daylight/coverage.json",
+      "delivered_av_outputs": [
+        "rank-13-daylight/av-report.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 14,
+      "title": "14. Panic — Say Hello to Playdate",
+      "source_reference": "https://www.youtube.com/watch?v=HdF3CnFvxg4",
+      "analyzed_public_reference": "https://www.youtube.com/watch?v=HdF3CnFvxg4",
+      "source_duration_seconds": 123,
+      "full_requested_interval_seconds": [
+        0,
+        124
+      ],
+      "model": "gemini-flash-latest",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": null,
+      "editorial_report": "rank-14-playdate/report.md",
+      "coverage_record": "rank-14-playdate/coverage.json",
+      "delivered_av_outputs": [
+        "rank-14-playdate/raw-full.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 15,
+      "title": "15 — Dropbox: Creative Freedom",
+      "source_reference": "https://vimeo.com/142497378",
+      "analyzed_public_reference": "https://vimeo.com/142497378",
+      "source_duration_seconds": 60.117333,
+      "full_requested_interval_seconds": [
+        0.0,
+        61.0
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": true,
+      "editorial_report": "rank-15-dropbox/report.md",
+      "coverage_record": "rank-15-dropbox/coverage.json",
+      "delivered_av_outputs": [
+        "rank-15-dropbox/raw-full-lite-1.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 16,
+      "title": "16 — Headspace: Say Hello to Headspace",
+      "source_reference": "https://vimeo.com/226652947",
+      "analyzed_public_reference": "https://www.youtube.com/watch?v=CS76mK58urI",
+      "source_duration_seconds": 87.001,
+      "full_requested_interval_seconds": [
+        0,
+        88
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": true,
+      "editorial_report": "rank-16-headspace/report.md",
+      "coverage_record": "rank-16-headspace/coverage.json",
+      "delivered_av_outputs": [
+        "rank-16-headspace/av-report.md",
+        "rank-16-headspace/opening-check.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 17,
+      "title": "17 — Granola: original launch sizzle",
+      "source_reference": "https://www.granola.ai/blog/announcement",
+      "analyzed_public_reference": "https://player.vimeo.com/video/948907406",
+      "source_duration_seconds": 52.053,
+      "full_requested_interval_seconds": [
+        0,
+        53
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": true,
+      "editorial_report": "rank-17-granola/report.md",
+      "coverage_record": "rank-17-granola/coverage.json",
+      "delivered_av_outputs": [
+        "rank-17-granola/av-report.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 18,
+      "title": "18 — Floyd: The Floyd Ethos",
+      "source_reference": "https://vimeo.com/359619840",
+      "analyzed_public_reference": "https://player.vimeo.com/video/359619840",
+      "source_duration_seconds": 200.128,
+      "full_requested_interval_seconds": [
+        0,
+        201
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": true,
+      "editorial_report": "rank-18-floyd/report.md",
+      "coverage_record": "rank-18-floyd/coverage.json",
+      "delivered_av_outputs": [
+        "rank-18-floyd/av-report.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 19,
+      "title": "19. IKEA — Say Hej to IKEA Place",
+      "source_reference": "https://www.youtube.com/watch?v=UudV1VdFtuQ",
+      "analyzed_public_reference": "https://www.youtube.com/watch?v=UudV1VdFtuQ",
+      "source_duration_seconds": 59,
+      "full_requested_interval_seconds": [
+        0,
+        60
+      ],
+      "model": "gemini-flash-latest",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": null,
+      "editorial_report": "rank-19-ikea-place/report.md",
+      "coverage_record": "rank-19-ikea-place/coverage.json",
+      "delivered_av_outputs": [
+        "rank-19-ikea-place/raw-full.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    },
+    {
+      "rank": 20,
+      "title": "20. Notion — Introducing the new Notion AI",
+      "source_reference": "https://www.youtube.com/watch?v=S92KX8-Hmlc",
+      "analyzed_public_reference": "https://www.youtube.com/watch?v=S92KX8-Hmlc",
+      "source_duration_seconds": 57,
+      "full_requested_interval_seconds": [
+        0,
+        58
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "fps": 6,
+      "audio_in_analysis": true,
+      "audio_stream_independently_verified": null,
+      "editorial_report": "rank-20-notion-ai/report.md",
+      "coverage_record": "rank-20-notion-ai/coverage.json",
+      "delivered_av_outputs": [
+        "rank-20-notion-ai/raw-full.md"
+      ],
+      "status": "full_film_analyzed_and_editorially_reviewed"
+    }
+  ]
+}

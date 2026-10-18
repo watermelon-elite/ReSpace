@@ -74,18 +74,24 @@ class TestCatalog:
 
 class TestPlanningModel:
     async def act(self, context):
+        if context.get('phase')=='resolve_request':
+            texts=[context['request']['text'],*[a['request'].get('text') or '' for a in context['answers']]]
+            token=next((match[0] for text in reversed(texts) if (match:=re.search(r'\d+(?:\.\d{1,2})?',text))),None)
+            return {'action':'resolve_request','payload':{'intent':'redesign' if re.search(r'\b(move|remove|redesign|replace)\b',texts[0],re.I) else 'add',
+                'budget':token,'budget_quote':token}}
         answers = {a['question'].get('topic'): a['request'] for a in context['answers']}
+        natural=context.get('natural_language',False)
         if 'test_activity' not in answers:
-            return {'action': 'ask_user', 'payload': {'kind': 'single_choice', 'topic': 'test_activity',
+            return {'action': 'ask_user', 'payload': {'kind': 'text' if natural else 'single_choice', 'topic': 'test_activity',
                 'text': 'Offline test: what should this room support?', 'allow_skip': True, 'allow_delegate': True,
-                'choices': [{'choice_id': 'relax', 'label': 'Relaxing'}, {'choice_id': 'work', 'label': 'Working'}]}}
+                'choices': [] if natural else [{'choice_id': 'relax', 'label': 'Relaxing'}, {'choice_id': 'work', 'label': 'Working'}]}}
         if 'test_occupants' not in answers:
-            return {'action': 'ask_user', 'payload': {'kind': 'numeric', 'topic': 'test_occupants',
+            return {'action': 'ask_user', 'payload': {'kind': 'text' if natural else 'numeric', 'topic': 'test_occupants',
                 'text': 'How many people usually use the room?', 'numeric_min': 1, 'numeric_max': 8, 'numeric_step': 1,
                 'allow_skip': True, 'allow_delegate': True, 'choices': []}}
         searches = [a for a in context['actions'] if a.get('action') == 'search_products']
         if not searches:
-            category = 'desk' if answers['test_activity'].get('choice_ids') == ['work'] else 'chair'
+            category = 'desk' if answers['test_activity'].get('choice_ids') == ['work'] or 'work' in answers['test_activity'].get('text','').lower() else 'chair'
             return {'action': 'search_products', 'payload': {'category': category, 'function': 'offline workflow test'}}
         choices = searches[-1]['result']['displayed_choices']
         if not choices:
