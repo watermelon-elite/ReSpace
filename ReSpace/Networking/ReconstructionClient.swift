@@ -90,7 +90,8 @@ actor ReconstructionClient {
 
     func submit(_ id: String, repository: CaptureRepository, retry: Bool = false, fromScratch: Bool = false) async throws -> ReconstructionJob {
         let manifest = try await repository.load(id)
-        guard ["completed", "local_saved"].contains(manifest.state), manifest.sceneMesh != nil else {
+        let native = manifest.sourceBundleFormat == "house-capture/5" ? try await repository.nativeReconstructionUpload(id) : nil
+        guard ["completed", "local_saved"].contains(manifest.state), native != nil || manifest.sceneMesh != nil else {
             throw ClientError.storage("This room has no retained surface mesh. Scan it again before processing.")
         }
         let folder = try await folder(id, repository: repository)
@@ -102,16 +103,30 @@ actor ReconstructionClient {
         try save(retained, folder: folder)
         let path = ["v1", "reconstructions", id]
         var upload = try request(path, method: "PUT")
-        upload.httpBody = try Wire.encoder().encode(manifest)
+        upload.httpBody = try native.map { try Wire.encoder().encode($0) } ?? Wire.encoder().encode(manifest)
         upload.setValue("application/json", forHTTPHeaderField: "Content-Type")
         let created = try await execute(upload, id: id)
         retained.job = created; try save(retained, folder: folder)
         let missing = Set(created.missingArtifactIds)
-        guard missing.isSubset(of: Set(manifest.allArtifacts.map(\.id))) else { throw ClientError.invalidResponse }
-        for artifact in manifest.allArtifacts where missing.contains(artifact.id) {
+        let allowed = native.map { Set($0.files.map(\.id)) } ?? Set(manifest.allArtifacts.map(\.id))
+        guard missing.isSubset(of: allowed) else { throw ClientError.invalidResponse }
+        let transfers: [(String,URL)]
+        if let native {
+            var urls: [(String,URL)] = []
+            for file in native.files where missing.contains(file.id) {
+                urls.append((file.id,try await repository.nativeReconstructionFileURL(file,captureId:id)))
+            }
+            transfers = urls
+        } else {
+            var urls: [(String,URL)] = []
+            for artifact in manifest.allArtifacts where missing.contains(artifact.id) {
+                urls.append((artifact.id,try await repository.artifactURL(artifact,captureId:id)))
+            }
+            transfers = urls
+        }
+        for (artifactId,url) in transfers {
             try Task.checkCancellation()
-            let url = try await repository.artifactURL(artifact, captureId: id)
-            var upload = try request(path + ["artifacts", artifact.id], method: "PUT")
+            var upload = try request(path + ["artifacts", artifactId], method: "PUT")
             upload.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
             let (data, response) = try await session.upload(for: upload, fromFile: url)
             try checked(response, body: data)

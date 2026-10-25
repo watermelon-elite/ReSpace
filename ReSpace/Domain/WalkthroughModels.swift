@@ -67,6 +67,12 @@ struct WalkthroughMaterial: Codable, Sendable {
     var baseColorTexture: String?
     var roughnessTexture: String?
     var normalTexture: String?
+    var metallicTexture: String? = nil
+    var emissiveTexture: String? = nil
+    var emissiveColor: [Double]? = nil
+    var emissiveIntensity: Double? = nil
+    var opacity: Double? = nil
+    var unlit: Bool? = nil
 }
 
 struct WalkthroughNavigation: Codable, Sendable {
@@ -192,7 +198,10 @@ struct WalkthroughBundle: Codable, Sendable {
                   m.roughness.map({ $0.isFinite && (0...1).contains($0) }) ?? true,
                   m.metallic.map({ $0.isFinite && (0...1).contains($0) }) ?? true,
                   m.repeatMeters.isFinite, (0.01...10).contains(m.repeatMeters) else { throw ClientError.invalidResponse }
-            for texture in [m.baseColorTexture,m.roughnessTexture,m.normalTexture].compactMap({ $0 }) {
+            guard m.opacity.map({ $0.isFinite && (0...1).contains($0) }) ?? true,
+                  m.emissiveIntensity.map({ $0.isFinite && (0...100).contains($0) }) ?? true,
+                  m.emissiveColor.map({ $0.count==3 && $0.allSatisfy({ $0.isFinite && (0...1).contains($0) }) }) ?? true else { throw ClientError.invalidResponse }
+            for texture in [m.baseColorTexture,m.roughnessTexture,m.normalTexture,m.metallicTexture,m.emissiveTexture].compactMap({ $0 }) {
                 guard Self.safeName(texture),assets.contains(texture) else { throw ClientError.invalidResponse }
             }
         }

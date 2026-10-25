@@ -48,12 +48,16 @@ struct CaptureManifest: Codable, Sendable {
     var thumbnail: ArtifactRecord?
     /// Local measured geometry; absent for legacy captures and the existing backend protocol.
     var sceneMesh: ArtifactRecord?
+    /// Fresh Scan to Three.js captures write this native bundle directly.
+    var sourceBundleFormat: String?
+    var sourceBundleIntegrity: ArtifactRecord?
+    var sourceLayoutError: String?
     var acknowledgments: [ArtifactAcknowledgment]
     /// Provided by Builder 2 after normalization; never guessed by the client.
     var scanToRoomTransform: [Float]?
 
     var allArtifacts: [ArtifactRecord] {
-        frames.flatMap(\.artifacts) + [roomExport, thumbnail, sceneMesh].compactMap { $0 }
+        frames.flatMap(\.artifacts) + [roomExport, thumbnail, sceneMesh, sourceBundleIntegrity].compactMap { $0 }
     }
     var canEvictRawFiles: Bool {
         state == "finalized" && roomExport != nil && allArtifacts.allSatisfy { artifact in

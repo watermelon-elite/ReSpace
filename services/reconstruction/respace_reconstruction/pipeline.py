@@ -439,9 +439,14 @@ def process_legacy(folder: Path, revision: int):
 
 
 def process(folder: Path, revision: int, generation_id=None):
-    mode=os.environ.get("RESPACE_PIPELINE","astra")
-    if mode=="astra":
+    mode=os.environ.get("RESPACE_PIPELINE","threejs")
+    if mode=="threejs":
+        from .threejs_pipeline import process_threejs
+        return process_threejs(folder,revision,generation_id)
+    if mode in ("astra", "insta"):
         from .astra_room import process_astra_room
+        if mode == "insta":
+            return process_astra_room(folder, revision, generation_id=generation_id, method="insta")
         if generation_id is not None:
             return process_astra_room(folder,revision,generation_id=generation_id)
         return process_astra_room(folder,revision)

@@ -365,7 +365,8 @@ def test_budget_exhaustion_stops_preparing_further_batches(tmp_path, monkeypatch
     assert all(o["reason"] == "budget_limit" for o in quality["objects"])
 
 
-def test_sol_spending_preserves_old_astra_receipts_and_reserves_at_sol_rates(tmp_path, monkeypatch):
+@pytest.mark.parametrize('model', ['gpt-6-sol', 'gpt-6.1-sol'])
+def test_sol_spending_preserves_old_astra_receipts_and_reserves_at_sol_rates(tmp_path, monkeypatch, model):
     configure(monkeypatch)
     ledger = Spending(tmp_path/"budget.json")
     monkeypatch.setattr(astra, "call_astra", lambda *args: reply({}))
@@ -375,10 +376,10 @@ def test_sol_spending_preserves_old_astra_receipts_and_reserves_at_sol_rates(tmp
     ledger.save()
     ledger = Spending(tmp_path/"budget.json")
     ledger.request(body(), tmp_path/"old-call", "Old Astra")
-    sol = dict(body(), model="gpt-6-sol")
+    sol = dict(body(), model=model)
     def generate(*args):
         retained = json.loads((tmp_path/"budget.json").read_text())
-        latest = next(entry for entry in retained["entries"].values() if entry.get("model") == "gpt-6-sol")
+        latest = next(entry for entry in retained["entries"].values() if entry.get("model") == model)
         assert latest["reserved_units"] == (1010+256)*2.5+24000*10
         return reply({})
     monkeypatch.setattr(astra, "call_astra", generate)
@@ -387,11 +388,26 @@ def test_sol_spending_preserves_old_astra_receipts_and_reserves_at_sol_rates(tmp
     assert ledger.report()["paid_call_count"] == 2
 
 
-@pytest.mark.parametrize("model,expected", [("gpt-6-astra", 7532000), ("gpt-6-sol", 1506400)])
+@pytest.mark.parametrize("model,expected", [("gpt-6-astra", 7532000), ("gpt-6-sol", 1506400), ("gpt-6.1-sol", 1506200)])
 def test_model_specific_long_context_cache_and_output_rates(model, expected):
     response = reply({}, inputs=300000, outputs=20000)
     response["usage"]["input_tokens_details"] = {"cached_tokens": 1000, "cache_write_tokens": 10000}
     assert astra_spending.actual_units(response, model) == expected
+
+
+def test_sol61_cannot_reset_or_exceed_shared_ten_dollar_budget(tmp_path, monkeypatch):
+    configure(monkeypatch)
+    ledger = Spending(tmp_path/'budget.json')
+    ledger.data['entries']['prior-astra'] = {
+        'state':'settled', 'model':'gpt-6-astra', 'reserved_units':9900000, 'cost_units':9900000}
+    ledger.save()
+    monkeypatch.setattr(astra, 'call_astra', lambda *_: pytest.fail('Over-budget paid request'))
+    recovered = Spending(ledger.path)
+    with pytest.raises(BudgetExhausted):
+        recovered.request(dict(body(), model='gpt-6.1-sol'), tmp_path/'sol61-call', 'Three.js modeling agent')
+    assert recovered.report()['ceiling_usd'] == 10.
+    assert recovered.report()['known_cost_usd'] == 9.9
+    assert recovered.report()['paid_call_count'] == 1
 
 
 def test_inventory_fits_remaining_budget_by_reducing_unused_output_allowance(tmp_path, monkeypatch):

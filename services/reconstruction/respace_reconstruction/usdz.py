@@ -35,12 +35,12 @@ def read_materials(source, libraries):
                     raise ValueError("Malformed USDZ source material")
                 current = materials[values[0]] = {}
             elif current is not None:
-                if tag in ("Kd", "Pr", "Pm", "Ns", "d", "Tr"):
+                if tag in ("Kd", "Ke", "Pr", "Pm", "Ns", "d", "Tr"):
                     numbers = [float(v) for v in values]
-                    if len(numbers) != (3 if tag == "Kd" else 1) or not all(math.isfinite(v) for v in numbers):
+                    if len(numbers) != (3 if tag in ("Kd","Ke") else 1) or not all(math.isfinite(v) for v in numbers):
                         raise ValueError("Invalid USDZ material property: "+tag)
-                    current[tag] = numbers if tag == "Kd" else numbers[0]
-                elif tag in ("map_Kd", "map_Pr", "map_Pm", "map_d", "norm"):
+                    current[tag] = numbers if tag in ("Kd","Ke") else numbers[0]
+                elif tag in ("map_Kd", "map_Ke", "map_Pr", "map_Pm", "map_d", "norm"):
                     if len(values) != 1:
                         raise ValueError("Unsupported USDZ texture options")
                     path = dependency(source.parent, values[0])
@@ -60,6 +60,8 @@ def make_material(stage, path, properties, staging):
     shader.CreateInput("diffuseColor", Sdf.ValueTypeNames.Color3f).Set(Gf.Vec3f(*color))
     shader.CreateInput("roughness", Sdf.ValueTypeNames.Float).Set(roughness)
     shader.CreateInput("metallic", Sdf.ValueTypeNames.Float).Set(properties.get("Pm", 0.0))
+    emission=properties.get("Ke", [0.,0.,0.])
+    shader.CreateInput("emissiveColor", Sdf.ValueTypeNames.Color3f).Set(Gf.Vec3f(*emission))
     shader.CreateInput("opacity", Sdf.ValueTypeNames.Float).Set(properties.get("d", 1-properties.get("Tr", 0.0)))
     reader = UsdShade.Shader.Define(stage, path+"/UV")
     reader.CreateIdAttr("UsdPrimvarReader_float2")
@@ -67,6 +69,7 @@ def make_material(stage, path, properties, staging):
     reader.CreateOutput("result", Sdf.ValueTypeNames.Float2)
     for tag, target, value_type, channel in (
         ("map_Kd", "diffuseColor", Sdf.ValueTypeNames.Color3f, "rgb"),
+        ("map_Ke", "emissiveColor", Sdf.ValueTypeNames.Color3f, "rgb"),
         ("map_Pr", "roughness", Sdf.ValueTypeNames.Float, "r"),
         ("map_Pm", "metallic", Sdf.ValueTypeNames.Float, "r"),
         ("map_d", "opacity", Sdf.ValueTypeNames.Float, "r"),
@@ -82,11 +85,15 @@ def make_material(stage, path, properties, staging):
         texture.CreateIdAttr("UsdUVTexture")
         texture.CreateInput("file", Sdf.ValueTypeNames.Asset).Set(Sdf.AssetPath(texture_path.name))
         texture.CreateInput("st", Sdf.ValueTypeNames.Float2).ConnectToSource(reader.ConnectableAPI(), "result")
-        texture.CreateInput("sourceColorSpace", Sdf.ValueTypeNames.Token).Set("sRGB" if tag == "map_Kd" else "raw")
+        texture.CreateInput("sourceColorSpace", Sdf.ValueTypeNames.Token).Set("sRGB" if tag in ("map_Kd","map_Ke") else "raw")
         texture.CreateInput("wrapS", Sdf.ValueTypeNames.Token).Set("repeat")
         texture.CreateInput("wrapT", Sdf.ValueTypeNames.Token).Set("repeat")
         if tag == "map_Kd":
             texture.CreateInput("scale", Sdf.ValueTypeNames.Float4).Set(Gf.Vec4f(*color, 1))
+        elif tag == "map_Ke":
+            texture.CreateInput("scale", Sdf.ValueTypeNames.Float4).Set(Gf.Vec4f(*emission, 1))
+        elif tag == "map_d":
+            texture.CreateInput("scale", Sdf.ValueTypeNames.Float4).Set(Gf.Vec4f(properties.get('d',1),1,1,1))
         elif tag == "norm":
             texture.CreateInput("scale", Sdf.ValueTypeNames.Float4).Set(Gf.Vec4f(2, 2, 2, 1))
             texture.CreateInput("bias", Sdf.ValueTypeNames.Float4).Set(Gf.Vec4f(-1, -1, -1, 0))

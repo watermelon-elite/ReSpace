@@ -52,7 +52,8 @@ final class WorkspaceStore {
         api = ScanAPIClient(baseURL: configuration.serviceURL, appKey: configuration.appKey, deviceId: deviceId)
         persistence = ClientPersistence(directory: directory)
         captures = CaptureRepository(directory: directory.appendingPathComponent("Captures"),
-                                     maximumFrames: configuration.localCaptureEnabled ? SamplingPolicy.reconstructionMaximumFrames : 40)
+                                     maximumFrames: configuration.localCaptureEnabled ? SamplingPolicy.reconstructionMaximumFrames : 40,
+                                     freshCaptureOnly: configuration.localCaptureEnabled)
     }
 
     init(api: ScanAPIClient, persistence: ClientPersistence, captures: CaptureRepository) {

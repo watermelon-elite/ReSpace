@@ -16,8 +16,8 @@ struct ScanCaptureScreen: View {
     var body: some View {
         ZStack {
             ReSpaceTheme.cream.ignoresSafeArea()
-            if (controller.phase == .scanning || controller.phase == .finishing), let roomView = controller.roomView {
-                ScanCaptureSurface(view: roomView).ignoresSafeArea()
+            if (controller.phase == .scanning || controller.phase == .finishing), let view = controller.sourceView ?? controller.roomView {
+                ScanCaptureSurface(view: view).ignoresSafeArea()
                 VStack {
                     HStack {
                         Button("Cancel scan") { confirmDiscard = true }.buttonStyle(.bordered).tint(.white)
@@ -28,7 +28,12 @@ struct ScanCaptureScreen: View {
                     Spacer()
                     VStack(spacing: 10) {
                         Text(controller.guidance).font(ReSpaceStyle.font(18, weight: .semibold))
-                        Text(store.localCaptureEnabled ? (controller.canFinish ? "Revisit gaps, furniture sides, and spaces underneath before finishing." : "Scan for at least 1 minute. Walk around furniture and capture surfaces from several angles.") : controller.detailText).font(ReSpaceStyle.font(13)).foregroundStyle(.secondary)
+                        Text(store.localCaptureEnabled ? controller.detailText : "Move slowly around the room.").font(ReSpaceStyle.font(13)).foregroundStyle(.secondary)
+                        if store.localCaptureEnabled, controller.phase == .scanning {
+                            Toggle("High-resolution auto photos", isOn: $controller.highResolutionPhotos).font(ReSpaceStyle.font(13))
+                            Button("Take detail photo", systemImage: "camera") { controller.takeDetailPhoto() }
+                                .disabled(!controller.canTakeDetailPhoto)
+                        }
                         PrimaryAction(title: controller.phase == .finishing ? "Finishing scan…" : "Done", symbol: "checkmark",
                                       disabled: controller.phase == .finishing || !controller.canFinish) { controller.done() }
                     }.padding(18).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24))
@@ -95,7 +100,7 @@ struct ScanCaptureScreen: View {
 }
 
 private struct ScanCaptureSurface: UIViewRepresentable {
-    let view: RoomCaptureView
-    func makeUIView(context: Context) -> RoomCaptureView { view }
-    func updateUIView(_ uiView: RoomCaptureView, context: Context) {}
+    let view: UIView
+    func makeUIView(context: Context) -> UIView { view }
+    func updateUIView(_ uiView: UIView, context: Context) {}
 }

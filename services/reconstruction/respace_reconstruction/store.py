@@ -6,7 +6,7 @@ import threading
 import uuid
 from pathlib import Path
 
-from .models import Manifest, Metadata
+from .models import Manifest, NativeManifest, Metadata, parse_manifest
 
 
 def atomic_json(path: Path, data):
@@ -71,7 +71,7 @@ class Store:
         if row is None:
             raise KeyError(job_id)
         data = dict(row)
-        manifest = Manifest.model_validate_json(data.pop("manifest"))
+        manifest = parse_manifest(data.pop("manifest"))
         data["result"] = json.loads(data["result"]) if data["result"] else None
         data["schema_version"] = 1
         data["missing_artifact_ids"] = [a.id for a in manifest.artifacts if not (self.folder(job_id) / "inputs" / a.filename).is_file()]
@@ -79,7 +79,7 @@ class Store:
 
     def manifest(self, job_id):
         self.get(job_id)
-        return Manifest.model_validate_json((self.folder(job_id) / "manifest.json").read_text())
+        return parse_manifest((self.folder(job_id) / "manifest.json").read_text())
 
     def queue(self, job_id, retry=False, restart_id=None):
         with self.lock, self.connect() as c:
@@ -104,6 +104,11 @@ class Store:
                 if p.stat().st_size != a.byte_length or digest(p) != a.sha256:
                     raise ValueError("Retained input failed integrity verification")
             manifest = self.manifest(job_id)
+            if isinstance(manifest,NativeManifest):
+                # Validate the original seal and native semantics before queueing
+                # any paid model work, including retries/restarts.
+                from .threejs_pipeline import native_source
+                native_source(self.folder(job_id),manifest,self.folder(job_id)/'native-source')
             for frame in manifest.frames:
                 metadata = next(a for a in frame.artifacts if a.type == "metadata")
                 stored = Metadata.model_validate_json((self.folder(job_id) / "inputs" / metadata.filename).read_text())

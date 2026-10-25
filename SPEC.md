@@ -243,27 +243,27 @@ An Addition carries a stable request identity and category through Product disco
 - Use RoomPlan's AR session as the coordinate source; sample its current frame without replacing its AR-session delegate.
 - Collect poses only after capture-session start, within the same run that produces the final CapturedRoom. A restart uses fresh identities and a fresh frame.
 - On Done, stop acquisition, obtain and persist the finalized native room. Never submit an intermediate live update as the completed export.
-- Reconstruction capture requires at least 60 seconds and offers continued scanning after that; it never automatically finishes. Reaching the frame cap ends photo sampling only.
+- Fresh reconstruction scans use the source Scan to Three.js capture method (user-directed 2026-10-24), writing `house-capture/5` directly. Saving is explicit; quality guidance is advisory and the earlier 60-second minimum/900-photo cap does not apply. The first useful photo must be retained before Done is enabled.
 
 #### 3.2 Sampling and bounded work
 
 | Setting | Contract |
 |---|---|
-| Triggers | Reconstruction: 0.5 s elapsed, 0.10 m translation or 8° turn, with a hard 0.3 s interval; coalesce simultaneous triggers. Legacy capture retains its earlier bounded policy. |
-| Tracking | Accept only normal tracking; pause on transient degradation. |
-| Motion | Reject if the motion-speed proxy exceeds 0.3 m/s. |
-| Frame count | Planning transfer: at most 40 evenly sampled frames across the completed scan. Reconstruction capture: at most 900 frames and 2 GB, with the existing 60-second minimum. |
-| Encoding | One image/depth task at a time; reject candidates when bounded capacity is unavailable. |
-| Upload | One in-flight upload per Room. |
-| Queue | Incremental disk records within the reconstruction limits; one encoder and no unbounded camera-buffer queue. Planning uploads one frame at a time. |
-| JPEG | Planning transfer: longest edge ≤1280 px, quality 0.7, native sensor orientation retained. Reconstruction retains original capture images up to 2560 px. |
+| Triggers | Fresh reconstruction: source coverage-gain scoring (minimum 0.06 m² when geometry is available), novel-view checks and sharpest-frame candidate holding. Auto photo interval 0.4 s normally, 1.2 s when constrained; replace a held candidate only when clearly sharper (≤80% of its blur). |
+| Tracking | Accept only normal tracking after 1.5 s of settling; pause candidate capture on degradation. Preserve one shared ARSession for headless RoomPlan, classified mesh, photos and depth. Configuration changes retain the world origin and never replace RoomPlan's ARSession delegate. |
+| Motion | Source exposure/focal-length/pose-based pixel-smear estimate, with 1.5 px sharp and 6 px acceptable thresholds; no earlier 0.3 m/s reconstruction sampler. |
+| Frame count | Planning transfer retains its 40-frame limit. Native reconstruction throttles after 150 photos, thermal pressure or memory warnings; it has no fixed photo quota. Check available disk space and stop visibly on write failure. |
+| Encoding | One held copied photo buffer; at most one auto or three manual JPEG writes, and three independent depth writes. Never retain a queue of ARFrame camera buffers. |
+| Upload | Fresh capture is local. Share a completed native ZIP for modeling; no API call or automatic reconstruction-worker submission occurs. Planning transfer remains separate. |
+| Queue | Coalesced newest mesh updates per anchor; bounded camera/depth work and a 90-pose blur history. Drain accepted JPEG/depth writes and freeze the mesh before finalizing. |
+| JPEG | Fresh reconstruction: sensor-oriented sRGB JPEG, maximum edge 3024 px, quality 0.85 and EXIF orientation 6. Optional high-resolution ARSession still requests, with regular-frame fallback and recorded `highRes` status. Manual detail photos retain their real capture data. Planning transfer retains ≤1280 px/0.7 quality. |
 | Calibration | Actual uploaded dimensions and intrinsics scaled to those dimensions. |
 | Pose | Camera-to-original-scan-world, 16 floats, column-major. |
 | Identity | Persist capture/frame IDs, index and timestamp before sending. |
-| Depth | Optional tightly packed Float32 little-endian meters, row-major, sensor orientation, actual width/height. |
+| Depth | Fresh reconstruction: separate motion-triggered RGB-D sequence, normally up to 5 Hz (0.2 s), throttled to 0.5/1 s under pressure. Packed Float16 little-endian meters compressed as raw DEFLATE `.f16z`, with corresponding sensor RGB JPEG up to 640 px wide, actual pose/calibration and dimensions. Planning wire depth remains Float32. |
 | Confidence | Optional matching UInt8 map: 0 low, 1 medium, 2 high; tied to the same depth observation. |
 
-Imagery, calibration, pose and available depth/confidence come from the same source frame. Remove buffer row padding when packing. Depth resolution is read at runtime; a common 256×192 size is not a protocol constant. Sensor orientation is not rotated to match portrait display.
+Each RGB-D observation carries its own source-frame pose/intrinsics. High-resolution stills use their own returned ARFrame calibration and time; a nearby video depth grid is used only for coverage scoring with its own pose. Preserve ISO, shutter, exposure offset, white-balance gains/lock, light estimate, tracking, manual/auto and estimated blur metadata where recorded. Lock white balance after settling; exposure remains automatic. Remove row padding and read dimensions at runtime. Original sensor pixels are never rotated to match the display; upright comparison photos are prepared separately exactly once.
 
 Uploads only store inputs and return durable receipts. They do not invoke detection. Capture counters describe accepted/stored/pending artifacts, not unique detected Objects or accumulated repeated sightings.
 
@@ -289,11 +289,51 @@ Previously completed Rooms survive restart/cancellation of another acquisition. 
 - Clear local raw copies only after the entire manifest is durably acknowledged and finalization succeeds. A successful detector result or usable room alone is insufficient.
 - Persist completed-upload recovery across relaunch. Keep local missing/unacknowledged artifacts until retry or explicit discard.
 - Retain completed raw photos, depth/confidence where recorded, calibration, poses, timestamps, exports and metadata privately without automatic expiry.
+- Fresh native bundles include final RoomPlan JSON/raw capture data, classified PLY, posed photos, separate RGB-D and an integrity inventory. The app's capture identity wraps that bundle without translating it into the earlier photo sampler's schema. Native bundle export verifies the sealed files; partial/corrupt captures cannot be shared as complete. The earlier adapter is available only through explicit archival `--legacy-capture` conversion.
+- Attempt to preserve raw CapturedRoomData before the source `.beautifyObjects` RoomBuilder pass. As in the pinned source, this is an optional recovery archive: if RoomPlan rejects encoding its opaque raw data, record the warning and omit the unavailable archive reference, then still build the layout from the original in-memory data. Actual filesystem/write failures remain fatal. A layout-build failure retains a shareable acquisition with an explicit missing-layout warning; authoring requires layout recovery or measured mesh tooling. The absence of a processed layout or mesh is recorded, rather than fabricating geometry or discarding otherwise retained camera/depth evidence. Neither a saved acquisition nor an optional RoomPlan USDZ is a finished reconstructed Room.
+- User-directed fresh start (2026-10-24): clear legacy local capture folders once when the updated local library first loads, preserving native captures and planning/shopping stores. The 15 old Mac reconstruction-service captures/cache were deleted in this change. New capture data is never included in that one-time migration.
 - This is sampled evidence, not full-frame-rate video, inaccessible sensor data or textured reconstruction.
 - Abandoned interrupted captures request backend deletion. Persist cleanup identity and retry on reconnection if necessary.
 - Explicit Room deletion removes its media, snapshots, designs, conversation and metadata. Shared Product records are separate; retaining them must not retain deleted private room evidence.
 
 #### 3.5 Reconstruction integration (accepted 2026-10-18)
+
+**`instaMethod` direction, user-specified 2026-10-24:** follow Wes Bos's supplied
+Scan to Three.js skill and source for scan-to-model work: retain metric RoomPlan,
+LiDAR/depth and posed photographic evidence, prepare it with the original tools,
+have the coding agent author detailed Three.js geometry and custom materials,
+and iterate using source-camera photo/render and orthographic comparisons.
+Recreate distinctive finishes/graphics from image evidence and appropriate PBR
+maps. Prepared measurement scaffolding is not a finished reconstruction. This
+is now connected to **Create walkthrough** (user-directed 25 October 2026).
+The default `threejs` worker runs on the Mac and receives the original native
+bundle through resumable schema-2 file uploads, verifies its seal, and uses an
+OpenAI Responses coding harness to author actual modular Three.js code. It
+loads the supplied skill/all four references, inspects metric/photo evidence,
+creates source-photo crops and canvas/PBR maps, renders upstream source-camera
+and orthographic comparisons, and revises. This is API-billed application
+automation of the coding workflow; the video uses interactive Codex instead.
+The old primitive JSON/CPU worker is retained only for explicit historical tests.
+
+Submission must type-check, export the authored mesh/UV/PBR data and pass an
+independent comparison of delivered OBJ/MTL/PNG assets against source cameras
+spread over the recorded route. Only then publish an immutable native scene and
+embedded-texture USDZ. Preserve source appearance; never publish baseline boxes
+or default finish families as fallback. Native rendering uses ambient/directional
+lighting; original Three.js fixture lights/postprocessing are not carried across
+as an identical renderer. Record remaining inferences and verify real-room
+appearance on a fresh device capture. The normal Retry reuses source, tool and
+paid response checkpoints. Explicit Generate from scratch creates a separate
+run with a new disclosed $10 model-token limit. Unknown billing outcomes block
+more paid calls. A budget/time/review failure retains work without publishing a
+schematic substitute. Runpod is not required: OpenAI supplies model inference;
+the Mac handles storage, conversion, browser checks and native export. Rebuild
+the app for the updated Mac address and use the same local network.
+
+See `docs/reconstruction/INSTA_METHOD.md` for verified sources and integration
+boundaries and `services/reconstruction/README.md` for the active worker. Changes
+are limited to scan-to-model work; viewing-only, planning and persistence
+boundaries below remain governing. No survey-accuracy claim is made.
 
 The current DreamSeal/Ollo app remains the router, with `docs/design/PROFILE.md` and its linked design system governing every integrated screen. Integrate the `OpenAI-3dmodelgen` acquisition, mesh retention, reconstruction job recovery, verified scene import and camera navigation. The existing installation identity, saved Rooms, shopping lists and backend design history remain authoritative.
 

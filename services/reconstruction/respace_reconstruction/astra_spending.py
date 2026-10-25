@@ -16,8 +16,10 @@ from .store import atomic_json
 
 CEILING_UNITS = 10_000_000  # USD millionths; $10 per explicitly started generation.
 # Standard USD per million tokens: ordinary input, cache hit, cache write, output.
-# Keep historical Astra rates for receipts/reservations created before migration.
-RATES = {"gpt-6-astra": (10., 1., 12.5, 50.), "gpt-6-sol": (2., .2, 2.5, 10.)}
+# Keep historical Astra/Sol rates for their existing receipts and other pipelines.
+# GPT-6.1 Sol: https://developers.openai.com/api/docs/models/gpt-6.1-sol
+RATES = {"gpt-6-astra": (10., 1., 12.5, 50.), "gpt-6-sol": (2., .2, 2.5, 10.),
+         "gpt-6.1-sol": (2., .1, 2.5, 10.)}
 
 
 def rates(model):
@@ -31,7 +33,7 @@ class BudgetExhausted(RuntimeError):
 
 
 def count_input_tokens(body, key):
-    payload = {k: body[k] for k in ("model", "input", "instructions", "text") if k in body}
+    payload = {k: body[k] for k in ("model", "input", "instructions", "text", "tools", "tool_choice", "parallel_tool_calls") if k in body}
     request = urllib.request.Request("https://api.openai.com/v1/responses/input_tokens",
         data=json.dumps(payload, allow_nan=False, separators=(",", ":")).encode(),
         headers={"Authorization": "Bearer "+key, "Content-Type": "application/json"}, method="POST")
@@ -67,7 +69,7 @@ class Spending:
         self.path = path
         self.data = json.loads(path.read_text()) if path.exists() else {
             "ceiling_units": CEILING_UNITS, "currency": "USD", "units_per_dollar": 1000000,
-            "rate_basis": "2026-10-18 Standard USD per million: Sol input 2/cache .2/write 2.5/output 10; historical Astra 10/1/12.5/50; long-context uplift",
+            "rate_basis": "2026-10-25 Standard USD per million: Sol 6.1 input 2/cache .1/write 2.5/output 10; Sol 2/.2/2.5/10; Astra 10/1/12.5/50; long-context uplift",
             "entries": {}}
         if self.data["ceiling_units"] != CEILING_UNITS:
             raise RuntimeError("The retained Astra budget policy differs; review it before continuing")

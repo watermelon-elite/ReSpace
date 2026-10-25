@@ -8,7 +8,7 @@ import UIKit
 private actor WalkthroughLoader {
     func load(_ bundle: WalkthroughBundle, directory: URL) throws -> SCNScene {
         let scene=SCNScene()
-        let generated=bundle.sceneId.hasPrefix("astra-")
+        let generated=bundle.sceneId.hasPrefix("astra-") || bundle.sceneId.hasPrefix("threejs-")
         if generated {
             scene.background.contents=UIColor(white:0.12,alpha:1)
             let ambient=SCNNode();ambient.light=SCNLight();ambient.light?.type = .ambient
@@ -18,7 +18,7 @@ private actor WalkthroughLoader {
             scene.rootNode.addChildNode(sun)
         }
         var textures: [String:UIImage]=[:]
-        for name in Set(bundle.materials.flatMap { [$0.baseColorTexture,$0.roughnessTexture,$0.normalTexture].compactMap { $0 } }) {
+        for name in Set(bundle.materials.flatMap { [$0.baseColorTexture,$0.roughnessTexture,$0.normalTexture,$0.metallicTexture,$0.emissiveTexture].compactMap { $0 } }) {
             guard let image=UIImage(contentsOfFile:directory.appendingPathComponent(name).path) else { throw ClientError.invalidResponse }
             textures[name]=image
         }
@@ -56,6 +56,8 @@ private actor WalkthroughLoader {
                             material.lightingModel = generated ? .physicallyBased : .constant
                             material.isDoubleSided=true
                             if generated, let binding=bundle.materials.first(where:{ $0.ownerId==entity.id && $0.sourceMaterial==material.name }) {
+                                material.lightingModel = binding.unlit == true ? .constant : .physicallyBased
+                                material.diffuse.contents=UIColor(red:binding.baseColor[0],green:binding.baseColor[1],blue:binding.baseColor[2],alpha:1)
                                 material.roughness.contents=binding.roughness ?? 0.7
                                 material.metalness.contents=binding.metallic ?? 0
                                 if let name=binding.baseColorTexture, let texture=textures[name] {
@@ -67,7 +69,12 @@ private actor WalkthroughLoader {
                                     material.roughness.intensity=1
                                 }
                                 if let name=binding.normalTexture { material.normal.contents=textures[name] }
-                                for property in [material.diffuse,material.normal,material.roughness] {
+                                if let name=binding.metallicTexture { material.metalness.contents=textures[name] }
+                                if let c=binding.emissiveColor { material.emission.contents=UIColor(red:c[0],green:c[1],blue:c[2],alpha:1) }
+                                if let name=binding.emissiveTexture { material.emission.contents=textures[name] }
+                                material.emission.intensity=binding.emissiveIntensity ?? 1
+                                material.transparency=binding.opacity ?? 1
+                                for property in [material.diffuse,material.normal,material.roughness,material.metalness,material.emission] {
                                     property.wrapS = .repeat;property.wrapT = .repeat
                                     property.minificationFilter = .linear;property.magnificationFilter = .linear;property.mipFilter = .linear
                                 }
@@ -124,7 +131,7 @@ private actor WalkthroughLoader {
         let loaded=try await WalkthroughLoader().load(original,directory:directory)
         try Task.checkCancellation()
         camera.camera=SCNCamera();camera.camera?.zNear=0.03;camera.camera?.zFar=100
-        if original.sceneId.hasPrefix("astra-") {
+        if original.sceneId.hasPrefix("astra-") || original.sceneId.hasPrefix("threejs-") {
             camera.camera?.screenSpaceAmbientOcclusionIntensity=0.65
             camera.camera?.screenSpaceAmbientOcclusionRadius=0.15
             camera.camera?.wantsHDR=true

@@ -19,6 +19,9 @@ if [[ ! -x .venv/bin/python ]]; then
   "$task_python" -m venv .venv
 fi
 .venv/bin/python -m pip install -r requirements.lock -e '.[test]'
+npm ci --prefix ../scan-to-threejs
+npm ci --prefix ../scan-to-threejs/worker
+PLAYWRIGHT_BROWSERS_PATH="$PWD/../scan-to-threejs/worker/.browsers" npm exec --prefix ../scan-to-threejs/worker -- playwright install chromium
 
 .venv/bin/python - <<'PY'
 import os
@@ -26,7 +29,7 @@ from pathlib import Path
 import secrets
 env = Path('.env')
 if not env.exists():
-    env.write_text('RESPACE_RECONSTRUCTION_TOKEN=' + secrets.token_hex(32) + '\nRESPACE_RECONSTRUCTION_DATA=./data\nRESPACE_PIPELINE=astra\nOPENAI_API_KEY=\n')
+    env.write_text('RESPACE_RECONSTRUCTION_TOKEN=' + secrets.token_hex(32) + '\nRESPACE_RECONSTRUCTION_DATA=./data\nRESPACE_PIPELINE=threejs\nOPENAI_API_KEY=\n')
 os.chmod(env, 0o600)
 PY
 echo 'Set OPENAI_API_KEY in .env, run ./run.sh, and set the Mac endpoint/token in Configuration/Local.xcconfig.'

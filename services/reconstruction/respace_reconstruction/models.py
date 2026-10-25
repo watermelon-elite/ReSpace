@@ -1,8 +1,8 @@
 import math
 import re
-from typing import Literal
+from typing import Literal, Annotated, Union
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator, TypeAdapter
 
 MAX_BYTES = 2 * 1024**3
 SAFE_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$")
@@ -101,3 +101,55 @@ class Manifest(BaseModel):
                 if "depth" not in types or not meta.confidence_width or not meta.confidence_height or meta.confidence_format is None or types["confidence"].byte_length != meta.confidence_width * meta.confidence_height:
                     raise ValueError("Confidence dimensions/format do not match bytes")
         return self
+
+
+class NativeFile(BaseModel):
+    model_config=ConfigDict(extra='forbid')
+    id: str = Field(pattern=r"^[a-f0-9]{64}$")
+    type: Literal['native_source'] = 'native_source'
+    filename: str = Field(pattern=r"^[a-f0-9]{64}$")
+    relative_path: str = Field(min_length=1,max_length=512)
+    byte_length: int = Field(gt=0,le=512*1024**2)
+    sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+
+    @model_validator(mode='after')
+    def path(self):
+        import hashlib
+        from pathlib import PurePosixPath
+        p=PurePosixPath(self.relative_path)
+        if not p.parts or p.is_absolute() or '..' in p.parts or str(p)!=self.relative_path or '\\' in self.relative_path or any(ord(c)<32 for c in self.relative_path):
+            raise ValueError('Unsafe native capture path')
+        expected=hashlib.sha256(self.relative_path.encode()).hexdigest()
+        if self.id!=expected or self.filename!=expected:
+            raise ValueError('Native file identity must match its path')
+        return self
+
+
+class NativeManifest(BaseModel):
+    model_config=ConfigDict(extra='forbid')
+    schema_version: Literal[2]
+    capture_id: str = Field(pattern=r"^[A-Za-z0-9-]{1,64}$")
+    state: Literal['completed','local_saved']
+    format: Literal['house-capture/5']
+    files: list[NativeFile] = Field(min_length=5,max_length=30000)
+
+    @property
+    def artifacts(self): return self.files
+
+    @property
+    def frames(self): return []
+
+    @model_validator(mode='after')
+    def consistency(self):
+        paths={f.relative_path for f in self.files}
+        if len({p.casefold() for p in paths})!=len(self.files) or sum(f.byte_length for f in self.files)>8*1024**3:
+            raise ValueError('Duplicate paths or oversized native capture')
+        if not {'manifest.json','integrity.json','photos/photos.json','depth/frames.json'}<=paths:
+            raise ValueError('Native capture metadata is missing')
+        self.files.sort(key=lambda file:file.relative_path)
+        return self
+
+
+CaptureManifest=Annotated[Union[Manifest,NativeManifest],Field(discriminator='schema_version')]
+def parse_manifest(data):
+    return TypeAdapter(CaptureManifest).validate_json(data)

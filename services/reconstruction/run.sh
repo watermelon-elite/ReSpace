@@ -8,8 +8,8 @@ fi
 set -a
 source .env
 set +a
-# This branch always uses direct Astra, even with a retained older .env file.
-export RESPACE_PIPELINE=astra
+# The native action uses the measured Three.js coding and comparison workflow.
+export RESPACE_PIPELINE=threejs
 if [[ -z "${OPENAI_API_KEY:-}" ]]; then
   echo 'Set OPENAI_API_KEY in the private .env before starting the Astra service.' >&2
   exit 1

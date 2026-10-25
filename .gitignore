@@ -23,3 +23,6 @@ InterfaceCOLMAP-*.log
 RefineMesh-*.log
 TextureMesh-*.log
 services/reconstruction/benchmarks/
+
+# Dedicated Chromium runtime installed locally for scan-to-Three.js renders.
+services/scan-to-threejs/worker/.browsers/

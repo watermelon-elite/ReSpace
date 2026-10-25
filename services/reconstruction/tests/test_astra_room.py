@@ -78,9 +78,10 @@ def test_all_lidar_frames_contribute_even_when_only_one_photo_is_selected(tmp_pa
     assert body["text"]["format"]["schema"]["additionalProperties"] is False
 
 
-def test_full_generation_is_default_and_assets_are_atomic_reusable_and_navigable(tmp_path, monkeypatch):
+def test_retained_semantic_generation_assets_are_atomic_reusable_and_navigable(tmp_path, monkeypatch):
     manifest, _ = room_capture(tmp_path)
-    monkeypatch.delenv("RESPACE_PIPELINE")
+    # Retained semantic-only pipeline remains explicitly selectable.
+    monkeypatch.setenv("RESPACE_PIPELINE", "astra")
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
     calls = []
     monkeypatch.setattr(astra, "call_astra", lambda *args: calls.append(args[0]) or response())

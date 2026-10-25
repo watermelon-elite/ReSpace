@@ -588,16 +588,34 @@ def assemble_room(shell, furnishings, detailed=False):
         "entities": shell.entities+furnishings.entities})
 
 
-def process_astra_room(folder: Path, revision: int, detailed=True, generation_id=None):
+def process_astra_room(folder: Path, revision: int, detailed=True, generation_id=None, method="astra"):
     import open3d as o3d
     from .pipeline import progress
     started = time.monotonic()
+    if method not in ("astra", "insta"):
+        raise ValueError("Unknown room modeling method")
+    if method == "insta" and not detailed:
+        raise ValueError("Photo-guided reconstruction requires the iterative detail loop")
+    generation_model = astra.MODEL
+    prompt_version = PROMPT_VERSION
+    if method == "insta":
+        from .insta_method import MODEL, VERSION
+        generation_model, prompt_version = MODEL, VERSION
     folder = folder.resolve()
     if revision < 1:
         raise ValueError("Invalid revision")
     final = folder/"results"/str(revision)
     if final.exists():
-        return json.loads((final/"completion.json").read_text())
+        result = json.loads((final/"completion.json").read_text())
+        if method == "insta":
+            quality = json.loads((final/"quality.json").read_text())
+            if quality.get("pipeline") == "insta" and quality.get("source_manifest_sha256") != digest(folder/"manifest.json"):
+                raise ValueError("Committed reconstruction belongs to different capture evidence")
+            for asset in result["assets"]:
+                path = final/asset["filename"]
+                if path.stat().st_size != asset["byte_length"] or digest(path) != asset["sha256"]:
+                    raise ValueError("Committed reconstruction failed asset integrity verification")
+        return result
     manifest, audit = inspect_capture(folder)
     if not audit["complete"]:
         raise ValueError("Upload all immutable scan artifacts before generation")
@@ -614,7 +632,12 @@ def process_astra_room(folder: Path, revision: int, detailed=True, generation_id
         shell_entities, _, shell_meshes, shell_floor, _ = compile_room(shell, set(), Path(temporary), o3d)
         validate_shell(shell, shell_entities, shell_meshes, shell_floor)
     progress("astra_generating_scene")
-    if detailed:
+    if method == "insta":
+        from .insta_method import generate_iterative
+        furnishings, detail_report = generate_iterative(evidence, images, working, shell, manifest, progress,
+                                                       inputs=folder/"inputs")
+        cached = detail_report["response_reused"]
+    elif detailed:
         from .astra_detail import generate_detailed
         furnishings, detail_report = generate_detailed(evidence, images, working, shell, manifest, progress)
         cached = detail_report["response_reused"]
@@ -637,18 +660,25 @@ def process_astra_room(folder: Path, revision: int, detailed=True, generation_id
         bundle = SceneBundle(capture_id=manifest.capture_id, scene_id="astra-"+manifest.capture_id,
                              reconstruction_revision=revision, entities=entities, materials=bindings,
                              navigation=nav, ready=True)
+        photo_report = None
+        if method == "insta":
+            from .astra_textures import texture_furnishings
+            progress("astra_baking_photos")
+            photo_report = texture_furnishings(bundle, manifest, folder/"inputs", output, detail_report["objects"])
         from .room_document import export_room
         document = export_room(bundle, plan, evidence["roomplan"], meshes, output)
         atomic_json(output/"astra-room.json", plan.model_dump(serialize_as_any=True))
         atomic_json(output/"astra-furnishings.json", furnishings.model_dump(serialize_as_any=True))
-        atomic_json(output/"provenance.json", {"model": astra.MODEL, "prompt_version": PROMPT_VERSION,
+        atomic_json(output/"provenance.json", {"model": generation_model, "prompt_version": prompt_version,
+                    "pipeline": method,
                     "generation_id": generation_id,
                     "source_mesh_sha256": manifest.scene_mesh.sha256,
                     "lidar_frame_count": len(manifest.frames), "valid_depth_pixel_count": evidence["valid_depth_pixel_count"],
                     "selected_frame_ids": [p["frame_id"] for p in evidence["selected_photos"]],
                     "assumptions": plan.assumptions, "ignored_evidence": plan.ignored_evidence,
-                    "geometry": "RoomPlan shell built locally; intentional room contents, appliances and fixtures authored by Sol; random incidental junk excluded"})
-        report = {"ready": True, "capture_id": manifest.capture_id, "pipeline": "astra", "generation_model": astra.MODEL,
+                    "geometry": "RoomPlan shell built locally; photo-guided object models checked against calibrated renders and LiDAR" if method == "insta" else "RoomPlan shell built locally; intentional room contents, appliances and fixtures authored by Sol; random incidental junk excluded"})
+        report = {"ready": True, "capture_id": manifest.capture_id, "pipeline": method, "generation_model": generation_model,
+                  "source_manifest_sha256": audit["manifest_sha256"],
                   "triangle_count": count, "entity_count": len(entities), "response_reused": cached,
                   "elapsed_seconds": round(time.monotonic()-started, 3),
                   "checks": ["schema", "metric_bounds", "floor_ceiling_coverage", "references", "navigation", "room_json", "asset_integrity"],
@@ -661,6 +691,9 @@ def process_astra_room(folder: Path, revision: int, detailed=True, generation_id
                           estimated_cost_usd=detail_report["budget"]["known_cost_usd"])
         else:
             report.update(usage_cost(response))
+        if photo_report is not None:
+            report["photo_textures"] = photo_report
+            report["material_textures"]["type"] = "depth_visible_photos_with_procedural_unseen_surfaces"
         atomic_json(output/"quality.json", report)
         merge_scene(bundle, output)
         from .usdz import export_usdz
@@ -677,7 +710,7 @@ def process_astra_room(folder: Path, revision: int, detailed=True, generation_id
                   "scene_filename": "scene.json", "scene_schema_version": 2, "assets": assets,
                   "room_filename": "room.json", "room_schema_version": 2,
                   "needs_review": False, "error": None, "coordinate_system": "arkit_scan_meters_y_up",
-                  "quality_filename": "quality.json", "generation_model": astra.MODEL, "generated_triangle_count": count}
+                  "quality_filename": "quality.json", "generation_model": generation_model, "generated_triangle_count": count}
         atomic_json(output/"completion.json", result)
         output.replace(final)
     except Exception:

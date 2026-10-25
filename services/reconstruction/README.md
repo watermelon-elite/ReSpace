@@ -1,92 +1,124 @@
-# Direct Sol room generation
+# Scan to Three.js worker
 
-This branch sends scan evidence directly to `gpt-6-sol` through the OpenAI Responses API. Sol authors intentional room contents, including furniture, decor, appliances, electronics and installed features, with plausible hidden object surfaces. The local service builds walls, floor and ceiling from measured RoomPlan geometry, preserving recorded openings and extending partial wall heights to a consistent measured ceiling level. ReSpace validates the returned scene, expands its geometry into OBJ/MTL files locally, and opens it in the native first-person viewer.
+**Create walkthrough** now sends fresh `house-capture/5` scans to this worker.
+The default pipeline is `threejs`. It prepares the original metric capture with
+Wes Bos's pinned converters, has an OpenAI coding agent author actual Three.js
+modules and custom textures, renders source-camera comparisons, revises, and
+exports verified OBJ/MTL/PNG/USDZ assets into the native walkthrough.
 
-The generation path contacts only `https://api.openai.com/v1/responses`. It uses no Google Cloud, Gemini, OpenMVS, detection/segmentation models, hosted tools, object-completion commands or external reconstruction services. A small service on your Mac keeps the API key private, accepts the phone's saved scan, and converts/validates Sol's output. This local service and local libraries are still needed; Sol's API returns structured text rather than a native 3D binary file.
+The worker runs on your Mac. **Runpod is not required**; the app's previous
+Runpod URL has been replaced with the Mac's local-network address. The iPhone
+and Mac must be on the same network and the Mac must stay awake during processing.
+OpenAI performs the modeling/vision calls; the Mac handles capture storage,
+conversion, browser rendering and export. No provider key is shipped in the app.
 
-## Integrated app
+## Setup and run
 
-The current DreamSeal/Ollo app owns navigation. Saved scans open this reconstruction flow and also offer Plan changes, which transfers calibrated native evidence to the existing planning backend. Walkthroughs are viewing-only; old local edit files are preserved but not loaded. Configure the planning connection in the app; no shared app key is introduced. The service has separate storage and dependencies from `backend/`. Removing an app Room does not delete this service’s retained copies. Debug supports the local address below; Release requires HTTPS.
-
-## Run locally
-
-Requires Python 3.11/3.12. From this directory:
+Use Python 3.11/3.12 and Node 22.12 or newer (Node 24 LTS recommended).
+From this directory:
 
 ```sh
-bash setup.sh
-# Add your OpenAI API key to OPENAI_API_KEY in the private .env.
+./setup.sh
+# Set OPENAI_API_KEY in the private .env, then:
 ./run.sh
 ```
 
-Setup installs Python geometry/runtime dependencies; it downloads no reconstruction model checkpoints or OpenMVS binaries. The run script forces `RESPACE_PIPELINE=astra`, including when an older `.env` is present, and requires an API key before accepting jobs. Stop an old reconstruction service before starting this branch's service.
+Setup installs Python geometry/export dependencies, pinned Three.js dependencies,
+and a separate pinned Playwright/Chromium runtime. On a Linux host, install its
+OS dependencies with `npm exec --prefix ../scan-to-threejs/worker -- playwright install-deps chromium`
+(as root). Node and browser work inherit a scrubbed environment with no provider
+keys or service token. The run script selects `RESPACE_PIPELINE=threejs` even if
+an older environment selected another worker. It starts a single durable queue
+on port 8008. Do not use `--reload` or multiple Uvicorn workers.
 
-Point `Configuration/Local.xcconfig` at this Mac's LAN address on port 8008 and copy the service token from `.env`. Use the existing local-network setup, rebuild the iPhone app, open a saved scan, and choose **Create walkthrough**. Do not use a retained Google Cloud endpoint. Keep the OpenAI key out of the app. For access beyond your local network, configure authenticated HTTPS yourself.
+`Configuration/Local.xcconfig` holds `RESPACE_RECONSTRUCTION_URL` and the matching
+`RESPACE_RECONSTRUCTION_TOKEN`. The URL uses xcconfig's `http:/$()/HOST.local:8008`
+escaping. Rebuild the iPhone app after changing it and allow Local Network access.
+The token must match `services/reconstruction/.env`. Keep that file private;
+`OPENAI_API_KEY` belongs only there. The authenticated `/health` response names
+`pipeline: threejs` and `native_upload_schema_version: 2`.
 
-## Evidence and generation
+## Capture to native walkthrough
 
-All immutable input artifacts are checked against their declared lengths and SHA-256 hashes. Every retained frame contributes its valid LiDAR pixels (0.1–6 meters, ARKit confidence >= 1) to a weighted XYZ/RGB voxel summary. Voxel resolution adapts to keep at most 6,000 cells: it preserves counts and weighted sums from every valid pixel rather than dropping later frames. Invalid depths are omitted. The full-resolution files stay local and unchanged.
+1. Save a fresh native scan. Original photos, poses, intrinsics, mesh, RGB-D and
+   RoomPlan remain together, with the capture's original integrity inventory.
+2. Tap **Create walkthrough** and accept the disclosed $10 API-token limit.
+   The app builds a schema-2 upload envelope over those original files. Stable
+   path-derived identities and byte hashes allow sequential uploads to resume
+   only missing files. The older capture adapter is never used for fresh scans.
+3. The worker verifies every uploaded byte and the native seal before queueing
+   paid work. It runs the unchanged source converters and prepares upright photos
+   in the converted array order, the floor/wall-aligned metric plan and a colored
+   mesh reference. A missing layout is a capture/recovery error, not an invented room.
+4. The Responses coding harness loads the supplied skill and **all four**
+   references. It inspects contact sheets covering all photos, reads measurements,
+   authors modular Three.js geometry, rectifies source-photo graphics/finishes,
+   and can fetch suitable Poly Haven CC0 PBR maps with the original helper.
+   Source-camera and orthographic renders use the upstream full PBR capture page.
+   There is no primitive JSON scene schema, three-attempt limit or coarse fallback.
+5. Submission checks TypeScript and exports the actual geometry, normals, UVs,
+   images and PBR channels. An independent page reloads the delivered OBJ/MTL/PNG
+   assets without authored code and renders cameras spread over the original
+   capture route (up to 12). A separate vision review must cover every chosen
+   view and pass before publication. Rejections return concrete discrepancies
+   to the coding agent. A custom source-photo texture must actually be used in
+   an exported material. An empty baseline or unused texture cannot pass the gates.
+6. The validated result is published atomically as an immutable revision. The
+   phone downloads only listed assets, checks sizes/SHA-256 and opens the
+   viewing-only SceneKit walkthrough. Captured photo/canvas textures, UV repeats,
+   tint, roughness, metalness, normals, emission, opacity and unlit graphics survive
+   export. The separate USDZ embeds its images for sharing.
 
-All ARKit mesh anchors are loaded and transformed into the original metric scan frame, then simplified to at most 1,200 triangles for the request. Calibrations and poses from every frame, RoomPlan semantics, and up to 64 sharp photos selected for viewpoint diversity accompany the summary. Images are reduced to at most 1,280 pixels on their longest side. This is bounded evidence from the whole scan, not a byte-for-byte upload of every raw depth map and mesh face. A parsed RoomPlan floor and walls are required for the local shell; missing structure fails before any paid request. Opaque coreModel payloads are omitted from the API evidence.
+This is **ReSpace's API-billed automation of the coding workflow**, not the video's
+interactive Codex subscription or a one-click feature supplied by upstream.
+The original converters, skill, runtime and comparison page remain byte-identical
+at revision `31b2dc9da3fb541e501f2f0936e55b32afb70ee8`; local integration files are
+recorded separately. See [INSTA_METHOD.md](../../docs/reconstruction/INSTA_METHOD.md).
+Native rendering uses ambient/directional lighting; Three.js fixture lights,
+postprocessing and shaders are not a byte-identical SceneKit renderer. Unsupported
+features must be baked to supported geometry/materials before export. The final
+asset comparison is a visual gate, not a numerical accuracy certificate.
 
-## Semantic object generation
+## Charges, recovery and limits
 
-The default path uses GPT-6 Sol with high reasoning effort and serial, resumable batches. A room with 20 eligible objects needs at most six generation calls (one inventory plus five batches), instead of 21:
+Walkthrough modeling uses `gpt-6.1-sol` with high reasoning; independent photo
+review uses the same model with medium reasoning. Other pipelines retain their
+configured models. The fixed **$10 USD per generation**
+ceiling covers coding and visual-review token calls at the recorded Standard
+rates, including failed calls. It excludes tax and any unrelated image generation.
+Input token counts include tool definitions; each request reserves input/cache
+write plus maximum reasoning/output before calling OpenAI. Unknown billing
+outcomes block more paid work. Do not delete the ledger to bypass that block.
+A budget/time failure preserves the scan, authored source and paid responses;
+it does not publish a schematic substitute.
 
-1. **Inventory:** up to 64 selected room photos and all-frame LiDAR/mesh summaries identify intentional room contents and installed features, estimate size/position/orientation, and create complete coarse objects. Each item includes `model_description`: its interpreted subtype, major components, proportions, colors and materials. Geometry is a plausible example of that object type at its measured placement. The response targets 1–3 parts per item, at most 64 entities/80 total parts, and has a 24,000-output-token limit.
-2. **Object batches:** up to four interpreted objects share each Responses API request. These calls contain **no images or photo crops**, and do not receive dense observed object meshes. They use the semantic descriptions, coarse objects, approximate metric bounds and materials to build recognizable models. Target 6–16 parts per object (2–5 for simple items), maximum 20 parts, 128 explicit vertices and 256 explicit triangles. Curved detailed primitives use slightly smoother geometry. Object identities, placement and support relationships stay fixed. The output allowance is 28,000 tokens per batch; the final batch can contain fewer than four objects. These are synchronous Responses requests, not the asynchronous Batch API.
-3. **Reusable material textures:** every material selects one of 12 families: wood, fabric, leather, metal, plastic, stone, ceramic, glass, paint, rubber, foliage or paper. A local procedural library generates seamless color, roughness and normal maps, shared across all parts using the same family. The exporter assigns metric face-corner UVs: planar charts for boxes/custom meshes, cylindrical wrapping with planar caps, and spherical wrapping for curved objects. Original scan photographs are not projected onto the models. Per-part RGB tint, roughness and metallic values retain each object's interpreted colors and finish. Shell walls/ceilings use subtle paint patterns and the neutral floor uses stone. Cached maps require no additional API calls.
-4. **Assembly:** the measured local shell and all objects are validated, checksummed and committed as one first-person walkthrough. The native viewer adds ambient occlusion and displays how many items received detailed geometry.
+Normal Retry resumes `work/threejs/agent-state.json`, tool state, response
+checkpoints and `spending.json`. Explicit **Generate from scratch** creates a new
+isolated run and a new $10 limit, using a persisted restart UUID to avoid duplicate
+runs after lost acknowledgements. Published revisions stay immutable. One room
+runs at a time; the default room deadline is one hour. Native upload limits:
+30,000 files, 512 MiB per input, 8 GiB total. Native results: one million triangles,
+512 files, 128 MiB per asset and 512 MiB total. These are mobile/storage limits,
+not a restriction to boxes or a fixed count of modeled parts.
 
-Include everything meaningfully belonging to the room: furniture/decor, appliances (including microwaves, refrigerators, ovens, dishwashers, kettles and coffee machines), TVs/computers/other electronics, cabinetry, countertops, sinks/faucets/plumbing fixtures, lights, vents, outlets, trim, door panels, window frames/glazing/shades, functional equipment and organized intentional contents. The local wall/floor/ceiling shell and openings remain authoritative and are not regenerated by Sol.
-
-Exclude random incidental junk: brooms/mops and loose cleaning tools, cleaning bottles/dish soap, wrappers, open gum packets, disposable packaging, food scraps, stray papers/notebooks, scattered dishes/cutlery, stray cables/chargers and personal clutter. Room context distinguishes an intentional functional setup from transient mess; useful or small items are not automatically junk. Installed/built-in/plumbed items stay fixed; freestanding items remain movable. Internally, `kind=furniture` denotes the movable-object class, while `category=appliance`, `electronics`, etc. identifies what it actually is. Objects above head height and low floor coverings do not obstruct walking underneath/over them.
-
-Each real item stays one entity. Material slots belong to its parts; handles, legs and cushions remain part of the same object. Every inventory item remains in the room if its detail call is invalid, incomplete or unaffordable; `quality.json` records that it retained coarse geometry. The viewer displays how many items received detailed geometry. Models preserve approximate dimensions and arrangement while using knowledge of the interpreted object type for plausible shape and hidden surfaces.
-
-Local checks cover schema, references, finite metric geometry, closed furniture meshes, object envelopes, room bounds, floor/ceiling coverage, perimeter walls, safe spawn and mobile asset budgets. Both the shell and inventory are checked before spending on object detail. Model output is data and is never executed as code.
-
-The iOS viewer explicitly loads and repeats these maps, tints the neutral color patterns, modulates roughness, and generates tangent bases for normal mapping. Paint/finish edits temporarily replace the original maps; Undo/Original restores them. `quality.json.material_textures` records textured entity/material counts and the shared texture files. Both `scene.json` and standard `room.json` preserve material-map bindings and their physical repeat period; the result's normal asset checksums cover every PNG. Existing completed rooms keep their original assets; rebuild the app/restart the service and generate a new revision to apply reusable textures.
-
-Open a saved room and use **Generate from scratch**, then confirm **Start new generation · $10 limit**, to rebuild from its original scan without reusing earlier AI model responses. Every explicit restart authorizes a new generation with its own $10 API limit; earlier charges remain on the OpenAI bill. The button is disabled while the room is queued/running. Normal **Retry walkthrough** resumes the current generation and preserves its responses and cumulative budget. Rebuild the iPhone app for the updated material bindings, progress labels and increased geometry budget. A failed new generation retains previous files and offers **Open previous version** for a previously downloaded walkthrough, including after reopening the app. The older single-call helper is retained only for coarse-contract tests; the service defaults to staged generation.
-
-## Standard room JSON
-
-Every new completed room includes `room.json` (schema version 2) and `room.schema.json`, alongside the native viewer's `scene.json`. The standardized file follows [room-reconstruction-json.md](../../room-reconstruction-json.md): meters, +Y up, floor at zero, bottom-center node pivots, local +Z facing forward, `[width, depth, height]`, a rigid column-major `room_from_world`, separate structural sections, typed openings, support references, usable surfaces/headroom, wall protrusions and door keep-clear zones. Each entity names its local OBJ asset and scene node. The exporter rebases the actual mesh pivots without changing world geometry and verifies JSON dimensions/poses against the assets before publishing. The native viewer uses OBJ/MTL assets in scan coordinates. `model.usdz` contains separate named entity meshes, embedded textures, and poses in the same room coordinates as `room.json`. Each JSON `node_name` exactly matches its USD prim name; IDs and support references retain their semantic identities.
-
-The export uses backend field names: `center: [x,z]` plus `base_y`, opening `offset` to the near edge from wall A, and `mount: tabletop` with `support_id`. `respace_reconstruction/categories.py` restricts categories to IDs confirmed by the steering notes (for example `appliance` → `refrigerator`, `bar_stool` → `stool`, `lamp` → `table_lamp`, and `pendant_light` → `ceiling_light`); unsupported espresso machines, display cases, menu boards, registers, trash bins, kettles, faucets, microwaves and other items retain their labels as `other`, with a required `floor`, `wall`, `tabletop`, `ceiling` or `none` collision class. The external backend registry is absent here. Wall protrusions retain per-part depth/height intervals for the agreed 5 cm clearance from the deepest relevant front. Wall selection uses mesh contact and center-to-plane distance instead of trusting a stale wall support. Wall-mounted entities face the inward normal; thin floor-standing trim within 10° of the wall direction is aligned about its mesh center before mesh export and protrusion measurement. The packaged USDZ is checked against JSON node poses and the OpenUSD ARKit compliance rules before publication. See [the implemented contract](../../docs/reconstruction/ROOM_JSON.md) for coordinate conversion, surface limitations, validation, and importing an additional item.
-
-## Photorealistic room image
-
-Open a finished walkthrough and choose **Create realistic image**, then **Generate image**. The app renders one fixed 1,536 × 1,024 view from inside a measured room corner, at eye level and facing toward the room's center, including current furniture and finish edits. It chooses a clear corner rather than using the user's current walkthrough position. The service selects up to six sharp, diverse original scan photos, preferring the frames recorded in the completed reconstruction’s provenance, and sends them alongside the render and compact object identities to `gpt-6-sol` with `reasoning.effort: high` through the Responses API. It forces one [`image_generation` tool call](https://developers.openai.com/api/docs/guides/tools-image-generation), using `gpt-image-2` at high image quality to produce the PNG. Sol interprets the objects using the original photos; the image tool uses `action: generate` to create a new scene as a natural iPhone rear-camera 1× photograph. Image 1 supplies the corner composition and current arrangement; subsequent photos supply real furniture shapes, manufacturing details, materials and lighting. The prompt allows correcting malformed stand-in silhouettes and prioritizes realism over exact mesh matching. Current layout/finish edits override the earlier photos. Camera/layout preservation is prompted, not mathematically guaranteed. Selected references are resized to a maximum 1,280px edge and saved with frame IDs and hashes before paid work; restarts reuse those copies. Missing/corrupt originals prevent a new paid request. The versioned iPhone/photo-reference cache identity keeps earlier smoothed images separate.
-
-Image generation is a separately requested API charge (Sol tokens plus the image tool), outside the 3D generation's $10 model-token ceiling. The screen discloses this before generation. The API immediately acknowledges the local receipt and runs provider work separately. [Background mode](https://developers.openai.com/api/docs/guides/background) returns a saved response ID; short GET requests poll it rather than holding a single connection open for image generation. Responses explicitly use `store: true` so service restarts can retrieve the same response. Polling, closing/reopening, duplicate submissions and service restarts cannot automatically buy another image for that saved design/view. Transient read/download failures are retried. An ambiguous initial provider submission without a saved ID remains a failure with potentially unknown billing and is never automatically repurchased. Reopening the image screen checks the server and resumes any existing result without requiring another Generate action. Completed images are retained on the service and cached on the phone; the image screen supports sharing. **Refresh image** explicitly requests a new paid variation from the same original 3D corner render and selected scan photos. The phone saves a fresh request identity before submitting it, so closing/reopening or recovering a lost acknowledgement resumes that refresh without purchasing another variation. The previous image stays visible and shareable until the replacement succeeds; failed refreshes retain it. Refresh is disabled while generation is in progress. A changed design gets a separate image identity. Existing rooms can use this feature without regenerating their 3D assets after rebuilding the app and restarting the service.
-
-## API budget, retries and duration
-
-The user-authorized **$10 USD model-token reservation ceiling** is fixed per generation run. The original run retains its existing capture-level ledger; explicit **Generate from scratch** starts a new run with a separate $10 ledger. It includes inventory, successful/failed detail calls and retries recorded from this version onward. Earlier single-call pipeline charges are historical and are not retroactively included. This is a local request-control policy at recorded model-specific Standard prices, not an OpenAI account-wide spending limit or an all-in bill cap; taxes, hosting and future provider price changes are outside it.
-
-Before each generation, `/v1/responses/input_tokens` counts the actual text, images and schema. The service reserves the full maximum output (including reasoning) and counted input plus 1%/256-token headroom at the highest applicable input/cache-write rate. Long-context uplifts are included. If the full output allowance cannot fit, it is reduced to the affordable token count, with a minimum of 16,000 output tokens (or the original limit if smaller). If even that cannot fit, the request is rejected before generation and its message reports the remaining budget and required reservation. A budget reservation is a worst-case allowance, not a charge. `budget-preflight.json` next to each response records the count and allowance without storing credentials. A durable reservation is committed before the paid request. Actual returned ordinary/cached/cache-write/output usage settles it; unused reservation becomes available to the next object. Requests explicitly use the Standard/default service tier and no paid hosted tools. If another detail call cannot fit, generation stops adding detail and uses complete coarse geometry for the remaining items. Once a batch cannot fit the remaining budget, later batches skip API work and semantic request preparation.
-
-The original generation keeps reservations and receipts in `work/astra-budget-v3.json`, preserving recorded spending and unresolved reservations. Fresh generations isolate ALL worker checkpoints, inventory/batch responses and budgets beneath `work/runs/RUN_ID/`; immutable `inputs/` and earlier `results/REVISION/` remain untouched. A normal Retry or service recovery resumes the active run ID. Old-run responses and costs are never loaded into a fresh run. The server persists run identity and restart request receipts in SQLite; POST `/v1/reconstructions/CAPTURE_ID/restart` requires a UUID `request_id`, and repeating that ID cannot create another run, including after a service restart. The phone saves that ID before sending, so a lost response can be retried safely. The current model is Sol with high reasoning effort. Batch checkpoints retain their existing `sol-v1` directory name; request fingerprints include the model, so responses from another model or reasoning level cannot be reused accidentally. Responses live in `work/sol-v1/inventory/response.json` and `work/sol-v1/batches/BATCH_ID/response.json`; `work/sol-v1/detail-report.json` records per-object outcomes and batch counts. New entries record their model; Astra entries settle at Astra rates and retained Sol entries settle at Sol rates. Changed model/prompts use new response checkpoints; old paid responses remain on disk and their spending still counts within their original generation. Normal retries reuse matching batch responses and preserve that generation’s cumulative $10 ceiling. Failed or truncated batches are retained and not automatically repurchased. A malformed/missing object falls back to its coarse model independently of valid siblings; duplicate or unknown identities invalidate that batch.
-
-Unknown billing outcomes keep their entire reservation and stop further paid calls, including after a restart or Retry. Review OpenAI usage and reconcile the receipt before proceeding; do not delete the ledger to bypass it. A saved response recovered after a crash can settle without another paid request.
-
-Pricing basis checked October 18, 2026: GPT-6 Sol Standard input $2, cached input $0.20, cache writes $2.50 and output $10 per million tokens. Retained Astra entries use $10/$1/$12.50/$50 rates. Over 272,000 input tokens, input/cache/write rates double and output is 1.5x. Local reports include known staged-call costs cumulatively, including retries and earlier Astra receipts.
-
-Batching and simpler geometry reduce generation work; high reasoning effort allows more deliberation and can increase latency and output usage. Actual end-to-end latency for this version has not been measured on a fresh real-room run; local geometry preparation, validation and publishing still take time. One worker handles one room at a time. API calls time out after 15 minutes each; the default whole-room timeout is 60 minutes (`RESPACE_ROOM_TIMEOUT_SECONDS` overrides it). Batch checkpoints survive worker failure. An active-request timeout is an unknown billing outcome and blocks more paid calls until reconciled.
-
-Official references: [Sol capabilities/pricing](https://developers.openai.com/api/docs/models/gpt-6-sol), [input-token counting](https://developers.openai.com/api/docs/guides/token-counting), and [per-run spending controls](https://developers.openai.com/cookbook/articles/per_run_spending_controller_responses_api).
-
-## Verification and limits
-
-Every new reconstruction also exports its final aggregate OBJ as a self-contained USDZ (`model.usdz`, or the matching OBJ basename in legacy mode). The package embeds the complete room mesh, face-corner UVs, material assignments, base-color textures and available PBR roughness/metallic/normal maps, retaining ARKit meters and Y-up coordinates. OpenUSD `usd-core==26.5` is installed by `setup.sh`. Export and dependency validation must succeed before publishing a result; the USDZ is included in the same byte-length/SHA-256 asset manifest and mobile size limits as the OBJ files. The result exposes `usdz_filename`, and the app offers **Share USDZ** after downloading and verifying it. This shares the reconstructed room's original arrangement; walkthrough edits are not baked into this export. Existing committed revisions remain unchanged; create a new reconstruction revision to obtain its USDZ.
+## Verification
 
 ```sh
-.venv/bin/python -m pytest -q
+.venv/bin/python -m pytest tests ../scan-to-threejs/tests -q
+npm run build --prefix ../scan-to-threejs
 ```
 
-Offline fixtures verify all-frame evidence pooling, whole-room output, asset serving/import contracts, safe navigation, rejected incomplete/invalid scenes, paid-response caching and explicit retry behavior. They do not call the paid API. Live Sol quality, image rendition quality, real-device frame rate, actual tokens and generation time still require a fresh LiDAR-device scan and a configured API key. A complete generated room can contain plausible approximations; this branch does not claim survey accuracy or photorealism.
+The synthetic integration uses real Chromium, authored curved geometry, source
+photo crops, PNG baking, native OBJ reload and ARKit-compliant USDZ packaging;
+only the paid model/reviewer responses are mocked. It checks interrupted upload
+recovery, native source integrity, revision reuse and refusal to publish rejected
+reviews. Swift tests cover the native upload and verified import contracts; the
+Simulator build covers the app button and SceneKit renderer. A real fresh iPhone
+scan and paid modeling run remain the device/visual acceptance test.
 
-To reproduce the native import test, export a synthetic scene from this directory with `PYTHONPATH=. .venv/bin/python tests/export_astra_scene.py --detailed --output /tmp/astra-fixture` (use a fresh directory). From the repository root, run `RESPACE_TEST_ASTRA_SCENE=/tmp/astra-fixture/results/1 swift test`. The generated fixture uses a mocked Sol response and makes no network request.
-
-The generated scene supports one horizontal floor and ceiling, up to 64 generated room-content entities plus measured shell surfaces, and 200,000 total exported triangles. Large/multilevel/nonhorizontal spaces need a separate contract. Existing non-Astra implementations remain available for historical tests/direct CLI selection; `run.sh` always selects the direct OpenAI path (`RESPACE_PIPELINE=astra`). Their documentation is retained in [WALKTHROUGH_README.md](WALKTHROUGH_README.md) and [LEGACY_README.md](LEGACY_README.md). No cloud deployment is performed by these changes.
+The earlier JSON/API worker is retained for historical regression tests under
+explicit `astra`/`insta` selection. Its old room-JSON/product-placement and realistic
+image behavior is documented in [API_APPROXIMATION.md](../../docs/reconstruction/API_APPROXIMATION.md),
+[ROOM_JSON.md](../../docs/reconstruction/ROOM_JSON.md), [WALKTHROUGH_README.md](WALKTHROUGH_README.md)
+and [LEGACY_README.md](LEGACY_README.md). New Three.js walkthroughs do not claim a
+planning-ready `room.json`; native scan planning remains separate.

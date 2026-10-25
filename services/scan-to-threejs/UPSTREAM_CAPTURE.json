@@ -1,0 +1,79 @@
+{
+  "repository": "https://github.com/wesbos/3d-model-anything",
+  "revision": "31b2dc9da3fb541e501f2f0936e55b32afb70ee8",
+  "license": "MIT",
+  "paths_relative_to": "ReSpace repository root",
+  "unchanged": [
+    {
+      "path": "ReSpace/Capture/Source/CoverageEngine.swift",
+      "upstream_path": "apps/house-capture/HouseCapture/CoverageEngine.swift",
+      "git_blob": "56b57fd9830b3376454551147baa7e5409bda14d"
+    },
+    {
+      "path": "ReSpace/Capture/Source/CameraControl.swift",
+      "upstream_path": "apps/house-capture/HouseCapture/CameraControl.swift",
+      "git_blob": "6e4a90015ff386a3fa6ed7545a52e73569e1fe35"
+    },
+    {
+      "path": "ReSpace/Domain/SourceCaptureQuality.swift",
+      "upstream_path": "apps/house-capture/HouseCapture/CaptureQuality.swift",
+      "git_blob": "ae9d4a0db7cf5a629c8d362a3c26e4c9af93f018"
+    }
+  ],
+  "derived": [
+    {
+      "path": "ReSpace/Capture/Source/SourceCaptureRecorder.swift",
+      "upstream_path": "apps/house-capture/HouseCapture/CaptureController.swift",
+      "sections": [
+        "Photos: Shot, predicted blur, sharpest-frame holding, coverage admission, high-resolution still selection, sensor JPEG encoding",
+        "ensureMeshAndDepth: shared ARSession configuration without resetting tracking"
+      ],
+      "integration": [
+        "one new Room/session",
+        "high-resolution auto photos enabled by default",
+        "native bundle completion and integrity; no API worker",
+        "upstream optional raw recovery archive; encoding rejection recorded without skipping RoomBuilder, disk failures remain fatal"
+      ]
+    },
+    {
+      "path": "ReSpace/Capture/Source/DepthRecorder.swift",
+      "upstream_path": "apps/house-capture/HouseCapture/ScanView.swift",
+      "sections": [
+        "DepthRecorder"
+      ],
+      "integration": [
+        "drain accepted writes before completion",
+        "scale calibration by each recorded image/depth dimension; reject mismatched confidence buffers",
+        "surface storage failures; .f16z always contains compressed depth"
+      ]
+    },
+    {
+      "path": "ReSpace/Capture/Source/SourceScanView.swift",
+      "upstream_path": "apps/house-capture/HouseCapture/ScanView.swift",
+      "integration": [
+        "single-room view; omit prior-zone ghost/relocalization UI"
+      ]
+    },
+    {
+      "path": "ReSpace/Capture/Source/SourceRecords.swift",
+      "upstream_path": "apps/house-capture/HouseCapture/ScanBundle.swift",
+      "sections": [
+        "column-major matrix encoding"
+      ],
+      "integration": [
+        "minimal file-path wrapper; application-managed capture identity"
+      ]
+    },
+    {
+      "path": "ReSpace/Domain/SourceCaptureRecords.swift",
+      "upstream_path": "apps/house-capture/HouseCapture/ScanBundle.swift and ScanView.swift",
+      "sections": [
+        "PhotoRecord, CameraState, DepthRecorder.Record"
+      ],
+      "integration": [
+        "shared records exercised by native photo/depth JSON regression tests",
+        "omit nonfinite optional sensor estimates; preserve valid estimates and required calibration"
+      ]
+    }
+  ]
+}

@@ -16,7 +16,7 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, ConfigDict, ValidationError
 
-from .models import Manifest
+from .models import Manifest, parse_manifest
 from .store import Store, digest
 from .renditions import Renditions, RenditionRequest
 
@@ -185,7 +185,8 @@ def create_app(root: Path | None = None, token: str | None = None, start_worker=
 
     @app.get("/health", dependencies=[Depends(authorize)])
     def health():
-        return {"schema_version": 1, "status": "ok"}
+        return {"schema_version": 1, "status": "ok", "pipeline":os.environ.get('RESPACE_PIPELINE','threejs'),
+                "native_upload_schema_version":2}
 
     @app.put("/v1/reconstructions/{job_id}", dependencies=[Depends(authorize)])
     async def create(job_id: str, request: Request):
@@ -195,7 +196,7 @@ def create_app(root: Path | None = None, token: str | None = None, start_worker=
             if len(body) > 8 * 1024**2:
                 raise HTTPException(413, "Manifest is too large")
         try:
-            manifest = Manifest.model_validate_json(bytes(body))
+            manifest = parse_manifest(bytes(body))
             if manifest.capture_id != job_id:
                 raise HTTPException(422, "Capture identity mismatch")
             return store.create(manifest)
@@ -258,7 +259,7 @@ def create_app(root: Path | None = None, token: str | None = None, start_worker=
 
     @app.post("/v1/reconstructions/{job_id}/restart", dependencies=[Depends(authorize)])
     async def restart(job_id: str, body: RestartRequest):
-        if os.environ.get("RESPACE_PIPELINE", "astra") != "astra":
+        if os.environ.get("RESPACE_PIPELINE", "threejs") not in ("astra", "insta", "threejs"):
             raise HTTPException(409, "Start the direct OpenAI service to generate from scratch")
         return await enqueue(job_id, True, str(body.request_id))
 

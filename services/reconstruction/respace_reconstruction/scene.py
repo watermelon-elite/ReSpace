@@ -52,10 +52,16 @@ class SceneMaterial(SceneContract):
     base_color_texture: Identifier | None = None
     roughness_texture: Identifier | None = None
     normal_texture: Identifier | None = None
+    metallic_texture: Identifier | None = None
+    emissive_texture: Identifier | None = None
+    emissive_color: Vector3 = Field(default_factory=lambda:[0.,0.,0.])
+    emissive_intensity: float = Field(default=1.,ge=0,le=100)
+    opacity: float = Field(default=1.,ge=0,le=1)
+    unlit: bool = False
 
     @model_validator(mode="after")
     def color(self):
-        if not all(0 <= v <= 1 for v in self.base_color):
+        if not all(0 <= v <= 1 for v in self.base_color+self.emissive_color):
             raise ValueError("Material color must be in [0,1]")
         return self
 
@@ -169,7 +175,7 @@ class SceneBundle(SceneContract):
 
     def validate_files(self, folder: Path, filenames: set[str]):
         required = {e.asset for e in self.entities} | {self.quality_filename, self.provenance_filename}
-        required |= {p for m in self.materials for p in (m.base_color_texture, m.roughness_texture, m.normal_texture) if p is not None}
+        required |= {p for m in self.materials for p in (m.base_color_texture, m.roughness_texture, m.normal_texture,m.metallic_texture,m.emissive_texture) if p is not None}
         if not required <= filenames:
             raise ValueError("Scene references an uncommitted asset")
         for name in filenames:

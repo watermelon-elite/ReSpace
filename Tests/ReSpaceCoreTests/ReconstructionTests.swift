@@ -166,8 +166,18 @@ final class ReconstructionTests: XCTestCase {
         XCTAssertTrue(job.result?.isAIGenerated == true)
         job.result?.generationModel = "gpt-6-sol"
         XCTAssertTrue(job.result?.isAIGenerated == true)
+        job.result?.generationModel = "gpt-6.1-sol"
+        XCTAssertTrue(job.result?.isAIGenerated == true)
         job.stage = "astra_batch:1-4/12"
         XCTAssertEqual(job.stageDescription, "Building objects · 1-4/12")
+        job.stage = "insta_inventory"
+        XCTAssertEqual(job.stageDescription, "Identifying room contents…")
+        job.stage = "insta_object:2/5"
+        XCTAssertEqual(job.stageDescription, "Modeling your objects · 2/5")
+        job.stage = "insta_comparing:2/5"
+        XCTAssertEqual(job.stageDescription, "Comparing objects with your photos · 2/5")
+        job.stage = "insta_room_check"
+        XCTAssertEqual(job.stageDescription, "Checking the complete room against your photos…")
         XCTAssertEqual(job.result?.generatedTriangleCount, 12)
         XCTAssertFalse(job.canRetry)
         job.result?.generationModel = nil
@@ -439,7 +449,7 @@ final class ReconstructionTests: XCTestCase {
     }
 }
 
-private final class ReconstructionRequestRecorder: @unchecked Sendable {
+final class ReconstructionRequestRecorder: @unchecked Sendable {
     private let lock = NSLock()
     private var recorded: [URLRequest] = []
     private let respond: (URLRequest) throws -> (Int, Data)

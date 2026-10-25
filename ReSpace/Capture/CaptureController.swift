@@ -12,15 +12,18 @@ final class ScanCaptureController: NSObject, RoomCaptureSessionDelegate {
     var guidance = "Move slowly to capture the walls and furniture."
     var acceptedFrames = 0
     var elapsedSeconds = 0
-    var canFinish: Bool { !store.localCaptureEnabled || elapsedSeconds >= SamplingPolicy.reconstructionMinimumSeconds }
+    var canFinish: Bool { store.localCaptureEnabled ? sourceRecorder?.canFinish == true : true }
+    var highResolutionPhotos = true { didSet { sourceRecorder?.highResolutionPhotos = highResolutionPhotos } }
+    var canTakeDetailPhoto: Bool { sourceRecorder?.canTakePhoto == true }
+    var sourceView: UIView? { sourceRecorder?.scanView.view }
+    private var sourceRecorder: SourceCaptureRecorder?
+    private var sourceSession: RoomCaptureSession?
+    private var sourceMeshExport: Task<(vertices: Int, faces: Int, covered: Float), Error>?
     private var captureStartedAt: ContinuousClock.Instant?
-    private var photoBudgetReached = false
     var detailText = "Details processing"
     var error: String?
     private(set) var roomView: RoomCaptureView?
     private let arSession = ARSession()
-    private let meshEncoder = SceneMeshEncoder()
-    private var meshExport: Task<Data, Error>?
     private let store: WorkspaceStore
     private let encoder = FrameEncoder()
     private var manifest: CaptureManifest?
@@ -42,7 +45,6 @@ final class ScanCaptureController: NSObject, RoomCaptureSessionDelegate {
         super.init()
         if store.localCaptureEnabled {
             detailText = "Local scan · saved on this iPhone"
-            policy = .reconstruction
         }
     }
 
@@ -69,23 +71,33 @@ final class ScanCaptureController: NSObject, RoomCaptureSessionDelegate {
                 try await store.captures.assignRoom(local.captureId, roomId: draft.summary.id)
             }
             manifest = try await store.captures.load(local.captureId)
-            let configuration = ARWorldTrackingConfiguration()
             if store.localCaptureEnabled {
-                guard ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh) else {
-                    throw ClientError.storage("This device does not support LiDAR surface capture.")
+                guard RoomCaptureSession.isSupported,
+                      ARWorldTrackingConfiguration.supportsSceneReconstruction(.meshWithClassification) else {
+                    throw ClientError.storage("Scanning requires a LiDAR-equipped iPhone Pro or iPad Pro.")
                 }
-                configuration.sceneReconstruction = .mesh
-                if let format = ARWorldTrackingConfiguration.supportedVideoFormats
-                    .filter({ $0.framesPerSecond == 30 && $0.imageResolution.width <= 3840 })
-                    .max(by: { $0.imageResolution.width * $0.imageResolution.height < $1.imageResolution.width * $1.imageResolution.height }) {
-                    configuration.videoFormat = format
+                let directory = try await store.captures.createSourceBundle(local.captureId)
+                let recorder = try SourceCaptureRecorder(session: arSession, directory: directory)
+                sourceRecorder = recorder
+                recorder.highResolutionPhotos = highResolutionPhotos
+                recorder.onUpdate = { [weak self, weak recorder] in
+                    guard let self, let recorder, self.phase == .scanning else { return }
+                    self.acceptedFrames = recorder.photos.count
+                    self.elapsedSeconds = recorder.elapsedSeconds
+                    self.guidance = recorder.guidance
+                    self.detailText = "\(recorder.stats.percent)% photo detail on observed surfaces"
+                    if let error = recorder.recordingError { self.interrupt(reason: error.localizedDescription) }
                 }
-                // Keep measured surfaces; do not deliberately flatten them to detected planes.
-                configuration.planeDetection = []
-                if ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth) {
-                    configuration.frameSemantics.insert(.sceneDepth)
-                }
+                let session = RoomCaptureSession(arSession: arSession)
+                sourceSession = session; session.delegate = self
+                phase = .scanning
+                session.run(configuration: .init())
+                recorder.start()
+                return
             }
+            // Historical 40-frame planning capture only. New reconstruction scans
+            // return through the native source recorder above.
+            let configuration = ARWorldTrackingConfiguration()
             // Apple requires the custom session to be running before RoomCaptureView receives it.
             arSession.run(configuration)
             let view = RoomCaptureView(frame: .zero, arSession: arSession)
@@ -124,11 +136,6 @@ final class ScanCaptureController: NSObject, RoomCaptureSessionDelegate {
             return
         }
         lastFreshFrameTime = .now; lastFrameTimestamp = frame.timestamp
-        if store.localCaptureEnabled,
-           !ScanMeshConfiguration.isEnabled(
-                (arSession.configuration as? ARWorldTrackingConfiguration)?.sceneReconstruction, mesh: .mesh) {
-            interrupt(reason: "Surface capture stopped. Start a new scan to keep the room aligned."); return
-        }
         if case .limited(.relocalizing) = frame.camera.trackingState { interrupt(); return }
         guard case .normal = frame.camera.trackingState else {
             guidance = "Tracking paused. Move slowly toward an area you’ve already scanned."
@@ -144,14 +151,13 @@ final class ScanCaptureController: NSObject, RoomCaptureSessionDelegate {
             interrupt(reason: "Tracking changed abruptly. Start again to keep the room aligned."); return
         }
         lastCameraTransform = frame.camera.transform; lastCameraTimestamp = frame.timestamp
-        guidance = store.localCaptureEnabled ? (photoBudgetReached ? "Photo storage limit reached. Finish when the one-minute minimum is complete." : "Move around furniture and scan each surface from several sides.") : "Move slowly to capture every wall."
-        guard policy.consider(observation(frame, normal: true), encoderAvailable: encoding == nil && !photoBudgetReached) else { return }
+        guidance = "Move slowly to capture every wall."
+        guard policy.consider(observation(frame, normal: true), encoderAvailable: encoding == nil) else { return }
         acceptedFrames = policy.acceptedCount
         encoding = Task { [self] in
             defer { encoding = nil }
             do {
                 _ = try await encoder.encode(frame, captureId: manifest.captureId, repository: store.captures, highQuality: store.localCaptureEnabled)
-                if store.localCaptureEnabled { photoBudgetReached = !(try await store.captures.hasReconstructionFrameCapacity(manifest.captureId)) }
                 await pumpUploads()
             } catch {
                 if phase == .scanning || phase == .finishing { interrupt(reason: error.localizedDescription) }
@@ -206,18 +212,22 @@ final class ScanCaptureController: NSObject, RoomCaptureSessionDelegate {
 
     func done() {
         guard phase == .scanning else { return }
-        guard canFinish else { guidance = "Scan for at least one minute before finishing."; return }
-        if store.localCaptureEnabled {
-            guard let frame = arSession.currentFrame, case .normal = frame.camera.trackingState else {
-                guidance = "Wait for tracking to recover before finishing."; return
+        if let sourceRecorder {
+            guard canFinish else { guidance = "Hold steady while the first useful photo is saved."; return }
+            phase = .finishing
+            let export = Task { try await sourceRecorder.freeze() }
+            sourceMeshExport = export
+            Task {
+                do {
+                    _ = try await export.value
+                    guard phase == .finishing else { return }
+                    sourceSession?.stop(pauseARSession: false)
+                } catch {
+                    guard phase == .finishing else { return }
+                    self.error = error.localizedDescription; phase = .failed; sourceRecorder.stop(); arSession.pause()
+                }
             }
-            let anchors = frame.anchors.compactMap { $0 as? ARMeshAnchor }
-            guard anchors.contains(where: { $0.geometry.faces.count > 0 }), let manifest else {
-                guidance = "No surfaces captured yet. Move slowly around the room."; return
-            }
-            // Freeze a single current anchor set before stopping; no older anchor versions are merged.
-            let captureId = manifest.captureId, timestamp = frame.timestamp
-            meshExport = Task { try await meshEncoder.encode(anchors, captureId: captureId, timestamp: timestamp) }
+            return
         }
         phase = .finishing; stopSampling()
         roomView?.captureSession.stop(pauseARSession: true)
@@ -228,25 +238,42 @@ final class ScanCaptureController: NSObject, RoomCaptureSessionDelegate {
             guard phase == .finishing, let manifest else { if phase == .scanning { interrupt() }; return }
             if let error { interrupt(reason: error.localizedDescription); return }
             do {
-                // Preserve observed furniture positions for local scans; beautification may move chairs.
-                let options: RoomBuilder.ConfigurationOptions = store.localCaptureEnabled ? [] : [.beautifyObjects]
-                let room = try await RoomBuilder(options: options).capturedRoom(from: data)
+                if let sourceRecorder {
+                    // Attempt the optional raw recovery archive before RoomBuilder,
+                    // as upstream does. A framework encoding rejection must not skip
+                    // building the layout from the original in-memory capture.
+                    try sourceRecorder.saveRawRoom(data)
+                    let room: CapturedRoom?
+                    var layoutError: String?
+                    do { room = try await RoomBuilder(options: [.beautifyObjects]).capturedRoom(from: data) }
+                    catch { room = nil; layoutError = String(error.localizedDescription.prefix(1000)) }
+                    guard let sourceMeshExport else { throw ClientError.storage("The source mesh export was not completed.") }
+                    let mesh = try await sourceMeshExport.value
+                    guard phase == .finishing else { return }
+                    try await sourceRecorder.complete(room: room, mesh: mesh, layoutError: layoutError)
+                    guard phase == .finishing else { return }
+                    let thumbnail = try sourceRecorder.photos.last.map { try Data(contentsOf: sourceRecorder.bundle.file($0.file)) }
+                    let roomBytes = try room.map { _ in try Data(contentsOf: sourceRecorder.bundle.file("rooms/room-0.json")) }
+                    let integrity = try Data(contentsOf: sourceRecorder.bundle.file("integrity.json"))
+                    try await store.captures.complete(manifest.captureId, roomData: roomBytes, thumbnailData: thumbnail, sourceIntegrityData: integrity, sourceLayoutError: layoutError)
+                    guard phase == .finishing else { return }
+                    hasCompletedCapture = true; arSession.pause(); phase = .recovering
+                    await finalize()
+                    return
+                }
+                let room = try await RoomBuilder(options: [.beautifyObjects]).capturedRoom(from: data)
                 await encoding?.value
                 guard phase == .finishing else { return }
                 let export = try await encoder.export(room)
                 guard phase == .finishing else { return }
-                let meshData: Data?
-                if store.localCaptureEnabled {
-                    guard let meshExport else { throw ClientError.storage("The surface scan is missing. Scan this room again.") }
-                    meshData = try await meshExport.value
-                } else { meshData = nil }
-                guard phase == .finishing else { return }
-                try await store.captures.complete(manifest.captureId, roomData: export, thumbnailData: nil, sceneMeshData: meshData)
-                meshExport = nil
+                try await store.captures.complete(manifest.captureId, roomData: export, thumbnailData: nil)
                 hasCompletedCapture = true
                 phase = .recovering
                 await finalize()
-            } catch { self.error = error.localizedDescription; phase = .failed }
+            } catch {
+                guard phase == .finishing else { return }
+                self.error = error.localizedDescription; phase = .failed; sourceRecorder?.stop(); arSession.pause()
+            }
         }
     }
     nonisolated func captureSession(_ session: RoomCaptureSession, didProvide instruction: RoomCaptureSession.Instruction) {
@@ -264,12 +291,30 @@ final class ScanCaptureController: NSObject, RoomCaptureSessionDelegate {
         }
     }
 
+    nonisolated func captureSession(_ session: RoomCaptureSession, didUpdate room: CapturedRoom) {
+        Task { @MainActor [weak self] in
+            guard let self, phase == .scanning else { return }
+            sourceRecorder?.updateRoom(room)
+        }
+    }
+    func takeDetailPhoto() { sourceRecorder?.takePhoto() }
+
     func finalize() async {
         guard let manifest else { return }
         phase = .recovering; error = nil
         do {
             let retained = try await store.captures.load(manifest.captureId)
             if store.localCaptureEnabled {
+                if retained.sourceBundleFormat == "house-capture/5" {
+                    var count = 0
+                    if let artifact = retained.roomExport {
+                        let data = try await store.captures.bytes(artifact, captureId: retained.captureId)
+                        count = try JSONDecoder().decode(CapturedRoom.self, from: data).objects.count
+                    }
+                    if retained.state != "local_saved" { try await store.captures.saveLocalRoom(retained.captureId, objectCount: count) }
+                    phase = .ready(retained.captureId)
+                    return
+                }
                 if retained.state != "local_saved" {
                     guard let artifact = retained.roomExport else { throw ClientError.storage("The completed room export is missing.") }
                     let bytes = try await store.captures.bytes(artifact, captureId: retained.captureId)
@@ -333,7 +378,8 @@ final class ScanCaptureController: NSObject, RoomCaptureSessionDelegate {
     func interrupt(reason: String? = nil) {
         guard phase == .scanning || phase == .finishing else { return }
         phase = .interrupted; error = reason
-        stopSampling(); meshExport?.cancel(); roomView?.captureSession.stop(pauseARSession: true); arSession.pause()
+        stopSampling(); roomView?.captureSession.stop(pauseARSession: true); arSession.pause()
+        sourceRecorder?.stop(); sourceSession?.stop(pauseARSession: true)
     }
     func appBecameInactive() { if phase == .scanning { interrupt() } }
     private func stopSampling() {
@@ -342,8 +388,9 @@ final class ScanCaptureController: NSObject, RoomCaptureSessionDelegate {
     func discard() async {
         interrupt(); stopSampling()
         for task in uploads.values { task.cancel() }
+        await sourceRecorder?.drainAfterStop()
+        _ = await sourceMeshExport?.result; sourceMeshExport = nil
         await encoding?.value
-        _ = await meshExport?.result; meshExport = nil
         guard let manifest else { return }
         do {
             if store.localCaptureEnabled {

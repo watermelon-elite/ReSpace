@@ -11,7 +11,7 @@ from scipy.ndimage import distance_transform_edt
 from .geometry import camera_to_cv_world
 from .instances import project
 from .obj import read_obj
-from .scene import SceneMaterial, matrix
+from .scene import matrix
 from .surfaces import PhotoBaker
 
 
@@ -120,12 +120,19 @@ def texture_furnishings(bundle, manifest, inputs, output, object_reports=()):
             if name in new_bindings:
                 continue
             color = [1., 1., 1.] if index >= 0 else original.base_color
-            binding = SceneMaterial(id=name, owner_id=entity.id, slot=original.slot, source_material=name,
-                                    base_color=color, roughness=original.roughness, metallic=original.metallic)
+            binding = original.model_copy(update={"id": name, "source_material": name,
+                "base_color": color, "base_color_texture": photo_names[index] if index >= 0 else original.base_color_texture,
+                "roughness_texture": None if index >= 0 else original.roughness_texture,
+                "normal_texture": None if index >= 0 else original.normal_texture})
             new_bindings[name] = binding
             materials.append(f"newmtl {name}\nKd {' '.join(map(str, color))}\nPr {original.roughness}\nPm {original.metallic}\n")
             if index >= 0:
                 materials.append("map_Kd "+photo_names[index]+"\n")
+            else:
+                for tag, filename in (("map_Kd", original.base_color_texture),
+                                      ("map_Pr", original.roughness_texture), ("norm", original.normal_texture)):
+                    if filename:
+                        materials.append(tag+" "+filename+"\n")
         if len(new_bindings) > 128:
             raise ValueError("Photo material slots exceed the native entity budget")
         with (output/entity.asset).open("w") as stream:
@@ -133,8 +140,12 @@ def texture_furnishings(bundle, manifest, inputs, output, object_reports=()):
             np.savetxt(stream, vertices, fmt="v %.8f %.8f %.8f")
             for face_index, face in enumerate(faces):
                 index = sources[face_index]
-                uv = uvs[index][face].copy() if index >= 0 else np.array([[0., 0.], [1., 0.], [0., 1.]])
-                uv[:, 1] = 1-uv[:, 1]
+                if index >= 0:
+                    uv = uvs[index][face].copy()
+                    uv[:, 1] = 1-uv[:, 1]
+                else:
+                    uv = np.asarray([mesh.uvs[corner[1]] if corner[1] is not None else [0., 0.]
+                                     for corner in mesh.faces[face_index]])
                 np.savetxt(stream, uv, fmt="vt %.8f %.8f")
             for name in new_bindings:
                 stream.write("usemtl "+name+"\n")

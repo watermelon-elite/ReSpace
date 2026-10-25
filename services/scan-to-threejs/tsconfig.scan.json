@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "apps/room-viewer/src/main.ts",
+    "apps/room-viewer/tools/capture.ts",
+    "apps/room-viewer/tools/worker.ts",
+    "apps/room-viewer/tools/native.ts",
+    "demos",
+    "packages",
+    "reconstruction.ts"
+  ]
+}

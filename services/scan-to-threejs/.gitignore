@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+DerivedData/
+xcuserdata/
+*.xcuserstate
+.DS_Store
+__pycache__/
+*.pyc
+.env*
+data/captures-in/
+data/captures/
+data/recordings/
+data/scans/
+apps/house-capture/release/screenshots/
+
+HouseCapture.xcodeproj/

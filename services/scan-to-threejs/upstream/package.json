@@ -1,0 +1,24 @@
+{
+  "name": "3d-model-anything",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --config apps/room-viewer/vite.config.ts",
+    "build": "tsc && vite build --config apps/room-viewer/vite.config.ts",
+    "preview": "vite preview --config apps/room-viewer/vite.config.ts",
+    "textures": "python3 .agents/skills/scan-to-threejs/scripts/fetch_textures.py"
+  },
+  "dependencies": {
+    "@dimforge/rapier3d-compat": "^0.20.0",
+    "three": "^0.186.0"
+  },
+  "devDependencies": {
+    "@gltf-transform/core": "^4.5.0",
+    "@types/three": "^0.186.0",
+    "gl-matrix": "^3.4.4",
+    "pngjs": "^7.0.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.0"
+  }
+}

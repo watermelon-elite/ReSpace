@@ -4,7 +4,8 @@ import ImageIO
 import RoomPlan
 import UniformTypeIdentifiers
 
-/// Single worker; callers admit at most one frame so AR buffers never accumulate.
+/// Legacy planning-upload encoder. Fresh reconstruction scans use SourceCaptureRecorder.
+/// Callers admit at most one frame so AR buffers never accumulate.
 actor FrameEncoder {
     private let context = CIContext(options: [.cacheIntermediates: false])
 

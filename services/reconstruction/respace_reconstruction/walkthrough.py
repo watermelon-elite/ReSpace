@@ -22,7 +22,7 @@ from .surfaces import PhotoBaker, room_surfaces, triangulate
 
 
 def merge_scene(bundle,output):
-    vertex_offset,uv_offset=0,0
+    vertex_offset,uv_offset,normal_offset=0,0,0
     with (output/"model.obj").open("w") as stream:
         for entity in bundle.entities:
             mesh=read_obj(output/entity.asset)
@@ -32,11 +32,13 @@ def merge_scene(bundle,output):
             stream.write("o "+entity.id+"\n")
             np.savetxt(stream,vertices,fmt="v %.8f %.8f %.8f")
             np.savetxt(stream,mesh.uvs,fmt="vt %.8f %.8f")
+            normals=mesh.normals@transform[:3,:3].T
+            np.savetxt(stream,normals,fmt="vn %.8f %.8f %.8f")
             material=None
             for face,name in zip(mesh.faces,mesh.materials):
                 if name!=material:stream.write("usemtl "+name+"\n");material=name
-                stream.write("f "+" ".join(str(v+vertex_offset+1)+(f"/{uv+uv_offset+1}" if uv is not None else "") for v,uv,_ in face)+"\n")
-            vertex_offset+=len(vertices);uv_offset+=len(mesh.uvs)
+                stream.write("f "+" ".join(str(v+vertex_offset+1)+(('/'+str(uv+uv_offset+1)) if uv is not None else ('/' if normal is not None else ''))+(('/'+str(normal+normal_offset+1)) if normal is not None else '') for v,uv,normal in face)+"\n")
+            vertex_offset+=len(vertices);uv_offset+=len(mesh.uvs);normal_offset+=len(mesh.normals)
 
 
 def process_walkthrough(folder:Path,revision:int,inventory_fn=automatic_inventory):

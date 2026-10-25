@@ -1,0 +1,264 @@
+{
+  "repository": "https://github.com/wesbos/3d-model-anything",
+  "revision": "31b2dc9da3fb541e501f2f0936e55b32afb70ee8",
+  "license": "MIT",
+  "source_files": [
+    {
+      "path": ".agents/skills/scan-to-threejs/SKILL.md",
+      "git_blob": "7a8ddf0eb70c137c075459ab253884d04d215b08"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/assets/BRIEF.example.md",
+      "git_blob": "a30e5008b626d92f957caa815a6a326ce9c5999b"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/references/advanced-modeling.md",
+      "git_blob": "bb920ded66dd2d16f96a7b910c88b6b097e6ba7d"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/references/house-capture.md",
+      "git_blob": "6e566e1908a04c3e050b702be25f8d548fd40ad2"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/references/modeling.md",
+      "git_blob": "520355857ac97e70d5e044ddb98426b25c1a4a11"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/references/project-layout.md",
+      "git_blob": "93ea7bc8f81b1db22688917d40eb3b4346608876"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/bundle_plan.py",
+      "git_blob": "377aeb362b7ff94211fec5153c9f0729cd882d8a"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/bundle_to_room.py",
+      "git_blob": "c99de47f927e91ea4f91cf0a306333acac0a62fc"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/cap.sh",
+      "git_blob": "f6037a36ad32f9e50d52060f1b4ca25f7e114812"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/capture_env.sh",
+      "git_blob": "2db93439d8e51dd5c045dff410163e9a9cb481ee"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/cmp.sh",
+      "git_blob": "de2e595e8e8e1b740a22ea6c4548efd2371934b0"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/cmp_photo.sh",
+      "git_blob": "f6d1950a5c4017e71f244412514e38c02b9096c2"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/fetch_textures.py",
+      "git_blob": "698dae0f8f1178b2730b22c17a77abedc02e69f7"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/house_to_rooms.py",
+      "git_blob": "18aeca24faa5e4a153f751799fbddff3e975e38b"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/lights_from_photos.py",
+      "git_blob": "5d526f78f50c7492cad79ae103d150d6e9deac8f"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/measure_scan.mjs",
+      "git_blob": "c361445f8e6a105caef653a8f2b5fdb85d11913d"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/mesh_probe.py",
+      "git_blob": "4d1783ea9d803e29ec1400d7baae6c9936877601"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/ortho.py",
+      "git_blob": "85e6b965ef66f81eaaac3a528e78c5fb8cee5e4b"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/photos_for.py",
+      "git_blob": "6b2e3d32578570922a6bc51169f3e9274ef0a08c"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/prepare_photos.py",
+      "git_blob": "098b662dbc81b26ab56241a33e2c05eda189ab3d"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/reconstruct_bundle.py",
+      "git_blob": "8a525dc74d9bc1696d13cdf21266a1b1fcb111fb"
+    },
+    {
+      "path": ".agents/skills/scan-to-threejs/scripts/test_house_import.py",
+      "git_blob": "d7476e202b7e48b8b3ea9614230e3fa967a9633e"
+    },
+    {
+      "path": ".gitignore",
+      "git_blob": "fde46a36857edbf601d116ce8edb399af3c1bab3"
+    },
+    {
+      "path": "LICENSE",
+      "git_blob": "b7aa08d1cd1db8d1514c02d31f4de4e039370b4a"
+    },
+    {
+      "path": "apps/room-viewer/index.html",
+      "git_blob": "908bece48b2c61346c2ec1c1799c89d61d2979e6"
+    },
+    {
+      "path": "apps/room-viewer/play.html",
+      "git_blob": "499306470aad5e08e672fd2b98c443048151ca14"
+    },
+    {
+      "path": "apps/room-viewer/src/asset-base.ts",
+      "git_blob": "8a00d9876430ed2a39794ced3c9da7e8162f6462"
+    },
+    {
+      "path": "apps/room-viewer/src/knolling-pack.ts",
+      "git_blob": "a9effa96dc3f1c971d943c56072ef71677e9b18d"
+    },
+    {
+      "path": "apps/room-viewer/src/knolling.ts",
+      "git_blob": "85765f466562aafcdf3e6c2ad68ce75cb60fe8bb"
+    },
+    {
+      "path": "apps/room-viewer/src/layout.ts",
+      "git_blob": "5ecb98bbce933ab7c18f6d7a5d2a233e9089a583"
+    },
+    {
+      "path": "apps/room-viewer/src/main.ts",
+      "git_blob": "261cc6dc4ee184ac84a29e7fd638de8efd0f1076"
+    },
+    {
+      "path": "apps/room-viewer/src/play/first-person.ts",
+      "git_blob": "07fb7dfb8d902f6992677f444f1e5a4d181fe875"
+    },
+    {
+      "path": "apps/room-viewer/src/play/main.ts",
+      "git_blob": "a9b0d5c112f214737250979152e5c22264afda04"
+    },
+    {
+      "path": "apps/room-viewer/src/play/play.css",
+      "git_blob": "26321cbe25a9bf6555ef5614bdfc9488037b535c"
+    },
+    {
+      "path": "apps/room-viewer/src/play/slingshot.ts",
+      "git_blob": "5eea5d4d8fbc4ef1f6b9e96e01f2e840f7a945f0"
+    },
+    {
+      "path": "apps/room-viewer/src/style.css",
+      "git_blob": "c28315ceb7739a3bec2b5d73b830b892bb6af92c"
+    },
+    {
+      "path": "apps/room-viewer/tools/capture.html",
+      "git_blob": "8375c235afc3c6026dc5deb2a1632cbad8b57063"
+    },
+    {
+      "path": "apps/room-viewer/tools/capture.ts",
+      "git_blob": "7cec101dcd81aca373d7d74fcbbe51531e82ed2e"
+    },
+    {
+      "path": "apps/room-viewer/vite.config.ts",
+      "git_blob": "a9a4e253f8fb2076b2c1edf3892191f5d48d0eb4"
+    },
+    {
+      "path": "package-lock.json",
+      "git_blob": "9b98ae5e98277e803a9e981cb5f54e78607ad231"
+    },
+    {
+      "path": "upstream/package.json",
+      "git_blob": "58f5ec1ce1c83b0cbca836d66ff79e9bdc2aaa4b",
+      "upstream_path": "package.json"
+    },
+    {
+      "path": "packages/room-physics/audio.ts",
+      "git_blob": "0e92d50dcb4dd90af6faf4be2beab6a4e7085056"
+    },
+    {
+      "path": "packages/room-physics/hull-cache.ts",
+      "git_blob": "1f061df4e01af0d09d25488b789d52f3be93c679"
+    },
+    {
+      "path": "packages/room-physics/interact.ts",
+      "git_blob": "9fba500376ef0f40797bc69eb43b473e6989f6bb"
+    },
+    {
+      "path": "packages/room-physics/physics.ts",
+      "git_blob": "1c11ea029b7f411abb72a85413105222d5aa461d"
+    },
+    {
+      "path": "packages/room-physics/player.ts",
+      "git_blob": "ce90e55ffae9c43e114d55aa56ff95da08ca0e56"
+    },
+    {
+      "path": "packages/room-physics/tagging.ts",
+      "git_blob": "11726f72c9679aa762e58eabb9063131a31ad076"
+    },
+    {
+      "path": "packages/room-runtime/batch.ts",
+      "git_blob": "29874bf6d4d5c679b27d3d99357c49cea6a796a6"
+    },
+    {
+      "path": "packages/room-runtime/camera-depth.ts",
+      "git_blob": "4185827bbbb93c47151e4ef82b5a53ea3ae1f3e1"
+    },
+    {
+      "path": "packages/room-runtime/dispose.ts",
+      "git_blob": "082e41ff39625116e5b97e8db617d614b9455e1f"
+    },
+    {
+      "path": "packages/room-runtime/dynamic-shadows.ts",
+      "git_blob": "b68f8ba668f2654dcc3ba8a4f6c31722dc1f72e2"
+    },
+    {
+      "path": "packages/room-runtime/helpers.ts",
+      "git_blob": "c9e1927d69026964b921670b2bf9dfc3264caa35"
+    },
+    {
+      "path": "packages/room-runtime/lighting.ts",
+      "git_blob": "5f620593447a9f4d9d3c956a2515e6ede95614e9"
+    },
+    {
+      "path": "packages/room-runtime/materials.ts",
+      "git_blob": "5ff6fd7445e6beaa51cf813cb6ebf179760103bd"
+    },
+    {
+      "path": "packages/room-runtime/render.ts",
+      "git_blob": "42aaf999b533ba4ca3fd918ab545c1ebc20ac58f"
+    },
+    {
+      "path": "packages/room-runtime/types.ts",
+      "git_blob": "80ae916671bfe66700035113cb7670579128be34"
+    },
+    {
+      "path": "packages/room-runtime/wall-overlaps.ts",
+      "git_blob": "af56fd7ba1d15f7299b4955fe31117a78508d732"
+    },
+    {
+      "path": "packages/room-runtime/walls.ts",
+      "git_blob": "125c9ba3072c000732ee9244c1bc0fcf18a4fbb2"
+    },
+    {
+      "path": "tsconfig.json",
+      "git_blob": "4b4bf36700705bdc19381a7ecff4bb58045bfc01"
+    }
+  ],
+  "integration_files": [
+    "UPSTREAM_CAPTURE.json",
+    "package.json",
+    "demos/index.ts",
+    "prepare.py",
+    "reconstruction.ts",
+    "scan-viewer.config.ts",
+    "tsconfig.scan.json",
+    "README.md",
+    "tests/",
+    "runtime-export.ts",
+    "apps/room-viewer/tools/worker.html",
+    "apps/room-viewer/tools/worker.ts",
+    "apps/room-viewer/tools/native.html",
+    "apps/room-viewer/tools/native.ts",
+    "worker/package.json",
+    "worker/package-lock.json",
+    "worker/render.mjs"
+  ],
+  "assets_copied": false
+}

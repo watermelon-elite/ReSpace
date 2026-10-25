@@ -47,13 +47,14 @@ struct ReconstructionResult: Codable, Sendable {
     var sceneFilename: String? = nil
     var sceneSchemaVersion: Int? = nil
     var usdzFilename: String? = nil
+    var pipeline: String? = nil
 
-    var isAIGenerated: Bool { ["gpt-6-astra", "gpt-6-sol"].contains(generationModel ?? "") }
+    var isAIGenerated: Bool { ["gpt-6-astra", "gpt-6-sol", "gpt-6.1-sol"].contains(generationModel ?? "") }
     var isWalkthrough: Bool { status == "succeeded" && sceneSchemaVersion == 2 && sceneFilename != nil }
 
     func validate() throws {
         guard revision > 0, coordinateSystem == "arkit_scan_meters_y_up",
-              generatedTriangleCount.map({ (0...200000).contains($0) }) ?? true,
+              generatedTriangleCount.map({ (0...(pipeline == "threejs" ? 1_000_000 : 200_000)).contains($0) }) ?? true,
               ["succeeded", "partially_processed"].contains(status),
               (1...512).contains(assets.count), Set(assets.map(\.filename)).count == assets.count,
               assets.contains(where: { $0.filename == modelFilename }), modelFilename.hasSuffix(".obj"),
@@ -91,12 +92,26 @@ struct ReconstructionJob: Codable, Sendable {
 
     var stageDescription: String {
         switch stage {
+        case "preparing_scan": return "Preparing measured scan and photos…"
+        case "modeling_threejs": return "Modeling your room’s shapes and details…"
+        case "creating_textures": return "Creating captured surface textures…"
+        case "checking_threejs": return "Comparing the model with your scan…"
+        case "exporting_native": return "Preparing your textured walkthrough…"
+        case "reviewing_walkthrough": return "Checking the exported room against your photos…"
+        case "publishing": return "Saving your finished walkthrough…"
         case "astra_selecting_evidence": return "Selecting scan photos…"
         case "astra_generating_scene": return "AI is generating your room…"
-        case "astra_inventory": return "Identifying room contents…"
+        case "astra_inventory", "insta_inventory": return "Identifying room contents…"
+        case "insta_room_check": return "Checking the complete room against your photos…"
         case "astra_baking_photos": return "Applying captured photo textures…"
         case "astra_validating_geometry": return "Building and checking the AI model…"
         default:
+            if stage.hasPrefix("insta_object:") {
+                return "Modeling your objects · " + stage.replacingOccurrences(of: "insta_object:", with: "")
+            }
+            if stage.hasPrefix("insta_comparing:") {
+                return "Comparing objects with your photos · " + stage.replacingOccurrences(of: "insta_comparing:", with: "")
+            }
             if stage.hasPrefix("astra_batch:") {
                 return "Building objects · " + stage.replacingOccurrences(of:"astra_batch:",with:"")
             }

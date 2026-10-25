@@ -15,8 +15,9 @@ struct LocalSavedRoom: Codable, Identifiable, Sendable {
 actor CaptureRepository {
     private let directory: URL
     private let maximumFrames: Int
-    init(directory: URL, maximumFrames: Int = 40) {
-        self.directory = directory; self.maximumFrames = maximumFrames
+    private let freshCaptureOnly: Bool
+    init(directory: URL, maximumFrames: Int = 40, freshCaptureOnly: Bool = false) {
+        self.directory = directory; self.maximumFrames = maximumFrames; self.freshCaptureOnly = freshCaptureOnly
     }
 
     private func folder(_ id: String) -> URL {
@@ -24,6 +25,7 @@ actor CaptureRepository {
         return directory.appendingPathComponent(safe, isDirectory: true)
     }
     func create() throws -> CaptureManifest {
+        if freshCaptureOnly { try clearLegacyCapturesOnce() }
         let captureId = UUID().uuidString
         let manifest = CaptureManifest(roomId: "", captureId: captureId,
                                        creationId: UUID().uuidString, finalizeId: UUID().uuidString,
@@ -42,7 +44,9 @@ actor CaptureRepository {
     }
     func manifests() throws -> [CaptureManifest] {
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        return try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil).map { url in
+        return try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: [.isDirectoryKey]).filter {
+            try $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory == true
+        }.map { url in
             try Wire.decoder().decode(CaptureManifest.self, from: Data(contentsOf: url.appendingPathComponent("manifest.json")))
         }
     }
@@ -70,7 +74,7 @@ actor CaptureRepository {
     }
     func append(_ frame: CaptureFrame, captureId: String) throws {
         var manifest = try load(captureId)
-        guard manifest.state == "acquiring", manifest.frames.count < maximumFrames else { throw ClientError.storage("This scan is no longer accepting frames.") }
+        guard manifest.sourceBundleFormat == nil, manifest.state == "acquiring", manifest.frames.count < maximumFrames else { throw ClientError.storage("This scan is no longer accepting legacy frames.") }
         manifest.frames.append(frame); try save(manifest)
     }
 
@@ -84,15 +88,23 @@ actor CaptureRepository {
                             capacity?.volumeAvailableCapacity.map(Int64.init) ?? -1)
         return available < 0 || available >= Int64(reserve + 512 * 1024 * 1024)
     }
-    func complete(_ id: String, roomData: Data, thumbnailData: Data?, sceneMeshData: Data? = nil) throws {
+    func complete(_ id: String, roomData: Data?, thumbnailData: Data?, sceneMeshData: Data? = nil, sourceIntegrityData: Data? = nil, sourceLayoutError: String? = nil) throws {
         var manifest = try load(id)
         guard manifest.state == "acquiring" else { throw ClientError.storage("This scan was interrupted. Start again.") }
+        if manifest.sourceBundleFormat == "house-capture/5", sourceIntegrityData == nil {
+            throw ClientError.storage("The native source capture must finish its integrity record before saving.")
+        }
         if let sceneMeshData { _ = try ScanMeshSnapshot.decode(sceneMeshData, captureId: id) }
-        manifest.roomExport = try writeArtifact(captureId: id, type: "roomplan", bytes: roomData, extension: "json")
+        if let roomData { manifest.roomExport = try writeArtifact(captureId: id, type: "roomplan", bytes: roomData, extension: "json") }
+        else if manifest.sourceBundleFormat == nil { throw ClientError.storage("The completed room export is missing.") }
         let thumbnailBytes = try thumbnailData ?? manifest.frames.last?.artifacts.first(where: { $0.type == "jpeg" }).map { try bytes($0, captureId: id) }
         if let thumbnailBytes { manifest.thumbnail = try writeArtifact(captureId: id, type: "thumbnail", bytes: thumbnailBytes, extension: "jpg") }
         if let sceneMeshData {
             manifest.sceneMesh = try writeArtifact(captureId: id, type: "scene_mesh", bytes: sceneMeshData, extension: "mesh")
+        }
+        if let sourceIntegrityData {
+            manifest.sourceBundleIntegrity = try writeArtifact(captureId: id, type: "source_bundle_integrity", bytes: sourceIntegrityData, extension: "json")
+            manifest.sourceLayoutError = sourceLayoutError
         }
         manifest.state = "completed"
         try save(manifest)
@@ -189,13 +201,92 @@ actor CaptureRepository {
         try Wire.decoder().decode(LocalSavedRoom.self, from: Data(contentsOf: folder(id).appendingPathComponent("local-room.json")))
     }
     func localRooms() throws -> [LocalSavedRoom] {
-        try manifests().filter { $0.state == "local_saved" }.map { try localRoom($0.captureId) }
+        if freshCaptureOnly { try clearLegacyCapturesOnce() }
+        return try manifests().filter { $0.state == "local_saved" }.map { try localRoom($0.captureId) }
             .sorted { $0.createdAt > $1.createdAt }
+    }
+
+    /// User-requested fresh start, applied once to this local capture store.
+    /// Room planning/shopping stores and native bundles are outside this cleanup.
+    func clearLegacyCapturesOnce() throws {
+        let marker = directory.appendingPathComponent(".source-capture-fresh-start-v1")
+        guard !FileManager.default.fileExists(atPath: marker.path) else { return }
+        for capture in try manifests() where capture.sourceBundleFormat != "house-capture/5" {
+            try removeCapture(capture.captureId)
+        }
+        try Data("Legacy local scans cleared at the user's request.\n".utf8).write(to: marker, options: .atomic)
+    }
+
+    func createSourceBundle(_ id: String) throws -> URL {
+        var manifest = try load(id)
+        guard manifest.state == "acquiring" else { throw ClientError.storage("Start a new scan before recording.") }
+        manifest.sourceBundleFormat = "house-capture/5"
+        try save(manifest)
+        let url = folder(id).appendingPathComponent("house-capture", isDirectory: true)
+        try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+        return url
+    }
+    func sourceBundleURL(_ id: String) throws -> URL? {
+        let manifest = try load(id)
+        guard manifest.sourceBundleFormat == "house-capture/5" else { return nil }
+        return folder(id).appendingPathComponent("house-capture", isDirectory: true)
+    }
+    func sourceBundleArchive(_ id: String) throws -> URL {
+        guard let source = try sourceBundleURL(id), ["completed","local_saved"].contains(try load(id).state) else {
+            throw ClientError.storage("Finish saving this scan before sharing it.")
+        }
+        let sourceManifest = try JSONSerialization.jsonObject(with: Data(contentsOf: source.appendingPathComponent("manifest.json"))) as? [String: Any]
+        guard sourceManifest?["format"] as? String == "house-capture/5", sourceManifest?["state"] as? String == "completed" else {
+            throw ClientError.storage("The source capture is incomplete. Its raw data is retained.")
+        }
+        guard let integrityArtifact = try load(id).sourceBundleIntegrity else { throw ClientError.storage("The source integrity record is missing.") }
+        let seal = try JSONDecoder().decode(SourceBundleIntegrity.self, from: bytes(integrityArtifact, captureId: id))
+        try seal.verify(at: source)
+        let destination = FileManager.default.temporaryDirectory.appendingPathComponent("ReSpace-scan-\(UUID().uuidString).zip")
+        var coordinationError: NSError?
+        var copyError: Error?
+        NSFileCoordinator().coordinate(readingItemAt: source, options: .forUploading, error: &coordinationError) { archive in
+            do { try FileManager.default.copyItem(at: archive, to: destination) }
+            catch { copyError = error }
+        }
+        if let coordinationError { throw coordinationError }
+        if let copyError { throw copyError }
+        return destination
+    }
+
+    func nativeReconstructionUpload(_ id: String) throws -> NativeReconstructionUpload {
+        let manifest = try load(id)
+        guard ["completed","local_saved"].contains(manifest.state), manifest.sourceLayoutError == nil,
+              let source = try sourceBundleURL(id), let artifact = manifest.sourceBundleIntegrity else {
+            throw ClientError.storage("This capture needs its measured layout before creating a walkthrough. The original scan is retained.")
+        }
+        let integrity = try JSONDecoder().decode(SourceBundleIntegrity.self, from: bytes(artifact, captureId: id))
+        try integrity.verify(at: source)
+        var entries = integrity.files
+        let sealURL = source.appendingPathComponent("integrity.json")
+        let seal = try Data(contentsOf: sealURL)
+        entries.append(.init(path:"integrity.json",byteLength:seal.count,sha256:SHA256.hash(data:seal).map { String(format:"%02x",$0) }.joined()))
+        let files = entries.map { entry in
+            let key = SHA256.hash(data:Data(entry.path.utf8)).map { String(format:"%02x",$0) }.joined()
+            return NativeReconstructionFile(id:key,filename:key,relativePath:entry.path,byteLength:entry.byteLength,sha256:entry.sha256)
+        }
+        guard files.count <= 30000, files.allSatisfy({ $0.byteLength > 0 && $0.byteLength <= 512*1024*1024 }),
+              files.reduce(0, { $0+$1.byteLength }) <= 8*1024*1024*1024 else {
+            throw ClientError.storage("This scan exceeds the native reconstruction upload limits.")
+        }
+        return NativeReconstructionUpload(captureId:id,state:manifest.state,files:files)
+    }
+    func nativeReconstructionFileURL(_ file: NativeReconstructionFile, captureId: String) throws -> URL {
+        guard let root = try sourceBundleURL(captureId) else { throw ClientError.invalidResponse }
+        let path = root.appendingPathComponent(file.relativePath).standardizedFileURL
+        guard path.path.hasPrefix(root.standardizedFileURL.path+"/"),
+              !file.relativePath.split(separator:"/").contains("..") else { throw ClientError.invalidResponse }
+        return path
     }
     func saveLocalRoom(_ id: String, objectCount: Int) throws {
         var manifest = try load(id)
-        guard manifest.state == "completed", manifest.roomExport != nil,
-              FileManager.default.fileExists(atPath: localPreviewURL(id).path) else {
+        guard manifest.state == "completed", manifest.roomExport != nil || manifest.sourceBundleIntegrity != nil,
+              manifest.sourceBundleFormat == "house-capture/5" || FileManager.default.fileExists(atPath: localPreviewURL(id).path) else {
             throw ClientError.storage("The local room preview is not ready. Retry saving the scan.")
         }
         let room = LocalSavedRoom(id: id, name: "Room · \(manifest.createdAt.prefix(10)) · \(id.prefix(4))",
