@@ -4,7 +4,10 @@
 
 **Scan your room with your iPhone, chat about what you want, and see a 3D redesign built from real products that are checked to fit.**
 
-Built with RoomPlan · LiDAR · Gemini · GPT-6 Sol · SwiftUI · FastAPI
+Built with Apple RoomPlan · LiDAR · Gemini API · GPT-6 Sol · SwiftUI · FastAPI
+
+🐺 Built in **Dub Hacks 2026 • ⏱️ 36 hours**
+
 
 [Demo](#-demo) · [Features](#-features) · [How it works](#-how-it-works) · [Architecture](#-architecture) · [Setup](#-getting-started)
 
@@ -16,18 +19,20 @@ Built with RoomPlan · LiDAR · Gemini · GPT-6 Sol · SwiftUI · FastAPI
 
 ## Overview
 
-Redesigning a room usually means guessing. Inspiration photos show rooms that aren't yours, listings say a sofa "looks about right" until it arrives a few centimetres too long, and AI image generators invent furniture nobody sells, in rooms that ignore physics.
+Redesigning a room usually means guessing. Inspiration photos of beautiful rooms online are fundamentally different from your own, and you can't tell how to actually buy the items you see in them, let alone check if they'd fit or look good in your room.
 
-ReSpace starts from your actual room. A one-minute iPhone LiDAR scan becomes a measured 3D model. You describe the change you want in one sentence, an AI designer asks a few questions, and ReSpace builds a 3D redesign from real products you can buy. Every product has verified dimensions, and every placement is checked against your walls, doors and walkways.
+ReSpace begins with **your room**. A quick iPhone LiDAR scan creates a rich, precisely measured reconstructed 3D model of your room. You describe the change(s) you want in your words, discuss with an AI designer who might ask some questions, and ReSpace builds an immersive, 3D redesign/preview of your room with real products you can buy in a click. Every product has verified dimensions, and every placement is checked against your walls, doors and walkways.
 
-The core rule: **models handle taste, language and appearance; deterministic code handles geometry, facts and money.** Gemini decides *what* belongs in the room and roughly *where*. A Python solver computes every position, and code verifies every dimension and enforces the budget.
+Our core design rule is as follows: **AI handles taste, language, and appearance; deterministic code handles geometry, facts, and money/cost.** Gemini decides *what* belongs in the room and roughly *where*. A Python solver computes every position, and code verifies every dimension and enforces the budget.
 
 Built at **DubHacks '26** by Kenshu Dieguez, Jason Nishio and Humaid Jaffery · [Devpost](https://devpost.com/software/respace)
 
 ## 🎬 Demo
 
+### Demo Video:
 [![ReSpace demo video](https://img.youtube.com/vi/uYSXpTW6t4o/maxresdefault.jpg)](https://www.youtube.com/watch?v=uYSXpTW6t4o)
 
+### Screenshots:
 <p align="center">
   <img src="https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/005/615/864/datas/original.png" alt="ReSpace screenshot" width="360">
   <img src="https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/005/615/883/datas/original.png" alt="ReSpace screenshot" width="360">
