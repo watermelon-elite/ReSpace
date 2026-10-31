@@ -6,7 +6,7 @@
 
 Built with Apple RoomPlan · LiDAR · Gemini API · GPT-6 Sol · SwiftUI · FastAPI
 
-🐺 Built in **Dub Hacks 2026 • ⏱️ 36 hours**
+🐺 Built in **DubHacks '26 • ⏱️ <22 hours**
 
 
 [Demo](#-demo) · [Features](#-features) · [How it works](#-how-it-works) · [Architecture](#-architecture) · [Setup](#-getting-started)
@@ -53,21 +53,44 @@ The app also includes a meeting-room redesign that runs without a server. We rem
 
 ## 🧠 How it works
 
+```mermaid
+flowchart TD
+    scan["📱 iPhone LiDAR scan<br/>RoomPlan + photos + depth"] --> review["Room review<br/>Keep · Let design decide · Remove"]
+    scan -.-> recon["GPT-6 Sol reconstruction<br/>first-person walkthrough"]
+    review --> request["💬 'a warm reading corner, under $400'"]
+    request --> intent["Gemini reads scope, style, budget"]
+    intent --> budget{"Budget given?"}
 
-```
- iPhone scan ──► Room review ──► "a warm reading corner, under $400"
-                                          │
-                       Gemini reads scope, style, budget
-                                          │
-                 Interview loop: search_products · ask_user · finalize_selection
-                                          │
-          SerpApi + Playwright ──► Gemini Flash extracts dimensions ──► code verifies quotes
-                                          │
-                 Gemini plans with anchors ("against wall w2", "under sofa o3")
-                                          │
-                 Python solver ──► exact positions, collisions, door zones, aisles
-                                          │
-                        Immutable design version ──► 3D view · edits · Undo
+    subgraph loop["Interview loop (Gemini tools)"]
+        interview["Gemini picks next step"] --> ask["ask_user<br/>one question at a time"]
+        interview --> search["search_products"]
+        ask --> interview
+        search --> interview
+        interview --> finalize["finalize_selection"]
+    end
+
+    subgraph verify["Product verification"]
+        serp["SerpApi + saved candidates"] --> page["Playwright opens merchant page"]
+        page --> extract["Gemini Flash extracts W × D × H<br/>with source quotes"]
+        extract --> check{"Quotes on page?<br/>Item, not package size?"}
+        check -- No --> reject["❌ Rejected"]
+        check -- Yes --> rank["✅ Verified, scored<br/>60 fit · 30 style · 10 value"]
+    end
+
+    budget -- No --> askBudget["Ask the user"] --> interview
+    budget -- Yes --> interview
+    search --> serp
+    rank --> interview
+
+    finalize --> plan["Gemini plans with anchors<br/>'against wall w2' · 'under sofa o3'"]
+    plan --> solver["Python solver<br/>exact positions"]
+    solver --> fits{"Fits? No collisions,<br/>door zones and aisles clear?"}
+    fits -- "No: slide, rotate, next anchor" --> solver
+    fits -- "Still no" --> drop["Drop with warning"] --> version
+    fits -- Yes --> version["💾 Immutable design version"]
+    version --> view["🏠 3D design view<br/>Items · Buy links · Shopping bag"]
+    view -- "Chat edit: 'swap the rug'" --> plan
+    view -- Undo --> prev["Previous version"]
 ```
 
 **Gemini never outputs coordinates.** It plans with *anchors*, such as "against wall w2, centred", "under sofa o3" or "in front of the window", and can refer only to walls and objects that exist in your scan. The solver turns anchors into positions.
@@ -81,6 +104,62 @@ The app also includes a meeting-room redesign that runs without a server. We rem
 **Layout guidance comes from research.** Every planning, product and edit prompt includes [layout principles](prompts/layout-reasoning.md) we wrote from research on how people use and feel in rooms.
 
 ## 🏗️ Architecture
+
+```mermaid
+flowchart LR
+    subgraph phone["📱 iPhone app · SwiftUI"]
+        capture["Capture<br/>RoomPlan · ARKit frames · LiDAR depth"]
+        local[("On-device scan store<br/>up to 900 frames")]
+        designView["Design view<br/>RealityKit orbit"]
+        walkView["Walkthrough<br/>SceneKit first person"]
+        shop["Shopping bag · Share"]
+        capture --> local
+    end
+
+    subgraph backend["🧠 Planning API · Python, FastAPI"]
+        api["Versioned API"]
+        ops["Durable operations<br/>pause · resume · cancel"]
+        geom["Room geometry<br/>walls · openings · door zones"]
+        planning["Interview + planning"]
+        products["Product discovery<br/>+ verification"]
+        solver["Placement solver<br/>deterministic, no network"]
+        history[("Immutable design versions<br/>SQLite + files")]
+        api --> ops --> planning
+        ops --> geom
+        planning --> products
+        planning --> solver
+        geom --> solver
+        solver --> history
+    end
+
+    subgraph recon["🏗️ Reconstruction service · Python"]
+        evidence["Evidence selection<br/>64 photos · depth grid · mesh"]
+        shell["Measured shell<br/>walls · floor · ceiling"]
+        validate["Validate + export<br/>OBJ · USDZ · room.json"]
+        evidence --> validate
+        shell --> validate
+    end
+
+    subgraph ext["☁️ External services"]
+        gemini["Google Gemini<br/>planning · Flash extraction"]
+        serp["SerpApi<br/>Google Shopping"]
+        merchants["Merchant pages<br/>via Playwright"]
+        openai["OpenAI<br/>GPT-6 Sol · gpt-image-2"]
+    end
+
+    local -- "RoomPlan export + 40 frames" --> api
+    local -- "full scan" --> evidence
+    history -- "design scene + Products" --> designView
+    designView -- "chat edits · swap · undo" --> api
+    designView --> shop
+    validate -- "OBJ" --> walkView
+
+    planning <--> gemini
+    products --> serp
+    products --> merchants
+    products <--> gemini
+    evidence <--> openai
+```
 
 | Component | Stack | What it does |
 |---|---|---|
