@@ -6,10 +6,10 @@
 
 Built with Apple RoomPlan · LiDAR · Gemini API · GPT-6 Sol · SwiftUI · FastAPI
 
-🐺 Built in **DubHacks '26 • ⏱️ <22 hours**
+🐺 Built at **DubHacks '26 • ⏱️ <22 hours**
 
 
-[Demo](#-demo) · [Features](#-features) · [How it works](#-how-it-works) · [Architecture](#-architecture) · [Setup](#-getting-started)
+[Demo](#-demo) · [Features](#-features) · [How it works](#-how-it-works) · [Architecture](#-architecture) · [Setup](#-getting-started) · [Devpost](https://devpost.com/software/respace)
 
 <img src="https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/005/615/823/datas/original.png" alt="Scanning a room with iPhone LiDAR" width="720">
 
@@ -25,7 +25,7 @@ ReSpace begins with **your room**. A quick iPhone LiDAR scan creates a rich, pre
 
 Our core design rule is as follows: **AI handles taste, language, and appearance; deterministic code handles geometry, facts, and money/cost.** Gemini decides *what* belongs in the room and roughly *where*. A Python solver computes every position, and code verifies every dimension and enforces the budget.
 
-Built at **DubHacks '26** by Kenshu Dieguez, Jason Nishio and Humaid Jaffery · [Devpost](https://devpost.com/software/respace)
+### Devpost: https://devpost.com/software/respace
 
 ## 🎬 Demo
 
