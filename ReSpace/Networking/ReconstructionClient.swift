@@ -60,6 +60,19 @@ actor ReconstructionClient {
         }
     }
 
+    /// Authenticated preflight; never submits or resumes paid reconstruction.
+    func checkConnection() async throws {
+        struct Health: Decodable { let schemaVersion: Int; let status: String; let pipeline: String; let nativeUploadSchemaVersion: Int }
+        var request = try request(["health"])
+        request.timeoutInterval = 12
+        let (data, response) = try await session.data(for: request)
+        try checked(response, body: data)
+        let health = try Wire.decoder().decode(Health.self, from: data)
+        guard health.schemaVersion == 1, health.status == "ok", health.pipeline == "threejs", health.nativeUploadSchemaVersion == 2 else {
+            throw ClientError.storage("This service needs an update before it can build models from new scans.")
+        }
+    }
+
     private func folder(_ id: String, repository: CaptureRepository) async throws -> URL {
         let root = try await repository.reconstructionDirectory(id)
         let hash = SHA256.hash(data: Data(baseURL.absoluteString.utf8)).map { String(format: "%02x", $0) }.joined()
@@ -88,7 +101,7 @@ actor ReconstructionClient {
         return job
     }
 
-    func submit(_ id: String, repository: CaptureRepository, retry: Bool = false, fromScratch: Bool = false) async throws -> ReconstructionJob {
+    func submit(_ id: String, repository: CaptureRepository, retry: Bool = false, fromScratch: Bool = false, uploadProgress: (@Sendable (Int, Int) async -> Void)? = nil) async throws -> ReconstructionJob {
         let manifest = try await repository.load(id)
         let native = manifest.sourceBundleFormat == "house-capture/5" ? try await repository.nativeReconstructionUpload(id) : nil
         guard ["completed", "local_saved"].contains(manifest.state), native != nil || manifest.sceneMesh != nil else {
@@ -124,12 +137,19 @@ actor ReconstructionClient {
             }
             transfers = urls
         }
+        let sizes = Dictionary(uniqueKeysWithValues: native.map { $0.files.map { ($0.id, $0.byteLength) } }
+            ?? manifest.allArtifacts.map { ($0.id, $0.byteLength) })
+        let totalBytes = sizes.values.reduce(0, +)
+        var uploadedBytes = sizes.filter { !missing.contains($0.key) }.values.reduce(0, +)
+        await uploadProgress?(uploadedBytes, totalBytes)
         for (artifactId,url) in transfers {
             try Task.checkCancellation()
             var upload = try request(path + ["artifacts", artifactId], method: "PUT")
             upload.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
             let (data, response) = try await session.upload(for: upload, fromFile: url)
             try checked(response, body: data)
+            uploadedBytes += sizes[artifactId] ?? 0
+            await uploadProgress?(uploadedBytes, totalBytes)
         }
         var start = try request(path + [fromScratch ? "restart" : (retry ? "retry" : "run")], method: "POST")
         if fromScratch {
@@ -165,17 +185,19 @@ actor ReconstructionClient {
         try receipt(folder: await folder(id, repository: repository))?.job
     }
 
-    nonisolated static func renditionKey(_ scene: WalkthroughBundle, requestId: UUID? = nil) throws -> String {
+    nonisolated static func renditionKey(_ scene: WalkthroughBundle, requestId: UUID? = nil, perspective: RenditionPerspective? = nil, design: RenditionDesign? = nil) throws -> String {
         var data = try Wire.encoder().encode(scene)
-        data.append(Data(RoomRenditionCamera.viewID.utf8))
+        data.append(Data((perspective == nil && design == nil ? RoomRenditionCamera.viewID : "first_person_room_view_v6").utf8))
+        if let perspective { data.append(try Wire.encoder().encode(perspective)) }
+        if let design { data.append(try Wire.encoder().encode(design)) }
         // A refresh gets its own persisted identity. Reopening or retrying that
         // same refresh must keep the identity and recover its existing receipt.
         if let requestId { data.append(Data(requestId.uuidString.lowercased().utf8)) }
         return SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
     }
 
-    private func renditionPath(_ scene: WalkthroughBundle, requestId: UUID? = nil) throws -> [String] {
-        ["v1", "reconstructions", scene.captureId, "results", String(scene.reconstructionRevision), "renditions", try Self.renditionKey(scene,requestId:requestId)]
+    private func renditionPath(_ scene: WalkthroughBundle, requestId: UUID? = nil, perspective: RenditionPerspective? = nil, design: RenditionDesign? = nil) throws -> [String] {
+        ["v1", "reconstructions", scene.captureId, "results", String(scene.reconstructionRevision), "renditions", try Self.renditionKey(scene,requestId:requestId,perspective:perspective,design:design)]
     }
 
     private func transientRenditionError(_ error: Error) -> Bool {
@@ -213,21 +235,21 @@ actor ReconstructionClient {
     }
 
     /// Reads are safe to retry. This never submits an image-generation request.
-    func existingRendition(scene: WalkthroughBundle, requestId: UUID? = nil) async throws -> RoomRenditionStatus? {
-        var read=try request(renditionPath(scene,requestId:requestId));read.timeoutInterval=30
+    func existingRendition(scene: WalkthroughBundle, requestId: UUID? = nil, perspective: RenditionPerspective? = nil, design: RenditionDesign? = nil) async throws -> RoomRenditionStatus? {
+        var read=try request(renditionPath(scene,requestId:requestId,perspective:perspective,design:design));read.timeoutInterval=30
         do { return try await renditionStatus(read) }
         catch ReconstructionServiceError.http(404,_) { return nil }
     }
 
-    func rendition(scene: WalkthroughBundle, image: Data, requestId: UUID? = nil) async throws -> Data {
-        let path = try renditionPath(scene,requestId:requestId)
+    func rendition(scene: WalkthroughBundle, image: Data, requestId: UUID? = nil, perspective: RenditionPerspective? = nil, design: RenditionDesign? = nil) async throws -> Data {
+        let path = try renditionPath(scene,requestId:requestId,perspective:perspective,design:design)
         let initial: RoomRenditionStatus
-        if let saved=try await existingRendition(scene:scene,requestId:requestId) { initial=saved }
+        if let saved=try await existingRendition(scene:scene,requestId:requestId,perspective:perspective,design:design) { initial=saved }
         else {
-            struct Body: Encodable { let imageBase64: String; let scene: WalkthroughBundle }
+            struct Body: Encodable { let imageBase64: String; let scene: WalkthroughBundle; let perspective: RenditionPerspective?; let design: RenditionDesign? }
             var create = try request(path, method: "POST")
             create.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            create.httpBody = try Wire.encoder().encode(Body(imageBase64: image.base64EncodedString(), scene: scene))
+            create.httpBody = try Wire.encoder().encode(Body(imageBase64: image.base64EncodedString(), scene: scene, perspective: perspective, design: design))
             do { initial=try await renditionStatus(create) }
             catch {
                 guard transientRenditionError(error) else { throw error }
@@ -235,7 +257,7 @@ actor ReconstructionClient {
                 // Recover its receipt with GET; never repeat an ambiguous POST.
                 var recovered: RoomRenditionStatus?
                 for attempt in 0..<3 {
-                    if let saved=try await existingRendition(scene:scene,requestId:requestId) { recovered=saved;break }
+                    if let saved=try await existingRendition(scene:scene,requestId:requestId,perspective:perspective,design:design) { recovered=saved;break }
                     try await Task.sleep(for:.seconds(attempt+1))
                 }
                 guard let recovered else {
@@ -251,7 +273,7 @@ actor ReconstructionClient {
                 throw ClientError.storage("The image is still processing. Reopen it to check again.")
             }
             try await Task.sleep(for: .seconds(2))
-            guard let saved=try await existingRendition(scene:scene,requestId:requestId) else { throw ClientError.invalidResponse }
+            guard let saved=try await existingRendition(scene:scene,requestId:requestId,perspective:perspective,design:design) else { throw ClientError.invalidResponse }
             result=saved
         }
         guard result.state == "succeeded" else {

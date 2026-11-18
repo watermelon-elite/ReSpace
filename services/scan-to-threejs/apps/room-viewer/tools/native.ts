@@ -32,11 +32,27 @@ for(const entity of bundle.entities) {
   }});
   object.applyMatrix4(new T.Matrix4().fromArray(entity.local_to_scan_transform));root.add(object);
 }
-// These are the same ambient/directional lights used by WalkthroughLoader.
-scene.add(new T.AmbientLight(0xffffff,.5));
-const sun=new T.DirectionalLight(0xffffff,.9);sun.position.set(3,5,4);scene.add(sun);
+// Match WalkthroughLoader's scan-space light direction, then rotate it with
+// the exported scene. A room-coordinate relabel must not change illumination.
+// The pi radiance scale is calibrated against the SceneKit debug preview;
+// Three.js/ACES and SceneKit HDR remain different renderers, not pixel equivalents.
+scene.add(new T.AmbientLight(0xffffff,Math.PI*.5));
+const sun=new T.DirectionalLight(0xffffff,Math.PI*.9);
+sun.position.set(0,0,1).applyEuler(new T.Euler(-.7,-.5,0,'YXZ'))
+  .transformDirection(new T.Matrix4().fromArray(data.transform.worldToRoom));
+scene.add(sun);
 const photo=data.photos[Number(p.get('photo')??0)];if(!photo)throw Error('Missing posed photo');
 const camera=new T.PerspectiveCamera(photo.fovY,photo.aspect,.03,100);camera.position.fromArray(photo.position);camera.up.fromArray(photo.up);camera.lookAt(camera.position.clone().add(new T.Vector3().fromArray(photo.forward)));
 const renderer=new T.WebGLRenderer({canvas:document.querySelector('#scene')!,antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(1);renderer.setSize(720,Math.round(720/photo.aspect));renderer.toneMapping=T.ACESFilmicToneMapping;
+// Match the native viewer's one-time room-derived reflection probe. Metals
+// otherwise lose their environment response even when their maps export intact.
+const cubeTarget=new T.WebGLCubeRenderTarget(256,{type:T.HalfFloatType});
+const cube=new T.CubeCamera(.03,100,cubeTarget);
+cube.position.fromArray(bundle.navigation.spawn_position).applyMatrix4(new T.Matrix4().fromArray(data.transform.worldToRoom));
+cube.update(renderer,scene);
+const pmrem=new T.PMREMGenerator(renderer);
+scene.environment=pmrem.fromCubemap(cubeTarget.texture).texture;
+scene.environmentIntensity=.5;
 await renderer.compileAsync(scene,camera);renderer.render(scene,camera);
+cubeTarget.dispose();pmrem.dispose();
 document.body.dataset.ready='1';

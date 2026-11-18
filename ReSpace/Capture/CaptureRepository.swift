@@ -10,6 +10,14 @@ struct LocalSavedRoom: Codable, Identifiable, Sendable {
     var backendRoomId: String?
     var backendCaptureId: String?
     var backendCreationName: String?
+
+    /// Present the original automatic name in the user's locale without changing
+    /// a retained backend creation payload or a name they chose themselves.
+    var displayName: String {
+        guard name == "Room · \(createdAt.prefix(10)) · \(id.prefix(4))",
+              let date = ISO8601DateFormatter().date(from: createdAt) else { return name }
+        return "Room · " + date.formatted(.dateTime.month(.abbreviated).day().hour().minute())
+    }
 }
 
 actor CaptureRepository {
@@ -230,6 +238,25 @@ actor CaptureRepository {
         let manifest = try load(id)
         guard manifest.sourceBundleFormat == "house-capture/5" else { return nil }
         return folder(id).appendingPathComponent("house-capture", isDirectory: true)
+    }
+    /// Read one verified photo without hashing the entire multi-gigabyte scan
+    /// just to draw a library card. Only the photos directory carries display
+    /// orientation; depth-reference JPEGs deliberately retain raw sensor pixels.
+    func thumbnailBytes(_ id: String) throws -> Data? {
+        let manifest = try load(id)
+        if let source = try sourceBundleURL(id), let artifact = manifest.sourceBundleIntegrity {
+            let seal = try JSONDecoder().decode(SourceBundleIntegrity.self, from: bytes(artifact, captureId: id))
+            guard let photo = seal.files.first(where: { $0.path.hasPrefix("photos/") && ["jpg", "jpeg"].contains(URL(fileURLWithPath: $0.path).pathExtension.lowercased()) }) else { return nil }
+            let root = source.standardizedFileURL.resolvingSymlinksInPath()
+            let url = root.appendingPathComponent(photo.path).standardizedFileURL.resolvingSymlinksInPath()
+            guard url.path.hasPrefix(root.path + "/"), photo.byteLength > 0, photo.byteLength <= 32*1024*1024 else { throw ClientError.invalidResponse }
+            let data = try Data(contentsOf: url)
+            guard data.count == photo.byteLength,
+                  SHA256.hash(data: data).map({ String(format: "%02x", $0) }).joined() == photo.sha256 else { throw ClientError.invalidResponse }
+            return data
+        }
+        guard let photo = manifest.frames.first?.artifacts.first(where: { $0.type == "jpeg" }) else { return nil }
+        return try bytes(photo, captureId: id)
     }
     func sourceBundleArchive(_ id: String) throws -> URL {
         guard let source = try sourceBundleURL(id), ["completed","local_saved"].contains(try load(id).state) else {

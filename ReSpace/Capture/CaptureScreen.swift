@@ -18,28 +18,40 @@ struct ScanCaptureScreen: View {
             ReSpaceTheme.cream.ignoresSafeArea()
             if (controller.phase == .scanning || controller.phase == .finishing), let view = controller.sourceView ?? controller.roomView {
                 ScanCaptureSurface(view: view).ignoresSafeArea()
-                VStack {
+                VStack(spacing: 16) {
                     HStack {
-                        Button("Cancel scan") { confirmDiscard = true }.buttonStyle(.bordered).tint(.white)
+                        Button { confirmDiscard = true } label: { Image(systemName: "xmark").frame(width: 44, height: 44) }
+                            .accessibilityLabel("Cancel scan")
                         Spacer()
-                        Text(store.localCaptureEnabled ? "\(controller.elapsedSeconds / 60):\(String(format: "%02d", controller.elapsedSeconds % 60)) · \(controller.acceptedFrames) photos" : "\(controller.acceptedFrames)/40 photos")
-                            .font(ReSpaceStyle.font(13)).padding(10).background(.regularMaterial, in: Capsule())
-                    }
+                        Text("Scan room").font(ReSpaceStyle.font(17, weight: .semibold))
+                        Spacer()
+                        Menu {
+                            Toggle("High-resolution photos", isOn: $controller.highResolutionPhotos)
+                            Text("\(controller.acceptedFrames) photos saved")
+                            Text(controller.detailText)
+                        } label: { Image(systemName: "ellipsis").frame(width: 44, height: 44) }
+                        .accessibilityLabel("Capture options")
+                    }.foregroundStyle(.white).padding(.horizontal, 8).background(.black.opacity(0.65), in: RoundedRectangle(cornerRadius: 16))
                     Spacer()
-                    VStack(spacing: 10) {
-                        Text(controller.guidance).font(ReSpaceStyle.font(18, weight: .semibold))
-                        Text(store.localCaptureEnabled ? controller.detailText : "Move slowly around the room.").font(ReSpaceStyle.font(13)).foregroundStyle(.secondary)
-                        if store.localCaptureEnabled, controller.phase == .scanning {
-                            Toggle("High-resolution auto photos", isOn: $controller.highResolutionPhotos).font(ReSpaceStyle.font(13))
-                            Button("Take detail photo", systemImage: "camera") { controller.takeDetailPhoto() }
-                                .disabled(!controller.canTakeDetailPhoto)
+                    VStack(spacing: 16) {
+                        if controller.phase == .finishing {
+                            ProgressView("Saving your scan…")
+                            Text("Keep ReSpace open while your room is saved.").font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+                        } else {
+                            Text(controller.guidance).font(ReSpaceStyle.font(17, weight: .semibold)).multilineTextAlignment(.center)
+                            HStack(spacing: 12) {
+                                Button { controller.takeDetailPhoto() } label: { Image(systemName: "camera").frame(width: 52, height: 52).background(ReSpaceStyle.wash, in: RoundedRectangle(cornerRadius: 14)) }
+                                    .disabled(!controller.canTakeDetailPhoto).accessibilityLabel("Take an extra detail photo")
+                                Button("Finish scan") { controller.done() }.buttonStyle(RSButtonStyle()).disabled(!controller.canFinish)
+                            }
                         }
-                        PrimaryAction(title: controller.phase == .finishing ? "Finishing scan…" : "Done", symbol: "checkmark",
-                                      disabled: controller.phase == .finishing || !controller.canFinish) { controller.done() }
-                    }.padding(18).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24))
-                }.padding(20)
+                    }.padding(20).background(ReSpaceStyle.white, in: RoundedRectangle(cornerRadius: 24))
+                }.padding(16)
+
             } else { stateView.padding(28) }
         }
+        .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
+        .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
         .task { await controller.prepare(recovering: recoveryId) }
         .onChange(of: controller.phase) { _, phase in if case .ready(let id) = phase { completion(id) } }
         .onChange(of: scenePhase) { _, phase in

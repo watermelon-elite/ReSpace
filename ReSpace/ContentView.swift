@@ -17,11 +17,11 @@ struct ContentView: View {
     @State private var renameScanText = ""
     @State private var deleteScan: LocalSavedRoom?
     @State private var setup = false
+    @State private var reconstructionAddress = ""
+    @State private var checkingConnection = false
+    @State private var connectionOK = false
+    @State private var connectionMessage: String?
     @State private var scanSetup = false
-    @State private var capture: CaptureController?
-    @State private var permissionDenied = false
-    @State private var recoveries: [CaptureArchive] = []
-    @State private var discardArchive: CaptureArchive?
     @State private var showShoppingLists = false
     private var savedLists: [ShoppingList]? {
         #if DEBUG
@@ -56,87 +56,10 @@ struct ContentView: View {
                     }
                 } footer: { EmptyView() }
             } else {
-                RSPage(title: "Your rooms", showsBack: false, inlineTitle: true,
-                       trailingSymbol: "bag", trailingLabel: "Shopping lists", trailing: { showShoppingLists = true }) {
-                    if app.rooms.isEmpty && ImportedRoomView.modelURL == nil {
-                        Image("RoomInspiration").resizable().scaledToFill().frame(height: 300).clipped().clipShape(RoundedRectangle(cornerRadius: 28))
-                            .accessibilityLabel("Room inspiration")
-                    }
-                    ForEach(Array(app.rooms.filter { room in room["source_scene_sha256"] == .null && !app.localRooms.contains { $0.backendRoomId == room["room_id"].text } }.enumerated()), id: \.element) { index, room in
-                        NavigationLink { RoomReview(app: app, roomID: room["room_id"].text) } label: { roomCard(room, hero: index == 0) }.buttonStyle(.plain)
-                    }
-                    if let store = app.scanStore {
-                        ForEach(app.localRooms) { room in
-                            NavigationLink { LocalRoomPreviewView(room: room, repository: store.captures, reconstruction: store.reconstruction, app: app) } label: {
-                                RSRoomCard(title: app.rooms.first { $0["room_id"].text == room.backendRoomId }?["name"].string ?? room.name,
-                                           subtitle: "Scanned \(room.createdAt.scanDateLabel)", hero: false) {
-                                    ReSpaceStyle.canvas.overlay { Image(systemName: "cube.transparent").foregroundStyle(ReSpaceStyle.purple) }
-                                }
-                            }.buttonStyle(.plain)
-                                .contextMenu {
-                                    Button("Rename", systemImage: "pencil") { renameScan = room; renameScanText = room.name }
-                                    Button("Delete room", systemImage: "trash", role: .destructive) { deleteScan = room }
-                                }
-                        }
-                        ForEach(app.scanRecoveries, id: \.captureId) { manifest in
-                            if manifest.state == "completed" {
-                                Button("Finish saving your scan") { scanRecoveryID = manifest.captureId; scanning = true }
-                                    .buttonStyle(RSButtonStyle(kind: .secondary))
-                            } else {
-                                RSNotice(message: "This scan was interrupted. Start a new scan to capture the room.")
-                                Button("Discard interrupted scan") { discardScanID = manifest.captureId }
-                                    .buttonStyle(RSButtonStyle(kind: .secondary))
-                            }
-                        }
-                    }
-                    if ImportedRoomView.modelURL != nil && !app.isUIDemo {
-                        NavigationLink { ImportedRoomView(app: app) } label: {
-                            RSRoomCard(title: "Kitchenette", subtitle: "Your reconstructed room",
-                                       hero: app.rooms.allSatisfy { $0["source_scene_sha256"] != .null }) {
-                                Image("KitchenettePreview").resizable().scaledToFill()
-                                    .accessibilityLabel("Preview of your reconstructed kitchenette")
-                            }
-                        }.buttonStyle(.plain)
-                    }
-                    if DemoRedesignView.modelURL != nil && !app.isUIDemo {
-                        NavigationLink { DemoRedesignView(app: app) } label: {
-                            RSRoomCard(title: "Meeting room redesign", subtitle: "Soft-seating corner · 3 IKEA pieces", hero: false) {
-                                Image(systemName: "sofa").font(.system(size: 26, weight: .light)).foregroundStyle(ReSpaceStyle.purple)
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity).background(ReSpaceStyle.wash).accessibilityHidden(true)
-                            }
-                        }.buttonStyle(.plain)
-                    }
-                    if let error = app.error {
-                        RSNotice(message: error, isError: true)
-                        Button("Refresh") { Task { await app.refresh() } }.buttonStyle(RSButtonStyle(kind: .secondary))
-                    }
-                    if app.client == nil {
-                        Button { setup = true } label: { RSRow(title: "Connect ReSpace", subtitle: "Set up your connection to open your rooms", symbol: "network") }.buttonStyle(.plain)
-                    }
-                    ForEach(recoveries, id: \.captureID) { archive in
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text(archive.phase == "upload_pending" ? "Your scan is safe." : "Let’s scan again.").font(ReSpaceStyle.font(22, weight: .semibold))
-                            Text(archive.phase == "upload_pending" ? "It’s on your phone. Reconnect to finish saving it." : "The scan was interrupted before it finished.").foregroundStyle(ReSpaceStyle.secondary)
-                            if archive.phase == "upload_pending" {
-                                Button("Try saving again") { if let client = app.client { capture = CaptureController(archive: archive, app: app, client: client) } }.buttonStyle(RSButtonStyle()).disabled(app.client == nil)
-                            } else {
-                                Button("Discard interrupted scan") { discardArchive = archive }.buttonStyle(RSButtonStyle(kind: .secondary))
-                            }
-                        }.padding(20).background(ReSpaceStyle.canvas, in: RoundedRectangle(cornerRadius: 20))
-                    }
-                    ForEach(app.pending, id: \.operationID) { request in
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text(request.method == "DELETE" ? "Deletion pending" : "Let’s reconnect.").font(ReSpaceStyle.font(22, weight: .semibold))
-                            Text("We couldn’t confirm the request. Check it before trying again.").foregroundStyle(ReSpaceStyle.secondary)
-                            Button("Check request") { Task { do { _ = try await app.reconcile(request); await app.refresh() } catch { app.error = error.localizedDescription } } }.buttonStyle(RSButtonStyle(kind: .secondary))
-                        }
-                    }
-                } footer: {
-                    Button("Scan your room") { if !simulatedScan { scanSetup = true } }
-                        .buttonStyle(RSButtonStyle()).disabled(!simulatedScan && (!captureSupported || app.scanStore == nil || app.busy))
-                }
-                .refreshable { await app.refresh(); await app.refreshScans(); if !app.isUIDemo { recoveries = CaptureArchive.recoverable().filter { archive in !app.localRooms.contains { $0.backendRoomId == archive.roomID } } } }
-                .task { await app.recoverPending(); await app.refresh(); await app.refreshScans(); if !app.isUIDemo { recoveries = CaptureArchive.recoverable().filter { archive in !app.localRooms.contains { $0.backendRoomId == archive.roomID } } } }
+                library
+                    .refreshable { await refreshLibrary() }
+                    .task { await refreshLibrary() }
+
             }
         }
         .fullScreenCover(isPresented: $scanning, onDismiss: {
@@ -156,7 +79,7 @@ struct ContentView: View {
             Button("Cancel", role: .cancel) { discardScanID = nil }
             Button("Discard", role: .destructive) {
                 if let id = discardScanID, let store = app.scanStore {
-                    Task { do { try await store.captures.removeCapture(id); await app.refreshScans() } catch { app.error = error.localizedDescription } }
+                    Task { do { try await store.captures.removeCapture(id); await app.refreshScans() } catch { app.scanError = error.localizedDescription } }
                 }
                 discardScanID = nil
             }
@@ -185,30 +108,31 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $scanSetup) {
-            RSPage(title: "Scan your room.", back: { scanSetup = false }) {
-                Image("RoomInspiration").resizable().scaledToFill().frame(height: 300).clipped().clipShape(RoundedRectangle(cornerRadius: 28)).accessibilityLabel("Example room to scan")
-                OlloMessage(cue: .presenting) {
-                    Text("Move slowly around the room. Include the walls and larger Objects.").foregroundStyle(ReSpaceStyle.secondary)
+            NavigationStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 28) {
+                        Image(systemName: "viewfinder").font(.system(size: 48, weight: .light)).foregroundStyle(ReSpaceStyle.accent)
+                        Text("Capture one room").font(ReSpaceStyle.font(28, weight: .semibold))
+                        Text("Move slowly around the room. Photos and measurements are saved automatically.").foregroundStyle(ReSpaceStyle.secondary)
+                        scanTip("lightbulb", "Turn on the lights", "Clear views help capture surfaces and furniture.")
+                        scanTip("rectangle.portrait", "Keep the phone upright", "Include every wall, the floor and larger furniture.")
+                        scanTip("checkmark.circle", "Finish when you’ve covered the room", "You’ll review the saved scan before building a model.")
+                    }.padding(24)
                 }
-                DisclosureGroup("Ready to scan") { Text("ReSpace checks camera access and space to save your scan. Your completed scan stays on this iPhone; connect to plan changes or create a walkthrough.").padding(.top, 8) }.font(ReSpaceStyle.font(13))
-            } footer: {
-                Button("Start scan") { scanSetup = false; Task { await start() } }.buttonStyle(RSButtonStyle()).disabled(app.busy)
+                .navigationTitle("New scan").navigationBarTitleDisplayMode(.inline)
+                .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { scanSetup = false } } }
+                .safeAreaInset(edge: .bottom) {
+                    VStack(spacing: 12) {
+                        if simulatedScan && !app.isUIDemo {
+                            Text("Use a LiDAR iPhone to capture a room.").foregroundStyle(ReSpaceStyle.secondary)
+                        } else {
+                            Button("Start scanning") { scanSetup = false; Task { await start() } }.buttonStyle(RSButtonStyle())
+                        }
+                        Text("Your scan stays on this iPhone until you choose to build a model.").font(ReSpaceStyle.font(12)).foregroundStyle(ReSpaceStyle.secondary).multilineTextAlignment(.center)
+                    }.padding(20).background(ReSpaceStyle.white)
+                }
             }
         }
-        .sheet(isPresented: $permissionDenied) {
-            RSPage(title: "Allow camera access.", back: { permissionDenied = false }) {
-                RSSymbol(name: "camera")
-                Text("Your camera is needed to scan and measure the room.")
-                Text("Enable Camera for ReSpace in Settings, then return here.").font(ReSpaceStyle.font(14)).foregroundStyle(ReSpaceStyle.secondary)
-            } footer: {
-                Button("Open Settings") { if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) } }.buttonStyle(RSButtonStyle())
-                Button("My Rooms") { permissionDenied = false }.buttonStyle(RSButtonStyle(kind: .quiet))
-            }
-        }
-        .confirmationDialog("Discard the interrupted scan and its uploaded photos?", isPresented: Binding(get: { discardArchive != nil }, set: { if !$0 { discardArchive = nil } }), titleVisibility: .visible) {
-            Button("Discard Scan", role: .destructive) { if let archive = discardArchive, let client = app.client { Task { let controller = CaptureController(archive: archive, app: app, client: client); await controller.abandon(); recoveries = CaptureArchive.recoverable().filter { archive in !app.localRooms.contains { $0.backendRoomId == archive.roomID } } }; discardArchive = nil } }
-        }
-        .fullScreenCover(item: $capture, onDismiss: { Task { await app.refresh(); recoveries = CaptureArchive.recoverable().filter { archive in !app.localRooms.contains { $0.backendRoomId == archive.roomID } } } }) { CaptureScreen(controller: $0) }
     }
     private func renameLocalRoom(_ scan: LocalSavedRoom, name: String) async {
         guard let store = app.scanStore else { return }
@@ -223,8 +147,8 @@ struct ContentView: View {
                     body: ["name": .string(name), "expected_metadata_revision": detail["room"]["metadata_revision"]]))
             } else if scan.backendRoomId != nil { throw ContractError.invalid("Connect ReSpace to rename this saved room.") }
             try await store.captures.renameLocalRoom(scan.id, name: name)
-            await app.refreshScans(); await app.refresh()
-        } catch { app.error = error.localizedDescription }
+            await refreshLibrary()
+        } catch { app.scanError = error.localizedDescription }
     }
     private func removeLocalRoom(_ scan: LocalSavedRoom) async {
         guard let store = app.scanStore else { return }
@@ -236,18 +160,121 @@ struct ContentView: View {
                 let result = try await app.submit(pending ?? PendingRequest(path: "rooms/\(roomID)", method: "DELETE", roomID: roomID, body: [:]))
                 guard result["deletion"]["state"].text == "deleted" else { throw ContractError.invalid("Deletion is pending. Check the request before retrying.") }
             } else { try await store.captures.removeCapture(scan.id) }
-            await app.refreshScans(); await app.refresh()
-        } catch { app.error = error.localizedDescription }
+            await refreshLibrary()
+        } catch { app.scanError = error.localizedDescription }
     }
     private var backendSettings: some View {
-        RSPage(title: "Connect ReSpace", back: { setup = false }) {
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Backend URL").font(ReSpaceStyle.font(14, weight: .medium))
-                TextField("https://your-backend.example", text: $app.backend).textContentType(.URL).keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled().rsInput()
-                Text("This installation ID groups your Rooms. It is not account authentication.").font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+        NavigationStack {
+            Form {
+                Section("3D model service") {
+                    Text("Your Mac builds the model. Keep both devices on the same Wi-Fi.").foregroundStyle(.secondary)
+                    TextField("Service address", text: $reconstructionAddress).keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
+                    Button(checkingConnection ? "Checking…" : "Save and check connection") { Task { await checkConnection() } }.disabled(checkingConnection)
+                    if let connectionMessage { Label(connectionMessage, systemImage: connectionOK ? "checkmark.circle" : "exclamationmark.circle").foregroundStyle(connectionOK ? ReSpaceStyle.secondary : ReSpaceStyle.danger) }
+                }
+                if app.designFeaturesEnabled {
+                    Section("Design service") {
+                        TextField("Service address", text: $app.backend).keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
+                        Button("Save connection") { app.saveBackend() }
+                        Button("Shopping lists") { setup = false; showShoppingLists = true }
+                    }
+                }
+                Section {
+                    Text("Scans are saved on this iPhone. Building a 3D model sends the scan to your Mac and OpenAI, with a separate confirmation and a $10 limit per generation.")
+                }
             }
-        } footer: {
-            Button("Save connection") { app.saveBackend(); setup = false; Task { await app.refresh() } }.buttonStyle(RSButtonStyle())
+            .navigationTitle("Settings").navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { setup = false } } }
+            .task { reconstructionAddress = (try? AppConfiguration.load().reconstructionURL?.absoluteString) ?? "" }
+        }
+    }
+    private func checkConnection() async {
+        checkingConnection = true; connectionMessage = nil; connectionOK = false
+        defer { checkingConnection = false }
+        do {
+            let raw = reconstructionAddress.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard let url = URL(string: raw), ["http", "https"].contains(url.scheme ?? ""), url.host != nil, url.user == nil, url.password == nil, url.query == nil, url.fragment == nil else {
+                throw ContractError.invalid("Enter a complete service address, such as http://your-mac.local:8008.")
+            }
+            let configuration = try AppConfiguration.load()
+            let client = ReconstructionClient(baseURL: url, token: configuration.reconstructionToken)
+            try await client.checkConnection()
+            UserDefaults.standard.set(raw, forKey: "reconstructionURL")
+            app.scanStore?.reconstruction = client
+            connectionOK = true; connectionMessage = "Connected. Ready to build your model."
+        } catch { connectionMessage = "Couldn’t connect. Check the address, Wi-Fi and that the service is running on your Mac. " + error.localizedDescription }
+    }
+
+    private var library: some View {
+        List {
+            if !app.scansLoaded && !app.isUIDemo { ProgressView("Opening your rooms…") }
+            else if app.localRooms.isEmpty && app.rooms.isEmpty && app.scanRecoveries.isEmpty {
+                VStack(spacing: 18) {
+                    Image(systemName: "viewfinder").font(.system(size: 52, weight: .ultraLight)).foregroundStyle(ReSpaceStyle.accent)
+                        .frame(width: 96, height: 96).background(ReSpaceStyle.wash, in: RoundedRectangle(cornerRadius: 24))
+                    Text("Your room, in 3D").font(ReSpaceStyle.font(24, weight: .semibold))
+                    Text("Scan a room, build its model, then explore it from inside.").foregroundStyle(ReSpaceStyle.secondary).multilineTextAlignment(.center)
+                }.frame(maxWidth: .infinity).padding(.vertical, 50).listRowBackground(Color.clear).listRowSeparator(.hidden)
+            }
+            if let store = app.scanStore {
+                ForEach(app.localRooms) { room in
+                    NavigationLink { LocalRoomPreviewView(room: room, repository: store.captures, reconstruction: store.reconstruction, app: app) } label: {
+                        HStack(spacing: 14) {
+                            LocalScanThumbnail(roomID: room.id, repository: store.captures).frame(width: 68, height: 68).clipped().clipShape(RoundedRectangle(cornerRadius: 12))
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text(room.displayName).font(ReSpaceStyle.font(17, weight: .semibold))
+                                Text(room.createdAt.scanDateLabel).font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+                            }
+                        }.padding(.vertical, 6)
+                    }
+                    .contextMenu {
+                        Button("Rename", systemImage: "pencil") { renameScan = room; renameScanText = room.displayName }
+                        Button("Delete room", systemImage: "trash", role: .destructive) { deleteScan = room }
+                    }
+                }
+                if !app.scanRecoveries.isEmpty {
+                    Section("Needs attention") {
+                        ForEach(app.scanRecoveries, id: \.captureId) { manifest in
+                            if manifest.state == "completed" {
+                                Button("Finish saving scan") { scanRecoveryID = manifest.captureId; scanning = true }
+                            } else {
+                                VStack(alignment: .leading, spacing: 10) {
+                                    Text("Interrupted scan").fontWeight(.medium)
+                                    Text("This scan didn’t finish. Start a new scan when you’re ready.").font(.subheadline).foregroundStyle(.secondary)
+                                    Button("Discard incomplete scan", role: .destructive) { discardScanID = manifest.captureId }
+                                }.padding(.vertical, 6)
+                            }
+                        }
+                    }
+                }
+            }
+            if app.designFeaturesEnabled {
+                ForEach(app.rooms.filter { room in room["source_scene_sha256"] == .null && !app.localRooms.contains { $0.backendRoomId == room["room_id"].text } }, id: \.self) { room in
+                    NavigationLink { RoomReview(app: app, roomID: room["room_id"].text) } label: { roomCard(room, hero: false) }
+                }
+                if let error = app.error { Text(error).foregroundStyle(ReSpaceStyle.danger) }
+            }
+            if let error = app.scanError {
+                Section { Text(error).foregroundStyle(ReSpaceStyle.danger); Button("Try again") { Task { await refreshLibrary() } } }
+            }
+        }
+        .listStyle(.insetGrouped).scrollContentBackground(.hidden).background(ReSpaceStyle.white)
+        .navigationTitle("Rooms")
+        .toolbar { ToolbarItem(placement: .topBarTrailing) { Button { setup = true } label: { Image(systemName: "gearshape") }.accessibilityLabel("Settings") } }
+        .safeAreaInset(edge: .bottom) {
+            Button { scanSetup = true } label: { Label("Scan room", systemImage: "plus") }
+                .buttonStyle(RSButtonStyle()).disabled(!simulatedScan && (!captureSupported || app.scanStore == nil || app.busy))
+                .padding(20).background(ReSpaceStyle.white)
+        }
+    }
+    private func refreshLibrary() async {
+        if !app.isUIDemo { await app.refreshScans() }
+        if app.designFeaturesEnabled { await app.recoverPending(); await app.refresh() }
+    }
+    private func scanTip(_ symbol: String, _ title: String, _ detail: String) -> some View {
+        HStack(alignment: .top, spacing: 16) {
+            Image(systemName: symbol).frame(width: 24).foregroundStyle(ReSpaceStyle.accent)
+            VStack(alignment: .leading, spacing: 5) { Text(title).fontWeight(.medium); Text(detail).font(.subheadline).foregroundStyle(.secondary) }
         }
     }
     private func roomCard(_ room: JSONValue, hero: Bool) -> some View {
@@ -272,6 +299,22 @@ struct ContentView: View {
     }
 }
 extension CaptureController: Identifiable { var id: String { archive.captureID } }
+
+private struct LocalScanThumbnail: View {
+    let roomID: String
+    let repository: CaptureRepository
+    @State private var image: UIImage?
+    var body: some View {
+        Group {
+            if let image { Image(uiImage:image).resizable().scaledToFill() }
+            else { ReSpaceStyle.wash.overlay { Image(systemName:"cube.transparent").foregroundStyle(ReSpaceStyle.accent) } }
+        }.accessibilityHidden(true)
+        .task(id:roomID) {
+            guard let bytes=try? await repository.thumbnailBytes(roomID) else { return }
+            image=UIImage(data:bytes)
+        }
+    }
+}
 
 #if DEBUG
 #Preview("My Rooms") { UIDemoPreview(.rooms) }

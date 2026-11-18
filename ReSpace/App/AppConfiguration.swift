@@ -20,7 +20,7 @@ struct AppConfiguration {
         var values = URLResourceValues(); values.isExcludedFromBackup = true
         try resource.setResourceValues(values)
         let mode = Bundle.main.object(forInfoDictionaryKey: "ReSpaceLocalCapture") as? String ?? "YES"
-        let reconstructionAddress = Bundle.main.object(forInfoDictionaryKey: "ReSpaceReconstructionURL") as? String ?? ""
+        let reconstructionAddress = UserDefaults.standard.string(forKey: "reconstructionURL") ?? Bundle.main.object(forInfoDictionaryKey: "ReSpaceReconstructionURL") as? String ?? ""
         let reconstructionToken = Bundle.main.object(forInfoDictionaryKey: "ReSpaceReconstructionToken") as? String ?? ""
         return AppConfiguration(serviceURL: URL(string: rawURL), appKey: key, storageURL: storage,
                                 localCaptureEnabled: mode.uppercased() != "NO",

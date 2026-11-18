@@ -1,5 +1,8 @@
 // Capture retains reconstruction evidence locally; planning uses the current app connection.
 RESPACE_LOCAL_CAPTURE = YES
+// Scan and reconstruction are the current validation stage.
+RESPACE_DESIGN_FEATURES = NO
+RESPACE_BACKEND_URL =
 RESPACE_RECONSTRUCTION_URL =
 RESPACE_RECONSTRUCTION_TOKEN =
 // Private developer service configuration; never commit the token.

@@ -2,11 +2,13 @@ import Foundation
 
 extension AppModel {
     func refreshScans() async {
-        guard let scanStore else { return }
+        defer { scansLoaded = true }
+        guard let scanStore else { scanError = "Room storage is unavailable. Reopen ReSpace to try again."; return }
         do {
             localRooms = try await scanStore.captures.localRooms()
             scanRecoveries = try await scanStore.captures.manifests().filter { ["completed", "creating", "acquiring", "abandoned"].contains($0.state) }
-        } catch { self.error = "Saved scans could not be opened: \(error.localizedDescription)" }
+            scanError = nil
+        } catch { scanError = "Saved scans could not be opened: \(error.localizedDescription)" }
     }
 
     /// Resolve creation independently so rename/deletion can reconcile a lost reply without uploading the scan.

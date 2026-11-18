@@ -34,7 +34,7 @@ final class WorkspaceStore {
     let persistence: ClientPersistence
     let captures: CaptureRepository
     let localCaptureEnabled: Bool
-    let reconstruction: ReconstructionClient?
+    var reconstruction: ReconstructionClient?
     var rooms: [RoomSummary] = []
     var workspaces: [String: RoomWorkspace] = [:]
     var listError: String?

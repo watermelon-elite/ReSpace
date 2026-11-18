@@ -2,7 +2,9 @@
 
 **Purpose:** build new screens and audit existing screens against the same product, information architecture and DreamSeal visual direction.
 
-**Evidence snapshot:** 18 October 2026, from the current working tree, the approved layout gallery, the original DreamSeal references and limited native runtime inspection. This is a design guide, not a claim that every requirement is implemented or device-tested.
+**Current direction (15 November 2026, follow-up):** the user rejected the crowded, disjointed presentation and requests standard, uncluttered UI. Prioritize a native Rooms list, a short scan guide, focused capture, one model-building action and an immersive viewer. Keep orange `#EE5001`, white `#FCFFFF` and lime `#C8FD03`, but use accents sparingly. Remove the marketing portal from onboarding and oversized arrow decorations from shared buttons. Settings own service configuration; capture options own advanced photo controls. Scan and reconstruction are the current validation stage; decoration, shopping and image generation are deferred behind `RESPACE_DESIGN_FEATURES=NO`, with their saved data/code retained. This follow-up supersedes the earlier futuristic hero direction.
+
+**Historical evidence snapshot:** 18 October 2026, from the current working tree, the approved layout gallery, the original DreamSeal references and limited native runtime inspection. This is a design guide, not a claim that every requirement is implemented or device-tested.
 
 Start here. Read the branch-specific references below before designing or changing the corresponding interface.
 
@@ -44,7 +46,7 @@ ReSpace helps a person change a real room. The room is the primary object of att
 
 The user's central layout instruction is: **one clear thing to do on the screen**. Apply this to cognitive demand, not to a literal count of buttons. A question can have several answer choices. A room can have camera controls and a composer. An approval can have approve and decline. These still serve one task when the hierarchy is unambiguous.
 
-The feeling is calm, direct and personal: generous white space, confident black text, real room imagery, deep purple selections and purposeful purple/gold actions. Warmth comes from the subject matter, spacing and measured use of color. Trust comes from visible consequences and truthful evidence.
+The feeling is futuristic, direct and personal: bright surfaces, dark spatial controls, confident typography, orange actions and electric lime accents. A simple scan symbol identifies the empty state; the user’s actual room becomes the focus once captured. Trust comes from visible consequences and truthful evidence.
 
 ### 2.1 Five questions an agent must answer before rendering a screen
 
@@ -90,7 +92,7 @@ This is a conditional journey. A Room with an active Design can reopen it. A mis
 | Selecting a model expands the panel | Selection highlights the model and adds command context. It only reveals a card if the Items panel is already open. |
 | Three draggable panel heights | Historical exploration, not the current required interaction. Prefer the current compact toggle panel unless a new decision explicitly changes it. |
 | Zoom buttons / Cutaway switch | Native orbit, pan, pinch and Reset View. No zoom-button or Cutaway controls. |
-| Solid-purple gallery primary button with gold arrow | Useful historical appearance; native shared primary actions currently use the DreamSeal purple-to-gold/orange gradient with dark text. Follow the shared native component for new native pages. |
+| Solid-purple gallery primary button with gold arrow | Historical appearance, superseded by orange actions, dark labels and lime details. Follow the shared native component for new native pages. |
 | 55 gallery screens | A review inventory of states. It does not require 55 routes, 55 Swift files or a fixed linear funnel. |
 
 This table is a migration guardrail. Do not reconstruct old steps because they are easy to copy from the gallery.
@@ -184,7 +186,7 @@ These are UI consequences of the governing contract; consult SPEC for full behav
 
 ## 6. Brand translation
 
-DreamSeal contributes Inter, bright neutral surfaces, deep purple, warm gold, fluid rounded controls and confident typography. ReSpace contributes room photography, measured geometry, practical decisions and Product evidence.
+Retain Inter, bright neutral surfaces, rounded controls and confident typography from the earlier direction. The approved orange/white/lime palette, dark spatial controls and scan-line motion now define the brand. ReSpace supplies real room imagery, measured geometry, practical decisions and Product evidence.
 
 Use these traits together:
 
@@ -193,14 +195,14 @@ Use these traits together:
 | Calm | One task, limited simultaneous controls, stable layout, predictable exits |
 | Personal | The user's Room name and selected Object provide context; copy speaks directly |
 | Clear | Black headings, readable secondary text, named dimensions, explicit prices |
-| Warm | Room imagery and gold accents, not verbose friendliness |
+| Warm | Real room imagery and purposeful accents, with concise copy |
 | Trustworthy | Evidence available one level deeper; uncertainty stated next to the affected claim |
 | Tactile | Large rounded actions, clear pressed/selected states, gentle directional transitions |
-| Focused | Purple/gold concentrated on action and selection, not every surface |
+| Focused | Orange/lime concentrated on action, selection and spatial controls |
 
 The original DreamSeal marketing site includes large desktop headlines, decorative glows and promotional content. The internal DreamSeal workspace uses different surfaces. Neither is a template for ReSpace's native screen density. Import the consumer brand vocabulary, not unrelated medical, subscription, business or promotional content.
 
-The user's preference for Inter and purple/gold takes precedence over generic style-catalog advice that bans a font or calls all gradients generic. Judge this product against its chosen system.
+The current user's orange/white/lime instruction supersedes the historical purple/gold preference. Judge this product against the current system and readable task hierarchy.
 
 ## 7. Building a new page: agent execution procedure
 

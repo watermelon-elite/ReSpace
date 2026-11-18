@@ -41,6 +41,43 @@ def configure(monkeypatch):
     monkeypatch.setattr(astra_spending, "count_input_tokens", lambda *args: 1000)
 
 
+def test_deadline_settles_inflight_work_and_retry_reuses_paid_response(tmp_path, monkeypatch):
+    configure(monkeypatch)
+    now = [0.]
+    monkeypatch.setattr(astra_spending.time, "monotonic", lambda: now[0])
+    calls = []
+    def generate(*args):
+        calls.append(1)
+        now[0] = 11.  # An already-started request finishes after the deadline.
+        return reply({})
+    monkeypatch.setattr(astra, "call_astra", generate)
+    body = {"model": "gpt-6.1-sol", "max_output_tokens": 16000, "input": "first"}
+    ledger = Spending(tmp_path/"ledger.json", deadline=10.)
+    ledger.request(body, tmp_path/"first", "test")
+    with pytest.raises(TimeoutError, match="paid checkpoints"):
+        ledger.request(dict(body, input="second"), tmp_path/"second", "test")
+    assert len(calls) == 1
+    assert all(e["state"] == "settled" for e in ledger.data["entries"].values())
+    resumed = Spending(tmp_path/"ledger.json", deadline=20.)
+    assert resumed.request(body, tmp_path/"first", "test")[1] is True
+    assert len(calls) == 1
+
+
+def test_deadline_during_token_count_does_not_reserve_or_purchase(tmp_path, monkeypatch):
+    configure(monkeypatch)
+    now = [0.]
+    monkeypatch.setattr(astra_spending.time, "monotonic", lambda: now[0])
+    def count(*args):
+        now[0] = 11.
+        return 1000
+    monkeypatch.setattr(astra_spending, "count_input_tokens", count)
+    monkeypatch.setattr(astra, "call_astra", lambda *args: pytest.fail("No paid call after deadline"))
+    ledger = Spending(tmp_path/"ledger.json", deadline=10.)
+    with pytest.raises(TimeoutError):
+        ledger.request({"model": "gpt-6.1-sol", "max_output_tokens": 16000}, tmp_path/"first", "test")
+    assert not ledger.data["entries"]
+
+
 def test_staged_default_uses_semantic_models_without_detail_photos_and_keeps_receipts(tmp_path, monkeypatch):
     room_capture(tmp_path)
     configure(monkeypatch)
@@ -388,7 +425,9 @@ def test_sol_spending_preserves_old_astra_receipts_and_reserves_at_sol_rates(tmp
     assert ledger.report()["paid_call_count"] == 2
 
 
-@pytest.mark.parametrize("model,expected", [("gpt-6-astra", 7532000), ("gpt-6-sol", 1506400), ("gpt-6.1-sol", 1506200)])
+@pytest.mark.parametrize("model,expected", [
+    ("gpt-6-astra", 7532000), ("gpt-6-sol", 1506400), ("gpt-6.1-sol", 1506200), ("gpt-6.2-sol", 1506200),
+])
 def test_model_specific_long_context_cache_and_output_rates(model, expected):
     response = reply({}, inputs=300000, outputs=20000)
     response["usage"]["input_tokens_details"] = {"cached_tokens": 1000, "cache_write_tokens": 10000}

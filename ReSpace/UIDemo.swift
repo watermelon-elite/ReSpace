@@ -17,6 +17,10 @@ import SwiftUI
             sample = try JSONDecoder().decode(JSONValue.self, from: Data(contentsOf: url))
             room = sample["room"]
             design = sample["design"]
+            if ProcessInfo.processInfo.arguments.contains("--ui-live-scene") {
+                var scene=design["scene"].object;scene.removeValue(forKey:"ui_demo_image")
+                var value=design.object;value["scene"] = .object(scene);design = .object(value)
+            }
             _ = try RoomRecord(room)
             _ = try SavedDesign(envelope: .object(["schema_version": .number(1), "design": design]))
             _ = try ShoppingList(design: design, roomName: room["name"].text)
@@ -52,6 +56,7 @@ import SwiftUI
         if last == "conversation" { return .object(["entries": .array(entries)]) }
         if parts.first == "searches" { return .object(["search": .object(["displayed_choices": .array([product])])]) }
         if parts.first == "designs", method == "GET" {
+            if ProcessInfo.processInfo.arguments.contains("--ui-design-error") { throw ContractError.invalid("The room service is unavailable. Your saved design is safe.") }
             return .object(["schema_version": .number(1), "design": design])
         }
         if parts.first == "operations", method == "GET" { return .object(["operation": operation == .null ? ready : operation]) }
@@ -106,6 +111,11 @@ enum UIDemoScreen: String, CaseIterable, Identifiable {
 
 struct UIDemoGallery: View {
     @State private var selected: UIDemoScreen?
+    init() {
+        let args=ProcessInfo.processInfo.arguments
+        let screen=args.firstIndex(of:"--ui-screen").flatMap { i in args.indices.contains(i+1) ? UIDemoScreen(rawValue:args[i+1]) : nil }
+        _selected=State(initialValue:screen)
+    }
     var body: some View {
         NavigationStack {
             RSPage(title: "UI studio", topTitle: "ReSpace", showsBack: false) {
@@ -154,8 +164,20 @@ struct UIDemoPreview: View {
             }
         }
         .tint(ReSpaceStyle.purple).font(ReSpaceStyle.font()).preferredColorScheme(.light)
+        .environment(\.dynamicTypeSize,ProcessInfo.processInfo.arguments.contains("--ui-large-type") ? .accessibility3 : .large)
         .toolbar(.hidden, for: .navigationBar)
         .environment(\.openURL, OpenURLAction { _ in .handled })
+    }
+}
+
+/// Explicit, read-only renderer inspection. Never imports a checkpoint as a saved Room.
+struct UIWalkthroughAudit: View {
+    var body: some View {
+        VStack(spacing: 0) {
+            Text("Unpublished reconstruction · Debug preview")
+                .font(.caption).padding(10).frame(maxWidth: .infinity).background(ReSpaceStyle.lime)
+            WalkthroughView(sceneURL: URL.documentsDirectory.appendingPathComponent("WalkthroughAudit/scene.json"), imageGenerationEnabled: false)
+        }
     }
 }
 

@@ -19,7 +19,10 @@ final class SourceCaptureTests: XCTestCase {
         let source = try await repository.createSourceBundle(capture.captureId)
         try Data(#"{"format":"house-capture/5","state":"completed","rooms":[]}"#.utf8)
             .write(to: source.appendingPathComponent("manifest.json"))
-        try Data("original pixels".utf8).write(to: source.appendingPathComponent("photo.jpg"))
+        try FileManager.default.createDirectory(at: source.appendingPathComponent("photos"), withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: source.appendingPathComponent("depth"), withIntermediateDirectories: true)
+        try Data("unoriented depth reference".utf8).write(to: source.appendingPathComponent("depth/00000.jpg"))
+        try Data("original pixels".utf8).write(to: source.appendingPathComponent("photos/photo.jpg"))
         let seal = try SourceBundleIntegrity.create(at: source)
         let sealData = try JSONEncoder().encode(seal)
         try sealData.write(to: source.appendingPathComponent("integrity.json"))
@@ -76,6 +79,15 @@ final class SourceCaptureTests: XCTestCase {
         try FileManager.default.removeItem(at: file)
         XCTAssertThrowsError(try seal.verify(at: root))
     }
+    func testLibraryThumbnailReadsNativePhotoWithoutLegacyFramesAndRejectsChangedBytes() async throws {
+        let repository = CaptureRepository(directory: try directory())
+        let native = try await nativeCapture(repository)
+        let bytes = try await repository.thumbnailBytes(native.captureId)
+        XCTAssertEqual(bytes, Data("original pixels".utf8))
+        let source = try await repository.sourceBundleURL(native.captureId)!
+        try Data("changed pixels".utf8).write(to: source.appendingPathComponent("photos/photo.jpg"))
+        do { _ = try await repository.thumbnailBytes(native.captureId); XCTFail("Changed photos must not appear as verified scan thumbnails") } catch {}
+    }
     func testNativeArchiveIsZIPAndRefusesCorruptEvidence() async throws {
         let repository = CaptureRepository(directory: try directory())
         let native = try await nativeCapture(repository)
@@ -84,7 +96,7 @@ final class SourceCaptureTests: XCTestCase {
         XCTAssertEqual(try Data(contentsOf: archive).prefix(2),Data([0x50,0x4b]))
         let sourceURL = try await repository.sourceBundleURL(native.captureId)
         let source = try XCTUnwrap(sourceURL)
-        try Data("changed".utf8).write(to: source.appendingPathComponent("photo.jpg"))
+        try Data("changed".utf8).write(to: source.appendingPathComponent("photos/photo.jpg"))
         do { _ = try await repository.sourceBundleArchive(native.captureId); XCTFail("Corrupt evidence must not be shared as a valid capture") } catch {}
     }
     func testUpstreamBudgetThrottlesInsteadOfKeepingOldPhotoAndTimeCaps() {
@@ -105,12 +117,12 @@ final class SourceCaptureTests: XCTestCase {
         let upload = try await repository.nativeReconstructionUpload(native.captureId)
         XCTAssertEqual(upload.schemaVersion, 2)
         XCTAssertEqual(upload.format, "house-capture/5")
-        XCTAssertEqual(Set(upload.files.map(\.relativePath)), ["manifest.json", "photo.jpg", "integrity.json"])
+        XCTAssertEqual(Set(upload.files.map(\.relativePath)), ["manifest.json", "photos/photo.jpg", "depth/00000.jpg", "integrity.json"])
         for file in upload.files {
             let expected = SHA256.hash(data: Data(file.relativePath.utf8)).map { String(format: "%02x", $0) }.joined()
             XCTAssertEqual(file.id, expected); XCTAssertEqual(file.filename, expected)
         }
-        let missing = try XCTUnwrap(upload.files.first { $0.relativePath == "photo.jpg" })
+        let missing = try XCTUnwrap(upload.files.first { $0.relativePath == "photos/photo.jpg" })
         let base = "/v1/reconstructions/" + native.captureId
         let recorder = ReconstructionRequestRecorder { request in
             if request.url!.path == base && request.httpMethod == "PUT" {
@@ -139,7 +151,7 @@ final class SourceCaptureTests: XCTestCase {
         XCTAssertEqual(job.state, "queued")
         XCTAssertEqual(recorder.requests.filter { $0.url!.path.contains("/artifacts/") }.count,1)
         let source = try await repository.sourceBundleURL(native.captureId)!
-        try Data("tampered".utf8).write(to:source.appendingPathComponent("photo.jpg"))
+        try Data("tampered".utf8).write(to:source.appendingPathComponent("photos/photo.jpg"))
         do { _ = try await repository.nativeReconstructionUpload(native.captureId); XCTFail("Changed source bytes must fail before upload") } catch {}
     }
     func testThreeJSNativeAssetsDownloadAndValidateAgainstActualWorker() async throws {

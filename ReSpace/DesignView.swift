@@ -4,6 +4,14 @@ struct DesignView: View {
     let app: AppModel
     let roomID: String
     let designID: String
+    @StateObject private var sceneCapture = RoomSceneCapture()
+    @State private var firstPerson = true
+    @State private var walkingStep = 0
+    @State private var walkingDirection = SIMD2<Double>(0, 0)
+    @State private var rendition: RoomRenditionInput?
+    @State private var preparingImage = false
+    @State private var loading = true
+    @State private var composerHeight: CGFloat = 140
     @State private var design: JSONValue = .null
     @State private var room: JSONValue = .null
     @State private var operation: JSONValue = .null
@@ -29,8 +37,9 @@ struct DesignView: View {
     @State private var showingAlternatives = false
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     var scene: JSONValue { design["scene"] }
-    var locked: Bool { swapPreview != nil || room["current_operation_id"].string != nil || app.pending.contains { $0.roomID == roomID } }
+    var locked: Bool { design == .null || preparingImage || swapPreview != nil || room["current_operation_id"].string != nil || app.pending.contains { $0.roomID == roomID } }
     var selectedItem: JSONValue { scene["items"].array.first { ($0["id"].string ?? $0["item_id"].string) == selectedID } ?? .null }
     private var total: String { scene["purchase_summary"]["total"].string ?? scene["purchase_summary"]["total"]["amount"].text }
     private var activeOperation: Bool { operation != .null && !["succeeded", "failed", "cancelled", "rejected"].contains(operation["state"].text) }
@@ -48,40 +57,61 @@ struct DesignView: View {
             RSTopBar(title: room["name"].string ?? "Your room", back: { dismiss() },
                      trailingSymbol: "bag", trailingLabel: "Save and share shopping list", trailingProminent: true,
                      trailingDisabled: design == .null, trailing: { openShoppingList() })
-            HStack {
+            if design != .null { HStack {
                 Button {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),to:nil,from:nil,for:nil)
                     withAnimation(reduceMotion ? nil : .easeOut(duration: 0.25)) { showItems.toggle() }
                 } label: {
-                    Label("Items", systemImage: "square.grid.2x2")
+                    Group {
+                        if dynamicTypeSize.isAccessibilitySize { Image(systemName: "square.grid.2x2").frame(width: 16) }
+                        else { Label("Items", systemImage: "square.grid.2x2") }
+                    }
                         .font(ReSpaceStyle.font(13, weight: .medium)).padding(.horizontal, 14).frame(height: 44)
                         .foregroundStyle(showItems ? ReSpaceStyle.purple : ReSpaceStyle.ink)
                         .background(showItems ? ReSpaceStyle.wash : .white, in: Capsule())
-                }.buttonStyle(.plain).accessibilityAddTraits(showItems ? .isSelected : []).disabled(swapPreview != nil)
+                }.buttonStyle(.plain).accessibilityLabel("Items").accessibilityAddTraits(showItems ? .isSelected : []).disabled(swapPreview != nil)
                 Spacer()
+                RSIconButton(symbol: firstPerson ? "square.3.layers.3d" : "figure.walk", label: firstPerson ? "Orbit view" : "First-person view") {
+                    if !firstPerson && DesignCameraPath(scene:scene).spawn() == nil {
+                        error="There isn’t a clear standing position in this layout. You can inspect the room in orbit view."
+                    } else { firstPerson.toggle();reset += 1 }
+                }.disabled(design == .null)
+                RSIconButton(symbol: "camera.aperture", label: "Create realistic image") { Task { await prepareRendition() } }.disabled(locked || !firstPerson)
                 RSIconButton(symbol: "arrow.uturn.backward", label: "Undo") { Task { await mutate("rooms/\(roomID)/undo", body: [:]) } }.disabled(locked || design["parent_id"] == .null)
-                RSIconButton(symbol: "viewfinder", label: "Reset View") { reset += 1 }
+                if !dynamicTypeSize.isAccessibilitySize { RSIconButton(symbol: "viewfinder", label: "Reset View") { reset += 1 } }
                 RSIconButton(symbol: "ellipsis", label: "Room view options") { showViewControls = true }
-            }.padding(.horizontal, 16).padding(.bottom, 8)
+            }.padding(.horizontal, 16).padding(.bottom, 8) }
+            if design == .null {
+                VStack(spacing: 20) {
+                    if loading { ProgressView("Opening your design…") }
+                    else {
+                        RSNotice(message:error ?? "Your design could not be opened.",isError:true)
+                        Button("Try again") { Task { await load(initial:true) } }.buttonStyle(RSButtonStyle())
+                    }
+                }.padding(24).frame(maxWidth:.infinity,maxHeight:.infinity)
+            } else {
             GeometryReader { geometry in
                 ZStack(alignment: .bottom) {
-                    RoomScene(document: swapPreview?.scene(over: scene) ?? scene, native: false, selectedID: $selectedID, ghosts: ghosts, resetToken: reset, assetBaseURL: app.client?.baseURL, assetManifest: assetManifest)
+                    RoomScene(document: swapPreview?.scene(over: scene) ?? scene, native: false, selectedID: $selectedID, ghosts: ghosts, resetToken: reset, assetBaseURL: app.client?.baseURL, assetManifest: assetManifest, firstPerson: firstPerson, walkingStep: walkingStep, walkingDirection: walkingDirection, captureController: sceneCapture)
                         #if DEBUG
                         .id(scene["ui_demo_image"].text)
                         #endif
-                        .frame(width: geometry.size.width, height: min(geometry.size.width, geometry.size.height))
+                        .frame(width: geometry.size.width, height: geometry.size.height)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     VStack(spacing: 0) {
-                        if showItems || swapPreview != nil {
+                        if firstPerson && !typing && !showItems { walkingControls.padding(.horizontal,16).padding(.bottom,8) }
+                        if !dynamicTypeSize.isAccessibilitySize && (showItems || swapPreview != nil) {
                             let height: CGFloat = swapPreview != nil ? 270 : selectedItem != .null ? 330 : min(330, 72 + CGFloat(max(1, visibleItems.count)) * 88)
-                            itemPanel.frame(height: min(height, geometry.size.height * 0.8))
+                            itemPanel.frame(height: min(height, max(80, geometry.size.height - composerHeight - 24)))
                                 .background(.white, in: RoundedRectangle(cornerRadius: 24))
                                 .overlay { RoundedRectangle(cornerRadius: 24).stroke(ReSpaceStyle.line, lineWidth: 1).allowsHitTesting(false) }
                                 .padding(12).transition(.move(edge: .bottom).combined(with: .opacity))
                         }
-                        composer
+                        composer.background(GeometryReader { proxy in Color.clear.preference(key:DesignComposerHeight.self,value:proxy.size.height) })
                     }
                 }.clipped()
-            }.background(Color(white: 0.93).ignoresSafeArea(.container, edges: .bottom))
+            }.background(ReSpaceStyle.canvas.ignoresSafeArea(.container, edges: .bottom))
+            }
         }.background(ReSpaceStyle.canvas).foregroundStyle(ReSpaceStyle.ink).font(ReSpaceStyle.font())
         .toolbar(.hidden, for: .navigationBar).navigationBarBackButtonHidden()
         .sheet(item: $selectedProduct) { product in
@@ -91,6 +121,13 @@ struct DesignView: View {
                 selectedProduct = nil
                 Task { await mutate("designs/\(design["design_id"].text)/find-more", body: ["item_id": .string(id)]); showItems = false; if activeOperation { showOperation = true } }
             }, onPreview: { choice, search in beginPreview(choice, searchID: search) })
+        }
+        .onPreferenceChange(DesignComposerHeight.self) { composerHeight=$0 }
+        .sheet(isPresented:Binding(get:{ dynamicTypeSize.isAccessibilitySize && (showItems || swapPreview != nil) },set:{ showItems=$0 })) {
+            itemPanel.presentationDetents([.large]).interactiveDismissDisabled(swapPreview != nil)
+        }
+        .sheet(item:$rendition) { input in
+            if let client=app.scanStore?.reconstruction { RoomRenditionView(input:input,client:client) }
         }
         .sheet(isPresented: $showViewControls) { viewControls }
         .sheet(item: $shoppingList) { ShoppingListView(list: $0) }
@@ -103,6 +140,48 @@ struct DesignView: View {
         .task { if !app.isUIDemo { text = UserDefaults.standard.string(forKey: "design_draft_\(roomID)") ?? "" }; await load(initial: true) }
         .onChange(of: text) { _, value in if !app.isUIDemo { UserDefaults.standard.set(value, forKey: "design_draft_\(roomID)") } }
         .task(id: [operation["operation_id"].text, operation["state"].text]) { await poll() }
+    }
+    private var walkingControls: some View {
+        RSWalkControls { x, z in walkingDirection=SIMD2(x,z);walkingStep += 1 }
+    }
+    private func openSavedImage() async {
+        do {
+            guard let store=app.scanStore,let client=store.reconstruction,
+                let local=try await store.captures.localRooms().first(where:{ $0.backendRoomId == roomID }),
+                let url=try await client.sceneURL(local.id,repository:store.captures,allowPrevious:true) else { throw ContractError.invalid("There is no room image yet. Enter first-person view and tap the camera to create one.") }
+            rendition=try RoomRenditionInput.retained(in:url.deletingLastPathComponent())
+        } catch { self.error="No saved image could be opened. \(error.localizedDescription)" }
+    }
+    private func prepareRendition() async {
+        guard !locked, firstPerson else { return }
+        preparingImage=true;error=nil
+        defer { preparingImage=false }
+        do {
+            guard let store=app.scanStore, let client=store.reconstruction else {
+                throw ContractError.invalid("Image generation is not connected. Your design is saved; check the room service connection.")
+            }
+            let rooms=try await store.captures.localRooms()
+            guard let local=rooms.first(where:{ $0.backendRoomId == roomID }),
+                  let url=try await client.sceneURL(local.id,repository:store.captures,allowPrevious:true) else {
+                throw ContractError.invalid("Create a walkthrough from this room’s saved scan first, then return to photograph your design.")
+            }
+            let original=try Wire.decoder().decode(WalkthroughBundle.self,from:Data(contentsOf:url))
+            let savedID=design["design_id"].text
+            let items=try scene["items"].array.filter { $0["status"].text != "removed" }.map { item -> RenditionDesign.Item in
+                let placement=try Placement(item["placement"])
+                let product=scene["selections"][item["selection_id"].text]
+                return .init(id:item["id"].string ?? item["item_id"].text,label:item["label"].text,category:item["category"].text,
+                    origin:item["origin"].text,productTitle:product == .null ? nil : productTitle(product),
+                    position:placement.position,size:placement.size,yaw:placement.yaw)
+            }
+            let context=RenditionDesign(designId:savedID,roomId:roomID,items:items)
+            guard let capture=sceneCapture.capture else { throw ContractError.invalid("Your room is still opening. Try again in a moment.") }
+            let (image,perspective)=try await capture()
+            guard design["design_id"].text == savedID else { throw ContractError.invalid("Your design changed. Capture its new view again.") }
+            let key=try ReconstructionClient.renditionKey(original,perspective:perspective,design:context)
+            rendition=RoomRenditionInput(id:key,scene:original,image:image,
+                cachedURL:url.deletingLastPathComponent().appendingPathComponent("rendition-\(key).png"),perspective:perspective,design:context)
+        } catch { self.error=error.localizedDescription }
     }
     private var itemPanel: some View {
         VStack(spacing: 0) {
@@ -135,7 +214,7 @@ struct DesignView: View {
         VStack(spacing: 8) {
             if let feedback, !feedback.isEmpty {
                 Button { showOperation = true } label: {
-                    OlloMessage(cue: typing ? .listening : .operation(operation), compact: typing) {
+                    VStack(alignment:.leading,spacing:0) {
                         HStack(spacing: 10) {
                             if activeOperation { ProgressView().controlSize(.small) }
                             Text(feedback).font(ReSpaceStyle.font(12)).lineLimit(error == nil && !activeOperation ? 2 : nil).multilineTextAlignment(.leading).frame(maxWidth: .infinity, alignment: .leading)
@@ -144,13 +223,8 @@ struct DesignView: View {
                             .padding(.horizontal, 14).background(.white, in: RoundedRectangle(cornerRadius: 20))
                     }
                 }.buttonStyle(.plain).disabled(operation == .null).accessibilityHint(operation == .null ? "" : "Open request details")
-            } else if swapPreview == nil && !showItems {
-                OlloMessage(cue: typing ? .listening : .idle, compact: typing) {
-                    Text("What would you like to change?").font(ReSpaceStyle.font(14))
-                        .padding(14).background(.white, in: RoundedRectangle(cornerRadius: 20))
-                }
             }
-            RSComposer(text: $text, selection: selectedID.map { selectedItem["label"].string ?? $0 }, clear: { selectedID = nil }, disabled: locked, onFocusChange: { typing = $0 }) {
+            RSComposer(text: $text, selection: selectedID.map { selectedItem["label"].string ?? $0 }, clear: { selectedID = nil }, disabled: locked, onFocusChange: { typing = $0; if $0 { showItems=false } }) {
                 let submitted = text
                 Task {
                     let accepted = await mutate("designs/\(design["design_id"].text)/chat", body: ["text": .string(submitted), "selected_item_id": selectedID.map(JSONValue.string) ?? .null])
@@ -205,7 +279,7 @@ struct DesignView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     if !item["reason"].text.isEmpty { Text(item["reason"].text) }
                     if let placement = try? Placement(item["placement"]) {
-                        Text(String(format: "%.2f × %.2f × %.2f m", placement.size[0], placement.size[1], placement.size[2]))
+                        Text(String(format: "Width %.2f m · Depth %.2f m · Height %.2f m", placement.size[0], placement.size[1], placement.size[2]))
                     }
                     Text("Representative geometry · saved placement validated")
                 }.padding(.top, 8)
@@ -219,10 +293,11 @@ struct DesignView: View {
     private var viewControls: some View {
         RSPage(title: "Room view", back: { showViewControls = false }) {
             VStack(spacing: 0) {
+                Button { showViewControls=false;Task { await openSavedImage() } } label: { RSRow(title:"Last room image",subtitle:"Reopen your saved or processing image",symbol:"photo") }
                 Button { reset += 1; showViewControls = false } label: { RSRow(title: "Reset View", subtitle: "Return to the original camera framing", symbol: "viewfinder") }
                 Button { ghosts.toggle() } label: { RSRow(title: ghosts ? "Hide removed Objects" : "Show removed Objects", subtitle: "Faint ghosts keep spatial context", symbol: ghosts ? "eye.slash" : "eye") }
             }.buttonStyle(.plain)
-            Text("Pinch to zoom. Drag to orbit. Use two fingers to pan.").font(ReSpaceStyle.font(14)).foregroundStyle(ReSpaceStyle.secondary)
+            Text(firstPerson ? "Drag to look around. Use the walking controls or two fingers to move. Create an image from the camera button." : "Pinch to zoom. Drag to orbit. Use two fingers to pan. Switch to first-person view to create an image.").font(ReSpaceStyle.font(14)).foregroundStyle(ReSpaceStyle.secondary)
             if !scene["summary"].text.isEmpty || !scene["warnings"].array.isEmpty {
                 DisclosureGroup("Design notes") {
                     VStack(alignment: .leading, spacing: 12) {
@@ -274,13 +349,16 @@ struct DesignView: View {
         }
     }
     func load(initial: Bool = false) async {
-        guard let client = app.client else { return }
+        loading=true
+        defer { loading=false }
+        guard let client = app.client else { error="Connect ReSpace to open this design.";return }
         do {
             let detail = try await client.request("rooms/\(roomID)"); room = detail["room"]
             if assetManifest == .null { assetManifest = (try? await client.request("catalog/manifest")) ?? .null }
             let id = initial ? designID : room["active_design_id"].string ?? designID
             let envelope = try await client.request("designs/\(id)")
             design = try SavedDesign(envelope: envelope).value
+            if firstPerson, DesignCameraPath(scene:scene).spawn() == nil { firstPerson=false }
             var searches: [String: String] = [:]
             for reference in detail["product_searches"].array where reference["design_id"].text == id {
                 if let itemID = reference["item_id"].string, let searchID = reference["search_id"].string { searches[itemID] = searchID }
@@ -365,3 +443,8 @@ struct DesignView: View {
 #if DEBUG
 #Preview("Design") { UIDemoPreview(.design) }
 #endif
+
+private struct DesignComposerHeight: PreferenceKey {
+    static var defaultValue: CGFloat = 140
+    static func reduce(value:inout CGFloat,nextValue:()->CGFloat) { value=nextValue() }
+}

@@ -1,5 +1,7 @@
 // Copy to Configuration/Local.xcconfig. Keep tokens out of version control.
-// Configure the planning backend through Connect ReSpace in the current app.
+// Planning and reconstruction run separately. Use your Mac's reachable address
+// for a physical iPhone; 127.0.0.1 works only in Simulator.
+RESPACE_BACKEND_URL = http:/$()/your-mac.local:8000
 // Debug permits private/local HTTP; Release requires an HTTPS service.
 // Slash substitution prevents xcconfig from treating // as a comment.
 RESPACE_RECONSTRUCTION_URL = http:/$()/your-mac.local:8008

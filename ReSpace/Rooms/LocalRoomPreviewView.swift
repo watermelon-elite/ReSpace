@@ -17,6 +17,7 @@ struct LocalRoomPreviewView: View {
     @State private var priorSceneURL: URL?
     @State private var usdzURL: URL?
     @State private var error: String?
+    @State private var uploadProgress: Double?
     @State private var submitting=false
     @State private var attempt=0
     @State private var confirmingRestart=false
@@ -30,12 +31,6 @@ struct LocalRoomPreviewView: View {
     @State private var isVisible = false
 
     private var needsRescan: Bool { job?.error?.hasPrefix("Rescan required:") == true }
-    private var title: String {
-        if submitting { return "Saving your scan." }
-        if job?.isRunning == true { return "Creating your room." }
-        if needsRescan { return "Let’s scan again." }
-        return "Your scan is saved."
-    }
     var body: some View {
         NavigationStack {
             Group {
@@ -48,7 +43,9 @@ struct LocalRoomPreviewView: View {
             .fullScreenCover(isPresented: Binding(get: { planningRoomID != nil }, set: { if !$0 { planningRoomID = nil } })) {
                 if let app, let id = planningRoomID { NavigationStack { RoomReview(app: app, roomID: id) } }
             }
-            .sheet(isPresented: $showOptions) { optionsPage }
+            .sheet(isPresented: $showOptions, onDismiss: {
+                if sourceArchive != nil { presentingSourceShare = true }
+            }) { optionsPage }
             .sheet(isPresented: $presentingSourceShare, onDismiss: clearSourceArchive) {
                 if let sourceArchive {
                     SourceCaptureActivityView(url: sourceArchive) { message in
@@ -57,16 +54,17 @@ struct LocalRoomPreviewView: View {
                     }
                 }
             }
-            .onAppear { isVisible = true }
-            .onDisappear { isVisible = false; if !presentingSourceShare { clearSourceArchive() } }
-            .confirmationDialog("Generate a new 3D model?", isPresented: $confirmingRestart, titleVisibility: .visible) {
+            .onAppear { isVisible = true; UIApplication.shared.isIdleTimerDisabled = submitting }
+            .onDisappear { isVisible = false; UIApplication.shared.isIdleTimerDisabled = false; if !presentingSourceShare { clearSourceArchive() } }
+            .onChange(of: submitting) { _, uploading in UIApplication.shared.isIdleTimerDisabled = uploading && isVisible }
+            .confirmationDialog("Rebuild your 3D model?", isPresented: $confirmingRestart, titleVisibility: .visible) {
                 Button("Start new generation · $10 limit") { Task { await submit(fromScratch: true) } }
                 Button("Cancel", role: .cancel) {}
             } message: {
                 Text("Rebuild from the saved scan without reusing earlier generated models. This run can add up to $10 in API charges. Earlier results are kept.")
             }
-            .confirmationDialog("Create your walkthrough?", isPresented: $confirmingCreate, titleVisibility: .visible) {
-                Button("Create walkthrough · $10 limit") { Task { await submit() } }
+            .confirmationDialog("Build your 3D model?", isPresented: $confirmingCreate, titleVisibility: .visible) {
+                Button("Build model · $10 limit") { Task { await submit() } }
                 Button("Cancel", role: .cancel) {}
             } message: {
                 Text("Send the saved scan and photos to your reconstruction service and OpenAI to model your room and its textures. This generation can add up to $10 in API charges.")
@@ -83,7 +81,8 @@ struct LocalRoomPreviewView: View {
         do {
             let archive = try await repository.sourceBundleArchive(room.id)
             guard isVisible, !Task.isCancelled else { try? FileManager.default.removeItem(at: archive); return }
-            sourceArchive = archive; presentingSourceShare = true
+            sourceArchive = archive
+            if showOptions { showOptions = false } else { presentingSourceShare = true }
         }
         catch { self.error = error.localizedDescription }
     }
@@ -93,70 +92,77 @@ struct LocalRoomPreviewView: View {
     }
 
     private var statusPage: some View {
-        RSPage(title: title, topTitle: room.name, back: { dismiss() }, trailing: { showOptions = true }) {
-            RSSymbol(name: needsRescan ? "camera" : "cube.transparent")
-            if sourceLayoutError != nil { RSNotice(message: "The room layout could not be built. Your original capture is saved; scan again before creating a walkthrough.", isError: true) }
-            if submitting { ProgressView("Sending your scan…") }
-            else if job?.isRunning == true {
-                ProgressView(job?.stageDescription ?? "Creating your room…")
-                Text("You can leave for now. Your finished walkthrough will be here when it is ready.").foregroundStyle(ReSpaceStyle.secondary)
-            } else if needsRescan {
-                RSNotice(message: job?.error?.replacingOccurrences(of: "Rescan required: ", with: "") ?? "Capture clearer views around furniture and wall decor.")
-            } else {
-                Text("Explore a reconstruction of your room, or plan changes using your measured scan.").foregroundStyle(ReSpaceStyle.secondary)
-                if reconstruction != nil {
-                    Text("Create a detailed model with photo-derived textures. Scan evidence is sent to OpenAI for modeling and comparison, with a $10 API limit per generation.").font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+        RSPage(title: "", topTitle: room.displayName, back: { dismiss() }, trailing: { showOptions = true }) {
+            VStack(alignment: .leading, spacing: 24) {
+                Label("Scan saved", systemImage: "checkmark.circle.fill").font(ReSpaceStyle.font(14, weight: .medium)).foregroundStyle(ReSpaceStyle.secondary)
+                Text(submitting ? "Sending your scan" : job?.isRunning == true ? "Building your 3D room" : needsRescan ? "A new scan is needed" : job?.canRetry == true ? "Model needs another try" : "Ready to build your room").font(ReSpaceStyle.font(28, weight: .semibold))
+                if submitting || job?.isRunning == true {
+                    if submitting, let uploadProgress {
+                        ProgressView(value: uploadProgress) {
+                            Text("Upload \(Int(uploadProgress * 100))%").font(ReSpaceStyle.font(14))
+                        }.tint(ReSpaceStyle.accent)
+                    } else { ProgressView() }
+                    Text(submitting ? "Uploading photos and measurements. Keep ReSpace open until the upload finishes." : job?.stageDescription ?? "Preparing your room…")
+                    if !submitting { Text("You can leave this screen. Your Mac will keep working, and you can check back here.").font(ReSpaceStyle.font(14)).foregroundStyle(ReSpaceStyle.secondary) }
+                } else {
+                    Text(sourceLayoutError != nil || needsRescan ? "Your scan is saved, but it doesn’t contain the data needed for this model. Scan the room again to continue." : job?.canRetry == true ? "Your scan is safe. Retry continues from the saved model progress." : "Turn your photos and measurements into a model you can walk through.").foregroundStyle(ReSpaceStyle.secondary)
+                    if reconstruction == nil { RSNotice(message: "Set up your Mac connection in Settings before building the model.") }
                 }
-                if reconstruction == nil { RSNotice(message: "Connect the reconstruction service to create a walkthrough. Your scan stays on this iPhone.") }
-            }
-            if let message = planningError ?? error ?? (needsRescan ? nil : job?.error) {
-                RSNotice(message: message, isError: true)
-                Button("Check again") { attempt += 1 }.buttonStyle(RSButtonStyle(kind: .secondary))
-            }
+                if let message = planningError ?? error ?? job?.error {
+                    RSNotice(message: message, isError: true)
+                    Button("Check again") { attempt += 1 }.buttonStyle(RSButtonStyle(kind: .secondary))
+                }
+                if !submitting && !needsRescan && job?.isRunning != true && sourceLayoutError == nil {
+                    Text(job?.canRetry == true ? "Retry keeps the same $10 generation limit." : "Building uses your Mac and OpenAI. You’ll confirm the $10 limit before it starts.").font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
+                }
+            }.padding(.top, 20)
         } footer: {
             if reconstruction != nil, !needsRescan, job?.isRunning != true {
-                Button(submitting ? "Sending your scan…" : job?.canRetry == true ? "Retry walkthrough" : "Create walkthrough") {
+                Button(submitting ? "Sending scan…" : job?.canRetry == true ? "Retry model" : "Build 3D model") {
                     if job?.canRetry == true || job?.state == "uploading" { Task { await submit() } }
                     else { confirmingCreate = true }
                 }.buttonStyle(RSButtonStyle()).disabled(submitting || sourceLayoutError != nil)
             }
             if let priorSceneURL, job?.isRunning != true, !submitting {
-                Button("Open previous version") { sceneURL = priorSceneURL }.buttonStyle(RSButtonStyle(kind: .secondary))
+                Button("Open previous model") { sceneURL = priorSceneURL }.buttonStyle(RSButtonStyle(kind: .secondary))
             }
             planningButton
-            if isSourceCapture {
-                Button("Share original scan") { Task { await prepareSourceArchive() } }.buttonStyle(RSButtonStyle(kind: .secondary)).disabled(preparingSourceArchive)
-            }
         }
     }
 
     private func walkthrough(_ url: URL) -> some View {
         VStack(spacing: 0) {
-            RSTopBar(title: room.name, back: { dismiss() }, trailing: { showOptions = true })
-            WalkthroughView(sceneURL: url, reconstruction: reconstruction)
+            RSTopBar(title: room.displayName, back: { dismiss() }, trailing: { showOptions = true })
+            WalkthroughView(sceneURL: url, reconstruction: reconstruction, imageGenerationEnabled: app?.designFeaturesEnabled == true)
                 .overlay(alignment: .top) {
                     if let message = planningError ?? error { RSNotice(message: message, isError: true).padding(16).background(.white) }
                 }
-        }.safeAreaInset(edge: .bottom) { planningButton.padding(.horizontal, 24).padding(.vertical, 12).background(.white) }
+        }.safeAreaInset(edge: .bottom) {
+            if app?.designFeaturesEnabled == true { planningButton.padding(.horizontal, 24).padding(.vertical, 12).background(.white) }
+        }
     }
 
     private var optionsPage: some View {
         RSPage(title: "Room options", back: { showOptions = false }) {
-            Text("The walkthrough shows your captured room. Saved design edits stay in the planning view.").foregroundStyle(ReSpaceStyle.secondary)
+            Text("Your original scan is kept on this iPhone. Rebuilding creates a separate model and keeps earlier results.").foregroundStyle(ReSpaceStyle.secondary)
+            if isSourceCapture {
+                Button(preparingSourceArchive ? "Preparing scan…" : "Export original scan") { Task { await prepareSourceArchive() } }
+                    .buttonStyle(RSButtonStyle(kind: .secondary)).disabled(preparingSourceArchive)
+            }
             if let usdzURL, sceneURL != nil {
                 ShareLink(item: usdzURL) { Label("Share room model", systemImage: "square.and.arrow.up") }.buttonStyle(RSButtonStyle(kind: .secondary))
             }
         } footer: {
-            if reconstruction != nil {
-                Button("Generate from scratch") { showOptions = false; confirmingRestart = true }
+            if reconstruction != nil, job != nil {
+                Button("Rebuild model") { showOptions = false; confirmingRestart = true }
                     .buttonStyle(RSButtonStyle(kind: .secondary)).disabled(submitting || job?.isRunning == true)
             }
         }
     }
 
     @ViewBuilder private var planningButton: some View {
-        if app != nil {
-            Button(connecting ? "Preparing your room…" : "Plan changes") { Task { await connect() } }
+        if app?.designFeaturesEnabled == true {
+            Button(connecting ? "Preparing your room…" : "Decorate this room") { Task { await connect() } }
                 .buttonStyle(RSButtonStyle(kind: reconstruction == nil ? .primary : .secondary)).disabled(connecting)
         }
     }
@@ -180,11 +186,13 @@ struct LocalRoomPreviewView: View {
 
     private func submit(fromScratch: Bool = false) async {
         guard let reconstruction,!submitting else { return }
-        submitting=true;error=nil
+        submitting=true;error=nil;uploadProgress=nil
         if fromScratch { priorSceneURL=sceneURL ?? priorSceneURL;sceneURL=nil }
         defer { submitting=false }
         do {
-            job=try await reconstruction.submit(room.id,repository:repository,retry:job?.canRetry==true,fromScratch:fromScratch)
+            job=try await reconstruction.submit(room.id,repository:repository,retry:job?.canRetry==true,fromScratch:fromScratch) { @MainActor completed, total in
+                uploadProgress = total > 0 ? Double(completed) / Double(total) : nil
+            }
             attempt += 1
         } catch is CancellationError {} catch { self.error=error.localizedDescription }
     }

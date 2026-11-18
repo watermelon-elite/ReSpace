@@ -82,6 +82,18 @@ evidence, upright photos, plan, reference mesh, modular authoring entry point
 and a room-specific brief. Source inputs are unchanged. Prepared source,
 photos, textures and comparisons are ignored by Git.
 
+The native viewer and independent delivered-asset review now create a one-time
+reflection probe from the reconstructed room at its starting position. This is
+an integration approximation, not captured lighting: previously exported metal
+maps survived but had no environment to reflect. An offline before/after check
+on the real kitchenette restored visible steel variation. SceneKit uses a
+radiance probe; Three.js uses a cube capture and PMREM. Native fixture testing
+checks reflection direction and visible metal response. Renderer outputs still
+differ and room fidelity remains subject to independent review and device checks.
+API references: [Apple radiance probes](https://developer.apple.com/documentation/scenekit/scnlight/probetype),
+[Apple environment lighting](https://developer.apple.com/documentation/scenekit/scnscene/lightingenvironment),
+[Three.js CubeCamera](https://threejs.org/docs/pages/CubeCamera.html).
+
 The shell supplied by the adapter is a **measured baseline**, with neutral
 materials, a labeled 10 cm wall-thickness assumption, authoring fill lighting
 and an inferred flat ceiling. It is not a detailed reconstruction. Its
@@ -183,11 +195,10 @@ patches, create modular source/canvas patterns and fetch CC0 PBR maps through th
 original helper. It is not the earlier bounded primitive JSON schema. Tool calls,
 reasoning state, responses and budget reservations are retained for recovery;
 unknown billing outcomes stop further paid calls. The explicit generation has a
-$10 model-token ceiling. Walkthrough authoring uses `gpt-6.1-sol` with high
-reasoning and independent photo review uses Sol 6.1 with medium reasoning
-(user-directed 25 October 2026); the existing
-quality gates and shared cap remain in force. Failed reviews or exhausted limits retain the work;
-there is no baseline/default-material publication fallback.
+$10 model-token ceiling. New walkthrough generations use `gpt-6.2-sol` with
+high reasoning for authoring and independent photo review (user-directed
+17 November 2026). A retry uses the generation's original model settings.
+Failed reviews or exhausted limits retain the work for recovery and block publication.
 
 A dedicated headless Chromium executes generated Three.js without provider keys,
 service tokens, shell access or external browser networking. Tool writes are

@@ -64,7 +64,12 @@ class Worker:
                             escalation=threading.Timer(5,hard_stop);escalation.daemon=True;escalation.start()
                     timeout=float(os.environ.get("RESPACE_ROOM_TIMEOUT_SECONDS","3600"))
                     if not 1<=timeout<=86400:raise ValueError("Invalid room timeout")
-                    timer=threading.Timer(timeout,expire);timer.daemon=True;timer.start()
+                    # Three.js stops at paid/tool boundaries itself. Allow an
+                    # in-flight 900s provider request to settle its receipt before
+                    # the hard watchdog kills a stuck process. Other pipelines
+                    # retain their existing hard timeout.
+                    grace=1020 if os.environ.get("RESPACE_PIPELINE","threejs")=="threejs" else 0
+                    timer=threading.Timer(timeout+grace,expire);timer.daemon=True;timer.start()
                 with (folder / "worker.log").open("a") as log:
                     for line in self.process.stdout:
                         log.write(line)

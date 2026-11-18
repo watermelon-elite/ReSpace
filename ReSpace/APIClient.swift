@@ -52,11 +52,24 @@ struct APIClient {
         #endif
     }
     #if DEBUG
-    var backend = ProcessInfo.processInfo.environment["RESPACE_BACKEND_URL"] ?? UserDefaults.standard.string(forKey: "backendURL") ?? "http://127.0.0.1:8000"
+    var backend = ProcessInfo.processInfo.environment["RESPACE_BACKEND_URL"] ?? UserDefaults.standard.string(forKey: "backendURL") ?? AppModel.configuredBackend
     #else
-    var backend = UserDefaults.standard.string(forKey: "backendURL") ?? ""
+    var backend = UserDefaults.standard.string(forKey: "backendURL") ?? AppModel.configuredBackend
     #endif
     var rooms: [JSONValue] = []
+    var designFeaturesEnabled: Bool { isUIDemo || (Bundle.main.object(forInfoDictionaryKey: "ReSpaceDesignFeatures") as? String)?.uppercased() == "YES" }
+    var scanError: String?
+    var scansLoaded = false
+    var roomsLoaded = false
+    private static var configuredBackend: String {
+        if let url = Bundle.main.object(forInfoDictionaryKey:"ReSpaceBackendURL") as? String,
+           !url.isEmpty, !url.contains("$(") { return url }
+        #if DEBUG && targetEnvironment(simulator)
+        return "http://127.0.0.1:8000"
+        #else
+        return ""
+        #endif
+    }
     var scanStore: WorkspaceStore?
     var localRooms: [LocalSavedRoom] = []
     var scanRecoveries: [CaptureManifest] = []
@@ -72,6 +85,7 @@ struct APIClient {
         if demo {
             uiDemo = UIDemoSession()
             rooms = [uiDemo!.room]
+            roomsLoaded = true
             return
         }
         #endif
@@ -97,6 +111,7 @@ struct APIClient {
     }
     func saveBackend() { if !isUIDemo { UserDefaults.standard.set(backend, forKey: "backendURL") } }
     func refresh() async {
+        defer { roomsLoaded = true }
         guard let client else { return }
         do {
             var path = "rooms"; var values: [JSONValue] = []

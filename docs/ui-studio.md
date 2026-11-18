@@ -23,8 +23,7 @@ The picker disappears completely. Long-press a non-control area for 1.5 seconds
 to return to the picker. Relaunching or reopening a screen from the picker resets
 its sample session. Use Simulator's screenshot and recording controls for assets.
 
-In the Debug Simulator and UI studio, Scan your room keeps its normal appearance
-and intentionally does nothing when tapped. On a supported physical iPhone, the
+In the Debug Simulator and UI studio, Scan your room opens setup explaining that capture requires a LiDAR iPhone. On a supported physical iPhone, the
 main app still uses the real scan setup. Questions, navigation, selection,
 room instructions and shopping/share sheets use the actual views with simulated
 responses. Text requests receive a prepared response; no AI or placement solver
@@ -49,14 +48,26 @@ Both schemes use the same screen implementations and design system. There is no
 second UI to copy into production: edits to a screen update both on the next
 build. The differences are sample data and the studio's static room illustration;
 the main app keeps its interactive 3D renderer. Both use `RSRoomCard` for the home
-screen; the imported Kitchenette uses a bundled render of its actual model.
+screen. The production library has no bundled Kitchenette or Meeting room entry; real local captures use their own photo thumbnails.
 
 `ReSpace/Ollo.swift` provides the shared companion and one-pass pose animation.
 The nine existing transparent sprites are bundled in `Assets.xcassets`. Ollo
-appears in scan guidance, questions, operation results and the room composer.
-The home screen is deliberately minimal: Your rooms, a shopping-bag button,
-room cards and Scan your room. It has no wordmark, mascot, tagline or device-test
-notice. The bag opens saved shopping lists (sample lists in the UI studio).
+appears in scan guidance, questions and operation results. The Design composer reserves its space for input and camera controls.
+The normal home screen uses a native Rooms list, a Settings button and one Scan room action. Settings owns the reconstruction connection check. With `RESPACE_DESIGN_FEATURES=NO`, planning and shopping are hidden while scan/reconstruction is validated; the UI studio can still preview those later stages with sample data.
 Keyboard focus shrinks the composer character; accessibility text sizes hide it
 before reducing text space. Reduce Motion uses still poses. Gestures run once per
 session/event, and saved designs loaded from history do not trigger a hop.
+
+## Pipeline audit launch flags (Debug only)
+
+`--ui-demo --ui-screen Design --ui-live-scene` opens the actual RealityKit renderer using fixture measurements and representative geometry. Omitting `--ui-live-scene` keeps the static studio illustration. This is visual test data, not a scan or a live recommendation.
+
+Add `--ui-large-type` for accessibility3 text, or `--ui-design-error` for initial Design-load failure. Other screen names include `Question`, `Product`, `Shopping list`, `My Rooms` and `Room review`. Launch without `--ui-demo` to inspect the real saved library, empty state and connection recovery. No fixture is imported into normal persistence by these flags.
+
+
+`--ui-walkthrough-audit` opens the actual SceneKit walkthrough renderer on a private
+export copied to the app container’s `Documents/WalkthroughAudit/` directory.
+This Debug-only route is labeled unpublished, makes no generation requests and
+does not import the scene into the saved Rooms library. Use it to compare native
+appearance with browser export previews before publication; a rendered checkpoint
+is not a completed or visually approved room.

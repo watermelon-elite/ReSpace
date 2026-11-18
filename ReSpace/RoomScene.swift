@@ -1,7 +1,12 @@
 import SwiftUI
+import Combine
 import RealityKit
 import UIKit
 import simd
+
+@MainActor final class RoomSceneCapture: ObservableObject {
+    var capture: (() async throws -> (Data, RenditionPerspective))?
+}
 
 struct RoomScene: UIViewRepresentable {
     let document: JSONValue
@@ -14,6 +19,10 @@ struct RoomScene: UIViewRepresentable {
     var assetManifest: JSONValue = .null
     var importedModelURL: URL? = nil
     var cutaway = true
+    var firstPerson = false
+    var walkingStep = 0
+    var walkingDirection = SIMD2<Double>(0, 0)
+    var captureController: RoomSceneCapture? = nil
     var onModelLoad: ((String?) -> Void)? = nil
     func makeCoordinator() -> Coordinator { Coordinator(self) }
     func makeUIView(context: Context) -> UIView {
@@ -57,6 +66,11 @@ struct RoomScene: UIViewRepresentable {
         var assetTasks: [String: Task<Void, Never>] = [:]
         var lastManifest: JSONValue = .null
         var framedContent = false
+        var walkingPosition: [Double]?
+        var walkingYaw = 0.0, walkingPitch = 0.0
+        var lastWalkingStep = 0
+        var wasFirstPerson = false
+        var capturing = false
         var wallEntities: [(Entity, SIMD3<Float>, SIMD3<Float>)] = []
         var ceilingEntities: [Entity] = []
         var importedLoadTask: Task<Void, Never>?
@@ -70,9 +84,41 @@ struct RoomScene: UIViewRepresentable {
             let pinch = UIPinchGestureRecognizer(target: self, action: #selector(zoom(_:)))
             let tap = UITapGestureRecognizer(target: self, action: #selector(select(_:)))
             for gesture in [pan, move, pinch, tap] { gesture.delegate = self; view.addGestureRecognizer(gesture) }
+            parent.captureController?.capture = { [weak self] in
+                guard let self, let view=self.view, self.parent.firstPerson, self.walkingPosition != nil else { throw ContractError.invalid("Enter first-person view to create an image.") }
+                guard !self.capturing else { throw ContractError.invalid("A room image is already being captured.") }
+                self.capturing=true
+                defer { self.capturing=false; self.update() }
+                guard self.assetTasks.isEmpty else { throw ContractError.invalid("Your room’s product models are still loading. Try again in a moment.") }
+                // Selection markers, labels and removed-object ghosts are UI,
+                // never part of a photographic composition guide.
+                let hidden=self.highlights.values.filter { $0.isEnabled }
+                hidden.forEach { $0.isEnabled=false }
+                let labels=self.content.children.flatMap { $0.children.filter { $0.name == "item-label" && $0.isEnabled } }
+                labels.forEach { $0.isEnabled=false }
+                let removed=self.itemRoots.filter { self.itemDocuments[$0.key]?["status"].text == "removed" }.map(\.value)
+                removed.forEach { $0.isEnabled=false }
+                defer { hidden.forEach { $0.isEnabled=true }; labels.forEach { $0.isEnabled=true }; removed.forEach { $0.isEnabled=true } }
+                let image: UIImage? = await withCheckedContinuation { continuation in
+                    view.snapshot(saveToHDR:false) { continuation.resume(returning:$0) }
+                }
+                guard let image, image.size.width>0, image.size.height>0 else { throw ContractError.invalid("The room image could not be captured. Try again.") }
+                let size=CGSize(width:1536,height:1024)
+                let scale=max(size.width/image.size.width,size.height/image.size.height)
+                let draw=CGSize(width:image.size.width*scale,height:image.size.height*scale)
+                let format=UIGraphicsImageRendererFormat();format.scale=1;format.opaque=true
+                let output=UIGraphicsImageRenderer(size:size,format:format).image { _ in
+                    image.draw(in:CGRect(x:(size.width-draw.width)/2,y:(size.height-draw.height)/2,width:draw.width,height:draw.height))
+                }
+                guard let data=output.jpegData(compressionQuality:0.9) else { throw ContractError.invalid("The room image could not be saved.") }
+                let p=self.camera.position, forward=self.camera.orientation.act(SIMD3<Float>(0,0,-1)), target=p+forward
+                let fov=2*atan(tan(Double(self.camera.camera.fieldOfViewInDegrees)*Double.pi/360)*Double(size.height/draw.height))*180/Double.pi
+                return (data,RenditionPerspective(position:[Double(p.x),Double(p.y),Double(p.z)],target:[Double(target.x),Double(target.y),Double(target.z)],fieldOfView:fov))
+            }
             update()
         }
         func update() {
+            guard !capturing else { return }
             let changed = last != parent.document || lastGhosts != parent.ghosts || lastManifest != parent.assetManifest
             if changed {
                 let first = last == .null
@@ -94,6 +140,19 @@ struct RoomScene: UIViewRepresentable {
             if lastZoomSteps != parent.zoomSteps {
                 radius = min(40, max(0.8, radius / pow(1.25, Float(parent.zoomSteps - lastZoomSteps))))
                 lastZoomSteps = parent.zoomSteps
+            }
+            if parent.firstPerson {
+                let path=DesignCameraPath(scene:parent.document)
+                if !wasFirstPerson || walkingPosition.map({ !path.canStand($0) }) != false { resetWalkingCamera(path) }
+                if lastWalkingStep != parent.walkingStep {
+                    moveCamera(x:parent.walkingDirection.x,z:parent.walkingDirection.y)
+                    lastWalkingStep=parent.walkingStep
+                }
+            }
+            wasFirstPerson=parent.firstPerson
+            camera.camera.fieldOfViewInDegrees=parent.firstPerson ? 80 : 60
+            for container in itemRoots.values {
+                container.children.filter { $0.name == "item-label" }.forEach { $0.isEnabled = !parent.firstPerson }
             }
             for (id, entity) in objects { entity.model?.materials = [material(id == parent.selectedID ? .systemYellow : colors[id] ?? .systemGray, alpha: entity.name.hasPrefix("ghost:") ? 0.2 : 1)] }
             for (id, highlight) in highlights { highlight.isEnabled = id == parent.selectedID }
@@ -230,11 +289,13 @@ struct RoomScene: UIViewRepresentable {
                 let fallback = ModelEntity(mesh: .generateBox(size: size), materials: [material(tint(observedColor))])
                 fallback.position.y = size.y / 2; fallback.generateCollisionShapes(recursive: false); container.addChild(fallback)
                 let label = ModelEntity(mesh: .generateText(item["label"].string ?? item["category"].text, extrusionDepth: 0.001, font: .systemFont(ofSize: 0.12)), materials: [UnlitMaterial(color: .darkGray)])
+                label.name = "item-label"
                 label.position = [-size.x / 2, size.y + 0.03, 0]; container.addChild(label)
                 let highlight = ModelEntity(mesh: .generateBox(size: size + SIMD3(repeating: 0.01)), materials: [material(.systemYellow, alpha: 0.16)])
                 highlight.position.y = size.y / 2; highlight.isEnabled = id == parent.selectedID; container.addChild(highlight); highlights[id] = highlight
                 assetTasks[id] = Task { [weak self, weak container] in
                     guard let self, let container else { return }
+                    defer { if self.itemRoots[id] === container { self.assetTasks.removeValue(forKey: id) } }
                     await self.upgrade(item, placement: placement, container: container, fallback: fallback, label: label, observedColor: observedColor)
                 }
             }
@@ -357,6 +418,9 @@ struct RoomScene: UIViewRepresentable {
             if let mesh = try? MeshResource.generate(from: [descriptor]) { content.addChild(ModelEntity(mesh: mesh, materials: [material(UIColor(red: 0.69, green: 0.61, blue: 0.49, alpha: 1))])) }
         }
         func reset() {
+            if parent.firstPerson {
+                resetWalkingCamera(DesignCameraPath(scene:parent.document));positionCamera();return
+            }
             let bounds = content.visualBounds(relativeTo: root)
             let extent = simd_length(bounds.extents)
             guard extent.isFinite, extent > 0, bounds.center.x.isFinite, bounds.center.y.isFinite, bounds.center.z.isFinite else { return }
@@ -366,14 +430,48 @@ struct RoomScene: UIViewRepresentable {
             framedContent = true
         }
         func positionCamera() {
+            if parent.firstPerson, let p=walkingPosition {
+                let position=SIMD3<Float>(Float(p[0]),1.6,Float(p[1]))
+                let direction=SIMD3<Float>(Float(-sin(walkingYaw)*cos(walkingPitch)),Float(sin(walkingPitch)),Float(-cos(walkingYaw)*cos(walkingPitch)))
+                camera.look(at:position+direction,from:position,relativeTo:root)
+                wallEntities.forEach { $0.0.isEnabled=true };ceilingEntities.forEach { $0.isEnabled=true }
+                return
+            }
             let position = center + SIMD3<Float>(radius * cos(elevation) * sin(azimuth), radius * sin(elevation), radius * cos(elevation) * cos(azimuth))
             camera.look(at: center, from: position, relativeTo: root)
             for (entity, wallCenter, inward) in wallEntities { entity.isEnabled = (parent.importedModelURL != nil && !parent.cutaway) || simd_dot(position - wallCenter, inward) >= -0.05 }
             for entity in ceilingEntities { entity.isEnabled = !parent.cutaway }
         }
-        @objc func orbit(_ gesture: UIPanGestureRecognizer) { let delta = gesture.translation(in: view); gesture.setTranslation(.zero, in: view); azimuth -= Float(delta.x) * 0.007; elevation = min(1.45, max(0.08, elevation + Float(delta.y) * 0.007)); positionCamera() }
-        @objc func pan(_ gesture: UIPanGestureRecognizer) { let d = gesture.translation(in: view); gesture.setTranslation(.zero, in: view); let right = SIMD3<Float>(cos(azimuth), 0, -sin(azimuth)); let forward = SIMD3<Float>(sin(azimuth), 0, cos(azimuth)); center -= right * Float(d.x) * radius * 0.0015; center -= forward * Float(d.y) * radius * 0.0015; positionCamera() }
-        @objc func zoom(_ gesture: UIPinchGestureRecognizer) { radius = min(40, max(0.8, radius / Float(gesture.scale))); gesture.scale = 1; positionCamera() }
+        func moveCamera(x: Double,z: Double) {
+            guard let start=walkingPosition else { return }
+            walkingPosition=DesignCameraPath(scene:parent.document).move(from:start,
+                delta:[cos(walkingYaw)*x+sin(walkingYaw)*z,-sin(walkingYaw)*x+cos(walkingYaw)*z])
+        }
+        func resetWalkingCamera(_ path: DesignCameraPath) {
+            walkingPosition=path.spawn();walkingPitch = -0.15
+            guard let p=walkingPosition,!path.floor.isEmpty else { return }
+            let x=path.floor.map { $0[0] }.reduce(0,+)/Double(path.floor.count)
+            let z=path.floor.map { $0[1] }.reduce(0,+)/Double(path.floor.count)
+            walkingYaw=atan2(p[0]-x,p[1]-z)
+        }
+        @objc func orbit(_ gesture: UIPanGestureRecognizer) {
+            guard !capturing else { gesture.setTranslation(.zero,in:view);return }
+            if parent.firstPerson {
+                let d=gesture.translation(in:view);gesture.setTranslation(.zero,in:view)
+                walkingYaw-=Double(d.x)*0.004;walkingPitch=max(-1.3,min(1.3,walkingPitch-Double(d.y)*0.004));positionCamera();return
+            }
+            let delta = gesture.translation(in: view); gesture.setTranslation(.zero, in: view); azimuth -= Float(delta.x) * 0.007; elevation = min(1.45, max(0.08, elevation + Float(delta.y) * 0.007)); positionCamera() }
+        @objc func pan(_ gesture: UIPanGestureRecognizer) {
+            guard !capturing else { gesture.setTranslation(.zero,in:view);return }
+            if parent.firstPerson {
+                let d=gesture.translation(in:view);gesture.setTranslation(.zero,in:view)
+                moveCamera(x:-Double(d.x)*0.003,z:Double(d.y)*0.003);positionCamera();return
+            }
+            let d = gesture.translation(in: view); gesture.setTranslation(.zero, in: view); let right = SIMD3<Float>(cos(azimuth), 0, -sin(azimuth)); let forward = SIMD3<Float>(sin(azimuth), 0, cos(azimuth)); center -= right * Float(d.x) * radius * 0.0015; center -= forward * Float(d.y) * radius * 0.0015; positionCamera() }
+        @objc func zoom(_ gesture: UIPinchGestureRecognizer) {
+            guard !capturing else { gesture.scale=1;return }
+            if parent.firstPerson { moveCamera(x:0,z:Double(1-gesture.scale)*0.4);gesture.scale=1;positionCamera();return }
+            radius = min(40, max(0.8, radius / Float(gesture.scale))); gesture.scale = 1; positionCamera() }
         @objc func select(_ gesture: UITapGestureRecognizer) {
             var candidate = view?.entity(at: gesture.location(in: view))
             while let entity = candidate {

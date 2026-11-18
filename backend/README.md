@@ -5,6 +5,25 @@ acceptance with physical scans remain deferred. By default local mode disables
 providers, even if credentials exist in the environment. Live providers require
 the explicit `--live-providers` flag; their usage can incur charges.
 
+## Start the complete local pipeline
+
+From the repository root:
+
+```sh
+bash services/run-local.sh --check
+bash services/run-local.sh --live
+```
+
+`--check` validates prerequisites without starting servers or calling providers. `--live` starts planning on port 8000 and reconstruction on port 8008, with durable storage and **no sample-room imports**. Ctrl-C stops both; if one exits, the launcher stops the other. Generation and discovery can incur provider charges when requested in the app.
+
+Install the planning environment as below and run `services/reconstruction/setup.sh` for the reconstruction environment. The launcher reads the private root `.env` and `services/reconstruction/.env`. Set `GEMINI_API_KEY` (or `GOOGLE_API_KEY`), `SERPAPI_API_KEY`, `GEMINI_PLANNING_MODEL`, `GEMINI_EXTRACTION_MODEL` and `GEMINI_SPATIAL_MODEL` for planning. Choose model IDs actually available to your account. Reconstruction needs `OPENAI_API_KEY` and `RESPACE_RECONSTRUCTION_TOKEN`; its existing model/budget settings remain unchanged. Install merchant Chromium with `.local/venv/bin/python -m playwright install chromium`.
+
+Copy `Configuration/Local.xcconfig.example` to the private `Local.xcconfig`, set both service addresses and the reconstruction token, then rebuild. An actual iPhone must use the Mac's reachable local hostname/IP, not `127.0.0.1`. Provider keys stay server-side. Debug supports local HTTP; Release requires HTTPS.
+
+The fresh-capture route is Scan → Create walkthrough → Decorate this room → review/describe request and budget → answer questions → saved Design → first-person camera → Generate image. Realistic images use the displayed saved arrangement and viewpoint with original capture photos as material references. They do not validate exact Product appearance or fit. Without a LiDAR iPhone and configured providers, the debug studio and automated tests can verify contracts/UI but cannot establish live end-to-end acceptance.
+
+The commands below describe opt-in synthetic development fixtures, not production onboarding.
+
 From the repository root, with Python 3.12 or newer:
 
 ```sh
@@ -16,7 +35,7 @@ PYTHONPATH=backend .local/venv/bin/python -m respace.local \
 ```
 
 Open `ReSpace.xcodeproj`, select ReSpace / Debug and an iPhone Simulator, and run.
-Debug defaults to `http://127.0.0.1:8000`. Open **TEST MODEL · room.glb**, continue
+Debug Simulator defaults to `http://127.0.0.1:8000`; a physical iPhone needs the Mac’s reachable address in `RESPACE_BACKEND_URL` or connection settings. Open **TEST MODEL · room.glb**, continue
 to design intent, enter a budget of **USD 200**, and answer the three questions.
 The saved design supports Product details, Find more, Swap, Remove and Undo.
 Offline conversation commands support one Move, Remove or Restore of a named

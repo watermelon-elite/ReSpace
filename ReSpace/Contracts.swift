@@ -1,5 +1,71 @@
 import Foundation
 
+/// Camera navigation uses the saved floor and placed Items. It never mutates
+/// placements. Sample the entire step so a gesture cannot tunnel through walls.
+struct DesignCameraPath {
+    let floor: [[Double]]
+    let obstacles: [Placement]
+    init(scene: JSONValue) {
+        floor = scene["room"]["floor"]["polygon"].array.map(\.numbers).filter { $0.count == 2 && $0.allSatisfy(\.isFinite) }
+        obstacles = scene["items"].array.filter { $0["status"].text != "removed" && $0["category"].text != "rug" }
+            .compactMap { try? Placement($0["placement"]) }
+            .filter { $0.position[1] < 1.8 && $0.position[1] + $0.size[2] > 0.15 }
+    }
+    func contains(_ p: [Double]) -> Bool {
+        guard p.count == 2, p.allSatisfy(\.isFinite), floor.count >= 3 else { return false }
+        var inside = false
+        for i in floor.indices {
+            let a = floor[i], b = floor[(i + 1) % floor.count]
+            if (a[1] > p[1]) != (b[1] > p[1]), p[0] < (b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0] { inside.toggle() }
+        }
+        return inside
+    }
+    func canStand(_ p: [Double]) -> Bool {
+        guard contains(p) else { return false }
+        let clearance = 0.18
+        for i in 0..<12 {
+            let angle = Double(i) * .pi / 6
+            if !contains([p[0]+cos(angle)*clearance,p[1]+sin(angle)*clearance]) { return false }
+        }
+        return !obstacles.contains { item in
+            let dx=p[0]-item.position[0], dz=p[1]-item.position[2]
+            let x=cos(item.yaw)*dx-sin(item.yaw)*dz, z=sin(item.yaw)*dx+cos(item.yaw)*dz
+            return abs(x)<item.size[0]/2+clearance && abs(z)<item.size[1]/2+clearance
+        }
+    }
+    func spawn() -> [Double]? {
+        guard floor.count >= 3 else { return nil }
+        let xs=floor.map { $0[0] }, zs=floor.map { $0[1] }
+        let low=[xs.min()!,zs.min()!], high=[xs.max()!,zs.max()!]
+        let center=[(low[0]+high[0])/2,(low[1]+high[1])/2]
+        // Start far enough from walls to see the arrangement. A room-center
+        // spawn can be inside a coffee table, and the first free grid cell can
+        // face a wall at arm's length.
+        for corner in [[0.85,0.85],[0.15,0.85],[0.85,0.15],[0.15,0.15]] {
+            let p=[low[0]+(high[0]-low[0])*corner[0],low[1]+(high[1]-low[1])*corner[1]]
+            if canStand(p) { return p }
+        }
+        if canStand(center) { return center }
+        for z in 0...40 { for x in 0...40 {
+            let p=[low[0]+(high[0]-low[0])*Double(x)/40,low[1]+(high[1]-low[1])*Double(z)/40]
+            if canStand(p) { return p }
+        } }
+        return nil
+    }
+    func move(from start: [Double], delta: [Double]) -> [Double] {
+        guard start.count == 2, delta.count == 2, delta.allSatisfy(\.isFinite) else { return start }
+        let length=hypot(delta[0],delta[1])
+        guard length <= 5 else { return start }
+        let steps=max(1,Int(ceil(length/0.05)))
+        var result=start
+        for step in 1...steps {
+            let p=[start[0]+delta[0]*Double(step)/Double(steps),start[1]+delta[1]*Double(step)/Double(steps)]
+            guard canStand(p) else { break }; result=p
+        }
+        return result
+    }
+}
+
 public enum JSONValue: Codable, Equatable, Hashable, Sendable {
     public func hash(into hasher: inout Hasher) {
         switch self {

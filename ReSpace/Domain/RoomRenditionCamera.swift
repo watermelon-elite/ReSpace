@@ -1,5 +1,29 @@
 import Foundation
 
+/// The exact camera and committed arrangement used to make an image. Neither
+/// changes the original capture or creates a new design version.
+struct RenditionPerspective: Codable, Equatable, Sendable {
+    let position: [Double]
+    let target: [Double]
+    let fieldOfView: Double
+}
+
+struct RenditionDesign: Codable, Equatable, Sendable {
+    struct Item: Codable, Equatable, Sendable {
+        let id: String
+        let label: String
+        let category: String
+        let origin: String
+        let productTitle: String?
+        let position: [Double]
+        let size: [Double]
+        let yaw: Double
+    }
+    let designId: String
+    let roomId: String
+    let items: [Item]
+}
+
 /// A repeatable interior photograph, independent of the walkthrough camera.
 struct RoomRenditionCamera: Equatable, Sendable {
     static let viewID = "corner_room_view_v5_iphone_photo_references"

@@ -2,7 +2,100 @@
 
 Read [PROFILE](PROFILE.md) for authority, [SYSTEM](SYSTEM.md) for design rules and [SCREENS](SCREENS.md) for the affected state. This document provides a repeatable audit process and a dated assessment of the inspected app.
 
-**Snapshot:** 18 October 2026. Repository base HEAD was 3353be181838559d46c5cb0a5f1e3197de3af1d0, with substantial existing working-tree changes. This is not an audit of that clean commit. Re-read files before acting on a finding.
+## Scan-first follow-up — 15 November 2026
+
+The later user instruction prioritizes scanning and reconstruction on a connected LiDAR iPhone and requests standard, uncluttered UI. Decoration, shopping and image generation are temporarily hidden with `RESPACE_DESIGN_FEATURES=NO`; their implementation and saved data remain intact.
+
+### Current live outcome
+
+The live generation stopped on 15 November after its authoring request was
+interrupted without a response receipt. macOS power logs show repeated sleep
+and dark-wake cycles during that request. The service remains healthy, but the
+job is failed and no completed room has been published. The ledger records
+**$7.703822 settled usage** and **$0.692400 reserved for one unresolved request**;
+the reservation is not a confirmed additional charge. Keep it intact and
+reconcile the provider outcome before further paid work. No new generation or
+budget increase was authorized or started.
+
+Twelve complete visual reviews were recorded; the last passed **1 of 12 views**.
+Window artifacts improved after visual feedback, but materials, fixture shapes
+and small-object detail still failed. Capture, upload, technical import and the
+physical viewer-control check are verified; automatic reconstruction and
+published-result download are **not end-to-end accepted**. The exact-camera
+review-schema fix passes offline integration tests and was loaded before the
+interrupted author request; a subsequent live review has not verified it yet.
+
+### Corrections and evidence
+
+- **P1 — a live reviewer returned unrequested camera IDs.** Runtime validation correctly refused the response, but the request schema had unconstrained integer IDs and no view-count limit. Tightened it to the exact batch IDs and count, retaining the missing/duplicate-view check. The full-flow regression reproduces the missing constraints before the fix; all 10 focused export/review/recovery tests pass afterward.
+- **P2 — corrections received written findings without the rejected native images.** The real rejected-export regression reproduced zero retained evidence images. Reviews now archive their exact renders and supply up to four failed source/render pairs to the correcting author, including after context refresh. The regression turns green; all 10 focused browser pipeline checks pass. This improves available evidence without relaxing acceptance or asserting a live quality improvement.
+- **P2 — long reconstruction sessions accumulated obsolete edits and images.** The live author request exceeded 230,000 input tokens. After an independent review, the worker now periodically refreshes its context from current source, the latest review and all photo contact sheets, while archiving the complete earlier history. It preserves the generation, monotonic request IDs, paid receipts and original ceiling; pending tools and issued requests block refresh. Four new recovery checks and the full 10-test browser pipeline file pass. The resumed live run reduced input to 36,175 tokens and successfully issued an eight-tool batch; completion time and visual quality remain unproven.
+- **P2 — every small authoring operation required another model round trip.** Enabled independent tool batches while retaining sequential local execution, checkpoints between tools and deadline checks. Visual results stay durable across interruption and follow the batch's tool outputs in the next request. The browser integration regression reproduces six requests before the change and three afterward, with no repeated completed tool or paid response on retry. All 6 focused pipeline tests pass; this is a measured test reduction, not a promised real-room runtime.
+- **P1 — exported metals had no room environment to reflect.** A private before/after browser comparison reproduced the loss with identical exported geometry and material maps. Added a one-time room-derived reflection environment to native rendering and independent review. The rendered SceneKit fixture checks reflection direction and metal response; all 5 browser/native pipeline checks pass, including coordinate-frame invariance. A local SceneKit radiance-probe handoff initially crashed Simulator's Metal texture-array copy; baking it into the scene environment fixes that crash. The real checkpoint opens and remains running in Simulator. This improves rendering, but does not waive the still-open fidelity review or claim measured fixture lighting.
+- **P1 — the room watchdog could interrupt a paid request at the one-hour deadline.** Three.js now checks its deadline before reserving a new call, after token counting and between native review renders. In-flight responses can settle and save their checkpoints before a separate hard watchdog applies. Offline deadline tests cover receipt settlement, no new charge after expiry and paid-response reuse on Retry; all 33 spending/detail tests and 5 browser/native pipeline tests pass. The live job was stopped between paid requests (zero unsettled reservations) and resumed through normal Retry with its original budget.
+- **P1 — local scanning depended on unrelated planning availability.** Rooms now loads local captures independently; local errors are separate from planning failures. Renaming an unlinked scan refreshes the local library without calling the planning service.
+- **P1 — the saved Mac hostname was stale.** Corrected the private device configuration and added Settings → Save and check connection. The authenticated, read-only health check requires the native Three.js upload contract, persists only successful connections and never starts generation. The connected iPhone reached the running reconstruction service successfully.
+- **P2 — competing home, capture and model actions made the next step unclear.** Native Rooms list, one Scan room action, short scan instructions, focused camera guidance, then one Build 3D model action. Advanced capture controls and export/rebuild actions are disclosed in menus. Rebuilding is absent before a first job exists. No placeholder scans are offered in the normal app.
+- **P2 — large scan uploads offered no measured progress and could auto-lock.** Report progress from server-acknowledged bytes, including files retained from an earlier attempt; keep the visible upload screen awake. A regression verifies resumed upload accounting and avoids retransmitting acknowledged files.
+- **P2 — actual device thumbnails appeared sideways.** The library selected the first JPEG in the integrity inventory, which was an unoriented depth-reference image. Restrict thumbnail lookup to verified `photos/` images with EXIF orientation. The expanded regression fails before the fix and passes afterward. Capture bytes and calibration remain unchanged.
+- **P2 — automatic room names exposed internal IDs and UTC dates.** Present the original automatic name using a local date/time while retaining custom names and backend creation identity.
+- **P1 — independent review illumination disagreed with the app.** The browser light used a different direction in room coordinates while SceneKit lights remain in scan coordinates. A provider-free rotation regression reproduced a 9.13-level mean RGB change from merely relabeling coordinates and passes after transforming the light with the scene. Illumination was adjusted against a labeled SceneKit debug preview; Three.js/ACES and SceneKit HDR remain approximate rather than pixel-equivalent. Fresh review uses the corrected setup; real device appearance remains an acceptance gate.
+- **P2 — the walkthrough duplicated the room header and exposed a crowded instruction line.** Retain a compact floating Reset/image toolbar and one short movement hint.
+- **P2 — model export could present a share sheet over an existing options sheet.** Dismiss options before presenting native sharing. Remove an empty planning footer from the scan-only viewer.
+- Keep the requested orange/white/lime palette, with simpler native navigation and shared buttons. Remove the animated marketing portal and redundant legacy capture presentations.
+
+### Verification so far
+
+- Signed Debug build installed on the connected iPhone 17 Pro / iOS 26.6.1; active native capture and revised controls inspected in an actual device screenshot. User completed a fresh capture and confirmed it saved. The copied bundle passes original integrity, calibration and measured-layout validation: 80 photos, 677 depth frames, 8 walls, 9 objects, one opening and one window, with a 357,686-face LiDAR mesh. All 2,120 files uploaded and the server accepted the run; the user confirmed “Building your 3D room.” The authoring worker later stopped as recorded above. Live model publication remains pending; the subsequent unpublished-preview control check is recorded below.
+- Prior real device capture copied read-only and validated offline: 108 photos, 932 depth frames, RoomBuilder layout and LiDAR mesh. Preparation successfully produced upright photographs, room measurements and a colored LiDAR reference. This is input validation, **not** a completed reconstruction or a model-quality claim.
+- Focused Swift local persistence/capture/reconstruction checks: **29 passed, 2 skipped** (31 executed); includes resumed upload progress, authenticated read-only connection checks and incompatible-pipeline rejection. Final signed device Debug build passes. Final Simulator Release also passes; real empty Rooms, physical saved-scan and populated library screens inspected. Verified upright thumbnails on the final device build after reinstall, with both real captures preserved.
+- A real exported checkpoint passes the opt-in Apple ModelIO/SceneKit import test: every object imports with its expected material slots, and the app’s spawn/movement checks pass. This is technical import evidence; the checkpoint’s first visual review was rejected for materials and missing details and is being corrected before publication.
+- Complete reconstruction/Scan to Three.js suite after the lighting, deadline, batching and context-refresh fixes: **298 passed, 1 skipped** (277 reconstruction + 21 capture/converter tests). Paid responses are mocked; browser/native export/rejection checks are real. An isolated first integration attempt timed out during browser export; the focused file and then the full suite passed. The latest real room checkpoint also passed Apple ModelIO/material and safe-navigation checks again.
+- The updated uncluttered walkthrough controls and real checkpoint were inspected in Simulator. After the phone reconnected, the latest signed build and a private checkpoint were transferred for a labeled Debug-only walkthrough check; no unfinished model was inserted into the normal library.
+- After adding the baked reflection environment, the real checkpoint opens in Simulator without the initial local-probe crash. Walkthrough tests: **15 passed, 1 skipped**, including real captured assets and the rendered reflection fixture. The generic iPhone Release build passes. The latest signed build was subsequently installed on the reconnected phone. Its labeled unpublished checkpoint opened, and the user confirmed “Viewer opens; movement and Reset work.” The phone was then returned to normal Rooms. This verifies controls on hardware; visual fidelity and published-result download remain pending.
+- The reconstruction service remains healthy independently, with no active paid worker after the interrupted request. Gemini/SerpAPI setup and decoration/image-generation acceptance remain deferred by the user.
+
+This follow-up supersedes the earlier no-device/stopped-reconstruction-service snapshot below. Private scan screenshots and preparation outputs stay under ignored `.local/device-audit/`.
+
+## Pipeline and UI audit — 15 November 2026
+
+**Scope:** native capture handoff, original reconstructed walkthrough, saved backend Design, Product presentation and camera-based realistic image. The user authorized the new orange/white/lime direction and first-person image journey. No LiDAR iPhone was available; planning/reconstruction services were initially stopped. This is a source, automated-integration and Simulator audit, not live-provider acceptance.
+
+### Confirmed breaks and corrections
+
+| Priority | Finding | Correction and evidence |
+|---|---|---|
+| P1 | New native scans could reach reconstruction but image generation parsed only legacy frame manifests. | Native rendition references now read the sealed schema-2 files, verify original bytes and orient photos. Endpoint regression covers POST → finished image → retry with one mocked provider purchase; corrupt source bytes are rejected. |
+| P1 | The image action silently substituted a fixed corner view; saved decoration had no connected image action. | Both viewers use the current camera. The saved Design supplies its immutable identity, active placements and Product titles; the rendered image excludes ghosts and markers. Camera/Design context participates in cache identity and provider payload. |
+| P1 | Reopening after moving the camera could lose the original generation context. | Retain the last image request, reopen its saved/processing result, and preserve explicit Refresh identity across interruption. Existing retry, background-response and ambiguous-charge protections remain tested. |
+| P1 | A failed initial Design load exposed an empty scene/composer instead of recovery. | Dedicated loading/failure/Retry states; mutations require a loaded Design. The debug failure route exercises the actual view. |
+| P1 | Physical-device Debug defaulted planning to the phone's loopback; unreachable configured servers hid setup. | Simulator-only loopback default, explicit backend build setting, reachable connection recovery and a combined no-fixture service launcher/preflight. |
+| P2 | First-person spawn could open against a wall, and moving gestures could cross obstacles. | Inset spawn faces into the room; swept movement respects the floor and placed furniture. Rooms without a standing position retain orbit view. Collision regression and real RealityKit fixture inspection. |
+| P2 | Public home exposed Kitchenette/Meeting room demos; native photos were absent from legacy-frame thumbnail lookup. | Remove bundled production entry routes. Read a verified photo from each actual capture (native or legacy); honest icon on unavailable media. Native-thumbnail corruption regression. Debug studio remains isolated. |
+| P2 | Square viewport, large floating world labels, crowded controls and fixed panel height obscured the room. | Full-height canvas, compact shared first-person controls, hide world labels in first person, measured composer reservation, accessibility-size Items sheet and compact toolbar. |
+| P2 | Failed Product images spun indefinitely; dimensions lacked axis labels; variant identifiers leaked into customer copy. | Honest unavailable-media state, Width/Depth/Height labels, selected accessibility semantics and focused Product details. |
+| P2 | Palette and interactions did not match the requested direction. | Exact orange/white/lime tokens, dark readable labels, animated wireframe scan portal, spring press response, consistent spatial controls and Reduce Motion code paths. |
+
+### Verification evidence
+
+- Debug and Release arm64 iPhone Simulator builds succeed; the Release build excludes the UI studio code. Actual SwiftUI/RealityKit screenshots were inspected on iPhone 17 Pro / iOS 26.5: real empty library with unreachable-backend recovery; fixture saved Design and Product/question screens; accessibility3 Design text; initial Design-load failure. Fixtures are not real recommendations or reconstructed scan quality evidence.
+- Backend suite: **394 passed, 19 skipped**. Reconstruction/Three.js suite: **290 passed, 1 skipped**, including two browser tests rerun successfully outside the restricted process sandbox after Chromium could not bind there. The real browser/native-export integration runs actual geometry/texture export and reload; paid author/reviewer calls are mocked.
+- Swift full suite before the final thumbnail regression: **126 passed, 3 skipped**. After that change, focused native-capture/rendition/camera tests: **25 passed, 2 skipped**. Apple file coordination/ModelIO checks require normal host execution rather than the restricted sandbox. Skips retain their existing platform/provider reasons.
+- Rendition tests: **19 passed**, including schema-2 photos, request-context conflicts, lost responses, explicit refresh, provider rejection, source corruption and authenticated finished-image access. No real image-generation call was made.
+- Palette contrast is calculated in SYSTEM. Reduce Motion handling and accessible control labels were inspected in source; VoiceOver focus, physical gestures, all text sizes and animation performance are **not runtime-certified**.
+- Camera crop math uses the vertical field-of-view default documented by [Apple](https://developer.apple.com/documentation/realitykit/perspectivecameracomponent/fieldofvieworientation). It preserves the landscape crop rather than stretching the portrait frame.
+
+Local screenshots are under the ignored `.local/pipeline-audit/` directory. Reproduce with the flags in [UI studio](../ui-studio.md); no screenshots contain private scans or credentials.
+
+### Remaining live acceptance gates
+
+`bash services/run-local.sh --check` currently reports missing `SERPAPI_API_KEY`, `GEMINI_PLANNING_MODEL`, `GEMINI_EXTRACTION_MODEL`, `GEMINI_SPATIAL_MODEL` and `GEMINI_API_KEY` (or `GOOGLE_API_KEY`). The existing reconstruction credentials were detected without exposing their values. Required Python/browser runtimes were installed locally. Both live services remain stopped until planning configuration is supplied.
+
+After configuration, use `--live`, set reachable app service addresses, and run a fresh LiDAR capture through walkthrough publication, Product discovery/verification, a saved placement, its current-view image, reopen and retry. Confirm provider quality, actual camera alignment and product likeness on that real room. The decorated view uses the normalized measured Scene and representative catalog assets; it does not edit the original textured reconstruction in place. Model output is an AI concept and is not evidence of physical fit. These live quality gates remain open; this audit does not declare the app release-ready.
+
+---
+
+**Historical snapshot:** 18 October 2026. Repository base HEAD was 3353be181838559d46c5cb0a5f1e3197de3af1d0, with substantial existing working-tree changes. This is not an audit of that clean commit. Re-read files before acting on a finding.
 
 ## 1. Audit procedure for an AI agent
 

@@ -4,6 +4,23 @@ import XCTest
 @testable import ReSpaceCore
 
 final class ReconstructionTests: XCTestCase {
+    func testConnectionCheckIsReadOnlyAndRequiresNativePipeline() async throws {
+        for pipeline in ["threejs", "insta"] {
+            let recorder = ReconstructionRequestRecorder { request in
+                XCTAssertEqual(request.httpMethod, "GET")
+                XCTAssertEqual(request.url?.path, "/health")
+                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Bearer test-reconstruction-token")
+                return (200, try JSONSerialization.data(withJSONObject: ["schema_version": 1, "status": "ok", "pipeline": pipeline, "native_upload_schema_version": 2]))
+            }
+            let client = ReconstructionClient(baseURL: URL(string: "http://mac.local:8008")!, token: "test-reconstruction-token", session: recorder.session())
+            if pipeline == "threejs" { try await client.checkConnection() }
+            else {
+                do { try await client.checkConnection(); XCTFail("An incompatible service cannot be marked ready") }
+                catch { XCTAssertTrue(error.localizedDescription.contains("update")) }
+            }
+            XCTAssertEqual(recorder.requests.count, 1)
+        }
+    }
     func testLiveSwiftClientUploadsProcessesAndDownloadsRetainedScan() async throws {
         let env = ProcessInfo.processInfo.environment
         guard let fixture = env["RESPACE_TEST_SWIFT_RECONSTRUCTION_FIXTURE"],
@@ -73,6 +90,38 @@ final class ReconstructionTests: XCTestCase {
             XCTAssertEqual(refreshed?.id, id)
         } catch { XCTFail("A valid UUID submission must succeed: \(error)") }
         XCTAssertTrue(recorder.requests.allSatisfy { !$0.url!.absoluteString.contains("%25") })
+    }
+
+    func testResumedUploadProgressCountsOnlyAcknowledgedBytes() async throws {
+        actor ProgressLog {
+            var entries: [[Int]] = []
+            func record(_ completed: Int, _ total: Int) { entries.append([completed, total]) }
+        }
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        addTeardownBlock { try? FileManager.default.removeItem(at: root) }
+        let repository = CaptureRepository(directory: root)
+        var manifest = try await repository.create()
+        manifest.state = "local_saved"
+        let bytes = Data("mesh".utf8)
+        manifest.sceneMesh = ArtifactRecord(id: "mesh", type: "scene_mesh", filename: "mesh.mesh", byteLength: bytes.count,
+            sha256: SHA256.hash(data: bytes).map { String(format: "%02x", $0) }.joined())
+        manifest.roomExport = ArtifactRecord(id: "layout", type: "roomplan", filename: "layout.json", byteLength: 6, sha256: String(repeating: "a", count: 64))
+        try await repository.save(manifest)
+        let hash = SHA256.hash(data: Data(manifest.captureId.utf8)).map { String(format: "%02x", $0) }.joined()
+        try bytes.write(to: root.appendingPathComponent(hash).appendingPathComponent("mesh.mesh"))
+        let id = manifest.captureId
+        let recorder = ReconstructionRequestRecorder { request in
+            if request.url!.path.hasSuffix("/artifacts/mesh") { return (200, Data()) }
+            let state = request.httpMethod == "PUT" ? "uploading" : "queued"
+            return (200, try Wire.encoder().encode(ReconstructionJob(schemaVersion: 1, id: id, state: state, revision: 0,
+                stage: state, missingArtifactIds: state == "uploading" ? ["mesh"] : [])))
+        }
+        let client = ReconstructionClient(baseURL: URL(string: "http://mac.local:8008")!, token: "test-reconstruction-token", session: recorder.session())
+        let log = ProgressLog()
+        _ = try await client.submit(id, repository: repository) { completed, total in await log.record(completed, total) }
+        let entries = await log.entries
+        XCTAssertEqual(entries, [[6, 10], [10, 10]])
+        XCTAssertFalse(recorder.requests.contains { $0.url!.path.hasSuffix("/artifacts/layout") }, "Previously acknowledged files must not upload again")
     }
 
     func testRefreshOfUnsubmittedIntentDoesNotShowMissingJobAsSetupFailure() async throws {
@@ -167,6 +216,8 @@ final class ReconstructionTests: XCTestCase {
         job.result?.generationModel = "gpt-6-sol"
         XCTAssertTrue(job.result?.isAIGenerated == true)
         job.result?.generationModel = "gpt-6.1-sol"
+        XCTAssertTrue(job.result?.isAIGenerated == true)
+        job.result?.generationModel = "gpt-6.2-sol"
         XCTAssertTrue(job.result?.isAIGenerated == true)
         job.stage = "astra_batch:1-4/12"
         XCTAssertEqual(job.stageDescription, "Building objects · 1-4/12")
@@ -417,6 +468,15 @@ final class ReconstructionTests: XCTestCase {
         let root = try XCTUnwrap(Bundle.module.url(forResource:"Fixtures",withExtension:nil)).appendingPathComponent("Walkthrough")
         var scene = try Wire.decoder().decode(WalkthroughBundle.self,from:Data(contentsOf:root.appendingPathComponent("scene.json")))
         let key = try ReconstructionClient.renditionKey(scene)
+        let viewpoint = RenditionPerspective(position:[1,1.6,2],target:[0,1.6,0],fieldOfView:60)
+        let designContext = RenditionDesign(designId:"saved-1",roomId:"room-1",items:[])
+        let viewKey = try ReconstructionClient.renditionKey(scene,perspective:viewpoint,design:designContext)
+        XCTAssertNotEqual(viewKey,key)
+        XCTAssertEqual(viewKey,try ReconstructionClient.renditionKey(scene,perspective:viewpoint,design:designContext))
+        XCTAssertNotEqual(viewKey,try ReconstructionClient.renditionKey(scene,
+            perspective:RenditionPerspective(position:[2,1.6,2],target:[0,1.6,0],fieldOfView:60),design:designContext))
+        XCTAssertNotEqual(viewKey,try ReconstructionClient.renditionKey(scene,perspective:viewpoint,
+            design:RenditionDesign(designId:"saved-2",roomId:"room-1",items:[])))
         var legacyData=try Wire.encoder().encode(scene)
         legacyData.append(Data("initial_room_view_v1".utf8))
         let legacyKey=SHA256.hash(data:legacyData).map { String(format:"%02x",$0) }.joined()
@@ -440,10 +500,12 @@ final class ReconstructionTests: XCTestCase {
             }
             let body = try XCTUnwrap(JSONSerialization.jsonObject(with:encoded) as? [String:Any])
             XCTAssertEqual(body["image_base64"] as? String,Data("source-render".utf8).base64EncodedString())
+            XCTAssertEqual((body["perspective"] as? [String:Any])?["position"] as? [Double], viewpoint.position)
+            XCTAssertEqual((body["design"] as? [String:Any])?["design_id"] as? String, designContext.designId)
             return (202,try JSONSerialization.data(withJSONObject:["state":"succeeded","sha256":checksum,"byte_length":image.count]))
         }
         let client = ReconstructionClient(baseURL:URL(string:"http://mac.local:8008")!,token:"test-reconstruction-token",session:recorder.session())
-        let downloaded = try await client.rendition(scene:scene,image:Data("source-render".utf8))
+        let downloaded = try await client.rendition(scene:scene,image:Data("source-render".utf8),perspective:viewpoint,design:designContext)
         XCTAssertEqual(downloaded,image)
         XCTAssertEqual(recorder.requests.map(\.httpMethod),["GET","POST","GET"])
     }

@@ -21,8 +21,8 @@ let package = Package(
         .testTarget(name: "ReSpaceContractsTests", dependencies: ["ReSpaceContracts"], path: "ReSpaceTests"),
         .target(name: "ReSpaceCore", path: "ReSpace",
                 exclude: contractSources + appSources + resources + ["App/CompatibilityView.swift", "App/ReSpaceTheme.swift", "App/NetworkRecoveryMonitor.swift",
-                    "Rooms", "Design", "Rendering", "ShoppingPresentation", "Capture/Source", "Capture/CaptureController.swift", "Capture/CaptureScreen.swift", "Capture/FrameEncoder.swift", "Capture/SceneMeshEncoder.swift"],
-                sources: ["Domain", "Networking", "Persistence", "Capture/CaptureRepository.swift", "App/AppConfiguration.swift", "App/WorkspaceStore.swift"]),
+                    "Rooms", "Design", "Rendering/RoomSceneController.swift", "Rendering/ProcessedRoomScene.swift", "Rendering/WalkthroughView.swift", "Rendering/StandinFactory.swift", "Rendering/AssetCache.swift", "Rendering/RoomRenditionView.swift", "Rendering/RoomSceneView.swift", "Rendering/RoomColorizer.swift", "Rendering/MeasuredRoomScene.swift", "ShoppingPresentation", "Capture/Source", "Capture/CaptureController.swift", "Capture/CaptureScreen.swift", "Capture/FrameEncoder.swift", "Capture/SceneMeshEncoder.swift"],
+                sources: ["Domain", "Networking", "Persistence", "Capture/CaptureRepository.swift", "App/AppConfiguration.swift", "App/WorkspaceStore.swift", "Rendering/WalkthroughEnvironment.swift"]),
         .testTarget(name: "ReSpaceCoreTests", dependencies: ["ReSpaceCore"], path: "Tests/ReSpaceCoreTests", resources: [.copy("Fixtures")])
     ],
     swiftLanguageModes: [.v5]

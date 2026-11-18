@@ -4,6 +4,23 @@ Status: consolidated implementation specification. Product behavior and conflict
 
 This document governs the product. Earlier specification drafts are historical inputs and do not override it. Requirements are organized by product functionality and system components. Targets and examples are not claims of measured performance or completed implementation.
 
+## Approved pipeline and visual update — 15 November 2026
+
+The user's explicit request adds a connected scan → first-person walkthrough → decorated saved Design with real Product suggestions → realistic image journey. This update supersedes older exclusions of walk mode, scene image capture and optional photoreal images, and older purple/gold styling requirements.
+
+- The original reconstructed Room remains immutable and viewing-only. Decorating opens the existing native-measurement planning flow; validated placements and purchases still belong to immutable backend Designs. A Three.js reconstruction does not become a planning-ready `room.json` by implication.
+- A saved Design opens in first-person view where its floor has a valid camera position, with collision-bounded walking, look controls and an optional orbit view. Camera movement does not create a Design version. Rooms without a valid standing position retain orbit inspection.
+- Image generation uses the current camera, a clean rendered reference and the displayed committed Design's active Item placements and Product identities. Original capture photos supply appearance context; they must not reinstate removed furnishings or override the saved arrangement. A generated image is an AI concept, not proof of exact Product appearance, dimensions or fit.
+- Request identity includes the camera and Design context. Retrying/reopening the same request reconciles the same generation; explicit Refresh is a separate paid request. Preserve the last image request locally. Existing provider selection, price disclosure and reconstruction spending limits remain unchanged.
+- Production My Rooms contains actual saved rooms only. Debug studio fixtures remain development-only. Missing connections, unavailable images and failed Design loading expose clear recovery; they must not look like successful empty results.
+- Brand colors are Tangerine Orange `#EE5001`, White `#FCFFFF` and Acid Lime `#C8FD03`, supported by dark readable ink. Use spatial scan-line motion and tactile controls with Reduce Motion support. Product/capture imagery retains its actual colors.
+
+A physical LiDAR scan and configured live providers are still required for full acceptance. Simulator fixtures and mocked model calls establish neither physical capture quality nor live recommendation/image quality. See [the dated audit](docs/design/AUDIT.md) for measured verification and remaining gates.
+
+### Scan-first validation and UI follow-up
+
+The user's subsequent 15 November instruction narrows active validation to scanning and reconstruction with a connected LiDAR iPhone. Decoration/Product discovery and model-to-image validation are deferred. The current build uses `RESPACE_DESIGN_FEATURES=NO` to hide those entry points while preserving their implementation and saved data. Scan/model operation must not depend on the planning service. The UI follows standard native list, navigation, form and progressive-disclosure patterns; a clear next action takes precedence over the earlier marketing hero and ornamental controls. Keep the approved palette with restrained accents.
+
 ## Problem Statement
 
 A person redesigning a room must reconcile its actual shape, existing furnishings, intended activities, style and budget. Photos alone do not reliably communicate dimensions or usable space. Shopping listings have inconsistent measurements, duplicate offers, stale prices and packs whose purchase quantity differs from the number of Items placed. Attractive recommendations can still block a doorway, collide with furniture or leave a lamp without a supporting table.
@@ -320,7 +337,9 @@ independent comparison of delivered OBJ/MTL/PNG assets against source cameras
 spread over the recorded route. Only then publish an immutable native scene and
 embedded-texture USDZ. Preserve source appearance; never publish baseline boxes
 or default finish families as fallback. Native rendering uses ambient/directional
-lighting; original Three.js fixture lights/postprocessing are not carried across
+lighting plus a one-time room-derived reflection probe so exported metallic
+materials retain environment response. The probe is a rendering approximation,
+not a measurement of captured fixture lighting; original Three.js fixture lights/postprocessing are not carried across
 as an identical renderer. Record remaining inferences and verify real-room
 appearance on a fresh device capture. The normal Retry reuses source, tool and
 paid response checkpoints. Explicit Generate from scratch creates a separate
@@ -1549,13 +1568,13 @@ Contract tests check that fields necessary to render or enforce rules are presen
 - Business mode, mode selector, business labels, explicit seating-target controls, business seating-group placement and business-only counter/register clearance workflows.
 - Spot intent, tapped-placement input and `at_spot` Anchors.
 - Sample-room entry/recovery, unsupported-device browsing, iPad and Android.
-- Before/After UI, walk mode, Day/Evening toggle, actual scene screenshot export and public hosted design sharing. Local shopping lists and native image/text sharing with a labeled placeholder room image are included.
+- Before/After UI, Day/Evening toggle and public hosted design sharing. First-person viewing and camera-reference image generation are included by the 15 November update. Local shopping lists and native image/text sharing remain included.
 - Furniture dragging, direct rotation, mutable direct-transform PATCH and manual model-editor tools. Camera gestures and validated Swap/Remove remain included.
 - Cart, checkout, payments, Amazon Product API and an additional commerce backend. Exact-offer Buy and an optional secondary configured search link remain included.
 - User accounts/login, a shared app-key gate or a new authentication project. Input validation, private capture media and server credentials remain required.
 - Offline design editing, interrupted-acquisition continuation and Use partial scan. Local reconstruction capture and completed-upload recovery are included under §3.5.
 - Multi-room reconstruction, Gaussian splats, live camera AR placement or erasing physical furniture from camera images. Single-room reconstruction and viewing-only walkthroughs are included under §3.5.
-- On-demand 3D generation for live results, optional photoreal inspiration images and model review of rendered Scenes. Offline catalog asset preparation remains included.
+- On-demand 3D Product generation for live results and model review as a substitute for deterministic placement validation. Offline catalog asset preparation and explicitly requested camera-based realistic images remain included.
 - Custom voice recording, Redo/history browsing, cross-room preference profiles and a preference-reuse interface.
 - Concurrent speculative spatial work, searches behind unanswered questions, parallel per-Room branches, overlapping mutations and future dependency-graph orchestration. Local action dependency validation remains required.
 - Extra agent frameworks, multi-agent runtime, microservices, Kubernetes, ORM/migration framework, vector search or time-series infrastructure.

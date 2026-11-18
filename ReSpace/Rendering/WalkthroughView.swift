@@ -85,9 +85,15 @@ private actor WalkthroughLoader {
                 root.addChildNode(child)
             }
             guard !root.childNodes.isEmpty else { throw ClientError.invalidGeometry }
+            let m=entity.localToScanTransform.map(Float.init)
+            root.simdTransform=simd_float4x4(SIMD4(m[0],m[1],m[2],m[3]),SIMD4(m[4],m[5],m[6],m[7]),SIMD4(m[8],m[9],m[10],m[11]),SIMD4(m[12],m[13],m[14],m[15]))
             scene.rootNode.addChildNode(root)
         }
         guard count>0, count<=1_000_000 else { throw ClientError.invalidGeometry }
+        if generated {
+            let p=bundle.navigation.spawnPosition
+            WalkthroughEnvironment.apply(to: scene, at: SCNVector3(Float(p[0]),Float(p[1]),Float(p[2])))
+        }
         return scene
     }
 }
@@ -144,20 +150,15 @@ private actor WalkthroughLoader {
         position=[nav.spawnPosition[0],nav.spawnPosition[2]];yaw=nav.spawnYaw;pitch=0;updateCamera()
     }
     func renditionInput(directory: URL) throws -> RoomRenditionInput {
-        guard let scene, var design=bundle, let source else { throw ClientError.invalidGeometry }
-        // Keep one corner perspective regardless of where the user walks.
-        // The image uses the verified reconstruction without local design edits.
-        design.navigation=source.navigation
-        let key=try ReconstructionClient.renditionKey(design)
-        let url=directory.appendingPathComponent("rendition-\(key).png")
+        guard let scene, let design=bundle else { throw ClientError.invalidGeometry }
         let viewCamera=camera.clone()
         viewCamera.camera=camera.camera?.copy() as? SCNCamera
-        guard let view=RoomRenditionCamera.cornerView(navigation:source.navigation,entities:design.entities) else {
-            throw ClientError.storage("There is no clear corner for a room image in this layout.")
-        }
-        viewCamera.position=SCNVector3(Float(view.position[0]),Float(view.position[1]),Float(view.position[2]))
-        viewCamera.look(at:SCNVector3(Float(view.target[0]),Float(view.target[1]),Float(view.target[2])))
-        viewCamera.camera?.fieldOfView=70
+        let p=camera.simdWorldPosition, direction=camera.simdWorldFront
+        let target=p+direction
+        let perspective=RenditionPerspective(position:[Double(p.x),Double(p.y),Double(p.z)],
+            target:[Double(target.x),Double(target.y),Double(target.z)],fieldOfView:Double(camera.camera?.fieldOfView ?? 60))
+        let key=try ReconstructionClient.renditionKey(design,perspective:perspective)
+        let url=directory.appendingPathComponent("rendition-\(key).png")
         let renderer=SCNRenderer(device:nil,options:nil)
         renderer.scene=scene;renderer.pointOfView=viewCamera
         let size=CGSize(width:1536,height:1024)
@@ -167,7 +168,7 @@ private actor WalkthroughLoader {
             snapshot.draw(in:CGRect(origin:.zero,size:size))
         }
         guard let jpeg=image.jpegData(compressionQuality:0.9) else { throw ClientError.invalidResponse }
-        return RoomRenditionInput(id:key,scene:design,image:jpeg,cachedURL:url)
+        return RoomRenditionInput(id:key,scene:design,image:jpeg,cachedURL:url,perspective:perspective)
     }
     func look(x: Double,y: Double) { yaw-=x*0.004;pitch=max(-1.3,min(1.3,pitch-y*0.004));updateCamera() }
     func walk(x: Double,z: Double) {
@@ -243,6 +244,7 @@ private actor WalkthroughLoader {
 struct WalkthroughView: View {
     let sceneURL: URL
     var reconstruction: ReconstructionClient? = nil
+    var imageGenerationEnabled = true
     @StateObject private var session=WalkthroughSession()
     @State private var error: String?
     @State private var rendition: RoomRenditionInput?
@@ -251,15 +253,24 @@ struct WalkthroughView: View {
             if let scene=session.scene {
                 WalkthroughCanvas(scene:scene,session:session).ignoresSafeArea(edges:.bottom)
                 VStack {
-                    HStack { Spacer(); RSIconButton(symbol: "viewfinder", label: "Reset View") { session.reset() } }.padding(.horizontal, 16).background(.white)
-                    if let summary=session.detailSummary { Text(summary).font(ReSpaceStyle.font(13)).padding(6).background(.regularMaterial) }
-                    if reconstruction != nil {
-                        Button {
+                    HStack {
+                        Spacer()
+                        HStack(spacing: 8) {
+                        RSIconButton(symbol: "viewfinder", label: "Reset View") { session.reset() }
+                        if reconstruction != nil && imageGenerationEnabled {
+                        RSIconButton(symbol: "camera.aperture", label: "Create realistic image") {
                             do { rendition=try session.renditionInput(directory:sceneURL.deletingLastPathComponent()) }
                             catch { session.message=error.localizedDescription }
-                        } label: { Label("Create realistic image",systemImage:"camera.aperture") }
-                        .buttonStyle(RSButtonStyle(kind: .secondary))
-                    }
+                        }
+                        if FileManager.default.fileExists(atPath:sceneURL.deletingLastPathComponent().appendingPathComponent("latest-room-image.json").path) {
+                            RSIconButton(symbol: "photo", label: "Last room image") {
+                                do { rendition=try RoomRenditionInput.retained(in:sceneURL.deletingLastPathComponent()) }
+                                catch { session.message=error.localizedDescription }
+                            }
+                        }
+                        }
+                        }.padding(4).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+                    }.padding(16)
                     Spacer()
                     if let entity=session.selected {
                         VStack(spacing:8) {
@@ -267,8 +278,9 @@ struct WalkthroughView: View {
                             Button("Done") { session.selection=nil }
                         }.padding().background(.regularMaterial,in:RoundedRectangle(cornerRadius:16)).padding()
                     }
-                    HStack { Button { session.walk(x:-0.15,z:0) } label: { Image(systemName: "arrow.left") }.accessibilityLabel("Walk left");Button("Forward") { session.walk(x:0,z:-0.15) };Button("Back") { session.walk(x:0,z:0.15) };Button { session.walk(x:0.15,z:0) } label: { Image(systemName: "arrow.right") }.accessibilityLabel("Walk right") }.buttonRepeatBehavior(.enabled).buttonStyle(RSButtonStyle(kind: .secondary)).padding().background(.regularMaterial)
-                    Text("Drag to look · Hold a walking control to move · Tap to select").font(ReSpaceStyle.font(13)).padding(6).background(.regularMaterial)
+                    RSWalkControls { x, z in session.walk(x:x,z:z) }.padding(.horizontal,16)
+                    Text("Drag to look · Hold arrows to walk").font(ReSpaceStyle.font(12))
+                        .multilineTextAlignment(.center).padding(10).background(.regularMaterial, in: Capsule()).padding(.bottom, 12)
                 }
             } else if let error { ContentUnavailableView("Walkthrough unavailable",systemImage:"cube",description:Text(error)) }
             else { ProgressView("Opening your room…") }

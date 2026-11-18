@@ -2,6 +2,11 @@ import SwiftUI
 
 func productOffer(_ product: JSONValue) -> JSONValue { product["offer"] == .null ? product["chosen_offer"] : product["offer"] }
 func productPrice(_ product: JSONValue) -> String { let offer = productOffer(product); return offer["price"].string ?? offer["price"]["amount"].text }
+func productMeasurements(_ product: JSONValue) -> String {
+    let sizes=product["dimensions"].numbers
+    guard sizes.count==3 else { return "Measurements unavailable" }
+    return zip(["W","D","H"],sizes).map { "\($0.0) \(String(format:"%.1f",$0.1*100))" }.joined(separator:" · ")+" cm"
+}
 func productTitle(_ product: JSONValue) -> String { product["title"].string ?? product["variant"]["title"].text }
 
 struct ProductImage: View {
@@ -15,11 +20,17 @@ struct ProductImage: View {
             } else if let source = product["variant"]["image_references"].array.first?.string, let url = URL(string: source) {
                 AsyncImage(url: url) { phase in
                     if let image = phase.image { image.resizable().scaledToFit() }
-                    else if phase.error != nil { Image(systemName: "photo").foregroundStyle(ReSpaceStyle.secondary).accessibilityLabel("Product image unavailable") }
+                    else if phase.error != nil { unavailable }
                     else { ProgressView() }
                 }
-            } else { Image(systemName: "photo").font(.system(size: 28, weight: .light)).foregroundStyle(ReSpaceStyle.secondary).accessibilityLabel("No Product image") }
+            } else { unavailable }
         }.accessibilityLabel(productTitle(product))
+    }
+    private var unavailable: some View {
+        VStack(spacing:10) {
+            Image(systemName:"photo").font(.system(size:28,weight:.light))
+            Text("Photo unavailable").font(ReSpaceStyle.font(12))
+        }.foregroundStyle(ReSpaceStyle.secondary)
     }
 }
 
@@ -147,7 +158,7 @@ struct ProductDetail: View {
             if let variant = product["variant"]["variant_label"].string { Text(variant).font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary) }
             if !product["reason"].text.isEmpty { Text(product["reason"].text).font(ReSpaceStyle.font(16)).foregroundStyle(ReSpaceStyle.secondary) }
             VStack(spacing: 0) {
-                Button { page = "evidence" } label: { RSRow(title: "Measurements & evidence", subtitle: "Exact variant and offer details", symbol: "doc.text") }
+                Button { page = "evidence" } label: { RSRow(title: "Size & details", subtitle: "Exact variant and offer details", symbol: "doc.text") }
                 Button { page = "alternatives" } label: { RSRow(title: "See alternatives", subtitle: "Keep this choice until a swap is saved", symbol: "arrow.triangle.2.circlepath") }
             }.buttonStyle(.plain)
         }
@@ -161,7 +172,7 @@ struct ProductDetail: View {
             Button { option = choice; page = "option" } label: {
                 VStack(alignment: .leading, spacing: 12) {
                     ProductSummary(product: choice)
-                    Text(choice["dimensions"].numbers.map { String(format: "%.1f", $0 * 100) }.joined(separator: " × ") + " cm")
+                    Text(productMeasurements(choice))
                         .font(ReSpaceStyle.font(13)).foregroundStyle(ReSpaceStyle.secondary)
                     Text("Preview · fit pending").font(ReSpaceStyle.font(12)).foregroundStyle(ReSpaceStyle.secondary)
                 }.padding(16).background(.white, in: RoundedRectangle(cornerRadius: 20))
@@ -225,7 +236,6 @@ struct ProductEvidence: View {
                     }
                     let uncertainty = product["uncertainty"].string ?? product["uncertainty"].array.compactMap(\.string).joined(separator: "\n")
                     if !uncertainty.isEmpty { Text(uncertainty).font(ReSpaceStyle.font(14)) }
-                    Text("Selected variant: \(product["variant_id"].text)").font(ReSpaceStyle.font(12)).foregroundStyle(ReSpaceStyle.secondary)
                 }.padding(.top, 12)
             }.font(ReSpaceStyle.font(14))
             if !product["offers"].array.isEmpty {

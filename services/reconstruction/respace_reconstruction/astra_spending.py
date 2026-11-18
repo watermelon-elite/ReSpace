@@ -8,6 +8,7 @@ import hashlib
 import json
 import math
 import os
+import time
 import urllib.error
 import urllib.request
 
@@ -18,8 +19,9 @@ CEILING_UNITS = 10_000_000  # USD millionths; $10 per explicitly started generat
 # Standard USD per million tokens: ordinary input, cache hit, cache write, output.
 # Keep historical Astra/Sol rates for their existing receipts and other pipelines.
 # GPT-6.1 Sol: https://developers.openai.com/api/docs/models/gpt-6.1-sol
+# GPT-6.2 Sol: https://developers.openai.com/api/docs/models/gpt-6.2-sol
 RATES = {"gpt-6-astra": (10., 1., 12.5, 50.), "gpt-6-sol": (2., .2, 2.5, 10.),
-         "gpt-6.1-sol": (2., .1, 2.5, 10.)}
+         "gpt-6.1-sol": (2., .1, 2.5, 10.), "gpt-6.2-sol": (2., .1, 2.5, 10.)}
 
 
 def rates(model):
@@ -65,11 +67,12 @@ def actual_units(response, model="gpt-6-astra"):
 
 
 class Spending:
-    def __init__(self, path):
+    def __init__(self, path, *, deadline=None):
         self.path = path
+        self.deadline = deadline
         self.data = json.loads(path.read_text()) if path.exists() else {
             "ceiling_units": CEILING_UNITS, "currency": "USD", "units_per_dollar": 1000000,
-            "rate_basis": "2026-10-25 Standard USD per million: Sol 6.1 input 2/cache .1/write 2.5/output 10; Sol 2/.2/2.5/10; Astra 10/1/12.5/50; long-context uplift",
+            "rate_basis": "2026-11-17 Standard USD per million: Sol 6.1 and 6.2 input 2/cache .1/write 2.5/output 10; Sol 2/.2/2.5/10; Astra 10/1/12.5/50; long-context uplift",
             "entries": {}}
         if self.data["ceiling_units"] != CEILING_UNITS:
             raise RuntimeError("The retained Astra budget policy differs; review it before continuing")
@@ -80,6 +83,10 @@ class Spending:
 
     def save(self):
         atomic_json(self.path, self.data)
+
+    def check_deadline(self):
+        if self.deadline is not None and time.monotonic() >= self.deadline:
+            raise TimeoutError("Reconstruction reached its time limit; source and paid checkpoints are retained for retry")
 
     def request(self, body, directory, label):
         model = body["model"]
@@ -99,10 +106,12 @@ class Spending:
             raise RuntimeError("An Astra call has an unknown billing outcome; retained reservations block further paid calls")
         if entry:
             raise RuntimeError("The billed response checkpoint is missing; refusing to pay for it again")
+        self.check_deadline()
         key = os.environ.get("OPENAI_API_KEY", "").strip()
         if not key:
             raise RuntimeError("Set OPENAI_API_KEY on the local reconstruction service")
         inputs = count_input_tokens(body, key)
+        self.check_deadline()
         # All input is reserved at the most expensive cache-write rate, with
         # headroom for counting discrepancies. Long-context threshold uses this
         # ceiling too. Reasoning is already part of max_output_tokens.

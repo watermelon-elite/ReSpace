@@ -4,6 +4,14 @@ Use [PROFILE](PROFILE.md) for authority and [SYSTEM](SYSTEM.md) for visual imple
 
 **Contract** means current SPEC behavior. Layout/copy prescriptions are the intended design direction unless marked as recommendations. Example copy describes a pattern; sample prices, objects and outcomes must never be passed off as live data.
 
+## Current scan-first flow — 15 November follow-up
+
+This follow-up supersedes earlier home/portal/control prescriptions below. Rooms uses the standard native list and navigation title, with Settings in the toolbar and Scan room as its only primary action. Settings contains an editable Mac service address and authenticated compatibility check. Saving an address requires a successful check; the token stays out of the UI. Local scan loading/errors are separate from planning-service failures.
+
+New scan presents three concise preparation tips, then opens full-screen capture. Camera guidance and Finish scan stay visible. Advanced photo options/counters move into a menu. After durable save, show Ready to build your room with Build 3D model as the only primary action; ask for the existing $10 limit before submitting. While uploading, request keeping the app open; once queued, users can leave and reopen to follow real progress. Export/rebuild belong in Room options. The completed model opens in first-person view.
+
+The current build defers design/shopping/image controls through `RESPACE_DESIGN_FEATURES=NO`; it does not erase their data or change their contracts. Re-enable only for the next integration stage. The original reconstruction workflow operates without Gemini or SerpAPI.
+
 ## 1. Screen contract template
 
 Before implementing a new state, fill in this compact contract:
@@ -69,7 +77,7 @@ Use a focused page with a direct compatibility title, one short explanation of t
 
 **Immediate content:** concise heading, one relevant room image if available, dominant Scan your room action. A small connection/recovery message can replace decorative content when prerequisites need attention.
 
-The image establishes what the app is about; it is inspiration, not the user's captured room. Avoid additional cards for style, shopping, inspiration browsing or feature education.
+The empty library uses an abstract animated scan portal, not a sample scan. Saved scan thumbnails come from that capture. Avoid additional cards for style, shopping, inspiration browsing or feature education.
 
 **Actions:** Scan → setup/permission. A necessary connection/settings control can be quiet. No account creation step.
 
@@ -86,9 +94,7 @@ The image establishes what the app is about; it is inspiration, not the user's c
 **Actions:** open Room → review; New Scan creates a new Room. Saved shopping lists is a separate compact destination when available. Rename/delete belong to Room options, not competing large library actions.
 
 The library header is just Your rooms and an accessible shopping-bag icon. Omit
-the wordmark, mascot, tagline and lower shopping-list row. Debug Simulator scans
-use a full-color, intentionally inert Scan your room button with no device-test
-notice; physical-device scan gating stays in place.
+the wordmark, mascot and lower shopping-list row. In Debug Simulator, Scan your room opens an explanation of the LiDAR requirement; it must not silently do nothing. Physical-device scan gating stays in place. The empty library can introduce the scan task; populated libraries prioritize actual saved rooms.
 
 **State rules:**
 
@@ -392,7 +398,11 @@ Do not claim the entire request succeeded when only a subset did. Do not create 
 
 **Task:** see and refine the saved arrangement.
 
-**Layout:** full available Room canvas, compact Room title/navigation, top-right shopping bag, Items/Undo/Reset View and view options above the scene, floating composer with concise request status/context below.
+**Layout:** full available Room canvas, compact Room title/navigation, top-right shopping bag, Items/camera/view-mode/Undo/Reset View and view options above the scene, floating composer with request status when relevant. Initial load shows progress; a failed initial load shows recovery and Retry without an invalid composer.
+
+**First-person and image flow (15 November):** start at a valid inset position facing into the room; drag to look, use arrows/two fingers to walk within the measured floor and around furniture. Orbit remains available. The camera action captures this viewpoint and the displayed committed Design for a realistic AI concept. It is unavailable during mutations, Swap previews or unfinished asset loads. Missing reconstruction context explains the required walkthrough step. View options reopen the retained last image request. Image Retry reconciles that request; Refresh explicitly requests a separate paid generation.
+
+At accessibility text sizes, Items opens as a large sheet and toolbar icons retain accessible labels. Normal panels reserve the measured composer height. Focusing the composer closes Items.
 
 Items starts closed. No Assistant tab, transcript screen, zoom buttons or Cutaway toggle. A canvas does not need a large page title repeating the Room name.
 
@@ -639,6 +649,6 @@ Use this checklist to choose meaningful fixtures and runtime checks. It is not p
 
 ## Integrated reconstruction screens (2026-10-18)
 
-Saved scan has one primary reconstruction action and a secondary Plan changes route into the existing Room review. Actual upload/progress/error state persists; prior successful walkthroughs remain available. Use Inter, RS actions/notices, bright surfaces and purple/gold emphasis from SYSTEM. Keep regenerate/share operations in secondary controls. A new paid generation retains the explicit $10 limit confirmation.
+Saved scan has one primary reconstruction action and a secondary Plan changes route into the existing Room review. Actual upload/progress/error state persists; prior successful walkthroughs remain available. Use Inter, RS actions/notices, bright surfaces and orange/lime emphasis from SYSTEM. Keep regenerate/share operations in secondary controls. A new paid generation retains the explicit $10 limit confirmation.
 
-The walkthrough presents the original room, navigation, Reset View, object selection and optional image generation. It exposes no local editing or Undo controls and ignores old local edit files. Design changes open the existing backend flow. The image action is a generated rendition, not a committed Design.
+The walkthrough presents the original room, navigation, Reset View, object selection and optional image generation. It exposes no local editing or Undo controls and ignores old local edit files. Design changes open the existing backend flow. The image action uses the current camera and is an AI rendition, not a committed Design. The saved Design has its own camera action carrying its active placements; original photos are appearance references only.

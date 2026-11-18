@@ -2,9 +2,55 @@ import XCTest
 import SceneKit
 import ModelIO
 import SceneKit.ModelIO
+#if os(macOS)
+import AppKit
+#endif
 @testable import ReSpaceCore
 
 final class WalkthroughTests: XCTestCase {
+#if os(macOS)
+    func testRoomReflectionProbePreservesDirectionAndRestoresMetalResponse() throws {
+        let scene = SCNScene()
+        scene.background.contents = NSColor.black
+        let colors: [NSColor] = [.red, .green, .blue, .yellow, .magenta, .cyan]
+        let positions = [SCNVector3(3,0,0), SCNVector3(-3,0,0), SCNVector3(0,3,0),
+                         SCNVector3(0,-3,0), SCNVector3(0,0,3), SCNVector3(0,0,-3)]
+        for (position, color) in zip(positions, colors) {
+            let node = SCNNode(geometry: SCNSphere(radius: 1))
+            node.geometry?.firstMaterial?.lightingModel = .constant
+            node.geometry?.firstMaterial?.diffuse.contents = color
+            node.position = position
+            scene.rootNode.addChildNode(node)
+        }
+        WalkthroughEnvironment.apply(to: scene, at: SCNVector3Zero)
+        XCTAssertNotNil(scene.lightingEnvironment.contents)
+        func center(_ image: NSImage) throws -> NSColor {
+            let bitmap = NSBitmapImageRep(cgImage: try XCTUnwrap(image.cgImage(forProposedRect: nil, context: nil, hints: nil)))
+            return try XCTUnwrap(bitmap.colorAt(x: bitmap.pixelsWide/2, y: bitmap.pixelsHigh/2)?.usingColorSpace(.sRGB))
+        }
+        scene.rootNode.childNodes.forEach { $0.removeFromParentNode() }
+        let metal = SCNNode(geometry: SCNPlane(width: 2, height: 2))
+        metal.position = SCNVector3(0,0,-1)
+        metal.geometry?.firstMaterial?.lightingModel = .physicallyBased
+        metal.geometry?.firstMaterial?.diffuse.contents = NSColor.white
+        metal.geometry?.firstMaterial?.metalness.contents = 1
+        metal.geometry?.firstMaterial?.roughness.contents = 0.05
+        scene.rootNode.addChildNode(metal)
+        let camera = SCNNode(); camera.camera = SCNCamera()
+        camera.camera?.zNear = 0.03
+        scene.rootNode.addChildNode(camera)
+        let renderer = SCNRenderer(device: nil, options: nil)
+        renderer.scene = scene; renderer.pointOfView = camera
+        XCTAssertTrue(renderer.prepare(scene, shouldAbortBlock: nil))
+        _ = renderer.snapshot(atTime: 0, with: CGSize(width: 64, height: 64), antialiasingMode: .none)
+        let reflected = try center(renderer.snapshot(atTime: 0, with: CGSize(width: 64, height: 64), antialiasingMode: .none))
+        scene.lightingEnvironment.contents = nil
+        let unlit = try center(renderer.snapshot(atTime: 0, with: CGSize(width: 64, height: 64), antialiasingMode: .none))
+        XCTAssertGreaterThan(reflected.redComponent, unlit.redComponent + 0.1)
+        XCTAssertGreaterThan(reflected.blueComponent, unlit.blueComponent + 0.1)
+        XCTAssertLessThan(reflected.greenComponent, min(reflected.redComponent, reflected.blueComponent) / 2)
+    }
+#endif
     func testRenditionUsesAnInsetCornerFacingTheRoomCenter() throws {
         let (bundle,_,_)=try fixture()
         let view=try XCTUnwrap(RoomRenditionCamera.cornerView(navigation:bundle.navigation,entities:bundle.entities))
@@ -79,6 +125,41 @@ final class WalkthroughTests: XCTestCase {
             XCTAssertTrue(bundle.navigation.canStand([view.position[0],view.position[2]],entities:[]))
             XCTAssertEqual(view.target[0],width/2,accuracy:0.000001)
             XCTAssertEqual(view.target[2],depth/2,accuracy:0.000001)
+        }
+    }
+
+    func testCapturedSceneImportsWithNativeMaterialsAndNavigableSpawn() throws {
+        guard let path = ProcessInfo.processInfo.environment["RESPACE_TEST_CAPTURED_SCENE"] else {
+            throw XCTSkip("Opt-in import check for a real captured room export")
+        }
+        let root = URL(fileURLWithPath: path)
+        let bundle = try Wire.decoder().decode(WalkthroughBundle.self, from: Data(contentsOf: root.appendingPathComponent("scene.json")))
+        let files = Set(try FileManager.default.contentsOfDirectory(atPath: root.path))
+        try bundle.validate(captureId: bundle.captureId, revision: bundle.reconstructionRevision, assets: files)
+        try bundle.validateFiles(in: root, assets: files)
+        let spawn = [bundle.navigation.spawnPosition[0], bundle.navigation.spawnPosition[2]]
+        XCTAssertTrue(bundle.navigation.canStand(spawn, entities: bundle.entities))
+        for direction in [[20.0, 0.0], [-20.0, 0.0], [0.0, 20.0], [0.0, -20.0]] {
+            let destination = bundle.navigation.move(from: spawn, delta: direction, entities: bundle.entities)
+            XCTAssertTrue(bundle.navigation.canStand(destination, entities: bundle.entities))
+        }
+        for entity in bundle.entities {
+            let asset = MDLAsset(url: root.appendingPathComponent(entity.asset))
+            asset.loadTextures()
+            let scene = SCNScene(mdlAsset: asset)
+            let expected = Set(bundle.materials.filter { $0.ownerId == entity.id }.map(\.sourceMaterial))
+            var imported = Set<String>()
+            var triangles = 0
+            scene.rootNode.enumerateHierarchy { node, _ in
+                guard let geometry = node.geometry else { return }
+                triangles += geometry.elements.reduce(0) { $0 + $1.primitiveCount }
+                imported.formUnion(geometry.materials.compactMap(\.name))
+                if bundle.materials.contains(where: { $0.ownerId == entity.id && $0.baseColorTexture != nil }) {
+                    XCTAssertFalse(geometry.sources(for: .texcoord).isEmpty, "Missing UVs for \(entity.id)")
+                }
+            }
+            XCTAssertGreaterThan(triangles, 0, "Empty native object: \(entity.id)")
+            XCTAssertTrue(expected.isSubset(of: imported), "Missing native material slots for \(entity.id)")
         }
     }
 

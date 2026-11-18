@@ -2,16 +2,22 @@ import SwiftUI
 import CoreText
 
 enum ReSpaceStyle {
-    static let ink = Color(red: 0.102, green: 0.102, blue: 0.102)
-    static let secondary = Color(red: 0.38, green: 0.357, blue: 0.412)
-    static let purple = Color(red: 0.416, green: 0.051, blue: 0.678)
-    static let gold = Color(red: 0.902, green: 0.769, blue: 0.416)
-    static let actionInk = Color(red: 0.071, green: 0.047, blue: 0.09)
-    static let actionGradient = LinearGradient(colors: [Color(red: 0.545, green: 0.361, blue: 0.965), Color(red: 0.961, green: 0.62, blue: 0.043)], startPoint: .topLeading, endPoint: .bottomTrailing)
-    static let wash = Color(red: 0.953, green: 0.922, blue: 0.98)
-    static let canvas = Color(red: 0.98, green: 0.973, blue: 0.988)
-    static let line = Color(red: 0.906, green: 0.878, blue: 0.922)
-    static let danger = Color(red: 0.631, green: 0.176, blue: 0.275)
+    static let ink = Color(red: 0.047, green: 0.063, blue: 0.067)
+    static let secondary = Color(red: 0.30, green: 0.34, blue: 0.34)
+    static let orange = Color(red: 238/255, green: 80/255, blue: 1/255)
+    static let lime = Color(red: 200/255, green: 253/255, blue: 3/255)
+    static let white = Color(red: 252/255, green: 1, blue: 1)
+    // Darkened accent is for small text on white; the exact orange is used on
+    // primary surfaces with dark labels to preserve readable contrast.
+    static let accent = Color(red: 0.66, green: 0.20, blue: 0)
+    static let purple = accent
+    static let gold = lime
+    static let actionInk = ink
+    static let actionGradient = LinearGradient(colors: [orange, orange], startPoint: .topLeading, endPoint: .bottomTrailing)
+    static let wash = Color(red: 1, green: 0.94, blue: 0.89)
+    static let canvas = white
+    static let line = Color(red: 0.84, green: 0.88, blue: 0.87)
+    static let danger = Color(red: 0.66, green: 0.12, blue: 0.12)
 
     static func font(_ size: CGFloat = 16, weight: Font.Weight = .regular, relativeTo: Font.TextStyle = .body) -> Font {
         .custom("InterVariable", size: size, relativeTo: relativeTo).weight(weight)
@@ -72,6 +78,30 @@ struct RSIconButton: View {
     }
 }
 
+struct RSWalkControls: View {
+    let walk: (Double, Double) -> Void
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    var body: some View {
+        HStack(spacing: 8) {
+            if !dynamicTypeSize.isAccessibilitySize {
+                Text("EXPLORE").font(ReSpaceStyle.font(10, weight: .bold)).tracking(2)
+                    .foregroundStyle(ReSpaceStyle.white).accessibilityHidden(true)
+            }
+            Spacer()
+            control("arrow.left", "Walk left", x: -0.15, z: 0)
+            control("arrow.up", "Walk forward", x: 0, z: -0.15)
+            control("arrow.down", "Walk backward", x: 0, z: 0.15)
+            control("arrow.right", "Walk right", x: 0.15, z: 0)
+        }.padding(8).background(ReSpaceStyle.ink.opacity(0.94), in: RoundedRectangle(cornerRadius: 20))
+    }
+    private func control(_ symbol: String, _ label: String, x: Double, z: Double) -> some View {
+        Button { walk(x, z) } label: {
+            Image(systemName: symbol).frame(width: 44, height: 44)
+                .foregroundStyle(ReSpaceStyle.ink).background(ReSpaceStyle.lime, in: Circle())
+        }.buttonStyle(.plain).buttonRepeatBehavior(.enabled).accessibilityLabel(label)
+    }
+}
+
 struct RSTopBar: View {
     var title = ""
     var companion: OlloCue? = nil
@@ -82,13 +112,13 @@ struct RSTopBar: View {
     var trailingDisabled = false
     var trailing: (() -> Void)?
     var body: some View {
-        HStack {
+        HStack(spacing: 8) {
             if let back { RSIconButton(symbol: "chevron.left", label: "Back", action: back) }
             else { Color.clear.frame(width: 44, height: 44) }
-            Spacer(minLength: 8)
-            if let companion { Ollo(cue: companion, size: 44) }
-            else { Text(title).font(ReSpaceStyle.font(14, weight: .semibold)).lineLimit(1) }
-            Spacer(minLength: 8)
+            Group {
+                if let companion { Ollo(cue: companion, size: 44) }
+                else { Text(title).font(ReSpaceStyle.font(14, weight: .semibold)).lineLimit(2).multilineTextAlignment(.center) }
+            }.frame(maxWidth: .infinity)
             if let trailing { RSIconButton(symbol: trailingSymbol, label: trailingLabel, prominent: trailingProminent, action: trailing).disabled(trailingDisabled) }
             else { Color.clear.frame(width: 44, height: 44) }
         }.padding(.horizontal, 16).padding(.vertical, 8).foregroundStyle(ReSpaceStyle.ink)
@@ -133,7 +163,7 @@ struct RSPage<Content: View, Footer: View>: View {
         .safeAreaInset(edge: .bottom, spacing: 0) {
             VStack(spacing: 8) { footer }.padding(.horizontal, 24).padding(.top, 12).padding(.bottom, 16).background(.white)
         }
-        .background(.white).foregroundStyle(ReSpaceStyle.ink).font(ReSpaceStyle.font())
+        .background(ReSpaceStyle.white).foregroundStyle(ReSpaceStyle.ink).font(ReSpaceStyle.font())
         .toolbar(.hidden, for: .navigationBar).navigationBarBackButtonHidden()
         .onAppear { titleFocused = true }
     }
@@ -144,23 +174,19 @@ struct RSButtonStyle: ButtonStyle {
     var kind: Kind = .primary
     var compact = false
     @Environment(\.isEnabled) private var enabled
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     func makeBody(configuration: Configuration) -> some View {
         configuration.label.font(ReSpaceStyle.font(15, weight: .semibold))
             .frame(maxWidth: .infinity).frame(minHeight: kind == .quiet || compact ? 44 : 56)
-            .padding(.horizontal, kind == .primary ? 48 : 16)
-            .foregroundStyle(kind == .primary ? ReSpaceStyle.actionInk : kind == .danger ? .white : kind == .secondary ? ReSpaceStyle.purple : ReSpaceStyle.secondary)
+            .padding(.horizontal, 20)
+            .foregroundStyle(kind == .primary ? ReSpaceStyle.actionInk : kind == .danger ? .white : kind == .secondary ? ReSpaceStyle.ink : ReSpaceStyle.secondary)
             .background {
-                if kind == .primary { Capsule().fill(ReSpaceStyle.actionGradient) }
-                else { Capsule().fill(kind == .danger ? ReSpaceStyle.danger : .white) }
+                RoundedRectangle(cornerRadius: 16).fill(kind == .primary ? ReSpaceStyle.orange : kind == .danger ? ReSpaceStyle.danger : kind == .secondary ? ReSpaceStyle.wash : Color.clear)
             }
-            .overlay { if kind == .secondary { Capsule().stroke(ReSpaceStyle.line, lineWidth: 1) } }
-            .overlay(alignment: .trailing) {
-                if kind == .primary {
-                    Image(systemName: "arrow.right").font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(ReSpaceStyle.purple).frame(width: 32, height: 32)
-                        .background(.white.opacity(0.5), in: Circle()).padding(.trailing, 12).accessibilityHidden(true)
-                }
-            }.opacity(enabled ? (configuration.isPressed ? 0.72 : 1) : 0.45)
+            .opacity(enabled ? 1 : 0.45)
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.975 : 1)
+            .brightness(configuration.isPressed ? -0.04 : 0)
+            .animation(reduceMotion ? nil : .spring(response:0.28,dampingFraction:0.7),value:configuration.isPressed)
     }
 }
 
@@ -257,7 +283,7 @@ struct RSComposer: View {
                 }.padding(.leading, 16).foregroundStyle(ReSpaceStyle.purple).background(ReSpaceStyle.wash, in: RoundedRectangle(cornerRadius: 16))
             }
             HStack(alignment: .bottom, spacing: 8) {
-                TextField(placeholder, text: $text, axis: .vertical).font(ReSpaceStyle.font(14)).lineLimit(1...4).padding(.vertical, 12).padding(.leading, 16).accessibilityLabel(placeholder).focused($focused)
+                TextField(placeholder, text: $text, prompt: Text(placeholder).foregroundStyle(ReSpaceStyle.secondary), axis: .vertical).font(ReSpaceStyle.font(14)).lineLimit(1...4).padding(.vertical, 12).padding(.leading, 16).accessibilityLabel(placeholder).focused($focused)
                 Button(action: send) {
                     Image(systemName: "arrow.up").font(.system(size: 18, weight: .medium)).foregroundStyle(ReSpaceStyle.actionInk)
                         .frame(width: 44, height: 44).background(ReSpaceStyle.actionGradient, in: Circle())

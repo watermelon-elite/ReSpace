@@ -76,13 +76,17 @@ struct OperationPanel: View {
                 if let url = URL(string: choice["image_url"].text), !choice["image_url"].text.isEmpty {
                     Button { choose(choice) } label: {
                         HStack(spacing: 16) {
-                            AsyncImage(url: url) { $0.resizable().scaledToFit() } placeholder: { ProgressView() }.frame(width: 96, height: 120).background(ReSpaceStyle.canvas, in: RoundedRectangle(cornerRadius: 16))
+                            AsyncImage(url: url) { phase in
+                                if let image=phase.image { image.resizable().scaledToFit() }
+                                else if phase.error != nil { Image(systemName:"photo").accessibilityLabel("Product image unavailable") }
+                                else { ProgressView() }
+                            }.frame(width: 96, height: 120).background(ReSpaceStyle.canvas, in: RoundedRectangle(cornerRadius: 16))
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(choice["label"].text).font(ReSpaceStyle.font(16, weight: .medium))
                                 if choice["listing"] != .null {
                                     let listing = choice["listing"]
                                     Text("$\(productPrice(listing)) · \(productOffer(listing)["merchant"].text)").font(ReSpaceStyle.font(13))
-                                    Text(listing["dimensions"].numbers.map { String(format: "%.1f", $0 * 100) }.joined(separator: " × ") + " cm")
+                                    Text(productMeasurements(listing))
                                         .font(ReSpaceStyle.font(12))
                                     Text("Offer checked \(displayDate(productOffer(listing)["checked_at"].text)) · fit pending").font(ReSpaceStyle.font(12))
                                 }
@@ -91,9 +95,9 @@ struct OperationPanel: View {
                             if choices.contains(choice["choice_id"].text) { Image(systemName: "checkmark.circle.fill").foregroundStyle(ReSpaceStyle.purple) }
                         }.padding(12).background(choices.contains(choice["choice_id"].text) ? ReSpaceStyle.wash : .white, in: RoundedRectangle(cornerRadius: 20))
                             .overlay { RoundedRectangle(cornerRadius: 20).stroke(ReSpaceStyle.line, lineWidth: 1) }
-                    }.buttonStyle(.plain).disabled(busy)
+                    }.buttonStyle(.plain).disabled(busy).accessibilityAddTraits(choices.contains(choice["choice_id"].text) ? .isSelected : [])
                 } else {
-                    RSChoice(title: choice["label"].text, subtitle: choice["listing"] == .null ? "" : "$\(productPrice(choice["listing"])) · \(choice["listing"]["dimensions"].numbers.map { String(format: "%.1f", $0 * 100) }.joined(separator: " × ")) cm · fit pending", selected: choices.contains(choice["choice_id"].text)) { choose(choice) }.disabled(busy)
+                    RSChoice(title: choice["label"].text, subtitle: choice["listing"] == .null ? "" : "$\(productPrice(choice["listing"])) · \(productMeasurements(choice["listing"])) · fit pending", selected: choices.contains(choice["choice_id"].text)) { choose(choice) }.disabled(busy)
                 }
             }
         }

@@ -8,7 +8,7 @@ Values marked **Observed** describe the inspected native implementation on 18 Oc
 
 ### VIS-01 — Bright, quiet base
 
-Use white for focused task pages and Product surfaces. Use a near-white lavender canvas around room controls and quiet supporting regions. The 3D renderer currently uses a neutral gray background; treat this separately from page chrome.
+Use white for focused task pages and Product surfaces. Use a near-white canvas around room controls and quiet supporting regions. The 3D renderer currently uses a neutral gray background; treat this separately from page chrome.
 
 Allow black text and the Room/Product image to establish hierarchy before adding color. Reserve larger colored areas for primary actions, selected choices and relevant notices. Large brand gradients behind forms or room geometry would obscure the task.
 
@@ -32,47 +32,36 @@ On compact or keyboard-visible screens, yield decorative space first. Preserve r
 
 ## 2. Semantic color registry
 
-**Observed source:** [ReSpaceStyle in DesignSystem.swift](../../ReSpace/DesignSystem.swift). Hex values below are rounded equivalents of the source RGB values; the source values remain authoritative.
+**Current source (15 November 2026):** [ReSpaceStyle in DesignSystem.swift](../../ReSpace/DesignSystem.swift). The user's new palette supersedes the October purple/gold registry. Older symbol names remain aliases to avoid unnecessary component churn.
 
-| Role / current symbol | Approximate color | Intended use | Misuse to reject |
-|---|---|---|---|
-| ink | #1A1A1A | Titles, primary body text, important values | Pure-black text plus many competing accent colors |
-| secondary | #615B69 | Explanations, merchant, dates, supporting labels | Treating essential consequences as faint decoration |
-| purple | #6A0DAD | Selected state, accent icons, secondary actions, links | Coloring every paragraph purple |
-| gold | #E6C46A | Small warm accent, brand detail | Small gold text on white |
-| actionInk | #120C17 | Text/icons over the action gradient | Replacing with white without measuring contrast |
-| actionGradient start | #8B5CF6 | Bright violet end of primary action | Using it alone as a small-text color on white |
-| actionGradient end | #F59E0B | Warm gold/orange end of primary action | Treating it as warning status |
-| wash | #F3EBFA | Selected option fill, selected-target context | Large blocks of low-contrast purple text |
-| canvas | #FAF8FC | Quiet page/support surface | Assuming it is the 3D renderer background |
-| line | #E7E0EB | Decorative dividers and quiet grouping borders | Sole indicator of an essential control boundary/state |
-| danger | #A12D46 | Destructive action, error text/icon | Decorative emphasis unrelated to error/destruction |
-| white | #FFFFFF | Focused page and content surfaces | White body text over the full action gradient |
+| Role / symbol | Color | Use |
+|---|---|---|
+| orange | #EE5001 | Primary action surface, scan plane |
+| white / canvas | #FCFFFF | Main page canvas |
+| lime / gold alias | #C8FD03 | Spatial control discs and action detail |
+| ink / actionInk | #0C1011 | Text, dark spatial surfaces, action labels |
+| secondary | approximately #4D5757 | Supporting text and composer prompt |
+| accent / purple alias | approximately #A83300 | Readable accent text on white |
+| wash | approximately #FFEFE3 | Selected context |
+| line | approximately #D6E0DE | Quiet dividers |
+| danger | approximately #A81F1F | Error and destructive emphasis |
 
-**Observed gradient:** top-leading to bottom-trailing, from bright violet to warm gold/orange. Primary buttons, send controls and prominent icon buttons share it.
-
-**Contract exception:** SPEC describes the shopping-bag treatment as gold-to-purple. The shared component currently uses purple-to-gold. Track this as a small directional discrepancy; a page agent should not silently reverse every primary button to resolve a bag-specific requirement.
+`actionGradient` retains its API name but is solid orange. Primary actions use dark labels and a lime trailing arrow disc. Product colors are never tinted to match the interface.
 
 ### 2.1 Contrast evidence
 
-The following calculations use rounded sRGB hex values, the standard relative-luminance formula and opaque backgrounds. They are local calculations, not screenshot measurements or a full accessibility certification.
+Local sRGB calculations using rounded opaque values:
 
-| Pair | Approximate contrast | Design consequence |
-|---|---:|---|
-| ink on white | 17.40:1 | Strong text baseline |
-| secondary on white | 6.55:1 | Suitable supporting text baseline |
-| purple on white | 9.24:1 | Strong accent text |
-| purple on wash | 7.95:1 | Suitable selected-state text |
-| danger on white | 7.05:1 | Strong error/destructive text |
-| actionInk on violet gradient endpoint | 4.55:1 | Narrow normal-text margin; preserve the dark label |
-| actionInk on warm gradient endpoint | 8.96:1 | Strong label contrast |
-| white on violet gradient endpoint | 4.23:1 | Below the normal-text threshold |
-| white on warm gradient endpoint | 2.15:1 | Insufficient for normal or large text |
-| gold on white | 1.68:1 | Decorative accent only in this pairing |
-| line on white | 1.29:1 | Quiet separator, not sufficient sole control-state signal |
-| older DreamSeal #8A8A8A muted text on white | 3.45:1 | Do not copy into normal small body copy |
+| Pair | Approximate contrast |
+|---|---:|
+| ink on white | 19.03:1 |
+| secondary on white | 7.42:1 |
+| accent on white | 6.66:1 |
+| ink on orange | 5.27:1 |
+| ink on lime | 15.95:1 |
+| white on orange | 3.61:1 |
 
-A 1,001-sample linear sRGB interpolation of the rounded gradient had minimum actionInk contrast approximately 4.55:1. Actual rendering, transparency, pressed states and overlays still need inspection. Avoid reducing enabled label opacity or lightening actionInk; the violet end has little spare margin.
+Use dark labels on orange; white small text is insufficient. These calculations do not certify composited overlays, every state or full accessibility conformance.
 
 For audit thresholds, use at least 4.5:1 for ordinary text and 3:1 for large text under WCAG's definition; placeholder text is text, too. These thresholds come from [W3C's text-contrast guidance](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html).
 
@@ -80,9 +69,9 @@ Required control graphics and state indicators need sufficient contrast with adj
 
 ### VIS-03 — Encode state with more than hue
 
-Selected choices use a checkmark and selection semantics in addition to purple fill/border. Errors name the failure and offer recovery. Temporary previews carry the word “Preview.” Disabled actions expose their disabled state; when the reason is not obvious, place a short explanation nearby.
+Selected choices use a checkmark and selection semantics in addition to accent fill/border. Errors name the failure and offer recovery. Temporary previews carry the word “Preview.” Disabled actions expose their disabled state; when the reason is not obvious, place a short explanation nearby.
 
-Gold is a brand accent, not “success.” Purple is a brand/selection color, not proof of a valid result. Do not create status semantics by hue alone.
+Lime is a brand accent, not “success.” Orange is a brand/action color, not proof of a valid result. Do not create status semantics by hue alone.
 
 ### 2.2 Appearance modes
 
@@ -171,7 +160,7 @@ Do not assign the same large radius to every rectangle. A card is a bounded sele
 
 ### 4.3 Borders and elevation
 
-Use light 1 pt separators for grouping. Selected choices use purple and a checkmark. RSChoice currently has a very soft purple shadow, approximately 4% opacity, radius 8 and y-offset 3.
+Use light 1 pt separators for grouping. Selected choices use the dark accent and a checkmark. RSChoice has a very soft accent shadow, approximately 4% opacity, radius 8 and y-offset 3.
 
 Keep shadows subordinate to content. Avoid heavy drop shadows, glowing borders and frosted-glass stacks as a default. Platform material can be appropriate over active camera content when needed to preserve legibility, but a persistent opaque footer behind the Room composer conflicts with the current layout direction.
 
@@ -207,9 +196,9 @@ Always reserve enough content space or scrolling reach so the last item remains 
 
 ### 5.2 RSButtonStyle
 
-**Primary:** gradient capsule, dark actionInk label, 56 pt minimum height, semibold 15 pt label, trailing arrow inside a pale circle. Full-width use is the standard focused-page action.
+**Primary:** orange capsule, dark actionInk label, 56 pt minimum height, semibold 15 pt label, trailing arrow inside a lime circle. Full-width use is the standard focused-page action.
 
-**Secondary:** white surface, purple label, quiet border. Use for a meaningful alternative within the same task.
+**Secondary:** white surface, dark accent label, quiet border. Use for a meaningful alternative within the same task.
 
 **Quiet:** reduced visual weight, generally 44 pt minimum. Use for Skip, safe navigation or secondary tools.
 
@@ -241,7 +230,7 @@ Use for a single structured selection, protected instruction or meaningful optio
 
 Observed anatomy: optional 28 pt symbol slot, 16 pt medium title, optional 13 pt subtitle, selection indicator, 18 pt padding, 80 pt minimum height, 20 pt radius.
 
-Keep the whole card tappable. Selected state uses purple/wash/checkmark and the selected accessibility trait. A subtitle explains a real distinction; omit it when the title is sufficient.
+Keep the whole card tappable. Selected state uses accent/wash/checkmark and the selected accessibility trait. A subtitle explains a real distinction; omit it when the title is sufficient.
 
 Single-choice selection may advance after visible acknowledgement for low-consequence questions. Multi-choice requires an explicit completion action. Budget increases, destructive operations and consequential consent require explicit action even when a choice has been selected.
 
@@ -293,7 +282,7 @@ ProductImage already distinguishes loading, success and unavailable media. Reuse
 
 Use aspect-fit when cropping would hide dimensions or variant details. Maintain a stable media frame so text and tap targets do not jump during loading. A fallback should remain a valid selectable Product entry when its other evidence is sufficient; absence of a photo is not proof of unavailable stock.
 
-Keep actual Product colors and materials. Do not tint Product photos purple/gold to match the UI. The selected border/label carries the brand.
+Keep actual Product colors and materials. Do not tint Product photos orange/lime to match the UI. The selected border/label carries the brand.
 
 ### 5.9 Items panel
 
@@ -452,3 +441,15 @@ This is standard interface quality guidance for existing controls, not a separat
 8. Verify enabled, selected, pressed, loading, failure and disabled states, not only the pristine default.
 9. Treat the largest plausible content as a design input rather than an exceptional bug.
 10. If a browser prototype is built, use real semantic controls, keyboard focus and reduced-motion behavior; keep gallery chrome outside the product viewport.
+
+## Earlier November motion and spatial controls (superseded for onboarding)
+
+`RSScanPortal` draws an abstract wireframe room and a moving orange scan plane with lime anchors. It does not depict a stored scan or simulated progress. Its 24 fps timeline pauses when the app is inactive or Reduce Motion is on. Primary actions have a short spring press response; Reduce Motion removes the scale animation. Existing question and companion animations keep their Reduce Motion behavior.
+
+Saved Designs use a full-height first-person canvas, dark walking controls with lime targets, and a compact floating composer. World-space labels are hidden in first-person view; tapping Items reveals identity and evidence. Accessibility text sizes use an Items sheet and compact labeled toolbar icons. A clean image reference excludes selection highlights, labels and removed-object ghosts.
+
+## Scan-first simplification — 15 November follow-up
+
+Use native navigation, lists, forms and familiar text actions. The home is Rooms with Settings and one Scan room action; empty state copy explains the task without a marketing hero. Primary buttons are orange rounded rectangles with dark labels, no trailing arrow disc. Secondary buttons use a subtle warm fill. Keep the short press response and Reduce Motion support.
+
+Capture prioritizes the camera, one guidance message and Finish scan; extra detail capture is a small adjacent camera control. High-resolution options and counters live in the capture menu. Prevent automatic screen lock while capture/saving is onscreen and restore normal idle behavior on exit. Advanced diagnostics and export are secondary. The saved scan has one next step, Build 3D model, with a separate spending confirmation. Progress uses the actual server stage, never an invented percentage. A failed planning connection must not block or clutter local capture.

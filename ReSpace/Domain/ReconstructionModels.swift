@@ -49,7 +49,7 @@ struct ReconstructionResult: Codable, Sendable {
     var usdzFilename: String? = nil
     var pipeline: String? = nil
 
-    var isAIGenerated: Bool { ["gpt-6-astra", "gpt-6-sol", "gpt-6.1-sol"].contains(generationModel ?? "") }
+    var isAIGenerated: Bool { ["gpt-6-astra", "gpt-6-sol", "gpt-6.1-sol", "gpt-6.2-sol"].contains(generationModel ?? "") }
     var isWalkthrough: Bool { status == "succeeded" && sceneSchemaVersion == 2 && sceneFilename != nil }
 
     func validate() throws {

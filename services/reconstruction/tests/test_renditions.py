@@ -123,6 +123,92 @@ def test_invalid_images_and_changed_design_keys_do_not_generate(tmp_path, monkey
         service.prepare(directory, changed, "capture", 1)
 
 
+def test_fresh_native_capture_photos_reach_rendition(tmp_path, monkeypatch):
+    """The actual upload envelope stores native files by path hash, not frames."""
+    import hashlib
+    from respace_reconstruction.models import NativeManifest
+    payloads = {
+        "manifest.json": b'{"format":"house-capture/5","rooms":[{"index":0}]}',
+        "integrity.json": b'{}', "depth/frames.json": b'[]',
+        "photos/photos.json": json.dumps([{"file":"photos/0.jpg", "room":0,
+            "transform":[1,0,0,0,0,1,0,0,0,0,1,0,0,1.6,0,1]}]).encode(),
+        "photos/0.jpg": image_bytes(),
+    }
+    inputs = tmp_path/"inputs"; inputs.mkdir()
+    files = []
+    for path, data in payloads.items():
+        identity = hashlib.sha256(path.encode()).hexdigest()
+        files.append(dict(id=identity, filename=identity, relative_path=path,
+                          byte_length=len(data), sha256=hashlib.sha256(data).hexdigest()))
+        (inputs/identity).write_bytes(data)
+    manifest = NativeManifest(schema_version=2, capture_id="fresh", state="completed",
+                              format="house-capture/5", files=files)
+    atomic_json(tmp_path/"manifest.json", manifest.model_dump())
+    photos = renditions.reference_photos(tmp_path, "fresh", 1)
+    assert len(photos) == 1
+    assert photos[0][0]["source_sha256"] == hashlib.sha256(image_bytes()).hexdigest()
+    # Exercise the same authenticated endpoint called by the phone, including
+    # the fresh upload's hashed files, retained design and viewpoint.
+    monkeypatch.setenv("OPENAI_API_KEY", "test-private-key")
+    calls = []
+    def generate(payload, key):
+        calls.append(payload)
+        content = payload["input"][0]["content"]
+        assert len(content) == 4  # render + one original photo, each with its role
+        context = json.loads(content[0]["text"].split("Scene context: ")[1])
+        assert context["design"]["design_id"] == "saved-design"
+        return completed_response()
+    monkeypatch.setattr(renditions, "call_response", generate)
+    app = create_app(tmp_path/"api", "test-rendition-token", start_worker=False)
+    app.state.store.create(manifest)
+    folder = app.state.store.folder("fresh")
+    for item in manifest.files:
+        (folder/"inputs"/item.filename).write_bytes(payloads[item.relative_path])
+    (folder/"results/1").mkdir(parents=True)
+    atomic_json(folder/"results/1/completion.json", {"status":"succeeded"})
+    request = body().model_dump(); request["scene"]["capture_id"] = "fresh"
+    request["perspective"] = {"position":[1,1.6,2],"target":[0,1.6,0],"field_of_view":60}
+    request["design"] = {"design_id":"saved-design","room_id":"room","items":[]}
+    path = "/v1/reconstructions/fresh/results/1/renditions/"+"d"*64
+    with TestClient(app) as client:
+        client.headers["Authorization"] = "Bearer test-rendition-token"
+        assert client.post(path,json=request).status_code == 202
+        wait_for(lambda: client.get(path).json()["state"] == "succeeded")
+        assert client.get(path+"/image").content == image_bytes("PNG")
+        assert client.post(path,json=request).json()["state"] == "succeeded"
+        assert len(calls) == 1
+    (inputs/files[-1]["filename"]).write_bytes(b"changed")
+    with pytest.raises(ValueError, match="integrity"):
+        renditions.reference_photos(tmp_path, "fresh", 1)
+
+
+def test_saved_design_and_perspective_are_bound_to_image_receipt(tmp_path, monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test-private-key")
+    value = body().model_dump()
+    value["perspective"] = {"position":[1,1.6,2], "target":[0,1.4,0], "field_of_view":60}
+    value["design"] = {"design_id":"saved-2", "room_id":"room", "items":[{
+        "id":"new-chair", "label":"Lounge chair", "category":"chair", "origin":"new",
+        "product_title":"Orange lounge chair", "position":[1,0,1], "size":[.8,1,.8], "yaw":0}]}
+    request = RenditionRequest.model_validate(value)
+    service = Renditions(tmp_path); directory = service.directory(tmp_path, 1, "c"*64)
+    assert service.prepare(directory, request, "capture", 1)[1]
+    calls = []
+    def generate(payload, key):
+        calls.append(payload)
+        context = json.loads(payload["input"][0]["content"][0]["text"].split("Scene context: ")[1])
+        assert context["design"]["design_id"] == "saved-2"
+        assert context["design"]["items"][0]["product_title"] == "Orange lounge chair"
+        assert context["perspective"] == value["perspective"]
+        assert "objects" not in context  # Original captured furniture must not override a decorated design.
+        return completed_response()
+    monkeypatch.setattr(renditions, "call_response", generate)
+    service.generate(directory)
+    assert service.status(directory)["state"] == "succeeded" and len(calls) == 1
+    changed = request.model_copy(deep=True); changed.perspective.position[0] = 2
+    with pytest.raises(ValueError, match="another design"):
+        service.prepare(directory, changed, "capture", 1)
+
+
 def test_scan_photo_references_are_selected_snapshotted_and_sent_with_distinct_roles(tmp_path, capture, monkeypatch):
     manifest, payloads = capture
     monkeypatch.setenv("OPENAI_API_KEY", "test-private-key")
