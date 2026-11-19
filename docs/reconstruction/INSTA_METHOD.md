@@ -196,8 +196,8 @@ original helper. It is not the earlier bounded primitive JSON schema. Tool calls
 reasoning state, responses and budget reservations are retained for recovery;
 unknown billing outcomes stop further paid calls. The explicit generation has a
 $10 model-token ceiling. New walkthrough generations use `gpt-6.2-sol` with
-high reasoning for authoring and independent photo review (user-directed
-17 November 2026). A retry uses the generation's original model settings.
+`xhigh` reasoning for authoring and `high` reasoning for independent photo review.
+A retry uses the generation's original model settings.
 Failed reviews or exhausted limits retain the work for recovery and block publication.
 
 A dedicated headless Chromium executes generated Three.js without provider keys,

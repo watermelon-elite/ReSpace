@@ -129,8 +129,10 @@ def test_threejs_full_flow_photo_texture_curves_native_reload_and_retry(tmp_path
     quality=json.loads((output/'quality.json').read_text())
     assert quality['visual_review']['passed'] and len(quality['visual_review']['views'])==2
     assert calls and any(call.get('tools') for call in calls) and any(not call.get('tools') for call in calls)
-    assert all(call['model']=='gpt-6.2-sol' and call['reasoning']=={'effort':'high'} for call in calls)
+    assert all(call['model']=='gpt-6.2-sol' for call in calls)
     for call in calls:
+        expected_effort='xhigh' if call.get('tools') else 'high'
+        assert call['reasoning']=={'effort':expected_effort}
         if call.get('tools'):continue
         indices=[int(re.search(r'Photo index (\d+)',c['text'])[1]) for c in call['input'][0]['content'] if c['type']=='input_text' and c['text'].endswith(': SOURCE')]
         views=call['text']['format']['schema']['properties']['views']
@@ -138,7 +140,7 @@ def test_threejs_full_flow_photo_texture_curves_native_reload_and_retry(tmp_path
         assert views['items']['properties']['photo_index'].get('enum')==indices
     assert result['generation_model']=='gpt-6.2-sol'
     provenance=json.loads((output/'provenance.json').read_text())
-    assert provenance['generation_model']=='gpt-6.2-sol' and provenance['reasoning_effort']=='high'
+    assert provenance['generation_model']=='gpt-6.2-sol' and provenance['reasoning_effort']=='xhigh'
     assert provenance['review_reasoning_effort']=='high'
     assert quality['spending']['ceiling_usd']==10.
     assert quality['spending']['known_cost_usd']==pytest.approx(len(calls)*.003)
@@ -185,8 +187,12 @@ def test_rejected_native_comparison_never_publishes(tmp_path,native,monkeypatch)
     assert sum(c['type']=='input_image' for c in feedback)>=4
 
 
-@pytest.mark.parametrize('model,review_effort',[('gpt-6.2-sol','high'),('gpt-6.1-sol','medium')])
-def test_tool_batch_resumes_after_interrupt_without_rebuying_or_repeating_tools(tmp_path,native,monkeypatch,model,review_effort):
+@pytest.mark.parametrize('model,author_effort,review_effort,legacy_fields',[
+    pytest.param('gpt-6.2-sol','xhigh','high',(),id='current-6.2'),
+    pytest.param('gpt-6.2-sol','high','high',('author_reasoning_effort',),id='previous-6.2'),
+    pytest.param('gpt-6.1-sol','high','medium',('model','author_reasoning_effort','review_reasoning_effort'),id='previous-6.1'),
+])
+def test_tool_batch_resumes_after_interrupt_without_rebuying_or_repeating_tools(tmp_path,native,monkeypatch,model,author_effort,review_effort,legacy_fields):
     manifest,source,_=native;store=Store(tmp_path/'jobs');folder=upload(store,manifest,source)
     calls=fake_api(monkeypatch,batch=True)
     execute=threejs_tools.AuthoringTools.execute;completed=[];interrupt=[True]
@@ -198,15 +204,19 @@ def test_tool_batch_resumes_after_interrupt_without_rebuying_or_repeating_tools(
     monkeypatch.setattr(threejs_tools.AuthoringTools,'execute',interrupted)
     with monkeypatch.context() as initial:
         initial.setattr(threejs_agent,'MODEL',model)
+        initial.setattr(threejs_agent,'AUTHOR_REASONING_EFFORT',author_effort)
         initial.setattr(threejs_agent,'REVIEW_REASONING_EFFORT',review_effort)
         with pytest.raises(TimeoutError,match='between tools'):threejs_pipeline.process_threejs(folder,1)
     assert completed==['inspect_photo']
-    if model=='gpt-6.1-sol':
-        # Older generations predate model settings in the agent state.
-        state_path=folder/'work/threejs/agent-state.json'
-        state=json.loads(state_path.read_text())
-        del state['model'],state['review_reasoning_effort']
+    state_path=folder/'work/threejs/agent-state.json'
+    state=json.loads(state_path.read_text())
+    assert state['author_reasoning_effort']==author_effort
+    if legacy_fields:
+        for field in legacy_fields:del state[field]
         atomic_json(state_path,state)
+    else:
+        # A later default must not affect a run already using XHigh.
+        monkeypatch.setattr(threejs_agent,'AUTHOR_REASONING_EFFORT','high')
     result=threejs_pipeline.process_threejs(folder,2)
     assert result['status']=='succeeded'
     assert result['generation_model']==model
@@ -214,7 +224,10 @@ def test_tool_batch_resumes_after_interrupt_without_rebuying_or_repeating_tools(
     # Two ordered author batches plus review, instead of a purchase per tool.
     assert len(calls)==3
     assert [call['model'] for call in calls]==[model]*3
-    assert [call['reasoning']['effort'] for call in calls]==['high','high',review_effort]
+    assert [call['reasoning']['effort'] for call in calls]==[author_effort,author_effort,review_effort]
+    provenance=json.loads((folder/'results/2/provenance.json').read_text())
+    assert provenance['reasoning_effort']==author_effort
+    assert provenance['review_reasoning_effort']==review_effort
     history=calls[1]['input']
     outputs=[i for i,item in enumerate(history) if item.get('type')=='function_call_output']
     images=[i for i,item in enumerate(history) if item.get('role')=='user' and any(c.get('type')=='input_image' for c in item.get('content',[]))]

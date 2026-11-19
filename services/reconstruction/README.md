@@ -90,9 +90,9 @@ asset comparison is a visual gate, not a numerical accuracy certificate.
 
 ## Charges, recovery and limits
 
-New walkthroughs use `gpt-6.2-sol` with high reasoning for both modeling and
-independent photo review. Retry uses the generation's original model settings
-to recover paid responses. The fixed **$10 USD per generation**
+New walkthroughs use `gpt-6.2-sol` with `xhigh` reasoning for authoring and
+`high` reasoning for independent photo review. Retry uses the generation's
+original model settings to recover paid responses. The fixed **$10 USD per generation**
 ceiling covers coding and visual-review token calls at the recorded Standard
 rates, including failed calls. It excludes tax and any unrelated image generation.
 Input token counts include tool definitions; each request reserves input/cache

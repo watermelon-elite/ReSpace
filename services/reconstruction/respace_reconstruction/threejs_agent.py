@@ -8,7 +8,7 @@ from .threejs_tools import AuthoringTools, ROOT, image_input, run, browser, sour
 from .threejs_assets import compile_assets
 
 MODEL = 'gpt-6.2-sol'
-AUTHOR_REASONING_EFFORT = 'high'
+AUTHOR_REASONING_EFFORT = 'xhigh'
 REVIEW_REASONING_EFFORT = 'high'
 CONTEXT_ROUNDS = 40
 
@@ -84,8 +84,8 @@ durable checkpoints between them. Wait for results before dependent decisions.
 '''
 
 
-def body(history,model):
-    return {'model':model,'reasoning':{'effort':AUTHOR_REASONING_EFFORT},'store':False,
+def body(history,model,reasoning_effort):
+    return {'model':model,'reasoning':{'effort':reasoning_effort},'store':False,
         'include':['reasoning.encrypted_content'],'service_tier':'default',
         'max_output_tokens':32768,'instructions':instructions(),'tools':TOOLS,
         'parallel_tool_calls':True,'input':history}
@@ -169,11 +169,12 @@ def author(project,work,spending,measurements,capture_id,revision,progress):
     else:
         content=[{'type':'input_text','text':f'Reconstruct the captured Room. {len(tools.photos)} posed photos. Begin by reading demos/room/BRIEF.md, data/demos/room.json and reconstruction.ts. Contact sheets below cover every source photo in array order.'},*tools.contacts()]
         state={'history':[{'role':'user','content':content}],'round':0,'pending':[],'tool_index':0,'submitted':None,
-               'model':MODEL,'review_reasoning_effort':REVIEW_REASONING_EFFORT}
+               'model':MODEL,'author_reasoning_effort':AUTHOR_REASONING_EFFORT,'review_reasoning_effort':REVIEW_REASONING_EFFORT}
         atomic_json(state_file,state)
     # Pre-upgrade runs lack these fields. Keep their request fingerprints and
     # encrypted reasoning tied to the profile that began the generation.
     model=state.get('model','gpt-6.1-sol')
+    author_effort=state.get('author_reasoning_effort','high')
     review_effort=state.get('review_reasoning_effort','medium')
     deadline=time.monotonic()+float(__import__('os').environ.get('RESPACE_ROOM_TIMEOUT_SECONDS','3600'))
     spending.deadline=deadline
@@ -183,7 +184,7 @@ def author(project,work,spending,measurements,capture_id,revision,progress):
         if not state['pending']:
             refresh_context(state,tools,work,spending,capture_id)
             progress('modeling_threejs')
-            response,_=spending.request(body(state['history'],model),work/f"turn-{state['round']:04d}",'Three.js modeling agent')
+            response,_=spending.request(body(state['history'],model,author_effort),work/f"turn-{state['round']:04d}",'Three.js modeling agent')
             if response.get('status')!='completed':raise RuntimeError('The coding agent did not complete its turn; paid checkpoint retained')
             output=response.get('output',[])
             state['history'].extend(output);state['pending']=[c for c in output if c.get('type')=='function_call'];state['tool_index']=0;state['round']+=1
@@ -209,7 +210,7 @@ def author(project,work,spending,measurements,capture_id,revision,progress):
                     output=attempt/'assets'
                     if output.exists():shutil.rmtree(output)
                     quality={'capture_id':capture_id,'method':'scan-to-threejs','source_code_sha256':current,'triangle_count':exported['triangles'],'uncertainties':args['uncertainties'],'ready':False}
-                    provenance={'pipeline':'respace-threejs-api-agent/1','upstream':json.loads((ROOT/'UPSTREAM.json').read_text())['revision'],'source_code_sha256':current,'author_summary':args['summary'],'texture_sources':sources,'exported_texture_sources':exported.get('texture_sources',{}),'generation_model':model,'reasoning_effort':AUTHOR_REASONING_EFFORT,'review_reasoning_effort':review_effort}
+                    provenance={'pipeline':'respace-threejs-api-agent/1','upstream':json.loads((ROOT/'UPSTREAM.json').read_text())['revision'],'source_code_sha256':current,'author_summary':args['summary'],'texture_sources':sources,'exported_texture_sources':exported.get('texture_sources',{}),'generation_model':model,'reasoning_effort':author_effort,'review_reasoning_effort':review_effort}
                     result=compile_assets(exported,measurements,output,capture_id,revision,quality,provenance,generation_model=model)
                     native=project/'data/web-assets/native'
                     if native.exists():shutil.rmtree(native)
